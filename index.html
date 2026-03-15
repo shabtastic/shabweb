@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Name — Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #11151C;
+    --paper: #e8e4dc;
+    --rust: #D66853;
+    --gold: #7D4E57;
+    --warm: #D66853;
+    --fog: #4a5a72;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'Space Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  #topology-canvas {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+
+  /* Label canvas — 2D overlay for node labels */
+  #label-canvas {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  }
+
+  /* HUD */
+  #hud {
+    position: fixed; bottom: 2rem; right: 2.2rem;
+    z-index: 200; pointer-events: none;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 0.65rem;
+  }
+  .hud-graph-link {
+    font-family: var(--mono); font-size: 0.5rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(54,65,86,0.35); text-decoration: none;
+    pointer-events: auto; transition: color 0.4s;
+    cursor: none;
+  }
+  .hud-graph-link:hover { color: var(--rust); }
+  .hud-concept-row { text-align: right; }
+  .hud-micro-label {
+    font-family: var(--mono); font-size: 0.4rem;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(54,65,86,0.25); display: block; margin-bottom: 0.2rem;
+  }
+  .hud-concept-name {
+    font-family: var(--serif); font-style: italic; font-size: 0.85rem;
+    font-weight: 300; color: rgba(200,212,224,0.5);
+    transition: color 0.8s; line-height: 1.2;
+    white-space: nowrap; max-width: 190px; text-align: right;
+  }
+  .hud-surprise-row {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem;
+  }
+  .hud-surprise-track {
+    width: 80px; height: 1px; background: rgba(54,65,86,0.2); position: relative;
+  }
+  .hud-surprise-fill {
+    position: absolute; top: -0.5px; left: 0; height: 2px;
+    background: var(--rust); opacity: 0.55;
+    transition: width 0.6s ease, background 0.6s ease;
+    border-radius: 1px;
+  }
+  .hud-phase-row {
+    display: flex; align-items: center; gap: 0.55rem;
+  }
+  .hud-phase {
+    font-family: var(--mono); font-size: 0.5rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(54,65,86,0.45); transition: color 2s ease;
+  }
+  .hud-ring-wrap { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; }
+  .hud-ring {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(214,104,83,0.25);
+    transition: transform 3s ease, background 3s ease, box-shadow 3s ease;
+  }
+
+  /* CURSOR */
+  .cursor {
+    position: fixed; width: 9px; height: 9px; background: var(--warm);
+    border-radius: 50%; pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%); mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed; width: 32px; height: 32px;
+    border: 1px solid rgba(214,104,83,0.35); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%); transition: all 0.3s ease;
+  }
+
+  nav, section, footer { position: relative; z-index: 10; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(17,21,28,0.75) 0%, transparent 100%);
+  }
+  .nav-logo {
+    font-family: var(--mono); font-size: 0.72rem;
+    letter-spacing: 0.22em; color: var(--fog);
+    text-transform: uppercase; text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--fog); text-decoration: none;
+    transition: color 0.3s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 0; height: 1px; background: var(--rust); transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--paper); }
+  .nav-links a:hover::after { width: 100%; }
+
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 3rem 5rem; background: transparent;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 1s ease 0.4s forwards;
+  }
+  .hero-name {
+    font-size: clamp(4rem,10vw,9rem); font-weight: 300;
+    line-height: 0.9; letter-spacing: -0.02em;
+    color: var(--paper); margin-bottom: 0.2em;
+    opacity: 0; animation: fadeUp 1.1s ease 0.6s forwards;
+  }
+  .hero-name em { font-style: italic; color: var(--gold); }
+  .hero-tagline {
+    font-size: clamp(1rem,2.5vw,1.4rem); font-weight: 300;
+    font-style: italic; color: var(--fog);
+    max-width: 520px; margin-bottom: 3rem;
+    opacity: 0; animation: fadeUp 1.1s ease 0.9s forwards; line-height: 1.7;
+  }
+  .hero-cta {
+    display: flex; align-items: center; gap: 2rem;
+    opacity: 0; animation: fadeUp 1.1s ease 1.1s forwards;
+  }
+  .btn-primary {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink); background: var(--paper);
+    padding: 0.9rem 2rem; text-decoration: none; transition: background 0.3s;
+  }
+  .btn-primary:hover { background: var(--gold); }
+  .btn-ghost {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--fog); text-decoration: none;
+    transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-ghost:hover { color: var(--paper); }
+  .btn-ghost::after { content: '↓'; }
+  .hero-year {
+    position: absolute; top: 50%; right: 3rem; writing-mode: vertical-rl;
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.3em; color: rgba(33,45,64,0.5);
+    transform: translateY(-50%);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  section { padding: 8rem 3rem; }
+  #about    { background: rgba(228,224,216,0.97); color: var(--ink); }
+  #research { background: rgba(8,8,15,0.93); }
+  #work     { background: rgba(6,6,13,0.91); }
+  #cv       { background: rgba(5,5,11,0.95); }
+  #contact  { background: rgba(228,224,216,0.97); color: var(--ink); }
+
+  .section-label {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 4rem;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .section-label::before { content: ''; display: block; width: 40px; height: 1px; background: var(--rust); }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; max-width: 1200px; }
+  .about-text h2 { font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 300; line-height: 1.1; margin-bottom: 2rem; }
+  .about-text h2 em { font-style: italic; color: var(--rust); }
+  .about-text p { font-size: 1.05rem; font-weight: 300; color: #272727; margin-bottom: 1.5rem; line-height: 1.88; }
+  .about-aside { padding-top: 4rem; }
+  .about-aside h3 { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--fog); margin-bottom: 1.5rem; }
+  .interest-list { list-style: none; border-top: 1px solid rgba(0,0,0,0.1); }
+  .interest-list li { padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.07); font-size: 1rem; font-weight: 300; color: var(--ink); display: flex; align-items: center; gap: 1rem; }
+  .interest-list li::before { content: '◦'; color: var(--rust); font-size: 1.2rem; }
+
+  .research-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+  .research-card {
+    background: rgba(14,14,22,0.88); padding: 3rem 2.5rem;
+    border: 1px solid rgba(33,45,64,0.4);
+    transition: border-color 0.5s, background 0.5s;
+    position: relative; overflow: hidden; backdrop-filter: blur(8px);
+  }
+  .research-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rust), transparent);
+    opacity: 0; transition: opacity 0.5s;
+  }
+  .research-card:hover { border-color: rgba(214,104,83,0.2); background: rgba(17,21,28,0.97); }
+  .research-card:hover::before { opacity: 1; }
+  .card-num { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.2em; color: rgba(54,65,86,0.4); margin-bottom: 2rem; }
+  .card-title { font-size: 1.35rem; font-weight: 300; line-height: 1.3; color: var(--paper); margin-bottom: 1rem; }
+  .card-desc { font-size: 0.88rem; font-weight: 300; color: var(--fog); line-height: 1.75; margin-bottom: 2rem; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rust); border: 1px solid rgba(214,104,83,0.25); padding: 0.22rem 0.65rem; }
+
+  .work-list { display: flex; flex-direction: column; border-top: 1px solid rgba(33,45,64,0.25); }
+  .work-item {
+    display: grid; grid-template-columns: 80px 1fr auto;
+    align-items: center; gap: 3rem; padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(33,45,64,0.25);
+    text-decoration: none; color: var(--paper);
+    transition: color 0.4s; position: relative;
+  }
+  .work-item::after { content: '→'; font-size: 1.5rem; color: var(--rust); opacity: 0; transform: translateX(-10px); transition: opacity 0.4s, transform 0.4s; position: absolute; right: 0; }
+  .work-item:hover { color: var(--gold); }
+  .work-item:hover::after { opacity: 1; transform: translateX(0); }
+  .work-year { font-family: var(--mono); font-size: 0.63rem; color: var(--fog); letter-spacing: 0.1em; }
+  .work-title { font-size: clamp(1.2rem,2.5vw,2rem); font-weight: 300; }
+  .work-type { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fog); }
+
+  .cv-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; max-width: 1100px; }
+  .cv-intro h2 { font-size: clamp(2rem,4vw,3.5rem); font-weight: 300; line-height: 1.2; margin-bottom: 2rem; }
+  .cv-intro p { font-size: 0.93rem; font-weight: 300; color: var(--fog); line-height: 1.8; margin-bottom: 2rem; }
+  .cv-download { display: inline-flex; align-items: center; gap: 0.75rem; font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper); border: 1px solid rgba(74,90,114,0.35); padding: 0.8rem 1.5rem; text-decoration: none; transition: border-color 0.3s, color 0.3s; }
+  .cv-download:hover { border-color: var(--gold); color: var(--gold); }
+  .cv-entries { display: flex; flex-direction: column; }
+  .cv-block { padding: 2.5rem 0; border-bottom: 1px solid rgba(33,45,64,0.25); }
+  .cv-block-label { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--rust); margin-bottom: 1.5rem; }
+  .cv-entry { display: grid; grid-template-columns: 140px 1fr; gap: 1.5rem; margin-bottom: 1.5rem; align-items: baseline; }
+  .cv-entry-year { font-family: var(--mono); font-size: 0.63rem; color: var(--fog); padding-top: 0.15rem; }
+  .cv-entry-title { font-size: 1.05rem; font-weight: 400; color: var(--paper); margin-bottom: 0.25rem; }
+  .cv-entry-sub { font-size: 0.84rem; font-weight: 300; font-style: italic; color: var(--fog); }
+
+  #contact { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; }
+  .contact-big { font-size: clamp(3rem,8vw,7rem); font-weight: 300; line-height: 1; letter-spacing: -0.02em; margin-bottom: 3rem; color: var(--ink); }
+  .contact-big em { font-style: italic; color: var(--rust); }
+  .contact-links { display: flex; gap: 3rem; flex-wrap: wrap; }
+  .contact-link { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); text-decoration: none; padding-bottom: 0.25rem; border-bottom: 1px solid rgba(0,0,0,0.18); transition: color 0.4s, border-color 0.4s; }
+  .contact-link:hover { color: var(--rust); border-color: var(--rust); }
+
+  footer { background: rgba(237,234,227,0.97); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.07); position: relative; z-index: 10; }
+  footer p { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.15em; color: var(--fog); }
+
+  .reveal { opacity: 0; transform: translateY(36px); transition: opacity 1s ease, transform 1s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── ADMIN PANEL ────────────────────────────────────────────────── */
+  #admin-panel {
+    display: none;
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(17,21,28,0.94); backdrop-filter: blur(12px);
+    padding: 3rem; overflow-y: auto;
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--paper); letter-spacing: 0.05em;
+  }
+  #admin-panel.open { display: flex; flex-direction: column; gap: 1.5rem; }
+  .admin-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(214,104,83,0.2); padding-bottom: 1rem;
+  }
+  .admin-title { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+  .admin-hint  { font-size: 0.55rem; letter-spacing: 0.15em; color: var(--fog); }
+  .admin-close { background: none; border: 1px solid rgba(74,90,114,0.3); color: var(--fog);
+    padding: 0.4rem 0.9rem; cursor: pointer; font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.2em; text-transform: uppercase; transition: border-color 0.3s, color 0.3s;
+  }
+  .admin-close:hover { border-color: var(--rust); color: var(--rust); }
+
+  .admin-section-title {
+    font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 0.5rem;
+  }
+  .admin-textarea {
+    width: 100%; height: 220px; background: rgba(33,45,64,0.2);
+    border: 1px solid rgba(74,90,114,0.25); color: var(--paper);
+    font-family: var(--mono); font-size: 0.68rem; line-height: 1.6;
+    padding: 1rem; resize: vertical; outline: none;
+    transition: border-color 0.3s;
+  }
+  .admin-textarea:focus { border-color: rgba(214,104,83,0.4); }
+
+  .admin-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .admin-btn {
+    background: none; border: 1px solid rgba(214,104,83,0.35); color: var(--gold);
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; padding: 0.65rem 1.4rem; cursor: pointer;
+    transition: background 0.3s, border-color 0.3s; white-space: nowrap;
+  }
+  .admin-btn:hover:not(:disabled) { background: rgba(214,104,83,0.08); border-color: var(--gold); }
+  .admin-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .admin-btn.secondary { border-color: rgba(74,90,114,0.3); color: var(--fog); }
+  .admin-btn.secondary:hover { border-color: rgba(74,90,114,0.6); color: var(--paper); }
+  .admin-btn.danger { border-color: rgba(214,104,83,0.3); color: var(--rust); }
+  .admin-btn.danger:hover { background: rgba(214,104,83,0.08); border-color: var(--rust); }
+
+  .admin-status {
+    font-size: 0.62rem; color: var(--fog); min-height: 1.4em;
+    transition: color 0.4s;
+  }
+  .admin-status.ok  { color: #7aad7a; }
+  .admin-status.err { color: var(--rust); }
+  .admin-status.loading { color: var(--gold); }
+
+  .admin-preview {
+    background: rgba(33,45,64,0.15); border: 1px solid rgba(33,45,64,0.25);
+    padding: 1rem; max-height: 220px; overflow-y: auto;
+    font-size: 0.62rem; line-height: 1.8; color: var(--fog);
+    white-space: pre-wrap; display: none;
+  }
+  .admin-preview.visible { display: block; }
+
+  .admin-graph-stats {
+    display: flex; gap: 3rem; padding: 1rem;
+    background: rgba(33,45,64,0.12); border: 1px solid rgba(240,237,230,0.06);
+  }
+  .admin-stat { display: flex; flex-direction: column; gap: 0.3rem; }
+  .admin-stat-val { font-size: 1.4rem; color: var(--gold); font-family: var(--serif); font-weight: 300; }
+  .admin-stat-lbl { font-size: 0.5rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--fog); }
+
+  .admin-node-list {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; max-height: 160px; overflow-y: auto;
+  }
+  .admin-node-tag {
+    font-size: 0.55rem; letter-spacing: 0.1em; padding: 0.25rem 0.6rem;
+    border: 1px solid rgba(214,104,83,0.2); color: rgba(201,168,76,0.7);
+    background: rgba(214,104,83,0.05);
+  }
+  .admin-node-tag.new { border-color: rgba(122,173,122,0.5); color: rgba(122,173,122,0.9); background: rgba(122,173,122,0.06); }
+
+  .admin-divider { border: none; border-top: 1px solid rgba(33,45,64,0.25); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    section { padding: 5rem 1.5rem; }
+    #hero { padding: 0 1.5rem 4rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .research-grid { grid-template-columns: 1fr; }
+    .work-item { grid-template-columns: 60px 1fr; }
+    .work-type { display: none; }
+    .cv-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .cv-entry { grid-template-columns: 100px 1fr; }
+    .nav-links { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="topology-canvas"></canvas>
+<canvas id="label-canvas"></canvas>
+
+<div id="hud">
+  <a href="graph.html" class="hud-graph-link">explore the graph →</a>
+  <div class="hud-concept-row">
+    <span class="hud-micro-label">attending to</span>
+    <div class="hud-concept-name" id="hud-concept">–</div>
+  </div>
+  <div class="hud-surprise-row">
+    <span class="hud-micro-label">surprise</span>
+    <div class="hud-surprise-track"><div class="hud-surprise-fill" id="hud-surprise-fill"></div></div>
+  </div>
+  <div class="hud-phase-row">
+    <div class="hud-ring-wrap"><div class="hud-ring" id="hud-ring"></div></div>
+    <div class="hud-phase" id="hud-phase">predicting</div>
+  </div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="#" class="nav-logo">SH</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#work">Projects</a></li>
+    <li><a href="#cv">CV</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-year">MMXXVI</div>
+  <p class="hero-eyebrow">Researcher &amp; Cognitive Scientist</p>
+  <h1 class="hero-name">Your <em>Name</em></h1>
+  <p class="hero-tagline">Neuroscience-guided AI for psychological flexibility and creativity — working at the edge of mind, machine, and human flourishing.</p>
+  <div class="hero-cta">
+    <a href="#work" class="btn-primary">View Work</a>
+    <a href="#about" class="btn-ghost">Learn more</a>
+  </div>
+</section>
+
+<section id="about">
+  <p class="section-label">About</p>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <h2>Where minds <em>update</em></h2>
+      <p>I am a researcher at the intersection of cognitive neuroscience, generative AI, and human flourishing. My work asks: how do minds flexibly revise their models of the world — and how can AI systems be designed to support that process?</p>
+      <p>My research focuses on psychological flexibility as a dynamic cognitive process — one that can be targeted at fine temporal resolution using neuroscientifically-grounded AI interventions. I use predictive processing and Bayesian frameworks to understand how surprise, expectancy violation, and belief updating drive creative and adaptive cognition.</p>
+      <p>When I'm not at the desk, you'll find me [hobby / interest].</p>
+    </div>
+    <div class="about-aside reveal">
+      <h3>Research areas</h3>
+      <ul class="interest-list">
+        <li>Predictive processing &amp; active inference</li>
+        <li>Bayesian surprise &amp; event segmentation</li>
+        <li>Psychological flexibility &amp; creativity</li>
+        <li>Generative AI video interventions</li>
+        <li>Computational psychiatry</li>
+        <li>Human-centered AI design</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="research">
+  <p class="section-label">Research</p>
+  <div class="research-grid">
+    <div class="research-card reveal">
+      <p class="card-num">001</p>
+      <h3 class="card-title">Psychologically-Inspired Generative AI Videos</h3>
+      <p class="card-desc">A domain-general system for generating video interventions that target psychological flexibility by modulating Bayesian surprise at the temporal resolution of creative cognition.</p>
+      <div class="card-tags"><span class="tag">ICCC 2025</span><span class="tag">Generative AI</span><span class="tag">Published</span></div>
+    </div>
+    <div class="research-card reveal">
+      <p class="card-num">002</p>
+      <h3 class="card-title">Bayesian Surprise &amp; Cognitive Flexibility</h3>
+      <p class="card-desc">Investigating how prediction error signals — operationalized via semantic distance in LLM embeddings — drive the updating of belief structures and modulate open-minded, flexible thinking.</p>
+      <div class="card-tags"><span class="tag">Predictive Processing</span><span class="tag">In Progress</span></div>
+    </div>
+    <div class="research-card reveal">
+      <p class="card-num">003</p>
+      <h3 class="card-title">AI Interventions for Creativity</h3>
+      <p class="card-desc">Developing personalized, scalable AI-assisted interventions that support creative states across domains — moving beyond task-specific support toward process-level targeting.</p>
+      <div class="card-tags"><span class="tag">Active Inference</span><span class="tag">HCI</span><span class="tag">Working Paper</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <p class="section-label">Projects</p>
+  <div class="work-list">
+    <a href="#" class="work-item reveal"><span class="work-year">2025</span><span class="work-title">Surprise-Driven Video Intervention System</span><span class="work-type">System</span></a>
+    <a href="#" class="work-item reveal"><span class="work-year">2024</span><span class="work-title">Semantic Distance as Surprise Metric</span><span class="work-type">Research</span></a>
+    <a href="#" class="work-item reveal"><span class="work-year">2024</span><span class="work-title">Flexibility Lab</span><span class="work-type">Research Tool</span></a>
+    <a href="#" class="work-item reveal"><span class="work-year">2023</span><span class="work-title">Awe &amp; Creative Cognition Study</span><span class="work-type">Study</span></a>
+    <a href="#" class="work-item reveal"><span class="work-year">2023</span><span class="work-title">Signal / Noise</span><span class="work-type">Installation</span></a>
+  </div>
+</section>
+
+<section id="cv">
+  <p class="section-label">CV</p>
+  <div class="cv-layout">
+    <div class="cv-intro reveal">
+      <h2>Education &amp; experience</h2>
+      <p>A full curriculum vitae is available on request or as a PDF download below.</p>
+      <a href="#" class="cv-download">↓ Download PDF</a>
+    </div>
+    <div class="cv-entries reveal">
+      <div class="cv-block">
+        <p class="cv-block-label">Education</p>
+        <div class="cv-entry"><span class="cv-entry-year">2022–present</span><div><p class="cv-entry-title">PhD, [Your Department]</p><p class="cv-entry-sub">University Name, City</p></div></div>
+        <div class="cv-entry"><span class="cv-entry-year">2018–2022</span><div><p class="cv-entry-title">B.A. / B.S., [Your Major]</p><p class="cv-entry-sub">University Name, City</p></div></div>
+      </div>
+      <div class="cv-block">
+        <p class="cv-block-label">Experience</p>
+        <div class="cv-entry"><span class="cv-entry-year">2024–present</span><div><p class="cv-entry-title">Research Scientist, Human-Centered AI</p><p class="cv-entry-sub">Toyota Research Institute</p></div></div>
+        <div class="cv-entry"><span class="cv-entry-year">2023</span><div><p class="cv-entry-title">Visiting Researcher</p><p class="cv-entry-sub">Organization Name</p></div></div>
+      </div>
+      <div class="cv-block">
+        <p class="cv-block-label">Selected Publications</p>
+        <div class="cv-entry"><span class="cv-entry-year">2025</span><div><p class="cv-entry-title">"Psychologically-inspired generative AI videos for supporting creativity"</p><p class="cv-entry-sub">ICCC 2025</p></div></div>
+        <div class="cv-entry"><span class="cv-entry-year">2023</span><div><p class="cv-entry-title">"Paper Title Here"</p><p class="cv-entry-sub">Journal / Conference Name</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <p class="section-label">Contact</p>
+  <h2 class="contact-big">Let's talk about <em>minds</em></h2>
+  <div class="contact-links">
+    <a href="/cdn-cgi/l/email-protection#4f36203a0f2a372e223f232a612c2022" class="contact-link">Email</a>
+    <a href="#" class="contact-link">Scholar</a>
+    <a href="#" class="contact-link">GitHub</a>
+    <a href="#" class="contact-link">Twitter / X</a>
+    <a href="#" class="contact-link">LinkedIn</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Your Name</p>
+  <p>Topology shaped by a semantic graph of this research &nbsp;·&nbsp; <a href="graph.html" style="color:var(--fog);text-decoration:none;letter-spacing:inherit;">explore the graph →</a></p>
+</footer>
+
+<script type="application/json" id="graph-data">
+{
+  "version": "1.0",
+  "meta": {
+    "title": "Shabnam Hakimi \u2014 Research Knowledge Graph",
+    "description": "Semantic graph of research concepts across publications. Nodes are key constructs; edges encode theoretical relationships and their strength.",
+    "clusters": [
+      {
+        "id": 0,
+        "name": "Psychology / Cognition"
+      },
+      {
+        "id": 1,
+        "name": "Computational / Bayesian"
+      },
+      {
+        "id": 2,
+        "name": "AI / Generative"
+      },
+      {
+        "id": 3,
+        "name": "Application / Intervention"
+      },
+      {
+        "id": 4,
+        "name": "Neuroeconomics"
+      },
+      {
+        "id": 5,
+        "name": "Social Neuroscience"
+      },
+      {
+        "id": 6,
+        "name": "Consumer / Preference"
+      }
+    ],
+    "papers": [
+      {
+        "id": "hakimi2025iccc",
+        "title": "Psychologically-inspired generative AI videos for supporting creativity",
+        "venue": "ICCC 2025",
+        "year": 2025,
+        "url": "https://computationalcreativity.net/iccc25/papers/iccc25-hakimi2025psychologically.pdf",
+        "nodes_contributed": [
+          "bayesian_surprise",
+          "pred_processing",
+          "belief_updating",
+          "pred_error",
+          "event_segmentation",
+          "semantic_distance",
+          "active_inference",
+          "temporal_res",
+          "psych_flex",
+          "creativity",
+          "open_mindedness",
+          "affect",
+          "awe",
+          "expectancy_viol",
+          "exec_function",
+          "gen_ai",
+          "llm",
+          "text_to_image",
+          "intervention",
+          "video",
+          "personalization",
+          "human_centered"
+        ]
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "psych_flex",
+      "label": "psychological\nflexibility",
+      "weight": 1,
+      "cluster": 0
+    },
+    {
+      "id": "creativity",
+      "label": "creativity",
+      "weight": 0.9,
+      "cluster": 0
+    },
+    {
+      "id": "open_mindedness",
+      "label": "open-\nmindedness",
+      "weight": 0.65,
+      "cluster": 0
+    },
+    {
+      "id": "affect",
+      "label": "affect",
+      "weight": 0.72,
+      "cluster": 0
+    },
+    {
+      "id": "awe",
+      "label": "awe",
+      "weight": 0.55,
+      "cluster": 0
+    },
+    {
+      "id": "expectancy_viol",
+      "label": "expectancy\nviolation",
+      "weight": 0.68,
+      "cluster": 0
+    },
+    {
+      "id": "exec_function",
+      "label": "executive\nfunction",
+      "weight": 0.65,
+      "cluster": 0
+    },
+    {
+      "id": "self_regulation",
+      "label": "self-\nregulation",
+      "weight": 0.85,
+      "cluster": 0
+    },
+    {
+      "id": "intrinsic_motiv",
+      "label": "intrinsic\nmotivation",
+      "weight": 0.78,
+      "cluster": 0
+    },
+    {
+      "id": "behavior_change",
+      "label": "behavior\nchange",
+      "weight": 0.72,
+      "cluster": 0
+    },
+    {
+      "id": "bayesian_surprise",
+      "label": "Bayesian\nsurprise",
+      "weight": 0.95,
+      "cluster": 1
+    },
+    {
+      "id": "pred_processing",
+      "label": "predictive\nprocessing",
+      "weight": 0.85,
+      "cluster": 1
+    },
+    {
+      "id": "belief_updating",
+      "label": "belief\nupdating",
+      "weight": 0.8,
+      "cluster": 1
+    },
+    {
+      "id": "pred_error",
+      "label": "prediction\nerror",
+      "weight": 0.78,
+      "cluster": 1
+    },
+    {
+      "id": "event_segmentation",
+      "label": "event\nsegmentation",
+      "weight": 0.65,
+      "cluster": 1
+    },
+    {
+      "id": "semantic_distance",
+      "label": "semantic\ndistance",
+      "weight": 0.72,
+      "cluster": 1
+    },
+    {
+      "id": "active_inference",
+      "label": "active\ninference",
+      "weight": 0.7,
+      "cluster": 1
+    },
+    {
+      "id": "temporal_res",
+      "label": "temporal\nresolution",
+      "weight": 0.6,
+      "cluster": 1
+    },
+    {
+      "id": "gen_ai",
+      "label": "generative\nAI",
+      "weight": 0.88,
+      "cluster": 2
+    },
+    {
+      "id": "llm",
+      "label": "LLM",
+      "weight": 0.72,
+      "cluster": 2
+    },
+    {
+      "id": "text_to_image",
+      "label": "text-to-\nimage",
+      "weight": 0.52,
+      "cluster": 2
+    },
+    {
+      "id": "product_design",
+      "label": "product\ndesign",
+      "weight": 0.75,
+      "cluster": 2
+    },
+    {
+      "id": "intervention",
+      "label": "intervention",
+      "weight": 0.75,
+      "cluster": 3
+    },
+    {
+      "id": "video",
+      "label": "video",
+      "weight": 0.52,
+      "cluster": 3
+    },
+    {
+      "id": "personalization",
+      "label": "personalization",
+      "weight": 0.7,
+      "cluster": 3
+    },
+    {
+      "id": "human_centered",
+      "label": "human-\ncentered",
+      "weight": 0.65,
+      "cluster": 3
+    },
+    {
+      "id": "temporal_discounting",
+      "label": "temporal\ndiscounting",
+      "weight": 0.85,
+      "cluster": 4
+    },
+    {
+      "id": "vmPFC",
+      "label": "vmPFC",
+      "weight": 0.8,
+      "cluster": 4
+    },
+    {
+      "id": "dlPFC",
+      "label": "dlPFC",
+      "weight": 0.75,
+      "cluster": 4
+    },
+    {
+      "id": "reward_value",
+      "label": "reward\nvaluation",
+      "weight": 0.82,
+      "cluster": 4
+    },
+    {
+      "id": "future_simulation",
+      "label": "future\nsimulation",
+      "weight": 0.72,
+      "cluster": 4
+    },
+    {
+      "id": "intertemporal",
+      "label": "intertemporal\nchoice",
+      "weight": 0.78,
+      "cluster": 4
+    },
+    {
+      "id": "individual_diff",
+      "label": "individual\ndifferences",
+      "weight": 0.68,
+      "cluster": 4
+    },
+    {
+      "id": "social_cognition",
+      "label": "social\ncognition",
+      "weight": 0.82,
+      "cluster": 5
+    },
+    {
+      "id": "moral_judgment",
+      "label": "moral\njudgment",
+      "weight": 0.68,
+      "cluster": 5
+    },
+    {
+      "id": "decision_bias",
+      "label": "decision\nbias",
+      "weight": 0.65,
+      "cluster": 5
+    },
+    {
+      "id": "fMRI",
+      "label": "fMRI",
+      "weight": 0.75,
+      "cluster": 5
+    },
+    {
+      "id": "affect_regulation",
+      "label": "affect\nregulation",
+      "weight": 0.7,
+      "cluster": 5
+    },
+    {
+      "id": "cog_complexity",
+      "label": "cognitive\ncomplexity",
+      "weight": 0.8,
+      "cluster": 6
+    },
+    {
+      "id": "pref_elicitation",
+      "label": "preference\nelicitation",
+      "weight": 0.82,
+      "cluster": 6
+    },
+    {
+      "id": "aesthetic_percep",
+      "label": "aesthetic\nperception",
+      "weight": 0.68,
+      "cluster": 6
+    },
+    {
+      "id": "consumer_choice",
+      "label": "consumer\nchoice",
+      "weight": 0.72,
+      "cluster": 6
+    }
+  ],
+  "edges": [
+    {
+      "a": "psych_flex",
+      "b": "creativity",
+      "strength": 0.95
+    },
+    {
+      "a": "psych_flex",
+      "b": "open_mindedness",
+      "strength": 0.85
+    },
+    {
+      "a": "psych_flex",
+      "b": "exec_function",
+      "strength": 0.75
+    },
+    {
+      "a": "psych_flex",
+      "b": "self_regulation",
+      "strength": 0.88
+    },
+    {
+      "a": "psych_flex",
+      "b": "affect",
+      "strength": 0.72
+    },
+    {
+      "a": "psych_flex",
+      "b": "behavior_change",
+      "strength": 0.82
+    },
+    {
+      "a": "self_regulation",
+      "b": "exec_function",
+      "strength": 0.8
+    },
+    {
+      "a": "self_regulation",
+      "b": "behavior_change",
+      "strength": 0.85
+    },
+    {
+      "a": "self_regulation",
+      "b": "intrinsic_motiv",
+      "strength": 0.78
+    },
+    {
+      "a": "intrinsic_motiv",
+      "b": "creativity",
+      "strength": 0.8
+    },
+    {
+      "a": "intrinsic_motiv",
+      "b": "behavior_change",
+      "strength": 0.72
+    },
+    {
+      "a": "affect",
+      "b": "creativity",
+      "strength": 0.72
+    },
+    {
+      "a": "affect",
+      "b": "open_mindedness",
+      "strength": 0.68
+    },
+    {
+      "a": "awe",
+      "b": "affect",
+      "strength": 0.8
+    },
+    {
+      "a": "awe",
+      "b": "creativity",
+      "strength": 0.7
+    },
+    {
+      "a": "awe",
+      "b": "open_mindedness",
+      "strength": 0.75
+    },
+    {
+      "a": "expectancy_viol",
+      "b": "affect",
+      "strength": 0.65
+    },
+    {
+      "a": "expectancy_viol",
+      "b": "creativity",
+      "strength": 0.7
+    },
+    {
+      "a": "expectancy_viol",
+      "b": "psych_flex",
+      "strength": 0.74
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "pred_processing",
+      "strength": 0.9
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "belief_updating",
+      "strength": 0.92
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "pred_error",
+      "strength": 0.88
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "semantic_distance",
+      "strength": 0.85
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "event_segmentation",
+      "strength": 0.78
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "expectancy_viol",
+      "strength": 0.8
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "psych_flex",
+      "strength": 0.82
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "temporal_res",
+      "strength": 0.7
+    },
+    {
+      "a": "pred_processing",
+      "b": "belief_updating",
+      "strength": 0.88
+    },
+    {
+      "a": "pred_processing",
+      "b": "pred_error",
+      "strength": 0.9
+    },
+    {
+      "a": "pred_processing",
+      "b": "active_inference",
+      "strength": 0.85
+    },
+    {
+      "a": "pred_error",
+      "b": "event_segmentation",
+      "strength": 0.75
+    },
+    {
+      "a": "pred_error",
+      "b": "belief_updating",
+      "strength": 0.85
+    },
+    {
+      "a": "active_inference",
+      "b": "gen_ai",
+      "strength": 0.65
+    },
+    {
+      "a": "active_inference",
+      "b": "psych_flex",
+      "strength": 0.72
+    },
+    {
+      "a": "temporal_res",
+      "b": "pred_processing",
+      "strength": 0.65
+    },
+    {
+      "a": "gen_ai",
+      "b": "intervention",
+      "strength": 0.85
+    },
+    {
+      "a": "gen_ai",
+      "b": "llm",
+      "strength": 0.8
+    },
+    {
+      "a": "gen_ai",
+      "b": "text_to_image",
+      "strength": 0.75
+    },
+    {
+      "a": "gen_ai",
+      "b": "creativity",
+      "strength": 0.72
+    },
+    {
+      "a": "gen_ai",
+      "b": "product_design",
+      "strength": 0.82
+    },
+    {
+      "a": "llm",
+      "b": "semantic_distance",
+      "strength": 0.78
+    },
+    {
+      "a": "llm",
+      "b": "cog_complexity",
+      "strength": 0.8
+    },
+    {
+      "a": "llm",
+      "b": "pref_elicitation",
+      "strength": 0.72
+    },
+    {
+      "a": "product_design",
+      "b": "pref_elicitation",
+      "strength": 0.85
+    },
+    {
+      "a": "product_design",
+      "b": "aesthetic_percep",
+      "strength": 0.82
+    },
+    {
+      "a": "product_design",
+      "b": "human_centered",
+      "strength": 0.78
+    },
+    {
+      "a": "intervention",
+      "b": "video",
+      "strength": 0.82
+    },
+    {
+      "a": "intervention",
+      "b": "personalization",
+      "strength": 0.75
+    },
+    {
+      "a": "intervention",
+      "b": "temporal_res",
+      "strength": 0.75
+    },
+    {
+      "a": "intervention",
+      "b": "human_centered",
+      "strength": 0.68
+    },
+    {
+      "a": "personalization",
+      "b": "human_centered",
+      "strength": 0.7
+    },
+    {
+      "a": "personalization",
+      "b": "individual_diff",
+      "strength": 0.72
+    },
+    {
+      "a": "open_mindedness",
+      "b": "creativity",
+      "strength": 0.78
+    },
+    {
+      "a": "semantic_distance",
+      "b": "llm",
+      "strength": 0.72
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "vmPFC",
+      "strength": 0.9
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "dlPFC",
+      "strength": 0.88
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "intertemporal",
+      "strength": 0.95
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "self_regulation",
+      "strength": 0.82
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "reward_value",
+      "strength": 0.88
+    },
+    {
+      "a": "vmPFC",
+      "b": "reward_value",
+      "strength": 0.92
+    },
+    {
+      "a": "vmPFC",
+      "b": "future_simulation",
+      "strength": 0.85
+    },
+    {
+      "a": "dlPFC",
+      "b": "vmPFC",
+      "strength": 0.88
+    },
+    {
+      "a": "dlPFC",
+      "b": "exec_function",
+      "strength": 0.82
+    },
+    {
+      "a": "dlPFC",
+      "b": "self_regulation",
+      "strength": 0.8
+    },
+    {
+      "a": "reward_value",
+      "b": "intrinsic_motiv",
+      "strength": 0.75
+    },
+    {
+      "a": "reward_value",
+      "b": "intertemporal",
+      "strength": 0.86
+    },
+    {
+      "a": "future_simulation",
+      "b": "intertemporal",
+      "strength": 0.82
+    },
+    {
+      "a": "future_simulation",
+      "b": "pred_processing",
+      "strength": 0.72
+    },
+    {
+      "a": "individual_diff",
+      "b": "temporal_discounting",
+      "strength": 0.76
+    },
+    {
+      "a": "individual_diff",
+      "b": "self_regulation",
+      "strength": 0.72
+    },
+    {
+      "a": "fMRI",
+      "b": "vmPFC",
+      "strength": 0.85
+    },
+    {
+      "a": "fMRI",
+      "b": "dlPFC",
+      "strength": 0.85
+    },
+    {
+      "a": "social_cognition",
+      "b": "moral_judgment",
+      "strength": 0.82
+    },
+    {
+      "a": "social_cognition",
+      "b": "decision_bias",
+      "strength": 0.78
+    },
+    {
+      "a": "social_cognition",
+      "b": "affect_regulation",
+      "strength": 0.75
+    },
+    {
+      "a": "social_cognition",
+      "b": "fMRI",
+      "strength": 0.8
+    },
+    {
+      "a": "moral_judgment",
+      "b": "decision_bias",
+      "strength": 0.8
+    },
+    {
+      "a": "moral_judgment",
+      "b": "affect",
+      "strength": 0.72
+    },
+    {
+      "a": "affect_regulation",
+      "b": "self_regulation",
+      "strength": 0.85
+    },
+    {
+      "a": "affect_regulation",
+      "b": "affect",
+      "strength": 0.88
+    },
+    {
+      "a": "affect_regulation",
+      "b": "exec_function",
+      "strength": 0.7
+    },
+    {
+      "a": "decision_bias",
+      "b": "intertemporal",
+      "strength": 0.65
+    },
+    {
+      "a": "decision_bias",
+      "b": "individual_diff",
+      "strength": 0.7
+    },
+    {
+      "a": "cog_complexity",
+      "b": "pref_elicitation",
+      "strength": 0.88
+    },
+    {
+      "a": "cog_complexity",
+      "b": "consumer_choice",
+      "strength": 0.82
+    },
+    {
+      "a": "cog_complexity",
+      "b": "aesthetic_percep",
+      "strength": 0.75
+    },
+    {
+      "a": "pref_elicitation",
+      "b": "consumer_choice",
+      "strength": 0.85
+    },
+    {
+      "a": "pref_elicitation",
+      "b": "individual_diff",
+      "strength": 0.75
+    },
+    {
+      "a": "aesthetic_percep",
+      "b": "consumer_choice",
+      "strength": 0.8
+    },
+    {
+      "a": "aesthetic_percep",
+      "b": "affect",
+      "strength": 0.68
+    },
+    {
+      "a": "consumer_choice",
+      "b": "behavior_change",
+      "strength": 0.65
+    },
+    {
+      "a": "reward_value",
+      "b": "pred_error",
+      "strength": 0.7
+    },
+    {
+      "a": "future_simulation",
+      "b": "belief_updating",
+      "strength": 0.68
+    },
+    {
+      "a": "vmPFC",
+      "b": "social_cognition",
+      "strength": 0.65
+    },
+    {
+      "a": "affect_regulation",
+      "b": "reward_value",
+      "strength": 0.65
+    },
+    {
+      "a": "cog_complexity",
+      "b": "semantic_distance",
+      "strength": 0.75
+    },
+    {
+      "a": "cog_complexity",
+      "b": "llm",
+      "strength": 0.78
+    },
+    {
+      "a": "consumer_choice",
+      "b": "social_cognition",
+      "strength": 0.58
+    },
+    {
+      "a": "creativity",
+      "b": "intrinsic_motiv",
+      "strength": 0.8
+    },
+    {
+      "a": "behavior_change",
+      "b": "intervention",
+      "strength": 0.85
+    }
+  ]
+}
+</script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ══════════════════════════════════════════════════════════════════════
+//  SEMANTIC GRAPH TOPOLOGY
+//
+//  Constructed from Hakimi et al. (ICCC 2025) — nodes are key concepts
+//  from the paper, edges encode theoretical relationships.
+//
+//  The graph is laid out by a force-directed simulation, then its
+//  2D equilibrium is projected onto the 3D mesh. Each node "owns" a
+//  region of the surface. Activation propagates along edges (spreading
+//  activation model), and the height of each mesh vertex is a weighted
+//  sum of nearby node activations — so the topology literally deforms
+//  through the paper's conceptual landscape.
+//
+//  Nodes surface as faint labels only when their activation peaks.
+// ══════════════════════════════════════════════════════════════════════
+
+(async function () {
+
+  // ── GRAPH DATA ────────────────────────────────────────────────
+  // Inlined at build time from graph.json — works without a server.
+  // To update: re-embed graph.json here, or fetch() takes over when served.
+  // Graph data loaded from embedded <script type="application/json"> tag
+  const _GRAPH_INLINE = JSON.parse(document.getElementById("graph-data").textContent);
+
+  const NODES = [], EDGES = [];
+
+  async function loadGraphData() {
+    // 1. Use inline data (always works, no server needed)
+    if (_GRAPH_INLINE && _GRAPH_INLINE.nodes && _GRAPH_INLINE.nodes.length) {
+      _GRAPH_INLINE.nodes.forEach(n => NODES.push(n));
+      _GRAPH_INLINE.edges.forEach(e => EDGES.push(e));
+      console.log(`Graph loaded from inline data: ${NODES.length} nodes, ${EDGES.length} edges`);
+      return { layout: _GRAPH_INLINE.layout || [] };
+    }
+    // 2. Try fetch (when served from a local/remote server)
+    try {
+      const res = await fetch('./graph.json');
+      if (res.ok) {
+        const data = await res.json();
+        data.nodes.forEach(n => NODES.push(n));
+        data.edges.forEach(e => EDGES.push(e));
+        console.log(`Graph loaded from graph.json: ${NODES.length} nodes, ${EDGES.length} edges`);
+        return { layout: data.layout || [] };
+      }
+    } catch(e) { console.warn('graph.json fetch failed:', e.message); }
+    // 3. localStorage fallback
+    try {
+      const saved = localStorage.getItem('_graphData');
+      if (saved) {
+        const data = JSON.parse(saved);
+        data.nodes.forEach(n => NODES.push(n));
+        data.edges.forEach(e => EDGES.push(e));
+        return { layout: [] };
+      }
+    } catch(e) {}
+    console.error('Could not load graph data — topology will be empty');
+    return { layout: [] };
+  }
+
+  const { layout: storedLayout } = await loadGraphData();
+
+    // ── FORCE-DIRECTED LAYOUT ──────────────────────────────────────
+  // Use stored layout from graph.json if available, otherwise compute.
+  const BOUNDS = 6.5;
+  const clusterSeeds = [
+    {x:  0.0, y:  0.0 },
+    {x: -2.8, y: -1.2 },
+    {x:  2.5, y: -2.2 },
+    {x:  1.2, y:  2.8 },
+    {x: -1.5, y:  2.8 },
+    {x: -3.2, y:  1.5 },
+    {x:  3.5, y:  1.0 },
+  ];
+
+  // Build layout map from stored positions
+  const storedPosMap = {};
+  (storedLayout || []).forEach(p => { storedPosMap[p.id] = p; });
+  const hasStoredLayout = Object.keys(storedPosMap).length >= NODES.length * 0.8;
+
+  // Node positions (2D, mapped to XZ plane)
+  const npos = NODES.map(n => {
+    if (hasStoredLayout && storedPosMap[n.id]) {
+      return { x: storedPosMap[n.id].x, y: storedPosMap[n.id].y, vx: 0, vy: 0 };
+    }
+    const seed = clusterSeeds[n.cluster] || clusterSeeds[0];
+    return { x: seed.x + (Math.random()-0.5)*2, y: seed.y + (Math.random()-0.5)*2, vx:0, vy:0 };
+  });
+
+  // Build adjacency for fast lookup
+  const adj = Array.from({length: NODES.length}, () => []);
+  EDGES.forEach(e => {
+    const ai = NODES.findIndex(n => n.id === e.a);
+    const bi = NODES.findIndex(n => n.id === e.b);
+    if (ai >= 0 && bi >= 0) {
+      adj[ai].push({ idx: bi, strength: e.strength });
+      adj[bi].push({ idx: ai, strength: e.strength });
+    }
+  });
+
+  // Run force simulation to equilibrium (offline, ~300 iterations)
+  const REST_LEN   = 1.8;   // spring rest length
+  const K_SPRING   = 0.12;
+  const K_REPULSE  = 2.2;
+  const DAMPING    = 0.82;
+
+  // Run force simulation only if no stored layout
+  if (!hasStoredLayout) {
+    for (let iter = 0; iter < 320; iter++) {
+    const cooling = 1 - iter / 320;
+    // Repulsion between all pairs
+    for (let i = 0; i < NODES.length; i++) {
+      for (let j = i + 1; j < NODES.length; j++) {
+        const dx = npos[i].x - npos[j].x;
+        const dy = npos[i].y - npos[j].y;
+        const d  = Math.sqrt(dx*dx + dy*dy) + 0.01;
+        const f  = K_REPULSE / (d * d);
+        npos[i].vx += f * dx / d;
+        npos[i].vy += f * dy / d;
+        npos[j].vx -= f * dx / d;
+        npos[j].vy -= f * dy / d;
+      }
+    }
+    // Spring attraction along edges
+    EDGES.forEach(e => {
+      const ai = NODES.findIndex(n => n.id === e.a);
+      const bi = NODES.findIndex(n => n.id === e.b);
+      if (ai < 0 || bi < 0) return;
+      const dx   = npos[bi].x - npos[ai].x;
+      const dy   = npos[bi].y - npos[ai].y;
+      const d    = Math.sqrt(dx*dx + dy*dy) + 0.01;
+      const rest = REST_LEN / (0.5 + e.strength);
+      const f    = K_SPRING * (d - rest);
+      npos[ai].vx += f * dx / d;
+      npos[ai].vy += f * dy / d;
+      npos[bi].vx -= f * dx / d;
+      npos[bi].vy -= f * dy / d;
+    });
+    // Integrate + damp + contain
+    for (let i = 0; i < NODES.length; i++) {
+      npos[i].vx *= DAMPING;
+      npos[i].vy *= DAMPING;
+      npos[i].x  = Math.max(-BOUNDS, Math.min(BOUNDS, npos[i].x + npos[i].vx * cooling));
+      npos[i].y  = Math.max(-BOUNDS, Math.min(BOUNDS, npos[i].y + npos[i].vy * cooling));
+    }
+    } // end iter loop
+  }
+
+  // ── GRAPH API (for admin panel) ────────────────────────────────
+  // Expose mutable handles so the admin panel can add nodes/edges live.
+  // mergeGraph adds new nodes and edges without resetting the whole scene.
+  window._graphAPI = {
+    getNodes: () => NODES,
+    getEdges: () => EDGES,
+
+    mergeGraph(newNodes, newEdges) {
+      const existingIds = new Set(NODES.map(n => n.id));
+      const clusterSeedsFallback = [
+        {x:0,y:0},{x:-2.8,y:-1.2},{x:2.5,y:-2.2},{x:1.2,y:2.8},
+        {x:-1.5,y:2.8},{x:-3.2,y:1.5},{x:3.5,y:1.0}
+      ];
+
+      newNodes.forEach(n => {
+        if (existingIds.has(n.id)) return;
+        n._new = true;
+        NODES.push(n);
+        existingIds.add(n.id);
+        // Place near cluster seed with some scatter
+        const seed = clusterSeedsFallback[n.cluster] || clusterSeedsFallback[0];
+        npos.push({
+          x: seed.x + (Math.random() - 0.5) * 3.5,
+          y: seed.y + (Math.random() - 0.5) * 3.5,
+          vx: 0, vy: 0
+        });
+        // Extend activation arrays
+        activation_live.push(0.1);
+        actTarget_live.push(0.1);
+        actSmoothed_live.push(0.1);
+      });
+
+      // Add edges (dedup)
+      const edgeSet = new Set(EDGES.map(e => e.a + '|' + e.b));
+      newEdges.forEach(e => {
+        const key  = e.a + '|' + e.b;
+        const keyR = e.b + '|' + e.a;
+        if (edgeSet.has(key) || edgeSet.has(keyR)) return;
+        const ai = NODES.findIndex(n => n.id === e.a);
+        const bi = NODES.findIndex(n => n.id === e.b);
+        if (ai < 0 || bi < 0) return;
+        EDGES.push(e);
+        edgeSet.add(key);
+        // Update adjacency
+        while (adj.length < NODES.length) adj.push([]);
+        adj[ai].push({ idx: bi, strength: e.strength });
+        adj[bi].push({ idx: ai, strength: e.strength });
+      });
+
+      // Run a short re-settle (120 iter) to absorb new nodes
+      const nn = NODES.length;
+      for (let iter = 0; iter < 120; iter++) {
+        const cooling = 0.4 * (1 - iter / 120);
+        for (let i = 0; i < nn; i++) {
+          for (let j = i + 1; j < nn; j++) {
+            const dx = npos[i].x - npos[j].x, dy = npos[i].y - npos[j].y;
+            const d  = Math.sqrt(dx*dx + dy*dy) + 0.01;
+            const f  = K_REPULSE / (d * d);
+            npos[i].vx += f*dx/d; npos[i].vy += f*dy/d;
+            npos[j].vx -= f*dx/d; npos[j].vy -= f*dy/d;
+          }
+        }
+        EDGES.forEach(e => {
+          const ai = NODES.findIndex(n => n.id === e.a);
+          const bi = NODES.findIndex(n => n.id === e.b);
+          if (ai < 0 || bi < 0) return;
+          const dx=npos[bi].x-npos[ai].x, dy=npos[bi].y-npos[ai].y;
+          const d=Math.sqrt(dx*dx+dy*dy)+0.01;
+          const rest=REST_LEN/(0.5+e.strength);
+          const f=K_SPRING*(d-rest);
+          npos[ai].vx+=f*dx/d; npos[ai].vy+=f*dy/d;
+          npos[bi].vx-=f*dx/d; npos[bi].vy-=f*dy/d;
+        });
+        for (let i = 0; i < nn; i++) {
+          npos[i].vx*=DAMPING; npos[i].vy*=DAMPING;
+          npos[i].x=Math.max(-BOUNDS,Math.min(BOUNDS,npos[i].x+npos[i].vx*cooling));
+          npos[i].y=Math.max(-BOUNDS,Math.min(BOUNDS,npos[i].y+npos[i].vy*cooling));
+        }
+      }
+
+      // Rebuild vertex influence weights for new node count
+      rebuildInfluence();
+      if (window._saveGraph) window._saveGraph();
+    },
+
+    replaceGraph(nodes, edges) {
+      NODES.length = 0; nodes.forEach(n => NODES.push(n));
+      EDGES.length = 0; edges.forEach(e => EDGES.push(e));
+      // Rebuild positions
+      npos.length = 0;
+      NODES.forEach(n => {
+        const clusterSeedsFallback = [
+          {x:0,y:0},{x:-2.8,y:-1.2},{x:2.5,y:-2.2},{x:1.2,y:2.8},
+          {x:-1.5,y:2.8},{x:-3.2,y:1.5},{x:3.5,y:1.0}
+        ];
+        const seed = clusterSeedsFallback[n.cluster] || clusterSeedsFallback[0];
+        npos.push({ x: seed.x+(Math.random()-0.5)*2, y: seed.y+(Math.random()-0.5)*2, vx:0, vy:0 });
+      });
+      activation_live.length  = NODES.length; activation_live.fill(0.1);
+      actTarget_live.length   = NODES.length; actTarget_live.fill(0.1);
+      actSmoothed_live.length = NODES.length; actSmoothed_live.fill(0.1);
+      adj.length = 0;
+      NODES.forEach(() => adj.push([]));
+      EDGES.forEach(e => {
+        const ai=NODES.findIndex(n=>n.id===e.a), bi=NODES.findIndex(n=>n.id===e.b);
+        if(ai<0||bi<0) return;
+        adj[ai].push({idx:bi,strength:e.strength});
+        adj[bi].push({idx:ai,strength:e.strength});
+      });
+      rebuildInfluence();
+    }
+  };
+
+  // ── THREE.JS SETUP ─────────────────────────────────────────────
+  const topoCanvas = document.getElementById('topology-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas: topoCanvas, antialias: true, alpha: true });
+  renderer.setClearColor(0x000000, 0);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+  camera.position.set(0, 4.2, 8.5);
+  camera.lookAt(0, 0, 0);
+
+  function resize() {
+    const w = window.innerWidth, h = window.innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    lblCanvas.width  = w;
+    lblCanvas.height = h;
+  }
+
+  // ── MESH ──────────────────────────────────────────────────────
+  const SEGS = 92;
+  const SIZE = 13;
+  const geo  = new THREE.PlaneGeometry(SIZE, SIZE, SEGS, SEGS);
+  geo.rotateX(-Math.PI / 2);
+  const posArr = geo.attributes.position.array;
+  const MN     = (SEGS + 1) * (SEGS + 1);
+
+  // Cache world XZ coords for influence computation
+  const vx = new Float32Array(MN);
+  const vz = new Float32Array(MN);
+  for (let i = 0; i < MN; i++) {
+    vx[i] = (i % (SEGS + 1)) / SEGS * SIZE - SIZE / 2;
+    vz[i] = Math.floor(i / (SEGS + 1)) / SEGS * SIZE - SIZE / 2;
+  }
+
+  const SIGMA_SQ = 3.2 * 3.2;
+  let vertInfluence = new Array(MN);
+  function rebuildInfluence() {
+    const nn = NODES.length;
+    for (let vi = 0; vi < MN; vi++) {
+      const entries = [];
+      for (let ni = 0; ni < nn; ni++) {
+        const dx = vx[vi] - npos[ni].x;
+        const dz = vz[vi] - npos[ni].y;
+        const d2 = dx*dx + dz*dz;
+        const w  = Math.exp(-d2 / SIGMA_SQ) * NODES[ni].weight;
+        if (w > 0.005) entries.push({ ni, w });
+      }
+      const total = entries.reduce((s, e) => s + e.w, 0) || 1;
+      vertInfluence[vi] = entries.map(e => ({ ni: e.ni, w: e.w / total }));
+    }
+  }
+  rebuildInfluence();
+
+  // ── GRID PULSE SYSTEM (WebGL — pinned to mesh surface) ────────
+  // Each pulse is a THREE.Line whose vertex positions are read live
+  // from posArr each frame, so they always sit exactly on the mesh.
+  // Colour fades head→tail via vertexColors.
+
+  const MAX_GRID_PULSES = 60;
+  const TRAIL_LEN       = 24; // vertices per trail
+
+  // Pre-build grid adjacency
+  const gridAdj = new Array(MN);
+  for (let i = 0; i < MN; i++) {
+    const row = Math.floor(i / (SEGS + 1));
+    const col = i % (SEGS + 1);
+    const nbrs = [];
+    if (col > 0)    nbrs.push(i - 1);
+    if (col < SEGS) nbrs.push(i + 1);
+    if (row > 0)    nbrs.push(i - (SEGS + 1));
+    if (row < SEGS) nbrs.push(i + (SEGS + 1));
+    gridAdj[i] = nbrs;
+  }
+
+  // Each pulse gets a dedicated THREE.Line with TRAIL_LEN points
+  const gridPulses = [];
+  for (let i = 0; i < MAX_GRID_PULSES; i++) {
+    const positions = new Float32Array(TRAIL_LEN * 3);
+    const colors    = new Float32Array(TRAIL_LEN * 3);
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('color',    new THREE.BufferAttribute(colors,    3));
+    geo.setDrawRange(0, 0); // hidden until active
+    const mat  = new THREE.LineBasicMaterial({
+      vertexColors: true, transparent: true, opacity: 1.0,
+      depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const line = new THREE.Line(geo, mat);
+    line.renderOrder = 1; // draw on top of mesh
+    scene.add(line);
+
+    gridPulses.push({
+      active: false, line, positions, colors,
+      trail: [],     // vertex indices (integers)
+      vi: 0, dir: 0, speed: 0, age: 0, maxAge: 0,
+      birthAct: 0, birthSurprise: 0, _subStep: 0,
+    });
+  }
+
+  function spawnGridPulse(srcVI, birthAct) {
+    const p = gridPulses.find(p => !p.active);
+    if (!p) return;
+    const nbrs = gridAdj[srcVI];
+    if (!nbrs || nbrs.length === 0) return;
+    p.active   = true;
+    p.vi       = srcVI;
+    p.dir      = Math.floor(Math.random() * nbrs.length);
+    p.speed    = 4 + birthAct * 5;
+    p.age      = 0;
+    p.maxAge   = 1.8 + Math.random() * 1.8;
+    p.trail    = [];
+    p.birthAct = birthAct;
+    p.birthSurprise = semanticDist;
+    p._subStep = 0;
+  }
+
+  // ── NODE ACTIVATION STATE (growable regular arrays) ──
+  const activation_live  = Array.from({length: NODES.length}, () => 0.1);
+  const actTarget_live   = Array.from({length: NODES.length}, () => 0.1);
+  const actSmoothed_live = Array.from({length: NODES.length}, () => 0.1);
+
+  // Rendered vertex height (lagged)
+  const currentH = new Float32Array(MN);
+
+  // ── MESH MATERIALS ────────────────────────────────────────────
+  const surfMat = new THREE.MeshStandardMaterial({
+    color:     0x2a3a50,
+    emissive:  0x111e2e,
+    emissiveIntensity: 0.5,
+    metalness: 0.0,
+    roughness: 0.94,
+    side: THREE.DoubleSide,
+  });
+  const wireMat = new THREE.MeshBasicMaterial({
+    color: 0x6a8aaa, wireframe: true, transparent: true, opacity: 0.18,
+  });
+  scene.add(new THREE.Mesh(geo, surfMat));
+  scene.add(new THREE.Mesh(geo, wireMat));
+
+  // ── LIGHTING ──────────────────────────────────────────────────
+  scene.add(new THREE.AmbientLight(0x1a2a40, 1.8));
+
+  const keyL = new THREE.DirectionalLight(0x6080aa, 1.4);
+  keyL.position.set(-5, 6, 2); scene.add(keyL);
+
+  const rimL = new THREE.DirectionalLight(0x8a4535, 0.7);
+  rimL.position.set(6, 3, -4); scene.add(rimL);
+
+  const warmL = new THREE.PointLight(0xD66853, 0.0, 18);
+  warmL.position.set(0, 3, 0); scene.add(warmL);
+  const warmTarget = { x: 0, y: 3, z: 0 };
+
+  const subL = new THREE.PointLight(0x1a3050, 1.0, 20);
+  subL.position.set(0, -4, 0); scene.add(subL);
+
+  // ── LABEL CANVAS (2D overlay) ──────────────────────────────────
+  const lblCanvas = document.getElementById('label-canvas');
+  const ctx2d     = lblCanvas.getContext('2d');
+
+  // Project a 3D world position → 2D screen
+  const _v3 = new THREE.Vector3();
+  function project(wx, wy, wz) {
+    _v3.set(wx, wy, wz);
+    _v3.project(camera);
+    return {
+      x: ( _v3.x + 1) / 2 * lblCanvas.width,
+      y: (-_v3.y + 1) / 2 * lblCanvas.height,
+    };
+  }
+
+  // ── NARRATIVE STATE ─────────────────────────────────────────────
+  // A slow "attention" cursor wanders among nodes, activating them
+  // and spreading activation through edges — like a train of thought
+  let attentionNode  = 0;    // currently attended node index
+  let attentionTimer = 0;    // time until attention shifts
+  let semanticDist   = 0.1;  // global narrative surprise level
+  let distVelocity   = 0;
+  let distTarget     = 0.15;
+  let distTargetTimer= 0;
+  let t = 0;
+
+  const PHASES = [
+    { name: 'predicting',  range: [0.00, 0.20] },
+    { name: 'wandering',   range: [0.20, 0.45] },
+    { name: 'surprised',   range: [0.45, 0.65] },
+    { name: 'revising',    range: [0.65, 0.82] },
+    { name: 'integrating', range: [0.82, 1.00] },
+  ];
+  function getPhase(d) {
+    return PHASES.find(p => d >= p.range[0] && d < p.range[1])?.name || 'settling';
+  }
+
+  const hudPhase = document.getElementById('hud-phase');
+  const hudRing  = document.getElementById('hud-ring');
+  const hudConcept = document.getElementById('hud-concept');
+  const hudSurpriseFill = document.getElementById('hud-surprise-fill');
+  let lastPhase  = '';
+
+  function lerp(a, b, tau, dt) {
+    return a + (b - a) * (1 - Math.exp(-dt / tau));
+  }
+
+  // Spreading activation: one step along edges
+  function spreadActivation() {
+    const nn   = NODES.length;
+    const next = actTarget_live.slice(0, nn);
+    for (let ni = 0; ni < nn; ni++) {
+      if (!adj[ni]) continue;
+      adj[ni].forEach(({ idx, strength }) => {
+        const flow = actTarget_live[ni] * strength * 0.35 * (0.3 + semanticDist);
+        if (idx < nn) next[idx] = Math.min(1.0, next[idx] + flow);
+      });
+      next[ni] *= (0.976 - semanticDist * 0.012);
+    }
+    for (let ni = 0; ni < nn; ni++) actTarget_live[ni] = next[ni];
+  }
+
+  const clock = new THREE.Clock();
+  const camPos = { x: 0, y: 4.2, z: 8.5 };
+
+  // ── ANIMATE ────────────────────────────────────────────────────
+  function animate() {
+    requestAnimationFrame(animate);
+    const dt = Math.min(clock.getDelta(), 0.04);
+    t += dt;
+
+    // ── Narrative: semantic distance random walk + surprise spikes ──
+    // Bayesian surprise is not smooth — it arrives suddenly, then decays.
+    // We model this with: (a) a slow background random walk, and
+    // (b) discrete "prediction error events" that spike distTarget to
+    //     a high value and then let it recover with a slow exponential decay.
+    //     This mimics genuine belief-violation: sudden, then integrating.
+    distTargetTimer -= dt;
+    if (distTargetTimer <= 0) {
+      const rand = Math.random();
+      if (semanticDist < 0.35 && rand < 0.20) {
+        // Surprise event: a prediction error has arrived.
+        // Jump sharply to high surprise, then recover slowly.
+        distTarget      = 0.72 + Math.random() * 0.26;   // spike
+        distTargetTimer = 2.5 + Math.random() * 2.0;     // short dwell at peak
+        distVelocity    = 0.045;                          // fast upswing
+      } else {
+        // Ordinary drift — bias toward mid-range so predicting/integrating feel distinct
+        const bias = Math.sin(t * 0.04) * 0.25 + 0.38;
+        distTarget  = Math.max(0.06, Math.min(0.92, bias + (Math.random() - 0.5) * 0.42));
+        // After a spike, recovery is slow (high-surprise → low-surprise takes time)
+        distTargetTimer = semanticDist > 0.6
+          ? 10 + Math.random() * 14          // slow: integrating takes a while
+          : 5  + Math.random() * 9;          // normal pace
+      }
+    }
+    // Speed of convergence: fast up (surprise) slow down (recovery/integration)
+    const distTau = distTarget > semanticDist ? 1.2 : 5.5;
+    distVelocity  = lerp(distVelocity, (distTarget - semanticDist) * 0.06, distTau, dt);
+    semanticDist  = Math.max(0.05, Math.min(0.98, semanticDist + distVelocity * dt * 12));
+
+    // ── Attention: wander among nodes ──
+    // Higher semantic distance → attention jumps further in graph
+    attentionTimer -= dt;
+    if (attentionTimer <= 0) {
+      // With low distance, move to adjacent node; with high distance, jump farther
+      const neighbors = adj[attentionNode];
+      if (neighbors.length > 0 && Math.random() > semanticDist * 0.6) {
+        // Local: pick a neighbor weighted by edge strength
+        const total = neighbors.reduce((s, n) => s + n.strength, 0);
+        let r = Math.random() * total;
+        for (const nb of neighbors) {
+          r -= nb.strength;
+          if (r <= 0) { attentionNode = nb.idx; break; }
+        }
+      } else {
+        // Far jump: pick any node weighted by weight × (1 + dist)
+        const probs = NODES.map((n, i) => n.weight * (1 + semanticDist));
+        const total = probs.reduce((s, p) => s + p, 0);
+        let r = Math.random() * total;
+        for (let i = 0; i < NODES.length; i++) {
+          r -= probs[i];
+          if (r <= 0) { attentionNode = i; break; }
+        }
+      }
+      // Boost attended node — stronger boost at high surprise (prediction error = learning signal)
+      actTarget_live[attentionNode] = Math.min(1.0, actTarget_live[attentionNode] + 0.55 + semanticDist * 0.45);
+      // Dwell time: long + still when predicting, short + restless when surprised
+      attentionTimer = semanticDist < 0.2
+        ? 5.0 + Math.random() * 7.0                // predicting: slow, contemplative
+        : semanticDist < 0.65
+          ? 2.5 + (1 - semanticDist) * 4.0 + Math.random() * 2.5   // wandering
+          : 0.8 + Math.random() * 1.8;             // surprised/revising: rapid jumps
+    }
+
+    // Spread activation through graph each frame
+    spreadActivation();
+
+    // Smooth activation signals
+    const actTau = 0.8 + (1 - semanticDist) * 1.4;
+    for (let ni = 0; ni < NODES.length; ni++) {
+      actSmoothed_live[ni] = lerp(actSmoothed_live[ni], actTarget_live[ni], actTau, dt);
+    }
+
+    // ── Update mesh vertex heights ──────────────────────────────
+    const nn = NODES.length;
+    const updateTau = 0.9 + (1 - semanticDist) * 2.2;
+    for (let vi = 0; vi < MN; vi++) {
+      let h = 0;
+      for (const { ni, w } of vertInfluence[vi]) {
+        const swell = Math.sin(t * 0.20 * (1 + NODES[ni].weight) + ni * 0.75) * 0.22;
+        const deformAmp = 1.0 + semanticDist * 0.9; // high surprise → more dramatic heave
+        h += w * (actSmoothed_live[ni] * 1.6 + swell) * 2.2 * deformAmp;
+      }
+      h -= 0.5;
+      currentH[vi] = lerp(currentH[vi], h, updateTau, dt);
+      posArr[vi * 3 + 1] = currentH[vi];
+    }
+    geo.attributes.position.needsUpdate = true;
+    geo.computeVertexNormals();
+
+    // ── Surface colour shifts with activation ────────────────────
+    // Active regions glow faintly warmer — like oxygenated tissue
+    const topAct = actSmoothed_live.reduce((m, v) => v > m ? v : m, 0);
+    const avgAct = actSmoothed_live.slice(0, nn).reduce((s, v) => s + v, 0) / nn;
+    surfMat.emissiveIntensity = 0.08 + topAct * 0.28;
+    surfMat.emissive.setRGB(
+      0.04 + topAct * 0.18,
+      0.03 + avgAct * 0.06,
+      0.06 + (1 - topAct) * 0.08
+    );
+
+    // ── Lighting ─────────────────────────────────────────────────
+    // warm spotlight tracks the attended node's XZ position on the surface
+    const nx = npos[attentionNode]?.x || 0;
+    const nz = npos[attentionNode]?.y || 0;
+    // find approximate Y
+    let bestD = Infinity, bestH = 0;
+    for (let vi = 0; vi < MN; vi += 6) {
+      const d2 = (vx[vi]-nx)**2 + (vz[vi]-nz)**2;
+      if (d2 < bestD) { bestD = d2; bestH = currentH[vi]; }
+    }
+    warmTarget.x = nx; warmTarget.y = bestH + 1.5; warmTarget.z = nz;
+    warmL.position.x = lerp(warmL.position.x, warmTarget.x, 4.0, dt);
+    warmL.position.y = lerp(warmL.position.y, warmTarget.y, 4.0, dt);
+    warmL.position.z = lerp(warmL.position.z, warmTarget.z, 4.0, dt);
+    warmL.intensity  = lerp(warmL.intensity, 0.08 + topAct * 0.55, 3.0, dt);
+    keyL.intensity   = 0.7  + avgAct * 0.4;
+    rimL.intensity   = 0.35 + semanticDist * 0.3;
+    wireMat.opacity  = 0.022 + semanticDist * 0.018;
+
+    // ── Grid pulse: spawn from active nodes ─────────────────────
+    // Clear the 2D canvas once at the top — pulses and labels both draw here
+    ctx2d.clearRect(0, 0, lblCanvas.width, lblCanvas.height);
+    for (let ni = 0; ni < nn; ni++) {
+      const act = actSmoothed_live[ni];
+      if (act < 0.35) continue;
+      // Find closest mesh vertex to this node
+      let bD = Infinity, bV = 0;
+      for (let vi = 0; vi < MN; vi += 2) {
+        const d2 = (vx[vi]-npos[ni].x)**2 + (vz[vi]-npos[ni].y)**2;
+        if (d2 < bD) { bD = d2; bV = vi; }
+      }
+      // Spawn rate scales with activation
+      if (Math.random() < act * 0.08) spawnGridPulse(bV, act);
+    }
+
+    // ── Grid pulse: advance + update WebGL geometry ─────────────
+    for (const p of gridPulses) {
+      if (!p.active) {
+        p.line.geometry.setDrawRange(0, 0);
+        continue;
+      }
+      p.age += dt;
+      if (p.age >= p.maxAge) {
+        p.active = false;
+        p.trail  = [];
+        p.line.geometry.setDrawRange(0, 0);
+        continue;
+      }
+
+      // Advance head along grid edges
+      p._subStep += p.speed * dt;
+      while (p._subStep >= 1.0) {
+        p._subStep -= 1.0;
+        p.trail.push(p.vi);
+        if (p.trail.length > TRAIL_LEN) p.trail.shift();
+
+        const nbrs = gridAdj[p.vi];
+        if (!nbrs || nbrs.length === 0) { p.active = false; break; }
+
+        let nextVI;
+        const preferred = nbrs[p.dir % nbrs.length];
+        if (preferred !== undefined && Math.random() > 0.15) {
+          nextVI = preferred;
+        } else {
+          const prev = p.trail.length >= 2 ? p.trail[p.trail.length - 2] : -1;
+          const opts = nbrs.filter(n => n !== prev);
+          nextVI = opts.length ? opts[Math.floor(Math.random() * opts.length)] : nbrs[0];
+          p.dir  = nbrs.indexOf(nextVI);
+        }
+        p.vi = nextVI;
+      }
+
+      const tLen = p.trail.length;
+      if (tLen < 2) { p.line.geometry.setDrawRange(0, 0); continue; }
+
+      const ageFade = 1.0 - (p.age / p.maxAge);
+
+      // Write live mesh positions + colours into the line geometry
+      for (let ti = 0; ti < tLen; ti++) {
+        const vi       = p.trail[ti];
+        const trailFrac = (ti + 1) / tLen; // 0=oldest tail, 1=head
+        const alpha    = p.birthAct * ageFade * trailFrac * trailFrac;
+
+        // Copy live vertex position directly from posArr
+        p.positions[ti*3]   = posArr[vi*3];
+        p.positions[ti*3+1] = posArr[vi*3+1] + 0.001; // tiny offset above surface
+        p.positions[ti*3+2] = posArr[vi*3+2];
+
+        // Colour: surprise-reactive — cool blue when predicting, warm rust when surprised
+        // At low surprise (sd≈0): blue-white head → deep blue tail
+        // At high surprise (sd≈1): amber-white head → deep rust tail
+        const sd = p.birthSurprise;
+        const rH = 0.70 + sd * 0.30;  // head R: 0.70 → 1.00
+        const gH = 0.82 - sd * 0.18;  // head G: 0.82 → 0.64
+        const bH = 1.00 - sd * 0.72;  // head B: 1.00 → 0.28
+        const rT = 0.10 + sd * 0.38;  // tail R: 0.10 → 0.48
+        const gT = 0.28 - sd * 0.10;  // tail G: 0.28 → 0.18
+        const bT = 0.60 - sd * 0.54;  // tail B: 0.60 → 0.06
+        p.colors[ti*3]   = (rT + (rH - rT) * trailFrac) * alpha;
+        p.colors[ti*3+1] = (gT + (gH - gT) * trailFrac) * alpha;
+        p.colors[ti*3+2] = (bT + (bH - bT) * trailFrac) * alpha;
+      }
+
+      p.line.geometry.attributes.position.needsUpdate = true;
+      p.line.geometry.attributes.color.needsUpdate    = true;
+      p.line.geometry.setDrawRange(0, tLen);
+    }
+
+    // ── Draw node labels ─────────────────────────────────────────
+    // Every label is visible at a low baseline so the full concept map
+    // is always legible. A 3D Gaussian centred on the attended node
+    // boosts nearby labels — so the hotspot reads clearly while the
+    // broader landscape stays present in the background.
+
+    const aN = attentionNode < nn ? attentionNode : 0;
+    const aX = npos[aN]?.x || 0, aZ = npos[aN]?.y || 0;
+    let aVD = Infinity, aVI = 0;
+    for (let vi = 0; vi < MN; vi += 4) {
+      const d2 = (vx[vi]-aX)**2 + (vz[vi]-aZ)**2;
+      if (d2 < aVD) { aVD = d2; aVI = vi; }
+    }
+    const aY = currentH[aVI];
+    const GAUSS_SQ = 6.0 * 6.0;
+
+    for (let ni = 0; ni < nn; ni++) {
+      let bD = Infinity, bV = 0;
+      for (let vi = 0; vi < MN; vi += 4) {
+        const d2 = (vx[vi]-npos[ni].x)**2 + (vz[vi]-npos[ni].y)**2;
+        if (d2 < bD) { bD = d2; bV = vi; }
+      }
+      const nY = currentH[bV];
+      const dx3 = npos[ni].x - aX, dy3 = nY - aY, dz3 = npos[ni].y - aZ;
+      const gaussian = Math.exp(-(dx3*dx3 + dy3*dy3 + dz3*dz3) / GAUSS_SQ);
+
+      // Baseline always visible; Gaussian adds up to ~3× boost at the hotspot
+      const alpha = 0.18 + gaussian * 0.55;
+
+      const sy = nY + 0.22;
+      const screen = project(npos[ni].x, sy, npos[ni].y);
+      const lines = NODES[ni].label.split('\n');
+
+      ctx2d.save();
+      ctx2d.globalAlpha = alpha;
+      ctx2d.font = 'italic 300 10px "Cormorant Garamond", Georgia, serif';
+      ctx2d.fillStyle = '#c8d4e0';
+      ctx2d.textAlign = 'center';
+      ctx2d.textBaseline = 'middle';
+      lines.forEach((line, li) => {
+        ctx2d.fillText(line, screen.x, screen.y + (li - (lines.length-1)/2) * 12);
+      });
+      ctx2d.beginPath();
+      ctx2d.arc(screen.x, screen.y - lines.length * 6 - 1, 1.5, 0, Math.PI * 2);
+      ctx2d.fillStyle = '#c8d4e0';
+      ctx2d.fill();
+      ctx2d.restore();
+    }
+    const phase = getPhase(semanticDist);
+    if (phase !== lastPhase) { hudPhase.textContent = phase; lastPhase = phase; }
+
+    // Update concept name (throttled to attention shifts)
+    if (hudConcept) {
+      const lbl = (NODES[attentionNode]?.label || '–').replace(/\n/g, ' ');
+      if (hudConcept.textContent !== lbl) hudConcept.textContent = lbl;
+    }
+    // Update surprise bar
+    if (hudSurpriseFill) {
+      hudSurpriseFill.style.width = (semanticDist * 100).toFixed(1) + '%';
+      // Cool blue at low surprise → warm rust at high surprise
+      const barHue = Math.round(210 - semanticDist * 175); // 210 (blue) → 35 (amber)
+      hudSurpriseFill.style.background = `hsl(${barHue},65%,58%)`;
+    }
+
+    const hue    = Math.round((1 - semanticDist) * 42);
+    const rScale = 1 + semanticDist * 1.8;
+    const rAlpha = 0.2 + semanticDist * 0.5;
+    hudRing.style.transform  = `scale(${rScale.toFixed(2)})`;
+    hudRing.style.background = `hsla(${hue},60%,55%,${rAlpha.toFixed(2)})`;
+    hudRing.style.boxShadow  = `0 0 ${(semanticDist*12).toFixed(0)}px hsla(${hue},60%,55%,0.25)`;
+
+    // ── Camera ──
+    const cx = Math.sin(t * 0.022) * (0.7 + semanticDist * 1.1) + Math.sin(t * 0.037) * 0.3;
+    const cy = 4.2 + Math.sin(t * 0.031) * 0.5 + semanticDist * 0.9;
+    const cz = 8.5 + Math.cos(t * 0.026) * 0.6 - semanticDist * 0.9;
+    camPos.x = lerp(camPos.x, cx, 8, dt);
+    camPos.y = lerp(camPos.y, cy, 8, dt);
+    camPos.z = lerp(camPos.z, cz, 8, dt);
+    camera.position.set(camPos.x, camPos.y, camPos.z);
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  animate();
+
+})();
+
+// ── CURSOR ──
+(function () {
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  (function loop() {
+    rx += (mx - rx) * 0.10; ry += (my - ry) * 0.10;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2.2)';
+      ring.style.transform   = 'translate(-50%,-50%) scale(1.6)';
+      ring.style.borderColor = 'rgba(214,104,83,0.55)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.transform   = 'translate(-50%,-50%) scale(1)';
+      ring.style.borderColor = 'rgba(214,104,83,0.35)';
+    });
+  });
+})();
+
+// ── SCROLL REVEAL ──
+(function () {
+  const obs = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// ── ADMIN PANEL ──────────────────────────────────────────────────────────────
+(function () {
+
+  // ── Expose graph state globally so we can mutate it from the panel ──
+  // These are the live arrays from the topology engine above.
+  // We use a small registry approach: topology engine registers itself,
+  // admin panel reads/writes through it.
+  window._graphAPI = null; // will be set by topology engine patch below
+
+  // ── PANEL HTML ───────────────────────────────────────────────────────
+  const panel = document.createElement('div');
+  panel.id = 'admin-panel';
+  panel.innerHTML = `
+    <div class="admin-header">
+      <div>
+        <div class="admin-title">Graph Editor</div>
+        <div class="admin-hint">shift + A to toggle &nbsp;·&nbsp; paste paper text, extract nodes &amp; edges, merge live</div>
+      </div>
+      <button class="admin-close" id="admin-close-btn">close ✕</button>
+    </div>
+
+    <div class="admin-graph-stats">
+      <div class="admin-stat"><div class="admin-stat-val" id="stat-nodes">—</div><div class="admin-stat-lbl">nodes</div></div>
+      <div class="admin-stat"><div class="admin-stat-val" id="stat-edges">—</div><div class="admin-stat-lbl">edges</div></div>
+      <div class="admin-stat"><div class="admin-stat-val" id="stat-papers">—</div><div class="admin-stat-lbl">papers added</div></div>
+    </div>
+
+    <div class="admin-node-list" id="node-list"></div>
+
+    <hr class="admin-divider">
+
+    <div>
+      <div class="admin-section-title">Add paper</div>
+      <textarea class="admin-textarea" id="paper-input"
+        placeholder="Paste abstract, introduction, or full paper text here…"></textarea>
+    </div>
+
+    <div class="admin-row">
+      <button class="admin-btn" id="extract-btn">Extract &amp; preview</button>
+      <button class="admin-btn" id="merge-btn" disabled>Merge into graph</button>
+      <button class="admin-btn secondary" id="clear-input-btn">Clear</button>
+      <span class="admin-status" id="admin-status"></span>
+    </div>
+
+    <div class="admin-preview" id="extract-preview"></div>
+
+    <hr class="admin-divider">
+
+    <div>
+      <div class="admin-section-title">Persistence</div>
+      <div class="admin-row">
+        <button class="admin-btn secondary" id="export-btn">Export graph JSON</button>
+        <button class="admin-btn secondary" id="import-trigger-btn">Import graph JSON</button>
+        <button class="admin-btn danger" id="reset-btn">Reset to default</button>
+        <input type="file" id="import-file-input" accept=".json" style="display:none">
+      </div>
+    </div>
+  `;
+  document.body.appendChild(panel);
+
+  // ── TOGGLE ───────────────────────────────────────────────────────────
+  let isOpen = false;
+  function openPanel()  { isOpen = true;  panel.classList.add('open');    refreshStats(); }
+  function closePanel() { isOpen = false; panel.classList.remove('open'); }
+
+  document.addEventListener('keydown', e => {
+    if (e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      isOpen ? closePanel() : openPanel();
+    }
+    if (e.key === 'Escape' && isOpen) closePanel();
+  });
+  document.getElementById('admin-close-btn').addEventListener('click', closePanel);
+
+  // ── STATS / NODE LIST ─────────────────────────────────────────────
+  function refreshStats() {
+    const api = window._graphAPI;
+    if (!api) return;
+    document.getElementById('stat-nodes').textContent  = api.getNodes().length;
+    document.getElementById('stat-edges').textContent  = api.getEdges().length;
+    document.getElementById('stat-papers').textContent = getPaperCount();
+
+    const nl = document.getElementById('node-list');
+    nl.innerHTML = '';
+    api.getNodes().forEach(n => {
+      const tag = document.createElement('div');
+      tag.className = 'admin-node-tag' + (n._new ? ' new' : '');
+      tag.textContent = n.id.replace(/_/g, ' ');
+      nl.appendChild(tag);
+    });
+  }
+
+  // ── PAPER COUNT (localStorage) ────────────────────────────────────
+  function getPaperCount() {
+    try { return parseInt(localStorage.getItem('_graphPaperCount') || '0'); } catch { return 0; }
+  }
+  function incPaperCount() {
+    try { localStorage.setItem('_graphPaperCount', getPaperCount() + 1); } catch {}
+  }
+
+  // ── EXTRACT (Claude API call) ─────────────────────────────────────
+  let lastExtracted = null;
+
+  document.getElementById('extract-btn').addEventListener('click', async () => {
+    const text = document.getElementById('paper-input').value.trim();
+    if (!text) { setStatus('Paste some paper text first.', 'err'); return; }
+
+    const api = window._graphAPI;
+    const existingIds = api ? api.getNodes().map(n => n.id) : [];
+
+    setStatus('Extracting concepts…', 'loading');
+    document.getElementById('extract-btn').disabled = true;
+    document.getElementById('merge-btn').disabled   = true;
+    document.getElementById('extract-preview').classList.remove('visible');
+
+    const systemPrompt = `You are a research knowledge-graph builder.
+Given paper text, extract key concepts as nodes and relationships as edges.
+
+EXISTING NODE IDs (do NOT duplicate these; you may reference them in edges):
+\${existingIds.join(', ')}
+
+Return ONLY valid JSON, no markdown, no commentary:
+{
+  "nodes": [
+    { "id": "snake_case_id", "label": "display\\nlabel", "weight": 0.0-1.0, "cluster": 0-6 }
+  ],
+  "edges": [
+    { "a": "node_id_a", "b": "node_id_b", "strength": 0.0-1.0 }
+  ]
+}
+
+Cluster guide: 0=psychology/cognition, 1=computational/Bayesian, 2=AI/generative,
+3=application/intervention, 4=neuroeconomics, 5=social neuroscience, 6=consumer/preference.
+Use cluster 0 as default for anything that doesn't fit.
+
+Rules:
+- Only include NEW nodes (not in EXISTING NODE IDs above).
+- Include edges between new nodes AND between new↔existing nodes.
+- Weight = conceptual centrality in this paper (0.5 = minor, 1.0 = core).
+- Strength = how tightly the two concepts are theoretically coupled.
+- Prefer snake_case, ≤3 words per id.
+- Label uses \\n to wrap if >12 chars.
+- Return 5–20 nodes and 5–30 edges. Quality over quantity.`;
+
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: text.slice(0, 8000) }]
+        })
+      });
+      const data = await resp.json();
+      const raw  = (data.content || []).map(b => b.text || '').join('');
+      const clean = raw.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+
+      if (!parsed.nodes || !parsed.edges) throw new Error('Unexpected JSON shape');
+
+      // Filter out duplicate node ids
+      const existingSet = new Set(existingIds);
+      parsed.nodes = parsed.nodes.filter(n => !existingSet.has(n.id));
+
+      lastExtracted = parsed;
+
+      const preview = document.getElementById('extract-preview');
+      preview.textContent =
+        `NEW NODES (\${parsed.nodes.length}):\n` +
+        parsed.nodes.map(n => `  \${n.id} (cluster \${n.cluster}, weight \${n.weight})`).join('\n') +
+        `\n\nNEW EDGES (\${parsed.edges.length}):\n` +
+        parsed.edges.map(e => `  \${e.a} ↔ \${e.b} (\${e.strength})`).join('\n');
+      preview.classList.add('visible');
+
+      setStatus(`Found \${parsed.nodes.length} new nodes, \${parsed.edges.length} edges. Ready to merge.`, 'ok');
+      document.getElementById('merge-btn').disabled = false;
+
+    } catch (err) {
+      setStatus('Extraction failed: ' + err.message, 'err');
+      console.error(err);
+    } finally {
+      document.getElementById('extract-btn').disabled = false;
+    }
+  });
+
+  // ── MERGE ─────────────────────────────────────────────────────────
+  document.getElementById('merge-btn').addEventListener('click', () => {
+    if (!lastExtracted) return;
+    const api = window._graphAPI;
+    if (!api) { setStatus('Graph engine not ready.', 'err'); return; }
+
+    api.mergeGraph(lastExtracted.nodes, lastExtracted.edges);
+    incPaperCount();
+    saveGraph();
+    refreshStats();
+
+    setStatus(`Merged. Graph now has \${api.getNodes().length} nodes, \${api.getEdges().length} edges.`, 'ok');
+    document.getElementById('merge-btn').disabled = true;
+    document.getElementById('extract-preview').classList.remove('visible');
+    document.getElementById('paper-input').value = '';
+    lastExtracted = null;
+  });
+
+  // ── CLEAR INPUT ───────────────────────────────────────────────────
+  document.getElementById('clear-input-btn').addEventListener('click', () => {
+    document.getElementById('paper-input').value = '';
+    document.getElementById('extract-preview').classList.remove('visible');
+    document.getElementById('merge-btn').disabled = true;
+    lastExtracted = null;
+    setStatus('', '');
+  });
+
+  // ── EXPORT ────────────────────────────────────────────────────────
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const api = window._graphAPI;
+    if (!api) return;
+    const blob = new Blob(
+      [JSON.stringify({ nodes: api.getNodes(), edges: api.getEdges() }, null, 2)],
+      { type: 'application/json' }
+    );
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'hakimi-graph.json';
+    a.click();
+    setStatus('Exported.', 'ok');
+  });
+
+  // ── IMPORT ────────────────────────────────────────────────────────
+  document.getElementById('import-trigger-btn').addEventListener('click', () => {
+    document.getElementById('import-file-input').click();
+  });
+  document.getElementById('import-file-input').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (!data.nodes || !data.edges) throw new Error('Invalid format');
+        window._graphAPI.replaceGraph(data.nodes, data.edges);
+        saveGraph();
+        refreshStats();
+        setStatus(`Imported \${data.nodes.length} nodes, \${data.edges.length} edges.`, 'ok');
+      } catch(err) { setStatus('Import failed: ' + err.message, 'err'); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  // ── RESET ─────────────────────────────────────────────────────────
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (!confirm('Reset graph to default? This removes all added papers.')) return;
+    try { localStorage.removeItem('_graphData'); localStorage.removeItem('_graphPaperCount'); } catch {}
+    location.reload();
+  });
+
+  // ── PERSISTENCE (localStorage) ────────────────────────────────────
+  function saveGraph() {
+    const api = window._graphAPI;
+    if (!api) return;
+    try {
+      localStorage.setItem('_graphData', JSON.stringify({
+        nodes: api.getNodes(),
+        edges: api.getEdges()
+      }));
+    } catch(e) { console.warn('Could not save graph:', e); }
+  }
+
+  // Expose save function so mergeGraph can auto-save
+  window._saveGraph = saveGraph;
+
+  // ── STATUS HELPER ─────────────────────────────────────────────────
+  function setStatus(msg, type) {
+    const el = document.getElementById('admin-status');
+    el.textContent = msg;
+    el.className = 'admin-status' + (type ? ' ' + type : '');
+  }
+
+})();
+</script>
+</body>
+</html>

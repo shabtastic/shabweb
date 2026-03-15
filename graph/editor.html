@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graph Editor — Hakimi Research</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #0e1319;
+    --panel:   #151c26;
+    --border:  #232f42;
+    --text:    #c8d4e0;
+    --muted:   #4a6080;
+    --accent:  #D66853;
+    --blue:    #4a8aaa;
+    --green:   #5a9a72;
+    --mono:    'SF Mono', 'Fira Code', monospace;
+    --serif:   'Georgia', serif;
+  }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 12px; }
+
+  /* Layout */
+  #app { display: grid; grid-template-columns: 280px 1fr 300px; height: 100vh; }
+
+  /* Left panel */
+  #left {
+    background: var(--panel); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  #left-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .tab {
+    flex: 1; padding: 10px; text-align: center; cursor: pointer;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 2px solid transparent; transition: all 0.2s;
+  }
+  .tab.active { color: var(--text); border-bottom-color: var(--accent); }
+  .tab-content { display: none; flex: 1; overflow-y: auto; padding: 12px; }
+  .tab-content.active { display: block; }
+
+  /* Canvas */
+  #canvas-wrap { position: relative; overflow: hidden; background: var(--bg); }
+  #graph-canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+  #graph-canvas.dragging { cursor: grabbing; }
+
+  /* Canvas controls */
+  #canvas-controls {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px;
+  }
+  #canvas-controls button {
+    background: rgba(21,28,38,0.85); border: 1px solid var(--border);
+    color: var(--text); padding: 6px 14px; cursor: pointer; font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.08em; transition: border-color 0.2s;
+  }
+  #canvas-controls button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Right panel */
+  #right {
+    background: var(--panel); border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  #right-header {
+    padding: 12px; border-bottom: 1px solid var(--border);
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+  #right-body { flex: 1; overflow-y: auto; padding: 12px; }
+
+  /* Add paper panel */
+  #add-panel { display: flex; flex-direction: column; gap: 10px; }
+  .field-label {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  textarea, input[type=text] {
+    width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    color: var(--text); font-family: var(--mono); font-size: 11px; padding: 8px;
+    outline: none; resize: vertical; transition: border-color 0.2s;
+  }
+  textarea:focus, input:focus { border-color: var(--blue); }
+  #paper-text { height: 160px; }
+  .btn {
+    background: none; border: 1px solid var(--border); color: var(--text);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 8px 14px; cursor: pointer;
+    transition: all 0.2s; width: 100%;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { border-color: rgba(74,138,170,0.5); color: var(--blue); }
+  .btn.primary:hover { border-color: var(--blue); background: rgba(74,138,170,0.08); }
+  .btn.success { border-color: rgba(90,154,114,0.5); color: var(--green); }
+  .btn.success:hover { border-color: var(--green); background: rgba(90,154,114,0.08); }
+  .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .status {
+    font-size: 11px; padding: 6px 8px; border-left: 2px solid var(--muted);
+    color: var(--muted); min-height: 24px; line-height: 1.5;
+  }
+  .status.ok  { border-color: var(--green); color: var(--green); }
+  .status.err { border-color: var(--accent); color: var(--accent); }
+  .status.loading { border-color: var(--blue); color: var(--blue); }
+
+  .preview-box {
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    padding: 8px; font-size: 11px; line-height: 1.7; color: var(--muted);
+    max-height: 180px; overflow-y: auto; display: none; white-space: pre-wrap;
+  }
+  .preview-box.visible { display: block; }
+
+  /* Node inspector */
+  #inspector { display: none; }
+  #inspector.visible { display: block; }
+  .inspector-field { margin-bottom: 12px; }
+  .inspector-field label { display: block; margin-bottom: 4px; }
+  .inspector-field input[type=range] { width: 100%; accent-color: var(--accent); }
+  .range-val { color: var(--accent); margin-left: 8px; }
+  .cluster-select {
+    width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    color: var(--text); font-family: var(--mono); font-size: 11px; padding: 6px;
+    outline: none;
+  }
+  .delete-btn {
+    background: none; border: 1px solid rgba(214,104,83,0.3); color: var(--accent);
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 6px 12px; cursor: pointer; transition: all 0.2s;
+  }
+  .delete-btn:hover { background: rgba(214,104,83,0.1); }
+
+  /* Node list */
+  #node-list-container { display: flex; flex-direction: column; gap: 2px; }
+  .node-item {
+    padding: 6px 8px; cursor: pointer; border-radius: 2px;
+    display: flex; align-items: center; gap: 8px; transition: background 0.15s;
+  }
+  .node-item:hover { background: rgba(255,255,255,0.04); }
+  .node-item.selected { background: rgba(74,138,170,0.12); }
+  .node-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .node-label-text { flex: 1; font-size: 11px; }
+  .node-cluster-badge {
+    font-size: 9px; color: var(--muted); flex-shrink: 0;
+  }
+
+  /* Papers list */
+  #papers-list { display: flex; flex-direction: column; gap: 8px; }
+  .paper-item {
+    padding: 8px; border: 1px solid var(--border); border-radius: 2px;
+  }
+  .paper-title { font-size: 11px; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+  .paper-meta { font-size: 10px; color: var(--muted); }
+  .paper-nodes { font-size: 10px; color: var(--blue); margin-top: 4px; }
+
+  /* Stats bar */
+  #stats-bar {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 20px; background: rgba(14,19,25,0.8);
+    border: 1px solid var(--border); padding: 6px 16px; pointer-events: none;
+  }
+  .stat { text-align: center; }
+  .stat-val { font-size: 16px; color: var(--accent); display: block; }
+  .stat-lbl { font-size: 9px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* Key */
+  #cluster-key {
+    position: absolute; bottom: 52px; left: 12px;
+    background: rgba(14,19,25,0.8); border: 1px solid var(--border);
+    padding: 8px 12px; pointer-events: none;
+  }
+  .key-item { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 10px; color: var(--muted); }
+  .key-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  hr.sep { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+  .section-title {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  #api-key-row { display: flex; gap: 6px; align-items: center; }
+  #api-key-row input { flex: 1; }
+  #api-key-row .btn { width: auto; padding: 8px; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- LEFT PANEL -->
+  <div id="left">
+    <div id="left-tabs">
+      <div class="tab active" data-tab="nodes">Nodes</div>
+      <div class="tab" data-tab="papers">Papers</div>
+      <div class="tab" data-tab="settings">Settings</div>
+    </div>
+    <div class="tab-content active" id="tab-nodes">
+      <div class="section-title" style="margin-bottom:8px">
+        <span id="node-count">—</span> nodes · <span id="edge-count">—</span> edges
+      </div>
+      <div id="node-list-container"></div>
+    </div>
+    <div class="tab-content" id="tab-papers">
+      <div class="section-title">Added Papers</div>
+      <div id="papers-list"></div>
+    </div>
+    <div class="tab-content" id="tab-settings">
+      <div class="section-title">API Key</div>
+      <p style="color:var(--muted);font-size:10px;margin-bottom:8px;line-height:1.6">
+        Stored in sessionStorage only — never sent anywhere except api.anthropic.com.
+      </p>
+      <div id="api-key-row">
+        <input type="password" id="api-key-input" placeholder="sk-ant-...">
+        <button class="btn" id="save-key-btn" style="width:auto">Save</button>
+      </div>
+      <hr class="sep">
+      <div class="section-title">Graph File</div>
+      <button class="btn" id="export-json-btn" style="margin-bottom:6px">Export graph.json</button>
+      <button class="btn" id="import-json-btn">Import graph.json</button>
+      <input type="file" id="import-file" accept=".json" style="display:none">
+      <hr class="sep">
+      <div class="section-title">Layout</div>
+      <button class="btn" id="rebuild-btn">Rebuild force layout</button>
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <div id="canvas-wrap">
+    <canvas id="graph-canvas"></canvas>
+    <div id="stats-bar">
+      <div class="stat"><span class="stat-val" id="stat-nodes">—</span><span class="stat-lbl">nodes</span></div>
+      <div class="stat"><span class="stat-val" id="stat-edges">—</span><span class="stat-lbl">edges</span></div>
+      <div class="stat"><span class="stat-val" id="stat-papers">—</span><span class="stat-lbl">papers</span></div>
+    </div>
+    <div id="cluster-key"></div>
+    <div id="canvas-controls">
+      <button id="fit-btn">Fit</button>
+      <button id="zoom-in-btn">+</button>
+      <button id="zoom-out-btn">−</button>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div id="right">
+    <div id="right-header">Add Paper</div>
+    <div id="right-body">
+      <div id="add-panel">
+        <div>
+          <div class="field-label">Paper text or abstract</div>
+          <textarea id="paper-text" placeholder="Paste abstract, introduction, or full paper text…"></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <div>
+            <div class="field-label">DOI (optional)</div>
+            <input type="text" id="paper-doi" placeholder="10.xxxx/xxxxx">
+          </div>
+          <div>
+            <div class="field-label">Year (optional)</div>
+            <input type="text" id="paper-year" placeholder="2024">
+          </div>
+        </div>
+        <div>
+          <div class="field-label">URL (optional)</div>
+          <input type="text" id="paper-url" placeholder="https://…">
+        </div>
+        <button class="btn primary" id="extract-btn">Extract concepts</button>
+        <div class="status" id="add-status"></div>
+        <div class="preview-box" id="extract-preview"></div>
+        <button class="btn success" id="merge-btn" disabled>Merge into graph</button>
+      </div>
+
+      <hr class="sep" style="margin:16px 0">
+
+      <!-- Node inspector (shown when a node is selected) -->
+      <div id="inspector">
+        <div class="section-title">Node Inspector</div>
+        <div class="inspector-field">
+          <label class="field-label">ID</label>
+          <input type="text" id="ins-id" readonly style="opacity:0.5">
+        </div>
+        <div class="inspector-field">
+          <label class="field-label">Label</label>
+          <input type="text" id="ins-label">
+        </div>
+        <div class="inspector-field">
+          <label class="field-label">
+            Weight <span class="range-val" id="ins-weight-val">0.5</span>
+          </label>
+          <input type="range" id="ins-weight" min="0.1" max="1.0" step="0.05" value="0.5">
+        </div>
+        <div class="inspector-field">
+          <label class="field-label">Cluster</label>
+          <select class="cluster-select" id="ins-cluster"></select>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:4px">
+          <button class="btn" id="ins-save-btn" style="flex:1">Save changes</button>
+          <button class="delete-btn" id="ins-delete-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+
+const CLUSTER_COLORS = [
+  '#6a8aD0', // 0 psych/cognition — blue
+  '#5aaa8a', // 1 computational — teal
+  '#D66853', // 2 AI/generative — rust
+  '#aa7a50', // 3 application — amber
+  '#8060C0', // 4 neuroeconomics — purple
+  '#50a0b0', // 5 social neuro — cyan
+  '#c0905a', // 6 consumer — gold
+];
+
+let graph    = null;
+let layout   = {};  // id → {x,y}  (canvas coords, not world)
+let selected = null;
+let lastExtracted = null;
+
+// Canvas state
+let canvas, ctx;
+let camX = 0, camY = 0, camScale = 1;
+let dragging = false, dragNode = null;
+let dragStartX, dragStartY, dragCamX, dragCamY;
+
+// ── Init ───────────────────────────────────────────────────────────────────
+
+async function init() {
+  canvas = document.getElementById('graph-canvas');
+  ctx    = canvas.getContext('2d');
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Load graph
+  try {
+    const res = await fetch('../graph.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    graph = await res.json();
+    initLayout();
+    render();
+    populateLeft();
+  } catch(e) {
+    setStatus(`Could not load graph.json: ${e.message}. Try running from the graph/ directory.`, 'err');
+  }
+
+  // Restore API key
+  const saved = sessionStorage.getItem('anthropic_key');
+  if (saved) document.getElementById('api-key-input').value = saved;
+
+  setupEvents();
+}
+
+function resizeCanvas() {
+  const wrap = document.getElementById('canvas-wrap');
+  canvas.width  = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+  if (graph) render();
+}
+
+// ── Layout ─────────────────────────────────────────────────────────────────
+
+function initLayout() {
+  // Use stored layout if present, else seed from cluster positions
+  const stored = graph.layout || [];
+  const storedMap = {};
+  stored.forEach(p => { storedMap[p.id] = p; });
+
+  const W = canvas.width, H = canvas.height;
+  const scale = Math.min(W, H) * 0.038;
+
+  graph.nodes.forEach(n => {
+    if (storedMap[n.id]) {
+      layout[n.id] = {
+        x: W/2 + storedMap[n.id].x * scale,
+        y: H/2 + storedMap[n.id].y * scale,
+      };
+    } else {
+      layout[n.id] = {
+        x: W/2 + (Math.random()-0.5) * W * 0.6,
+        y: H/2 + (Math.random()-0.5) * H * 0.6,
+      };
+    }
+  });
+
+  fitView();
+}
+
+function fitView() {
+  if (!graph?.nodes.length) return;
+  const xs = graph.nodes.map(n => layout[n.id]?.x || 0);
+  const ys = graph.nodes.map(n => layout[n.id]?.y || 0);
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const minY = Math.min(...ys), maxY = Math.max(...ys);
+  const W = canvas.width, H = canvas.height;
+  const pad = 60;
+  const scaleX = (W - pad*2) / (maxX - minX || 1);
+  const scaleY = (H - pad*2) / (maxY - minY || 1);
+  camScale = Math.min(scaleX, scaleY, 2.5);
+  camX = W/2 - (minX + maxX)/2 * camScale;
+  camY = H/2 - (minY + maxY)/2 * camScale;
+  render();
+}
+
+// Force layout (client-side, called on rebuild)
+function runForceLayout() {
+  const NODES = graph.nodes;
+  const EDGES = graph.edges;
+  const N = NODES.length;
+  const W = canvas.width, H = canvas.height;
+
+  // Use current layout positions as initial positions
+  const pos = NODES.map(n => ({
+    x: layout[n.id]?.x || W/2 + (Math.random()-0.5)*300,
+    y: layout[n.id]?.y || H/2 + (Math.random()-0.5)*300,
+    vx:0, vy:0
+  }));
+
+  const REST = 80, KS = 0.08, KR = 8000, DAMP = 0.85;
+
+  for (let iter = 0; iter < 300; iter++) {
+    const cool = 1 - iter/300;
+    for (let i = 0; i < N; i++) {
+      for (let j = i+1; j < N; j++) {
+        const dx=pos[i].x-pos[j].x, dy=pos[i].y-pos[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy)+1;
+        const f=KR/(d*d);
+        pos[i].vx+=f*dx/d; pos[i].vy+=f*dy/d;
+        pos[j].vx-=f*dx/d; pos[j].vy-=f*dy/d;
+      }
+    }
+    EDGES.forEach(e => {
+      const ai=NODES.findIndex(n=>n.id===e.a);
+      const bi=NODES.findIndex(n=>n.id===e.b);
+      if(ai<0||bi<0) return;
+      const dx=pos[bi].x-pos[ai].x, dy=pos[bi].y-pos[ai].y;
+      const d=Math.sqrt(dx*dx+dy*dy)+1;
+      const rest=REST/(0.4+e.strength);
+      const f=KS*(d-rest);
+      pos[ai].vx+=f*dx/d; pos[ai].vy+=f*dy/d;
+      pos[bi].vx-=f*dx/d; pos[bi].vy-=f*dy/d;
+    });
+    for(let i=0;i<N;i++){
+      pos[i].vx*=DAMP; pos[i].vy*=DAMP;
+      pos[i].x+=pos[i].vx*cool;
+      pos[i].y+=pos[i].vy*cool;
+    }
+  }
+
+  NODES.forEach((n,i) => { layout[n.id] = {x: pos[i].x, y: pos[i].y}; });
+  fitView();
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+
+function worldToScreen(x, y) {
+  return { x: x * camScale + camX, y: y * camScale + camY };
+}
+function screenToWorld(x, y) {
+  return { x: (x - camX) / camScale, y: (y - camY) / camScale };
+}
+
+function render() {
+  if (!graph) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw edges
+  ctx.save();
+  graph.edges.forEach(e => {
+    const pa = layout[e.a], pb = layout[e.b];
+    if (!pa || !pb) return;
+    const sa = worldToScreen(pa.x, pa.y);
+    const sb = worldToScreen(pb.x, pb.y);
+    ctx.beginPath();
+    ctx.moveTo(sa.x, sa.y);
+    ctx.lineTo(sb.x, sb.y);
+    ctx.strokeStyle = `rgba(74,96,128,${0.15 + e.strength * 0.18})`;
+    ctx.lineWidth = 0.5 + e.strength * 1.0;
+    ctx.stroke();
+  });
+  ctx.restore();
+
+  // Draw nodes
+  graph.nodes.forEach(n => {
+    const p = layout[n.id];
+    if (!p) return;
+    const s = worldToScreen(p.x, p.y);
+    const r = 4 + n.weight * 8;
+    const col = CLUSTER_COLORS[n.cluster] || '#888';
+    const isSel = selected?.id === n.id;
+
+    // Glow for selected
+    if (isSel) {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, r + 6, 0, Math.PI*2);
+      ctx.fillStyle = col + '30';
+      ctx.fill();
+    }
+
+    // Node circle
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, r, 0, Math.PI*2);
+    ctx.fillStyle = col + (isSel ? 'ff' : 'cc');
+    ctx.fill();
+    if (isSel) {
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // Label
+    const alpha = camScale > 0.6 ? 1 : camScale / 0.6;
+    if (alpha < 0.1) return;
+    ctx.save();
+    ctx.globalAlpha = alpha * (isSel ? 1 : 0.7);
+    ctx.font = `${isSel ? 'bold ' : ''}${10 + n.weight*2}px Georgia, serif`;
+    ctx.fontStyle = 'italic';
+    ctx.fillStyle = '#c8d4e0';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const lines = n.label.split('\n');
+    const lh = 11;
+    const offsetY = r + 8 + (lines.length-1)*lh/2;
+    lines.forEach((line, li) => {
+      ctx.fillText(line, s.x, s.y + offsetY + li*lh - (lines.length-1)*lh/2);
+    });
+    ctx.restore();
+  });
+}
+
+// ── Events ─────────────────────────────────────────────────────────────────
+
+function setupEvents() {
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Canvas mouse
+  canvas.addEventListener('mousedown', onMouseDown);
+  canvas.addEventListener('mousemove', onMouseMove);
+  canvas.addEventListener('mouseup',   onMouseUp);
+  canvas.addEventListener('wheel',     onWheel, {passive:false});
+
+  // Canvas controls
+  document.getElementById('fit-btn').addEventListener('click', fitView);
+  document.getElementById('zoom-in-btn').addEventListener('click',  () => { camScale *= 1.25; render(); });
+  document.getElementById('zoom-out-btn').addEventListener('click', () => { camScale /= 1.25; render(); });
+  document.getElementById('rebuild-btn').addEventListener('click', () => { runForceLayout(); render(); populateLeft(); });
+
+  // Add paper
+  document.getElementById('extract-btn').addEventListener('click', extractConcepts);
+  document.getElementById('merge-btn').addEventListener('click', mergeConcepts);
+
+  // Inspector
+  document.getElementById('ins-weight').addEventListener('input', e => {
+    document.getElementById('ins-weight-val').textContent = parseFloat(e.target.value).toFixed(2);
+  });
+  document.getElementById('ins-save-btn').addEventListener('click', saveNodeEdit);
+  document.getElementById('ins-delete-btn').addEventListener('click', deleteNode);
+
+  // Settings
+  document.getElementById('save-key-btn').addEventListener('click', () => {
+    const key = document.getElementById('api-key-input').value.trim();
+    sessionStorage.setItem('anthropic_key', key);
+    setStatus('API key saved for this session.', 'ok');
+  });
+  document.getElementById('export-json-btn').addEventListener('click', exportJSON);
+  document.getElementById('import-json-btn').addEventListener('click', () => document.getElementById('import-file').click());
+  document.getElementById('import-file').addEventListener('change', importJSON);
+
+  // Cluster select in inspector
+  const sel = document.getElementById('ins-cluster');
+  graph?.meta.clusters.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id; opt.textContent = `${c.id} — ${c.name}`;
+    sel.appendChild(opt);
+  });
+}
+
+function hitTest(mx, my) {
+  if (!graph) return null;
+  const w = screenToWorld(mx, my);
+  let best = null, bestD = Infinity;
+  graph.nodes.forEach(n => {
+    const p = layout[n.id];
+    if (!p) return;
+    const r = 4 + n.weight * 8 + 4; // slightly larger hit area
+    const d = Math.hypot(p.x - w.x, p.y - w.y);
+    if (d < r / camScale && d < bestD) { bestD = d; best = n; }
+  });
+  return best;
+}
+
+function onMouseDown(e) {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const hit = hitTest(mx, my);
+  if (hit) {
+    dragNode = hit;
+    selectNode(hit);
+  } else {
+    dragging = true;
+    dragStartX = mx; dragStartY = my;
+    dragCamX = camX; dragCamY = camY;
+    canvas.classList.add('dragging');
+    selectNode(null);
+  }
+}
+
+function onMouseMove(e) {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  if (dragNode) {
+    const w = screenToWorld(mx, my);
+    layout[dragNode.id] = { x: w.x, y: w.y };
+    render();
+  } else if (dragging) {
+    camX = dragCamX + (mx - dragStartX);
+    camY = dragCamY + (my - dragStartY);
+    render();
+  }
+}
+
+function onMouseUp() {
+  dragging = false; dragNode = null;
+  canvas.classList.remove('dragging');
+}
+
+function onWheel(e) {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const factor = e.deltaY < 0 ? 1.12 : 1/1.12;
+  camX = mx - (mx - camX) * factor;
+  camY = my - (my - camY) * factor;
+  camScale *= factor;
+  render();
+}
+
+// ── Node selection & inspector ─────────────────────────────────────────────
+
+function selectNode(node) {
+  selected = node;
+  const ins = document.getElementById('inspector');
+  if (!node) { ins.classList.remove('visible'); render(); return; }
+  ins.classList.add('visible');
+  document.getElementById('ins-id').value     = node.id;
+  document.getElementById('ins-label').value  = node.label.replace(/\\n/g,'\n');
+  document.getElementById('ins-weight').value = node.weight;
+  document.getElementById('ins-weight-val').textContent = node.weight.toFixed(2);
+  document.getElementById('ins-cluster').value = node.cluster;
+  // Highlight in node list
+  document.querySelectorAll('.node-item').forEach(el => {
+    el.classList.toggle('selected', el.dataset.id === node.id);
+  });
+  render();
+}
+
+function saveNodeEdit() {
+  if (!selected) return;
+  const n = graph.nodes.find(n => n.id === selected.id);
+  if (!n) return;
+  n.label   = document.getElementById('ins-label').value.replace(/\n/g,'\\n');
+  n.weight  = parseFloat(document.getElementById('ins-weight').value);
+  n.cluster = parseInt(document.getElementById('ins-cluster').value);
+  selected = n;
+  populateLeft();
+  render();
+  setStatus('Node updated.', 'ok');
+}
+
+function deleteNode() {
+  if (!selected) return;
+  if (!confirm(`Delete node "${selected.id}"? All its edges will also be removed.`)) return;
+  graph.nodes = graph.nodes.filter(n => n.id !== selected.id);
+  graph.edges = graph.edges.filter(e => e.a !== selected.id && e.b !== selected.id);
+  delete layout[selected.id];
+  selectNode(null);
+  populateLeft();
+  render();
+  setStatus(`Deleted ${selected?.id}.`, 'ok');
+}
+
+// ── Left panel population ──────────────────────────────────────────────────
+
+function populateLeft() {
+  if (!graph) return;
+  // Stats
+  document.getElementById('node-count').textContent = graph.nodes.length;
+  document.getElementById('edge-count').textContent = graph.edges.length;
+  document.getElementById('stat-nodes').textContent  = graph.nodes.length;
+  document.getElementById('stat-edges').textContent  = graph.edges.length;
+  document.getElementById('stat-papers').textContent = graph.meta.papers.length;
+
+  // Node list
+  const nl = document.getElementById('node-list-container');
+  nl.innerHTML = '';
+  const sorted = [...graph.nodes].sort((a,b) => b.weight - a.weight);
+  sorted.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'node-item' + (selected?.id === n.id ? ' selected' : '');
+    el.dataset.id = n.id;
+    el.innerHTML = `
+      <div class="node-dot" style="background:${CLUSTER_COLORS[n.cluster]||'#888'}"></div>
+      <div class="node-label-text">${n.id.replace(/_/g,' ')}</div>
+      <div class="node-cluster-badge">${n.cluster}</div>
+    `;
+    el.addEventListener('click', () => { selectNode(n); render(); });
+    nl.appendChild(el);
+  });
+
+  // Papers list
+  const pl = document.getElementById('papers-list');
+  pl.innerHTML = '';
+  if (!graph.meta.papers.length) {
+    pl.innerHTML = '<div style="color:var(--muted);font-size:11px">No papers added yet.</div>';
+  }
+  graph.meta.papers.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'paper-item';
+    el.innerHTML = `
+      <div class="paper-title">${p.title || '(untitled)'}</div>
+      <div class="paper-meta">${p.year||'?'} · ${p.venue||''} ${p.abstract_only ? '· <span style="color:var(--accent)">abstract only</span>' : ''}</div>
+      ${p.nodes_contributed?.length ? `<div class="paper-nodes">+${p.nodes_contributed.length} nodes</div>` : ''}
+    `;
+    pl.appendChild(el);
+  });
+
+  // Cluster key
+  const key = document.getElementById('cluster-key');
+  key.innerHTML = '';
+  graph.meta.clusters.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'key-item';
+    el.innerHTML = `<div class="key-dot" style="background:${CLUSTER_COLORS[c.id]}"></div>${c.name}`;
+    key.appendChild(el);
+  });
+}
+
+// ── Extract & merge ────────────────────────────────────────────────────────
+
+async function extractConcepts() {
+  const text = document.getElementById('paper-text').value.trim();
+  if (!text) { setStatus('Paste some paper text first.', 'err'); return; }
+
+  const apiKey = sessionStorage.getItem('anthropic_key');
+  if (!apiKey) { setStatus('Set your Anthropic API key in Settings first.', 'err'); return; }
+
+  setStatus('Extracting concepts…', 'loading');
+  document.getElementById('extract-btn').disabled = true;
+  document.getElementById('merge-btn').disabled   = true;
+  document.getElementById('extract-preview').classList.remove('visible');
+
+  const existingIds = graph.nodes.map(n => n.id);
+  const clusterGuide = graph.meta.clusters.map(c => `${c.id}=${c.name}`).join(', ');
+
+  const systemPrompt = `You are a research knowledge-graph builder. Extract key concepts (nodes) and relationships (edges) from academic paper text.
+
+EXISTING NODE IDs — do NOT create duplicates, but DO reference them in edges:
+${existingIds.join(', ')}
+
+Cluster guide: ${clusterGuide}. Use cluster 0 as default.
+
+Return ONLY valid JSON (no markdown):
+{
+  "nodes": [{"id":"snake_case_id","label":"display\\nlabel","weight":0.0-1.0,"cluster":0-6}],
+  "edges": [{"a":"id_a","b":"id_b","strength":0.0-1.0}],
+  "paper": {"title":"...","year":2024,"venue":"...","doi":"..."}
+}
+
+Rules: only NEW nodes, 5-20 nodes, 5-30 edges, snake_case ids.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: text.slice(0, 10000) }]
+      })
+    });
+    const data = await res.json();
+    const raw  = (data.content||[]).map(b=>b.text||'').join('');
+    const clean = raw.replace(/```json|```/g,'').trim();
+    lastExtracted = JSON.parse(clean);
+
+    // Deduplicate against existing
+    const existingSet = new Set(existingIds);
+    lastExtracted.nodes = (lastExtracted.nodes||[]).filter(n => !existingSet.has(n.id));
+
+    const preview = document.getElementById('extract-preview');
+    preview.textContent =
+      `NEW NODES (${lastExtracted.nodes.length}):\n` +
+      (lastExtracted.nodes.map(n=>`  ${n.id}  cluster:${n.cluster}  w:${n.weight}`).join('\n') || '  (none)') +
+      `\n\nNEW EDGES (${(lastExtracted.edges||[]).length}):\n` +
+      (lastExtracted.edges||[]).map(e=>`  ${e.a} ↔ ${e.b}  (${e.strength})`).join('\n');
+    preview.classList.add('visible');
+
+    setStatus(`Found ${lastExtracted.nodes.length} new nodes, ${(lastExtracted.edges||[]).length} edges.`, 'ok');
+    document.getElementById('merge-btn').disabled = false;
+  } catch(e) {
+    setStatus('Extraction failed: ' + e.message, 'err');
+    lastExtracted = null;
+  }
+  document.getElementById('extract-btn').disabled = false;
+}
+
+function mergeConcepts() {
+  if (!lastExtracted) return;
+
+  const existingIds = new Set(graph.nodes.map(n=>n.id));
+  let nn = 0, ne = 0;
+
+  (lastExtracted.nodes||[]).forEach(n => {
+    if (existingIds.has(n.id)) return;
+    n._new = true;
+    graph.nodes.push(n);
+    existingIds.add(n.id);
+    // Place near centroid with scatter
+    const cx = Object.values(layout).reduce((s,p)=>s+p.x,0)/Object.keys(layout).length || canvas.width/2;
+    const cy = Object.values(layout).reduce((s,p)=>s+p.y,0)/Object.keys(layout).length || canvas.height/2;
+    layout[n.id] = { x: cx+(Math.random()-0.5)*200, y: cy+(Math.random()-0.5)*200 };
+    nn++;
+  });
+
+  const edgeSet = new Set(graph.edges.map(e=>`${e.a}|${e.b}`));
+  (lastExtracted.edges||[]).forEach(e => {
+    const k=`${e.a}|${e.b}`, kr=`${e.b}|${e.a}`;
+    if (edgeSet.has(k)||edgeSet.has(kr)) return;
+    if (!existingIds.has(e.a)||!existingIds.has(e.b)) return;
+    graph.edges.push(e); edgeSet.add(k); ne++;
+  });
+
+  // Record paper
+  const paper = lastExtracted.paper || {};
+  graph.meta.papers.push({
+    id: `paper_${Date.now()}`,
+    title: paper.title || document.getElementById('paper-url').value || 'Added via editor',
+    year:  paper.year || parseInt(document.getElementById('paper-year').value) || null,
+    doi:   paper.doi  || document.getElementById('paper-doi').value || null,
+    url:   document.getElementById('paper-url').value || null,
+    added: new Date().toISOString(),
+    nodes_contributed: (lastExtracted.nodes||[]).map(n=>n.id),
+  });
+
+  populateLeft();
+  render();
+  setStatus(`Merged ${nn} nodes, ${ne} edges. Export graph.json to save.`, 'ok');
+  document.getElementById('merge-btn').disabled = true;
+  document.getElementById('extract-preview').classList.remove('visible');
+  document.getElementById('paper-text').value = '';
+  lastExtracted = null;
+}
+
+// ── Import / Export ────────────────────────────────────────────────────────
+
+function exportJSON() {
+  // Store current layout back into graph
+  graph.layout = graph.nodes.map(n => ({
+    id: n.id,
+    x: ((layout[n.id]?.x || 0) - canvas.width/2)  / (Math.min(canvas.width,canvas.height)*0.038),
+    y: ((layout[n.id]?.y || 0) - canvas.height/2)  / (Math.min(canvas.width,canvas.height)*0.038),
+  }));
+  const blob = new Blob([JSON.stringify(graph, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'graph.json';
+  a.click();
+  setStatus('Exported graph.json', 'ok');
+}
+
+function importJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      graph = JSON.parse(ev.target.result);
+      layout = {};
+      initLayout();
+      populateLeft();
+      render();
+      setStatus(`Imported: ${graph.nodes.length} nodes, ${graph.edges.length} edges.`, 'ok');
+    } catch(err) { setStatus('Import failed: ' + err.message, 'err'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById('add-status');
+  el.textContent = msg;
+  el.className = 'status' + (type ? ' '+type : '');
+}
+
+init();
+</script>
+</body>
+</html>

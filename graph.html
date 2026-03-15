@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Research Landscape — Knowledge Graph</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink:   #11151C;
+    --ink2:  #0d1018;
+    --paper: #e8e4dc;
+    --rust:  #D66853;
+    --gold:  #C9A84C;
+    --fog:   #4a5a72;
+    --mist:  #8a9aaa;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono:  'Space Mono', monospace;
+    /* cluster palette */
+    --c0: #C9A84C;   /* Psychology */
+    --c1: #D66853;   /* Bayesian   */
+    --c2: #5a9aa0;   /* AI         */
+    --c3: #7a8aca;   /* Application*/
+    --c4: #7aad7a;   /* Neuro-econ */
+    --c5: #a07aca;   /* Social Neuro*/
+    --c6: #ca8a5a;   /* Consumer   */
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── NAV ─────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(17,21,28,0.9) 0%, transparent 100%);
+  }
+  .nav-back {
+    font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--fog); text-decoration: none;
+    transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-back:hover { color: var(--paper); }
+  .nav-title {
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(54,65,86,0.45);
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fog); text-decoration: none; transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--paper); }
+
+  /* ── HERO ────────────────────────────────────── */
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 0 3rem 5rem;
+    border-bottom: 1px solid rgba(33,45,64,0.3);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--rust); }
+  .hero-title {
+    font-size: clamp(3.5rem, 9vw, 8rem); font-weight: 300;
+    line-height: 0.9; letter-spacing: -0.02em; margin-bottom: 0.2em;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: clamp(0.95rem, 2vw, 1.2rem); font-weight: 300;
+    font-style: italic; color: var(--fog); max-width: 620px;
+    margin-bottom: 3rem; line-height: 1.8;
+  }
+  .hero-sub strong { font-weight: 400; color: var(--mist); font-style: normal; }
+  .hero-scroll {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(54,65,86,0.4); display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-scroll::after { content: ''; display: block; width: 60px; height: 1px; background: rgba(54,65,86,0.25); }
+
+  /* ── SHARED SECTION ──────────────────────────── */
+  .section-label {
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 3.5rem;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .section-label::before { content: ''; display: block; width: 40px; height: 1px; background: var(--rust); }
+
+  /* ── HOW IT WORKS ────────────────────────────── */
+  #model {
+    padding: 8rem 3rem;
+    background: rgba(8,8,15,0.95);
+    border-bottom: 1px solid rgba(33,45,64,0.3);
+  }
+  .model-intro {
+    max-width: 560px; margin-bottom: 5rem;
+  }
+  .model-intro h2 {
+    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
+    line-height: 1.1; margin-bottom: 1.5rem;
+  }
+  .model-intro h2 em { font-style: italic; color: var(--rust); }
+  .model-intro p {
+    font-size: 1rem; font-weight: 300; color: var(--fog);
+    line-height: 1.85;
+  }
+  .model-pillars {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .pillar {
+    background: rgba(14,14,22,0.88); padding: 3rem 2.5rem;
+    border: 1px solid rgba(33,45,64,0.35);
+    position: relative;
+  }
+  .pillar::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .pillar:nth-child(1)::before { background: linear-gradient(90deg, var(--c1), transparent); }
+  .pillar:nth-child(2)::before { background: linear-gradient(90deg, var(--c0), transparent); }
+  .pillar:nth-child(3)::before { background: linear-gradient(90deg, var(--rust), transparent); }
+  .pillar-num {
+    font-family: var(--mono); font-size: 0.55rem;
+    letter-spacing: 0.2em; color: rgba(54,65,86,0.4);
+    margin-bottom: 1.5rem;
+  }
+  .pillar h3 {
+    font-size: 1.3rem; font-weight: 300; margin-bottom: 1rem;
+    color: var(--paper);
+  }
+  .pillar p {
+    font-size: 0.9rem; font-weight: 300; color: var(--fog);
+    line-height: 1.8;
+  }
+  .pillar em { font-style: italic; color: var(--mist); }
+
+  /* ── FIVE STATES ─────────────────────────────── */
+  #phases {
+    padding: 8rem 3rem;
+    background: rgba(6,6,12,0.97);
+    border-bottom: 1px solid rgba(33,45,64,0.3);
+  }
+  .phases-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: start; margin-bottom: 5rem;
+  }
+  .phases-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.1;
+  }
+  .phases-header p {
+    font-size: 0.95rem; font-weight: 300; color: var(--fog); line-height: 1.85;
+    padding-top: 0.8rem;
+  }
+  .phase-flow {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 2px; position: relative;
+  }
+  .phase-card {
+    background: rgba(14,14,22,0.88); padding: 2.5rem 1.8rem;
+    border: 1px solid rgba(33,45,64,0.3);
+    position: relative; overflow: hidden;
+  }
+  .phase-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; opacity: 0.6;
+  }
+  .phase-card:nth-child(1)::after { background: #3a6aaa; }
+  .phase-card:nth-child(2)::after { background: #4a9aa0; }
+  .phase-card:nth-child(3)::after { background: var(--gold); }
+  .phase-card:nth-child(4)::after { background: #ca7a42; }
+  .phase-card:nth-child(5)::after { background: var(--rust); }
+  .phase-range {
+    font-family: var(--mono); font-size: 0.5rem;
+    letter-spacing: 0.18em; color: rgba(74,90,114,0.5);
+    margin-bottom: 1.2rem;
+  }
+  .phase-name {
+    font-size: 1.15rem; font-weight: 300; margin-bottom: 1rem;
+    color: var(--paper);
+  }
+  .phase-desc {
+    font-size: 0.82rem; font-weight: 300; color: var(--fog);
+    line-height: 1.75;
+  }
+  .phase-indicator {
+    width: 28px; height: 28px; border-radius: 50%;
+    margin-bottom: 1.5rem; opacity: 0.7;
+  }
+  .phase-card:nth-child(1) .phase-indicator { background: #3a6aaa; box-shadow: 0 0 12px rgba(58,106,170,0.4); }
+  .phase-card:nth-child(2) .phase-indicator { background: #4a9aa0; box-shadow: 0 0 12px rgba(74,154,160,0.4); }
+  .phase-card:nth-child(3) .phase-indicator { background: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,0.4); }
+  .phase-card:nth-child(4) .phase-indicator { background: #ca7a42; box-shadow: 0 0 12px rgba(202,122,66,0.4); }
+  .phase-card:nth-child(5) .phase-indicator { background: var(--rust); box-shadow: 0 0 12px rgba(214,104,83,0.4); }
+
+  /* ── NETWORK ─────────────────────────────────── */
+  #network {
+    padding: 8rem 3rem 4rem;
+    background: rgba(8,8,15,0.98);
+    border-bottom: 1px solid rgba(33,45,64,0.3);
+  }
+  .network-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: start; margin-bottom: 3.5rem;
+  }
+  .network-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.1;
+  }
+  .network-header p {
+    font-size: 0.95rem; font-weight: 300; color: var(--fog);
+    line-height: 1.85; padding-top: 0.8rem;
+  }
+  .canvas-wrap {
+    position: relative; width: 100%;
+    border: 1px solid rgba(33,45,64,0.35);
+    background: rgba(9,11,18,0.97);
+  }
+  #graph-canvas {
+    display: block; width: 100%; height: 560px;
+    cursor: crosshair;
+  }
+  .canvas-tooltip {
+    position: absolute; bottom: 2rem; left: 2rem;
+    pointer-events: none; opacity: 0; transition: opacity 0.3s;
+    max-width: 280px;
+  }
+  .canvas-tooltip.visible { opacity: 1; }
+  .tooltip-label {
+    font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+    font-weight: 300; color: var(--paper); margin-bottom: 0.4rem;
+    line-height: 1.1;
+  }
+  .tooltip-cluster {
+    font-family: var(--mono); font-size: 0.52rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    margin-bottom: 0.75rem; opacity: 0.8;
+  }
+  .tooltip-meta {
+    font-family: var(--mono); font-size: 0.52rem;
+    letter-spacing: 0.08em; color: rgba(74,90,114,0.7);
+    line-height: 1.7;
+  }
+  .cluster-legend {
+    display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: var(--mono); font-size: 0.55rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--fog);
+  }
+  .legend-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* ── CLUSTERS ────────────────────────────────── */
+  #clusters {
+    padding: 8rem 3rem;
+    background: rgba(228,224,216,0.97);
+    color: var(--ink);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  #clusters .section-label { color: var(--rust); }
+  #clusters .section-label::before { background: var(--rust); }
+  .clusters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2px;
+  }
+  .cluster-card {
+    padding: 2.5rem 2rem;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(0,0,0,0.08);
+    position: relative; overflow: hidden;
+  }
+  .cluster-card::before {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+    width: 2px;
+  }
+  .cluster-card:nth-child(1)::before { background: var(--c0); }
+  .cluster-card:nth-child(2)::before { background: var(--c1); }
+  .cluster-card:nth-child(3)::before { background: var(--c2); }
+  .cluster-card:nth-child(4)::before { background: var(--c3); }
+  .cluster-card:nth-child(5)::before { background: var(--c4); }
+  .cluster-card:nth-child(6)::before { background: var(--c5); }
+  .cluster-card:nth-child(7)::before { background: var(--c6); }
+  .cluster-id {
+    font-family: var(--mono); font-size: 0.52rem;
+    letter-spacing: 0.2em; color: rgba(0,0,0,0.25); margin-bottom: 1rem;
+  }
+  .cluster-name {
+    font-size: 1.2rem; font-weight: 400; margin-bottom: 0.75rem;
+    color: var(--ink);
+  }
+  .cluster-desc {
+    font-size: 0.88rem; font-weight: 300; color: #444;
+    line-height: 1.75; margin-bottom: 1.5rem;
+  }
+  .cluster-nodes {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .cluster-node-tag {
+    font-family: var(--mono); font-size: 0.5rem;
+    letter-spacing: 0.1em; padding: 0.2rem 0.55rem;
+    border-radius: 2px; color: #555;
+    background: rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* ── PAPERS ──────────────────────────────────── */
+  #papers {
+    padding: 8rem 3rem;
+    background: rgba(228,224,216,0.97);
+    color: var(--ink);
+  }
+  .papers-table {
+    width: 100%; border-collapse: collapse;
+  }
+  .papers-table th {
+    font-family: var(--mono); font-size: 0.55rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--fog); text-align: left;
+    padding: 0 0 1.2rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+  .papers-table td {
+    padding: 2rem 1.5rem 2rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    vertical-align: top;
+  }
+  .paper-year {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; color: var(--fog); white-space: nowrap;
+    width: 60px;
+  }
+  .paper-title {
+    font-size: 1.05rem; font-weight: 400; margin-bottom: 0.3rem;
+    color: var(--ink);
+  }
+  .paper-venue {
+    font-family: var(--mono); font-size: 0.55rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--fog);
+  }
+  .paper-link {
+    color: var(--rust); text-decoration: none;
+    font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.1em;
+  }
+  .paper-link:hover { text-decoration: underline; }
+  .paper-nodes {
+    display: flex; flex-wrap: wrap; gap: 0.35rem;
+  }
+  .paper-node-tag {
+    font-family: var(--mono); font-size: 0.5rem;
+    letter-spacing: 0.08em; padding: 0.2rem 0.55rem;
+    border: 1px solid rgba(214,104,83,0.3);
+    color: #8a5040; background: rgba(214,104,83,0.06);
+    border-radius: 2px;
+  }
+
+  /* ── FOOTER ──────────────────────────────────── */
+  footer {
+    background: rgba(228,224,216,0.97); padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.07);
+  }
+  footer p { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; color: var(--fog); }
+
+  /* ── REVEAL ──────────────────────────────────── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ──────────────────────────────────── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-title { display: none; }
+    .nav-links { gap: 1.2rem; }
+    #hero, #model, #phases, #network, #clusters, #papers { padding: 5rem 1.5rem; }
+    .model-pillars { grid-template-columns: 1fr; }
+    .phase-flow { grid-template-columns: 1fr 1fr; }
+    .phases-header, .network-header { grid-template-columns: 1fr; gap: 2rem; }
+    #graph-canvas { height: 400px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-back">← back to site</a>
+  <span class="nav-title">Knowledge Graph</span>
+  <ul class="nav-links">
+    <li><a href="#model">Model</a></li>
+    <li><a href="#phases">States</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#clusters">Clusters</a></li>
+    <li><a href="#papers">Papers</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <p class="hero-eyebrow">Knowledge Graph · Semantic Topology</p>
+  <h1 class="hero-title">The Research<br><em>Landscape</em></h1>
+  <p class="hero-sub">The animation in the background of this website is not decorative. It is a <strong>live computational model</strong> of a researcher's semantic space — constructed from publications, driven by spreading activation, and shaped by Bayesian surprise.</p>
+  <div class="hero-scroll">Scroll to explore</div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="model">
+  <p class="section-label">How It Works</p>
+  <div class="model-intro reveal">
+    <h2>A mind, <em>modelled</em></h2>
+    <p>Three ideas compose the system. Together they produce something that is less background decoration and more cognitive portrait — a landscape that thinks.</p>
+  </div>
+  <div class="model-pillars">
+    <div class="pillar reveal">
+      <p class="pillar-num">01 / Semantic Graph</p>
+      <h3>Concepts as nodes.<br>Theory as edges.</h3>
+      <p>Key constructs from research publications are encoded as nodes in a weighted graph. Edges connect nodes that share theoretical relationships — the stronger the coupling, the stronger the edge. The graph is <em>built from papers</em>, not imposed.</p>
+    </div>
+    <div class="pillar reveal">
+      <p class="pillar-num">02 / Spreading Activation</p>
+      <h3>A mind<br>in motion.</h3>
+      <p>An attention cursor wanders the graph — visiting nodes, boosting their activation. Energy flows outward along edges, lighting up connected concepts. The 3D surface rises wherever activation peaks, creating a <em>landscape shaped by thought</em>.</p>
+    </div>
+    <div class="pillar reveal">
+      <p class="pillar-num">03 / Bayesian Surprise</p>
+      <h3>Prediction error<br>drives change.</h3>
+      <p>A global <em>surprise</em> parameter — semantic distance — controls how far the attention cursor jumps. Low surprise: local, predictable movement. High surprise: sudden far jumps across the graph, as if a new idea has violated prior belief. The topology doesn't just animate — it updates.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FIVE STATES ── -->
+<section id="phases">
+  <p class="section-label">Five States of Mind</p>
+  <div class="phases-header">
+    <h2 class="reveal">Surprise as a<br>narrative arc</h2>
+    <p class="reveal">The background cycles through five cognitive states, driven by a random walk in semantic distance. Each state has a distinct phenomenology — a different relationship between what the mind expects and what it finds. The HUD in the bottom-right corner shows which state is active.</p>
+  </div>
+  <div class="phase-flow">
+    <div class="phase-card reveal">
+      <div class="phase-indicator"></div>
+      <p class="phase-range">0 – 20 % surprise</p>
+      <h3 class="phase-name">predicting</h3>
+      <p class="phase-desc">The network rests in stable equilibrium. Attention moves locally along strong edges, reinforcing familiar associations. Priors hold. The landscape barely shifts.</p>
+    </div>
+    <div class="phase-card reveal">
+      <div class="phase-indicator"></div>
+      <p class="phase-range">20 – 45 % surprise</p>
+      <h3 class="phase-name">wandering</h3>
+      <p class="phase-desc">Prediction error begins to accumulate. Attention drifts between related clusters — curiosity without commitment. The mesh ripples gently at the edges.</p>
+    </div>
+    <div class="phase-card reveal">
+      <div class="phase-indicator"></div>
+      <p class="phase-range">45 – 65 % surprise</p>
+      <h3 class="phase-name">surprised</h3>
+      <p class="phase-desc">A signal violates expectation. The pulse trails heat from blue to amber. Activation spreads beyond its local neighbourhood. Something unexpected has arrived.</p>
+    </div>
+    <div class="phase-card reveal">
+      <div class="phase-indicator"></div>
+      <p class="phase-range">65 – 82 % surprise</p>
+      <h3 class="phase-name">revising</h3>
+      <p class="phase-desc">Belief updating is underway. Distant concepts are recruited across cluster boundaries. The landscape dramatically reshapes — prior models yielding to new evidence.</p>
+    </div>
+    <div class="phase-card reveal">
+      <div class="phase-indicator"></div>
+      <p class="phase-range">82 – 100 % surprise</p>
+      <h3 class="phase-name">integrating</h3>
+      <p class="phase-desc">A new model is forming. The network seeks a new equilibrium. Understanding has expanded. The mind is more open than it was a moment ago.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── NETWORK CANVAS ── -->
+<section id="network">
+  <p class="section-label">The Network</p>
+  <div class="network-header">
+    <h2 class="reveal">Every node.<br>Every edge.</h2>
+    <p class="reveal">The full semantic graph, rendered in two dimensions. Node size reflects conceptual centrality (weight). Edge opacity encodes theoretical coupling strength. Hover any node to explore its connections and publication provenance.</p>
+  </div>
+  <div class="canvas-wrap reveal">
+    <canvas id="graph-canvas"></canvas>
+    <div class="canvas-tooltip" id="canvas-tooltip">
+      <div class="tooltip-label" id="tt-label">—</div>
+      <div class="tooltip-cluster" id="tt-cluster"></div>
+      <div class="tooltip-meta" id="tt-meta"></div>
+    </div>
+  </div>
+  <div class="cluster-legend" id="cluster-legend"></div>
+</section>
+
+<!-- ── CLUSTERS ── -->
+<section id="clusters">
+  <p class="section-label">Research Clusters</p>
+  <div class="clusters-grid" id="clusters-grid">
+    <!-- populated by JS -->
+  </div>
+</section>
+
+<!-- ── PAPERS ── -->
+<section id="papers">
+  <p class="section-label">Papers → Concepts</p>
+  <table class="papers-table" id="papers-table">
+    <thead>
+      <tr>
+        <th>Year</th>
+        <th>Paper</th>
+        <th>Concepts contributed</th>
+      </tr>
+    </thead>
+    <tbody id="papers-tbody">
+      <!-- populated by JS -->
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <p>© 2026 Shabnam Hakimi</p>
+  <p>Graph built from publication history · <a href="index.html" style="color:var(--fog);text-decoration:none;">← back to site</a></p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  GRAPH PAGE — loads graph.json, runs force layout, renders canvas
+// ══════════════════════════════════════════════════════════════════
+
+const CLUSTER_META = [
+  { name: 'Psychology / Cognition',  color: '#C9A84C',
+    desc: 'Core psychological constructs underlying flexibility, creativity, and motivated behaviour. Self-regulation, intrinsic motivation, affect, open-mindedness — the mind\'s operating capacities.' },
+  { name: 'Computational / Bayesian', color: '#D66853',
+    desc: 'The mathematical backbone of the research: predictive processing, Bayesian surprise, belief updating, prediction error, active inference. The formal language that lets cognitive theory become quantitative.' },
+  { name: 'AI / Generative',          color: '#5a9aa0',
+    desc: 'Language models, image generators, video synthesis. The technical toolkit for constructing psychologically-informed experiences at scale — where cognitive science meets the generative stack.' },
+  { name: 'Application / Intervention', color: '#7a8aca',
+    desc: 'Where theory meets practice. Personalised video, human-centred design, scalable behaviour change. The translational layer that turns computational models into real-world tools.' },
+  { name: 'Neuroeconomics',           color: '#7aad7a',
+    desc: 'The neural substrate of value and choice: vmPFC, dlPFC, reward valuation, temporal discounting, future simulation. The brain\'s decision machinery, viewed through an economic lens.' },
+  { name: 'Social Neuroscience',      color: '#a07aca',
+    desc: 'Social cognition, moral judgment, affect regulation, fMRI methods. How minds navigate other people and shared contexts — the social brain in action.' },
+  { name: 'Consumer / Preference',    color: '#ca8a5a',
+    desc: 'Aesthetic perception, preference elicitation, consumer choice, cognitive complexity. How minds evaluate and select among options — the applied end of decision neuroscience.' },
+];
+
+(async function () {
+
+  // ── Load data ───────────────────────────────────────────
+  let graphData;
+  try {
+    const res = await fetch('./graph.json');
+    if (!res.ok) throw new Error('not ok');
+    graphData = await res.json();
+  } catch(e) {
+    console.error('Failed to load graph.json', e);
+    // Show a friendly error in the canvas area
+    const el = document.getElementById('graph-canvas');
+    if (el) { el.style.display = 'none'; }
+    const wrap = document.querySelector('.canvas-wrap');
+    if (wrap) wrap.innerHTML = '<p style="padding:3rem;font-family:var(--mono);font-size:0.7rem;color:var(--fog);letter-spacing:0.15em;">graph.json not found — serve this file from a local server.</p>';
+    return;
+  }
+
+  const NODES  = graphData.nodes;
+  const EDGES  = graphData.edges;
+  const PAPERS = graphData.meta?.papers || [];
+
+  // Build papers lookup by node id
+  const nodesPaperMap = {};  // nodeId → [paper]
+  PAPERS.forEach(p => {
+    (p.nodes_contributed || []).forEach(nid => {
+      if (!nodesPaperMap[nid]) nodesPaperMap[nid] = [];
+      nodesPaperMap[nid].push(p);
+    });
+  });
+
+  // Build adjacency
+  const adj = NODES.map(() => []);
+  EDGES.forEach(e => {
+    const ai = NODES.findIndex(n => n.id === e.a);
+    const bi = NODES.findIndex(n => n.id === e.b);
+    if (ai < 0 || bi < 0) return;
+    adj[ai].push({ idx: bi, e });
+    adj[bi].push({ idx: ai, e });
+  });
+
+  // ── Populate clusters section ────────────────────────────
+  const cGrid = document.getElementById('clusters-grid');
+  CLUSTER_META.forEach((cm, ci) => {
+    const nodesInCluster = NODES.filter(n => n.cluster === ci);
+    const nodeTags = nodesInCluster.map(n =>
+      `<span class="cluster-node-tag">${n.label.replace('\n',' ')}</span>`
+    ).join('');
+    cGrid.innerHTML += `
+      <div class="cluster-card reveal">
+        <p class="cluster-id">Cluster ${String(ci).padStart(2,'0')}</p>
+        <h3 class="cluster-name">${cm.name}</h3>
+        <p class="cluster-desc">${cm.desc}</p>
+        <div class="cluster-nodes">${nodeTags}</div>
+      </div>
+    `;
+  });
+
+  // ── Populate papers table ────────────────────────────────
+  const tbody = document.getElementById('papers-tbody');
+  PAPERS.forEach(p => {
+    const nodeList = (p.nodes_contributed || []).map(nid => {
+      const n = NODES.find(nd => nd.id === nid);
+      return n ? `<span class="paper-node-tag">${n.label.replace('\n',' ')}</span>` : '';
+    }).filter(Boolean).join('');
+    const link = p.url ? `<br><a class="paper-link" href="${p.url}" target="_blank" rel="noopener">read paper →</a>` : '';
+    tbody.innerHTML += `
+      <tr>
+        <td class="paper-year">${p.year}</td>
+        <td><div class="paper-title">${p.title}</div>
+            <div class="paper-venue">${p.venue}</div>${link}</td>
+        <td><div class="paper-nodes">${nodeList}</div></td>
+      </tr>
+    `;
+  });
+
+  // ── Force-directed layout ────────────────────────────────
+  const SEEDS = [
+    {x: 0.32, y: 0.32}, // 0: Psychology
+    {x: 0.20, y: 0.55}, // 1: Bayesian
+    {x: 0.70, y: 0.25}, // 2: AI
+    {x: 0.52, y: 0.68}, // 3: Application
+    {x: 0.14, y: 0.75}, // 4: Neuroeconomics
+    {x: 0.82, y: 0.52}, // 5: Social Neuro
+    {x: 0.75, y: 0.73}, // 6: Consumer
+  ];
+  const pos = NODES.map(n => {
+    const s = SEEDS[n.cluster] || SEEDS[0];
+    return { x: s.x + (Math.random()-0.5)*0.12, y: s.y + (Math.random()-0.5)*0.12, vx:0, vy:0 };
+  });
+
+  const K_REP = 0.00045, K_SPR = 0.12, R_LEN = 0.11, DAMP = 0.82;
+  for (let iter = 0; iter < 450; iter++) {
+    const cool = 0.45 * (1 - iter/450);
+    const nn = NODES.length;
+    for (let i = 0; i < nn; i++) {
+      for (let j = i+1; j < nn; j++) {
+        const dx=pos[i].x-pos[j].x, dy=pos[i].y-pos[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy)+0.001;
+        const f=K_REP/(d*d);
+        pos[i].vx+=f*dx/d; pos[i].vy+=f*dy/d;
+        pos[j].vx-=f*dx/d; pos[j].vy-=f*dy/d;
+      }
+    }
+    EDGES.forEach(e => {
+      const ai=NODES.findIndex(n=>n.id===e.a), bi=NODES.findIndex(n=>n.id===e.b);
+      if(ai<0||bi<0) return;
+      const dx=pos[bi].x-pos[ai].x, dy=pos[bi].y-pos[ai].y;
+      const d=Math.sqrt(dx*dx+dy*dy)+0.001;
+      const rest=R_LEN/(0.4+e.strength);
+      const f=K_SPR*(d-rest);
+      pos[ai].vx+=f*dx/d; pos[ai].vy+=f*dy/d;
+      pos[bi].vx-=f*dx/d; pos[bi].vy-=f*dy/d;
+    });
+    for (let i=0;i<nn;i++) {
+      pos[i].vx*=DAMP; pos[i].vy*=DAMP;
+      pos[i].x=Math.max(0.04,Math.min(0.96,pos[i].x+pos[i].vx*cool));
+      pos[i].y=Math.max(0.04,Math.min(0.96,pos[i].y+pos[i].vy*cool));
+    }
+  }
+
+  // ── Canvas render ────────────────────────────────────────
+  const canvas   = document.getElementById('graph-canvas');
+  const ctx      = canvas.getContext('2d');
+  const dpr      = Math.min(window.devicePixelRatio || 1, 2);
+  const tooltip  = document.getElementById('canvas-tooltip');
+  const ttLabel  = document.getElementById('tt-label');
+  const ttClust  = document.getElementById('tt-cluster');
+  const ttMeta   = document.getElementById('tt-meta');
+
+  let W, H, hoverIdx = -1, t = 0;
+
+  function resize() {
+    W = canvas.clientWidth;
+    H = canvas.clientHeight;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    ctx.scale(dpr, dpr);
+  }
+  window.addEventListener('resize', () => { resize(); });
+  resize();
+
+  // Map node pos [0,1] → canvas px
+  const PAD = 48;
+  function cx(x) { return PAD + x * (W - PAD*2); }
+  function cy(y) { return PAD + y * (H - PAD*2); }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Edges
+    EDGES.forEach(e => {
+      const ai = NODES.findIndex(n => n.id === e.a);
+      const bi = NODES.findIndex(n => n.id === e.b);
+      if (ai < 0 || bi < 0) return;
+      const isHoverEdge = hoverIdx >= 0 && (ai === hoverIdx || bi === hoverIdx);
+      const baseAlpha = hoverIdx >= 0 ? (isHoverEdge ? e.strength * 0.65 : 0.04) : e.strength * 0.25;
+      ctx.beginPath();
+      ctx.moveTo(cx(pos[ai].x), cy(pos[ai].y));
+
+      // Gentle quadratic curve
+      const mx = (pos[ai].x + pos[bi].x) / 2 + (pos[bi].y - pos[ai].y) * 0.08;
+      const my = (pos[ai].y + pos[bi].y) / 2 - (pos[bi].x - pos[ai].x) * 0.08;
+      ctx.quadraticCurveTo(cx(mx), cy(my), cx(pos[bi].x), cy(pos[bi].y));
+
+      if (isHoverEdge) {
+        ctx.strokeStyle = `rgba(200,185,155,${baseAlpha})`;
+        ctx.lineWidth = 1;
+      } else {
+        ctx.strokeStyle = `rgba(100,130,170,${baseAlpha})`;
+        ctx.lineWidth = 0.6;
+      }
+      ctx.stroke();
+    });
+
+    // Nodes
+    NODES.forEach((n, ni) => {
+      const x = cx(pos[ni].x), y = cy(pos[ni].y);
+      const baseR = 4 + n.weight * 8;
+      const breathR = baseR * (1 + 0.055 * Math.sin(t * 1.6 + ni * 0.9));
+      const isHover = ni === hoverIdx;
+      const cm = CLUSTER_META[n.cluster] || CLUSTER_META[0];
+
+      // Glow
+      if (isHover) {
+        ctx.save();
+        ctx.shadowBlur = 22;
+        ctx.shadowColor = cm.color;
+      }
+
+      // Circle
+      ctx.beginPath();
+      ctx.arc(x, y, isHover ? breathR * 1.3 : breathR, 0, Math.PI*2);
+      ctx.fillStyle = isHover
+        ? cm.color + 'ee'
+        : cm.color + (hoverIdx >= 0 ? '55' : '99');
+      ctx.fill();
+
+      if (isHover) ctx.restore();
+
+      // Tiny bright core
+      ctx.beginPath();
+      ctx.arc(x, y, isHover ? 3 : 1.5, 0, Math.PI*2);
+      ctx.fillStyle = isHover ? '#fff' : cm.color + 'cc';
+      ctx.fill();
+
+      // Label (always shown, fades if not hovered when something else is)
+      const labelAlpha = hoverIdx < 0 ? 0.45 : (isHover ? 0.9 : 0.18);
+      if (labelAlpha > 0.05) {
+        const lines = n.label.split('\n');
+        ctx.font = `italic 300 ${isHover ? 12 : 10}px "Cormorant Garamond", serif`;
+        ctx.fillStyle = `rgba(200,212,224,${labelAlpha})`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const lineH = isHover ? 14 : 12;
+        const yOff  = breathR + 8;
+        lines.forEach((ln, li) => {
+          ctx.fillText(ln, x, y + yOff + (li - (lines.length-1)/2) * lineH);
+        });
+      }
+    });
+  }
+
+  function animate() {
+    t += 0.016;
+    draw();
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // ── Hover interaction ────────────────────────────────────
+  canvas.addEventListener('mousemove', ev => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = ev.clientX - rect.left;
+    const my = ev.clientY - rect.top;
+    let closest = -1, minD = 28;
+    NODES.forEach((n, ni) => {
+      const dx = cx(pos[ni].x) - mx, dy = cy(pos[ni].y) - my;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < minD) { minD = d; closest = ni; }
+    });
+    hoverIdx = closest;
+    if (closest >= 0) {
+      const n  = NODES[closest];
+      const cm = CLUSTER_META[n.cluster] || CLUSTER_META[0];
+      ttLabel.textContent = n.label.replace('\n',' ');
+      ttClust.textContent = cm.name;
+      ttClust.style.color = cm.color;
+      const degree = adj[closest].length;
+      const papers = nodesPaperMap[closest] || nodesPaperMap[n.id] || [];
+      const paperStr = papers.length
+        ? papers.map(p => p.venue).join(', ')
+        : 'no paper yet';
+      ttMeta.innerHTML = `${degree} connection${degree !== 1 ? 's' : ''}<br>from: ${paperStr}`;
+      tooltip.classList.add('visible');
+    } else {
+      tooltip.classList.remove('visible');
+    }
+  });
+  canvas.addEventListener('mouseleave', () => {
+    hoverIdx = -1;
+    tooltip.classList.remove('visible');
+  });
+
+  // ── Cluster legend ───────────────────────────────────────
+  const legendEl = document.getElementById('cluster-legend');
+  CLUSTER_META.forEach((cm, ci) => {
+    const count = NODES.filter(n => n.cluster === ci).length;
+    legendEl.innerHTML += `
+      <div class="legend-item">
+        <div class="legend-dot" style="background:${cm.color};box-shadow:0 0 6px ${cm.color}55"></div>
+        ${cm.name} <span style="opacity:0.45">(${count})</span>
+      </div>
+    `;
+  });
+
+  // ── Scroll reveal ────────────────────────────────────────
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => obs.observe(el));
+
+})();
+</script>
+</body>
+</html>

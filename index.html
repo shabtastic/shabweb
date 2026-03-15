@@ -1919,7 +1919,7 @@
       let h = 0;
       for (const { ni, w } of vertInfluence[vi]) {
         const swell = Math.sin(t * 0.20 * (1 + NODES[ni].weight) + ni * 0.75) * 0.22;
-        const deformAmp = 1.0 + semanticDist * 0.9; // high surprise → more dramatic heave
+        const deformAmp = 1.0 + semanticDist * 0.35; // high surprise → subtly more dramatic
         h += w * (actSmoothed_live[ni] * 1.6 + swell) * 2.2 * deformAmp;
       }
       h -= 0.5;
@@ -2120,9 +2120,9 @@
     hudRing.style.boxShadow  = `0 0 ${(semanticDist*12).toFixed(0)}px hsla(${hue},60%,55%,0.25)`;
 
     // ── Camera ──
-    const cx = Math.sin(t * 0.022) * (0.7 + semanticDist * 1.1) + Math.sin(t * 0.037) * 0.3;
-    const cy = 4.2 + Math.sin(t * 0.031) * 0.5 + semanticDist * 0.9;
-    const cz = 8.5 + Math.cos(t * 0.026) * 0.6 - semanticDist * 0.9;
+    const cx = Math.sin(t * 0.022) * (0.5 + semanticDist * 0.4) + Math.sin(t * 0.037) * 0.2;
+    const cy = 4.2 + Math.sin(t * 0.031) * 0.4 + semanticDist * 0.3;
+    const cz = 8.5 + Math.cos(t * 0.026) * 0.5 - semanticDist * 0.3;
     camPos.x = lerp(camPos.x, cx, 8, dt);
     camPos.y = lerp(camPos.y, cy, 8, dt);
     camPos.z = lerp(camPos.z, cz, 8, dt);

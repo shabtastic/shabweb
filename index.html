@@ -59,7 +59,7 @@
   .hud-micro-label {
     font-family: var(--mono); font-size: 0.4rem;
     letter-spacing: 0.28em; text-transform: uppercase;
-    color: rgba(54,65,86,0.25); display: block; margin-bottom: 0.2rem;
+    color: rgba(74,90,114,0.6); display: block; margin-bottom: 0.2rem;
   }
   .hud-concept-name {
     font-family: var(--serif); font-style: italic; font-size: 0.85rem;
@@ -138,7 +138,18 @@
     min-height: 100vh;
     display: flex; flex-direction: column; justify-content: flex-end;
     padding: 0 3rem 5rem; background: transparent;
+    /* Dark gradient at bottom ensures text is always legible over the mesh */
   }
+  #hero::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgba(8, 11, 18, 0.82) 0%,
+      rgba(8, 11, 18, 0.45) 35%,
+      transparent 65%
+    );
+  }
+  #hero > * { position: relative; z-index: 1; }
   .hero-eyebrow {
     font-family: var(--mono); font-size: 0.7rem;
     letter-spacing: 0.3em; text-transform: uppercase;
@@ -154,7 +165,7 @@
   .hero-name em { font-style: italic; color: var(--gold); }
   .hero-tagline {
     font-size: clamp(1rem,2.5vw,1.4rem); font-weight: 300;
-    font-style: italic; color: var(--fog);
+    font-style: italic; color: rgba(180, 190, 205, 0.75);
     max-width: 520px; margin-bottom: 3rem;
     opacity: 0; animation: fadeUp 1.1s ease 0.9s forwards; line-height: 1.7;
   }
@@ -380,10 +391,6 @@
 
 <div id="hud">
   <a href="graph.html" class="hud-graph-link">explore the graph →</a>
-  <div class="hud-concept-row">
-    <span class="hud-micro-label">attending to</span>
-    <div class="hud-concept-name" id="hud-concept">–</div>
-  </div>
   <div class="hud-surprise-row">
     <span class="hud-micro-label">surprise</span>
     <div class="hud-surprise-track"><div class="hud-surprise-fill" id="hud-surprise-fill"></div></div>
@@ -1618,9 +1625,11 @@
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
 
   const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-  camera.position.set(0, 4.2, 8.5);
-  camera.lookAt(0, 0, 0);
+  // Fog pulls the far edge of the mesh into darkness — makes it feel vast
+  scene.fog = new THREE.Fog(0x0a0d14, 10, 28);
+  const camera = new THREE.PerspectiveCamera(58, 1, 0.1, 100);
+  camera.position.set(0, 3.8, 9.5);
+  camera.lookAt(0, -0.5, 0);
 
   function resize() {
     const w = window.innerWidth, h = window.innerHeight;
@@ -1633,7 +1642,7 @@
 
   // ── MESH ──────────────────────────────────────────────────────
   const SEGS = 92;
-  const SIZE = 13;
+  const SIZE = 22;
   const geo  = new THREE.PlaneGeometry(SIZE, SIZE, SEGS, SEGS);
   geo.rotateX(-Math.PI / 2);
   const posArr = geo.attributes.position.array;
@@ -1647,7 +1656,7 @@
     vz[i] = Math.floor(i / (SEGS + 1)) / SEGS * SIZE - SIZE / 2;
   }
 
-  const SIGMA_SQ = 3.2 * 3.2;
+  const SIGMA_SQ = 5.0 * 5.0;
   let vertInfluence = new Array(MN);
   function rebuildInfluence() {
     const nn = NODES.length;
@@ -1671,19 +1680,25 @@
   // from posArr each frame, so they always sit exactly on the mesh.
   // Colour fades head→tail via vertexColors.
 
-  const MAX_GRID_PULSES = 60;
+  const MAX_GRID_PULSES = 28;
   const TRAIL_LEN       = 24; // vertices per trail
 
-  // Pre-build grid adjacency
+  // Pre-build grid adjacency — cardinal + diagonal so pulses use all wireframe lines
   const gridAdj = new Array(MN);
   for (let i = 0; i < MN; i++) {
     const row = Math.floor(i / (SEGS + 1));
     const col = i % (SEGS + 1);
     const nbrs = [];
+    // Cardinal
     if (col > 0)    nbrs.push(i - 1);
     if (col < SEGS) nbrs.push(i + 1);
     if (row > 0)    nbrs.push(i - (SEGS + 1));
     if (row < SEGS) nbrs.push(i + (SEGS + 1));
+    // Diagonal
+    if (row > 0    && col > 0)    nbrs.push(i - (SEGS + 1) - 1);
+    if (row > 0    && col < SEGS) nbrs.push(i - (SEGS + 1) + 1);
+    if (row < SEGS && col > 0)    nbrs.push(i + (SEGS + 1) - 1);
+    if (row < SEGS && col < SEGS) nbrs.push(i + (SEGS + 1) + 1);
     gridAdj[i] = nbrs;
   }
 
@@ -1737,18 +1752,39 @@
   // Rendered vertex height (lagged)
   const currentH = new Float32Array(MN);
 
+  // ── BASE LANDSCAPE (baked noise) ──────────────────────────────
+  // A static undulating base gives the mesh persistent topology
+  // even when activation is low — so it always reads as a landscape.
+  const baseH = new Float32Array(MN);
+  for (let vi = 0; vi < MN; vi++) {
+    const x = vx[vi], z = vz[vi];
+    // Layered sinusoids — cheap but organic-feeling
+    baseH[vi] =
+      0.55 * Math.sin(x * 0.40 + 0.8) * Math.cos(z * 0.32 + 0.3) +
+      0.32 * Math.sin(x * 0.85 - 1.2) * Math.cos(z * 0.70 + 1.1) +
+      0.18 * Math.sin(x * 0.22 + z * 0.28 + 2.1) +
+      0.12 * Math.cos(x * 1.40 - z * 1.10 + 0.5) +
+      0.08 * Math.sin(x * 2.10 + z * 0.60 - 1.8);
+  }
+
   // ── MESH MATERIALS ────────────────────────────────────────────
+  // vertexColors: true — we drive colour from height each frame
   const surfMat = new THREE.MeshStandardMaterial({
-    color:     0x2a3a50,
+    vertexColors: true,
     emissive:  0x111e2e,
-    emissiveIntensity: 0.5,
+    emissiveIntensity: 0.45,
     metalness: 0.0,
-    roughness: 0.94,
+    roughness: 0.88,
     side: THREE.DoubleSide,
   });
   const wireMat = new THREE.MeshBasicMaterial({
-    color: 0x6a8aaa, wireframe: true, transparent: true, opacity: 0.18,
+    color: 0x6a8aaa, wireframe: true, transparent: true, opacity: 0.28,
   });
+
+  // Initialise vertex colour buffer
+  const colArr = new Float32Array(MN * 3);
+  geo.setAttribute('color', new THREE.BufferAttribute(colArr, 3));
+
   scene.add(new THREE.Mesh(geo, surfMat));
   scene.add(new THREE.Mesh(geo, wireMat));
 
@@ -1831,7 +1867,7 @@
   }
 
   const clock = new THREE.Clock();
-  const camPos = { x: 0, y: 4.2, z: 8.5 };
+  const camPos = { x: 0, y: 3.8, z: 9.5 };
 
   // ── ANIMATE ────────────────────────────────────────────────────
   function animate() {
@@ -1918,14 +1954,52 @@
     for (let vi = 0; vi < MN; vi++) {
       let h = 0;
       for (const { ni, w } of vertInfluence[vi]) {
-        const swell = Math.sin(t * 0.20 * (1 + NODES[ni].weight) + ni * 0.75) * 0.22;
-        const deformAmp = 1.0 + semanticDist * 0.35; // high surprise → subtly more dramatic
-        h += w * (actSmoothed_live[ni] * 1.6 + swell) * 2.2 * deformAmp;
+        const swell = Math.sin(t * 0.20 * (1 + NODES[ni].weight) + ni * 0.75) * 0.14;
+        const deformAmp = 1.0 + semanticDist * 0.25;
+        h += w * (actSmoothed_live[ni] * 1.4 + swell) * 1.9 * deformAmp;
       }
-      h -= 0.5;
+      // Add baked base landscape — gives the mesh persistent topology
+      h += baseH[vi] - 0.4;
+      h = Math.max(-0.8, Math.min(2.2, h));
       currentH[vi] = lerp(currentH[vi], h, updateTau, dt);
       posArr[vi * 3 + 1] = currentH[vi];
+
+      // ── Topographic vertex colour ─────────────────────────────
+      // Ramp: abyss (near-black) → deep navy → slate → warm grey-blue ridge
+      // Normalise across expected range [-0.8, 2.2]
+      const t01 = Math.max(0, Math.min(1, (currentH[vi] + 0.8) / 3.0));
+
+      let r, g, b;
+      if (t01 < 0.25) {
+        // Abyss → deep valley: #050810 → #0d1e38
+        const s = t01 / 0.25;
+        r = 0.020 + s * 0.032;
+        g = 0.032 + s * 0.086;
+        b = 0.063 + s * 0.157;
+      } else if (t01 < 0.55) {
+        // Valley → mid-slope: #0d1e38 → #1e3a5a
+        const s = (t01 - 0.25) / 0.30;
+        r = 0.052 + s * 0.066;
+        g = 0.118 + s * 0.112;
+        b = 0.220 + s * 0.133;
+      } else if (t01 < 0.80) {
+        // Mid-slope → upper slope: #1e3a5a → #2e5272
+        const s = (t01 - 0.55) / 0.25;
+        r = 0.118 + s * 0.063;
+        g = 0.230 + s * 0.094;
+        b = 0.353 + s * 0.095;
+      } else {
+        // Ridge: #2e5272 → #5a7a8e  warm lift — peaks feel lit
+        const s = (t01 - 0.80) / 0.20;
+        r = 0.181 + s * 0.172;
+        g = 0.324 + s * 0.156;
+        b = 0.447 + s * 0.109;
+      }
+      colArr[vi * 3]     = r;
+      colArr[vi * 3 + 1] = g;
+      colArr[vi * 3 + 2] = b;
     }
+    geo.attributes.color.needsUpdate = true;
     geo.attributes.position.needsUpdate = true;
     geo.computeVertexNormals();
 
@@ -1957,7 +2031,7 @@
     warmL.intensity  = lerp(warmL.intensity, 0.08 + topAct * 0.55, 3.0, dt);
     keyL.intensity   = 0.7  + avgAct * 0.4;
     rimL.intensity   = 0.35 + semanticDist * 0.3;
-    wireMat.opacity  = 0.022 + semanticDist * 0.018;
+    wireMat.opacity  = 0.18 + semanticDist * 0.12;
 
     // ── Grid pulse: spawn from active nodes ─────────────────────
     // Clear the 2D canvas once at the top — pulses and labels both draw here
@@ -1972,7 +2046,7 @@
         if (d2 < bD) { bD = d2; bV = vi; }
       }
       // Spawn rate scales with activation
-      if (Math.random() < act * 0.08) spawnGridPulse(bV, act);
+      if (Math.random() < act * 0.03) spawnGridPulse(bV, act);
     }
 
     // ── Grid pulse: advance + update WebGL geometry ─────────────
@@ -2021,7 +2095,7 @@
       for (let ti = 0; ti < tLen; ti++) {
         const vi       = p.trail[ti];
         const trailFrac = (ti + 1) / tLen; // 0=oldest tail, 1=head
-        const alpha    = p.birthAct * ageFade * trailFrac * trailFrac;
+        const alpha    = p.birthAct * ageFade * trailFrac * trailFrac * 0.55;
 
         // Copy live vertex position directly from posArr
         p.positions[ti*3]   = posArr[vi*3];
@@ -2073,26 +2147,52 @@
       const nY = currentH[bV];
       const dx3 = npos[ni].x - aX, dy3 = nY - aY, dz3 = npos[ni].y - aZ;
       const gaussian = Math.exp(-(dx3*dx3 + dy3*dy3 + dz3*dz3) / GAUSS_SQ);
+      const isAttended = ni === attentionNode;
+      const alpha = isAttended ? 1.0 : Math.min(0.9, 0.18 + gaussian * 0.55);
+      const labelColor  = isAttended ? '#8ab0c2' : '#e4ddd0';
+      const shadowColor = isAttended ? 'rgba(5, 12, 20, 0.95)' : 'rgba(5, 8, 16, 0.92)';
+      const dotRadius   = isAttended ? 3.0 : 1.5;
 
-      // Baseline always visible; Gaussian adds up to ~3× boost at the hotspot
-      const alpha = 0.18 + gaussian * 0.55;
+      const sy         = nY + 0.06;
+      const screen     = project(npos[ni].x, sy, npos[ni].y);
+      const screenBase = project(npos[ni].x, nY, npos[ni].y);
+      const lines      = NODES[ni].label.split('\n');
 
-      const sy = nY + 0.22;
-      const screen = project(npos[ni].x, sy, npos[ni].y);
-      const lines = NODES[ni].label.split('\n');
+      // Don't draw labels in the lower 55% of the screen — hero text lives there
+      if (screen.y > lblCanvas.height * 0.55) continue;
 
       ctx2d.save();
       ctx2d.globalAlpha = alpha;
-      ctx2d.font = 'italic 300 10px "Cormorant Garamond", Georgia, serif';
-      ctx2d.fillStyle = '#c8d4e0';
+
+      // Tick line from label base down to mesh surface
+      ctx2d.beginPath();
+      ctx2d.moveTo(screen.x, screen.y + lines.length * 6 + 2);
+      ctx2d.lineTo(screenBase.x, screenBase.y);
+      ctx2d.strokeStyle = isAttended ? 'rgba(138,176,194,0.6)' : 'rgba(228, 221, 208, 0.35)';
+      ctx2d.lineWidth = isAttended ? 1.0 : 0.5;
+      ctx2d.stroke();
+
+      ctx2d.font = isAttended
+        ? 'italic 400 12px "Cormorant Garamond", Georgia, serif'
+        : 'italic 300 10px "Cormorant Garamond", Georgia, serif';
       ctx2d.textAlign = 'center';
       ctx2d.textBaseline = 'middle';
+      ctx2d.shadowColor = shadowColor;
+      ctx2d.shadowBlur = isAttended ? 8 : 5;
+      ctx2d.fillStyle = 'rgba(5, 8, 16, 0.5)';
       lines.forEach((line, li) => {
         ctx2d.fillText(line, screen.x, screen.y + (li - (lines.length-1)/2) * 12);
       });
+      // Actual label — warm paper tone, legible against both dark and mid-tone terrain
+      ctx2d.shadowBlur = 0;
+      ctx2d.fillStyle = labelColor;
+      lines.forEach((line, li) => {
+        ctx2d.fillText(line, screen.x, screen.y + (li - (lines.length-1)/2) * 12);
+      });
+      // Node dot pinned to mesh surface
       ctx2d.beginPath();
-      ctx2d.arc(screen.x, screen.y - lines.length * 6 - 1, 1.5, 0, Math.PI * 2);
-      ctx2d.fillStyle = '#c8d4e0';
+      ctx2d.arc(screenBase.x, screenBase.y, dotRadius, 0, Math.PI * 2);
+      ctx2d.fillStyle = labelColor;
       ctx2d.fill();
       ctx2d.restore();
     }
@@ -2121,8 +2221,8 @@
 
     // ── Camera ──
     const cx = Math.sin(t * 0.022) * (0.5 + semanticDist * 0.4) + Math.sin(t * 0.037) * 0.2;
-    const cy = 4.2 + Math.sin(t * 0.031) * 0.4 + semanticDist * 0.3;
-    const cz = 8.5 + Math.cos(t * 0.026) * 0.5 - semanticDist * 0.3;
+    const cy = 3.8 + Math.sin(t * 0.031) * 0.4 + semanticDist * 0.3;
+    const cz = 9.5 + Math.cos(t * 0.026) * 0.5 - semanticDist * 0.3;
     camPos.x = lerp(camPos.x, cx, 8, dt);
     camPos.y = lerp(camPos.y, cy, 8, dt);
     camPos.z = lerp(camPos.z, cz, 8, dt);

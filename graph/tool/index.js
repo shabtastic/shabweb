@@ -480,7 +480,11 @@ async function extractConcepts(text, graph, paperWeight = 1.0) {
     max_tokens: 2000,
     system: `You are a research knowledge-graph builder. Extract key concepts (nodes) and theoretical relationships (edges) from academic paper text.
 
-EXISTING NODE IDs — do NOT duplicate, but reference them freely in edges:
+EXISTING NODE IDs — you MUST reuse these wherever semantically appropriate.
+Do NOT create a new node if an existing one covers the same concept, even if the wording differs.
+Examples of what NOT to do: adding "risk_perception" when "perceived_risk" exists; adding "belief_updating" when "belief_revision" exists; adding "episodic_simulation" when "episodic_sim" exists.
+When in doubt, REUSE the existing node and add edges to/from it instead.
+
 ${existingIds.join(', ')}
 
 Cluster guide: ${clusterGuide}
@@ -500,12 +504,13 @@ Return ONLY valid JSON, no markdown fences:
 }
 
 Guidelines:
-- Only NEW nodes not in the existing list above
-- Edges may link new↔new or new↔existing nodes
+- ONLY add nodes for concepts genuinely absent from the existing list above
+- Prefer edges to existing nodes over creating near-duplicate new nodes
 - weight = raw centrality × paperWeight (already factored in above)
 - strength = theoretical coupling tightness
-- 5–20 nodes and 5–30 edges; quality over quantity
-- label: use \\n to wrap if display text > 12 chars`,
+- 5–15 new nodes maximum; quality over quantity
+- label: use \\n to wrap if display text > 12 chars
+- id: snake_case, max 3 words, must be unique and not a synonym of any existing id`,
     messages: [{ role: 'user', content: text.slice(0, 10000) }],
   });
 
@@ -1261,6 +1266,170 @@ Leave fields null if not present.`,
         c.log(`  • ${paper.title.slice(0,60)} — ${reason}`)
       );
     }
+  });
+
+// ── consolidate ────────────────────────────────────────────────────────────
+program
+  .command('consolidate')
+  .description('Find and merge near-synonym nodes in the graph')
+  .option('--dry-run', 'show merges without applying them')
+  .action(async (opts) => {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      c.err('ANTHROPIC_API_KEY not set.');
+      process.exit(1);
+    }
+
+    const graph  = loadGraph();
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+    c.head(`\nConsolidating ${graph.nodes.length} nodes…`);
+
+    // Send all nodes to Claude in batches of 150 to find synonym clusters
+    const BATCH = 150;
+    const allMerges = []; // [{keep: id, absorb: [id, id, ...]}]
+
+    for (let offset = 0; offset < graph.nodes.length; offset += BATCH) {
+      const batch = graph.nodes.slice(offset, offset + BATCH);
+      c.info(`Checking nodes ${offset+1}–${Math.min(offset+BATCH, graph.nodes.length)}…`);
+
+      const nodeList = batch.map(n => `${n.id} (cluster:${n.cluster}, w:${n.weight})`).join('\n');
+      // Also include nodes outside the batch so Claude can spot cross-batch synonyms
+      const contextIds = graph.nodes
+        .filter(n => !batch.includes(n))
+        .map(n => n.id)
+        .join(', ');
+
+      const res = await client.messages.create({
+        model: 'claude-opus-4-5',
+        max_tokens: 2000,
+        system: `You are auditing a research knowledge graph for near-synonym or redundant nodes.
+
+Given a list of node IDs, identify groups that represent the same or nearly identical concept.
+Be conservative — only merge nodes that are genuinely synonymous, not merely related.
+
+Examples of valid merges:
+- risk_perception + perceived_risk → keep the one with higher weight
+- episodic_sim + episodic_simulation → keep the longer/clearer one
+- belief_updating + belief_revision → keep whichever is more precise
+- dlpfc_activity + dlpfc → merge into one
+
+Examples of invalid merges (related but distinct — do NOT merge):
+- risk_perception + risk_estimation (perception ≠ estimation)
+- temporal_discounting + delay_discounting (these ARE synonyms — do merge)
+- reward_learning + reward_prediction (distinct concepts)
+
+Other node IDs in the full graph (for context): ${contextIds.slice(0,2000)}
+
+Return ONLY valid JSON, no markdown fences.
+If no merges are needed, return {"merges": []}.
+{
+  "merges": [
+    {"keep": "node_id_to_keep", "absorb": ["node_id_1", "node_id_2"]}
+  ]
+}`,
+        messages: [{ role: 'user', content: `Nodes to check:\n${nodeList}` }],
+      });
+
+      try {
+        const raw    = res.content.map(b => b.text||'').join('');
+        const clean  = raw.replace(/```json|```/g,'').trim();
+        const parsed = JSON.parse(clean);
+        allMerges.push(...(parsed.merges || []));
+      } catch(e) {
+        c.warn(`Batch parse failed: ${e.message}`);
+      }
+
+      if (offset + BATCH < graph.nodes.length) {
+        await new Promise(r => setTimeout(r, 3000));
+      }
+    }
+
+    // Deduplicate merges (a node might appear in multiple batches)
+    const mergeMap = {};
+    for (const m of allMerges) {
+      if (!graph.nodes.find(n => n.id === m.keep)) continue;
+      if (!mergeMap[m.keep]) mergeMap[m.keep] = new Set();
+      for (const a of m.absorb) {
+        if (graph.nodes.find(n => n.id === a) && a !== m.keep) {
+          mergeMap[m.keep].add(a);
+        }
+      }
+    }
+
+    const merges = Object.entries(mergeMap)
+      .map(([keep, absorb]) => ({ keep, absorb: [...absorb] }))
+      .filter(m => m.absorb.length > 0);
+
+    if (!merges.length) {
+      c.ok('No synonym nodes found — graph looks clean.');
+      return;
+    }
+
+    c.log(`\nFound ${merges.length} merge groups:`);
+    merges.forEach(m => {
+      const keepNode = graph.nodes.find(n => n.id === m.keep);
+      c.log(`  \x1b[32m${m.keep}\x1b[0m (w:${keepNode?.weight}) ← absorbs: ${m.absorb.join(', ')}`);
+    });
+
+    if (opts.dryRun) {
+      c.warn('\nDry run — nothing saved.');
+      return;
+    }
+
+    // Apply merges
+    let totalAbsorbed = 0;
+    for (const { keep, absorb } of merges) {
+      const keepNode = graph.nodes.find(n => n.id === keep);
+      if (!keepNode) continue;
+
+      for (const absorbId of absorb) {
+        const absorbNode = graph.nodes.find(n => n.id === absorbId);
+        if (!absorbNode) continue;
+
+        // Boost keep node weight (weighted average, keep wins 2:1)
+        keepNode.weight = Math.min(1.0,
+          Math.round((keepNode.weight * 0.67 + absorbNode.weight * 0.33) * 100) / 100
+        );
+
+        // Redirect all edges from absorbId to keep
+        graph.edges.forEach(e => {
+          if (e.a === absorbId) e.a = keep;
+          if (e.b === absorbId) e.b = keep;
+        });
+
+        // Remove self-loops created by the merge
+        graph.edges = graph.edges.filter(e => e.a !== e.b);
+
+        // Deduplicate edges (same pair may now exist twice)
+        const edgeSet = new Set();
+        graph.edges = graph.edges.filter(e => {
+          const key = [e.a, e.b].sort().join('|');
+          if (edgeSet.has(key)) return false;
+          edgeSet.add(key);
+          return true;
+        });
+
+        // Update nodesContributed in paper records
+        graph.meta.papers.forEach(p => {
+          if (p.nodesContributed?.includes(absorbId)) {
+            p.nodesContributed = p.nodesContributed
+              .map(id => id === absorbId ? keep : id)
+              .filter((id, i, arr) => arr.indexOf(id) === i);
+          }
+        });
+
+        // Remove absorbed node
+        graph.nodes = graph.nodes.filter(n => n.id !== absorbId);
+        totalAbsorbed++;
+        c.info(`  Merged ${absorbId} → ${keep}`);
+      }
+    }
+
+    rebuildLayout(graph);
+    saveGraph(graph);
+    c.log('');
+    c.ok(`Consolidated ${totalAbsorbed} nodes into ${merges.length} canonical nodes`);
+    c.ok(`Graph: ${graph.nodes.length} nodes, ${graph.edges.length} edges`);
   });
 
 program.parse();

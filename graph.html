@@ -3,847 +3,1824 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Research Landscape — Knowledge Graph</title>
+<title>Research Topology — Shabnam Hakimi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --ink:   #11151C;
-    --ink2:  #0d1018;
-    --paper: #e8e4dc;
-    --rust:  #D66853;
-    --gold:  #C9A84C;
-    --fog:   #4a5a72;
-    --mist:  #8a9aaa;
-    --serif: 'Cormorant Garamond', Georgia, serif;
-    --mono:  'Space Mono', monospace;
-    /* cluster palette */
-    --c0: #C9A84C;   /* Psychology */
-    --c1: #D66853;   /* Bayesian   */
-    --c2: #5a9aa0;   /* AI         */
-    --c3: #7a8aca;   /* Application*/
-    --c4: #7aad7a;   /* Neuro-econ */
-    --c5: #a07aca;   /* Social Neuro*/
-    --c6: #ca8a5a;   /* Consumer   */
-  }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--ink);
-    color: var(--paper);
-    font-family: var(--serif);
-    font-size: 18px;
-    line-height: 1.6;
-    overflow-x: hidden;
-    cursor: default;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --paper:    #f5f2ec;
+  --ink:      #111118;
+  --ink-blue: #1a2c6b;
+  --ink-dim:  rgba(17,17,24,0.45);
+  --ink-faint:rgba(17,17,24,0.12);
+  --blue-g:   rgba(80,140,200,0.18);
+  --blue-G:   rgba(80,140,200,0.40);
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  background-image:
+    linear-gradient(var(--blue-G) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-G) 1px, transparent 1px),
+    linear-gradient(var(--blue-g) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-g) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  cursor: none;
+}
 
-  /* ── NAV ─────────────────────────────────────── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 1.5rem 3rem;
-    display: flex; justify-content: space-between; align-items: center;
-    background: linear-gradient(to bottom, rgba(17,21,28,0.9) 0%, transparent 100%);
-  }
-  .nav-back {
-    font-family: var(--mono); font-size: 0.68rem;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--fog); text-decoration: none;
-    transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem;
-  }
-  .nav-back:hover { color: var(--paper); }
-  .nav-title {
-    font-family: var(--mono); font-size: 0.62rem;
-    letter-spacing: 0.25em; text-transform: uppercase;
-    color: rgba(54,65,86,0.45);
-  }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a {
-    font-family: var(--mono); font-size: 0.62rem;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--fog); text-decoration: none; transition: color 0.3s;
-  }
-  .nav-links a:hover { color: var(--paper); }
+/* ── LAYOUT ── */
+#app {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  height: 100vh;
+}
 
-  /* ── HERO ────────────────────────────────────── */
-  #hero {
-    min-height: 100vh; display: flex; flex-direction: column;
-    justify-content: flex-end; padding: 0 3rem 5rem;
-    border-bottom: 1px solid rgba(33,45,64,0.3);
-  }
-  .hero-eyebrow {
-    font-family: var(--mono); font-size: 0.68rem;
-    letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--rust); margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 1.5rem;
-  }
-  .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--rust); }
-  .hero-title {
-    font-size: clamp(3.5rem, 9vw, 8rem); font-weight: 300;
-    line-height: 0.9; letter-spacing: -0.02em; margin-bottom: 0.2em;
-  }
-  .hero-title em { font-style: italic; color: var(--gold); }
-  .hero-sub {
-    font-size: clamp(0.95rem, 2vw, 1.2rem); font-weight: 300;
-    font-style: italic; color: var(--fog); max-width: 620px;
-    margin-bottom: 3rem; line-height: 1.8;
-  }
-  .hero-sub strong { font-weight: 400; color: var(--mist); font-style: normal; }
-  .hero-scroll {
-    font-family: var(--mono); font-size: 0.6rem;
-    letter-spacing: 0.25em; text-transform: uppercase;
-    color: rgba(54,65,86,0.4); display: flex; align-items: center; gap: 1rem;
-  }
-  .hero-scroll::after { content: ''; display: block; width: 60px; height: 1px; background: rgba(54,65,86,0.25); }
+/* ── CANVAS AREA ── */
+#canvas-wrap {
+  position: relative;
+  overflow: hidden;
+}
+#graph-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
 
-  /* ── SHARED SECTION ──────────────────────────── */
-  .section-label {
-    font-family: var(--mono); font-size: 0.62rem;
-    letter-spacing: 0.35em; text-transform: uppercase;
-    color: var(--rust); margin-bottom: 3.5rem;
-    display: flex; align-items: center; gap: 1.5rem;
-  }
-  .section-label::before { content: ''; display: block; width: 40px; height: 1px; background: var(--rust); }
+/* ── BACK LINK ── */
+#back {
+  position: absolute; top: 1.5rem; left: 1.8rem;
+  font-size: 0.5rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none;
+  border-bottom: 1px solid var(--ink-faint);
+  padding-bottom: 0.1rem; z-index: 10;
+  transition: color 0.2s, border-color 0.2s;
+}
+#back:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
 
-  /* ── HOW IT WORKS ────────────────────────────── */
-  #model {
-    padding: 8rem 3rem;
-    background: rgba(8,8,15,0.95);
-    border-bottom: 1px solid rgba(33,45,64,0.3);
-  }
-  .model-intro {
-    max-width: 560px; margin-bottom: 5rem;
-  }
-  .model-intro h2 {
-    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
-    line-height: 1.1; margin-bottom: 1.5rem;
-  }
-  .model-intro h2 em { font-style: italic; color: var(--rust); }
-  .model-intro p {
-    font-size: 1rem; font-weight: 300; color: var(--fog);
-    line-height: 1.85;
-  }
-  .model-pillars {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-  .pillar {
-    background: rgba(14,14,22,0.88); padding: 3rem 2.5rem;
-    border: 1px solid rgba(33,45,64,0.35);
-    position: relative;
-  }
-  .pillar::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  }
-  .pillar:nth-child(1)::before { background: linear-gradient(90deg, var(--c1), transparent); }
-  .pillar:nth-child(2)::before { background: linear-gradient(90deg, var(--c0), transparent); }
-  .pillar:nth-child(3)::before { background: linear-gradient(90deg, var(--rust), transparent); }
-  .pillar-num {
-    font-family: var(--mono); font-size: 0.55rem;
-    letter-spacing: 0.2em; color: rgba(54,65,86,0.4);
-    margin-bottom: 1.5rem;
-  }
-  .pillar h3 {
-    font-size: 1.3rem; font-weight: 300; margin-bottom: 1rem;
-    color: var(--paper);
-  }
-  .pillar p {
-    font-size: 0.9rem; font-weight: 300; color: var(--fog);
-    line-height: 1.8;
-  }
-  .pillar em { font-style: italic; color: var(--mist); }
+/* ── TITLE BLOCK ── */
+#title-block {
+  position: absolute; bottom: 2rem; left: 1.8rem; z-index: 10;
+}
+#title-block h1 {
+  font-family: var(--sans); font-size: 1.1rem; font-weight: 300;
+  color: var(--ink); letter-spacing: -0.01em; margin-bottom: 0.25rem;
+}
+#title-block p {
+  font-size: 0.5rem; letter-spacing: 0.2em; color: var(--ink-dim);
+  text-transform: uppercase;
+}
 
-  /* ── FIVE STATES ─────────────────────────────── */
-  #phases {
-    padding: 8rem 3rem;
-    background: rgba(6,6,12,0.97);
-    border-bottom: 1px solid rgba(33,45,64,0.3);
-  }
-  .phases-header {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 4rem; align-items: start; margin-bottom: 5rem;
-  }
-  .phases-header h2 {
-    font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.1;
-  }
-  .phases-header p {
-    font-size: 0.95rem; font-weight: 300; color: var(--fog); line-height: 1.85;
-    padding-top: 0.8rem;
-  }
-  .phase-flow {
-    display: grid; grid-template-columns: repeat(5, 1fr);
-    gap: 2px; position: relative;
-  }
-  .phase-card {
-    background: rgba(14,14,22,0.88); padding: 2.5rem 1.8rem;
-    border: 1px solid rgba(33,45,64,0.3);
-    position: relative; overflow: hidden;
-  }
-  .phase-card::after {
-    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-    height: 2px; opacity: 0.6;
-  }
-  .phase-card:nth-child(1)::after { background: #3a6aaa; }
-  .phase-card:nth-child(2)::after { background: #4a9aa0; }
-  .phase-card:nth-child(3)::after { background: var(--gold); }
-  .phase-card:nth-child(4)::after { background: #ca7a42; }
-  .phase-card:nth-child(5)::after { background: var(--rust); }
-  .phase-range {
-    font-family: var(--mono); font-size: 0.5rem;
-    letter-spacing: 0.18em; color: rgba(74,90,114,0.5);
-    margin-bottom: 1.2rem;
-  }
-  .phase-name {
-    font-size: 1.15rem; font-weight: 300; margin-bottom: 1rem;
-    color: var(--paper);
-  }
-  .phase-desc {
-    font-size: 0.82rem; font-weight: 300; color: var(--fog);
-    line-height: 1.75;
-  }
-  .phase-indicator {
-    width: 28px; height: 28px; border-radius: 50%;
-    margin-bottom: 1.5rem; opacity: 0.7;
-  }
-  .phase-card:nth-child(1) .phase-indicator { background: #3a6aaa; box-shadow: 0 0 12px rgba(58,106,170,0.4); }
-  .phase-card:nth-child(2) .phase-indicator { background: #4a9aa0; box-shadow: 0 0 12px rgba(74,154,160,0.4); }
-  .phase-card:nth-child(3) .phase-indicator { background: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,0.4); }
-  .phase-card:nth-child(4) .phase-indicator { background: #ca7a42; box-shadow: 0 0 12px rgba(202,122,66,0.4); }
-  .phase-card:nth-child(5) .phase-indicator { background: var(--rust); box-shadow: 0 0 12px rgba(214,104,83,0.4); }
+/* ── SIDEBAR ── */
+#sidebar {
+  border-left: 1px solid var(--blue-G);
+  background: rgba(245,242,236,0.96);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+#sidebar-header {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--blue-G);
+}
+#sidebar-header h2 {
+  font-size: 0.52rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink-blue); margin-bottom: 0.4rem;
+}
+#sidebar-header p {
+  font-size: 0.58rem; color: var(--ink-dim); line-height: 1.7;
+}
 
-  /* ── NETWORK ─────────────────────────────────── */
-  #network {
-    padding: 8rem 3rem 4rem;
-    background: rgba(8,8,15,0.98);
-    border-bottom: 1px solid rgba(33,45,64,0.3);
-  }
-  .network-header {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 4rem; align-items: start; margin-bottom: 3.5rem;
-  }
-  .network-header h2 {
-    font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.1;
-  }
-  .network-header p {
-    font-size: 0.95rem; font-weight: 300; color: var(--fog);
-    line-height: 1.85; padding-top: 0.8rem;
-  }
-  .canvas-wrap {
-    position: relative; width: 100%;
-    border: 1px solid rgba(33,45,64,0.35);
-    background: rgba(9,11,18,0.97);
-  }
-  #graph-canvas {
-    display: block; width: 100%; height: 560px;
-    cursor: crosshair;
-  }
-  .canvas-tooltip {
-    position: absolute; bottom: 2rem; left: 2rem;
-    pointer-events: none; opacity: 0; transition: opacity 0.3s;
-    max-width: 280px;
-  }
-  .canvas-tooltip.visible { opacity: 1; }
-  .tooltip-label {
-    font-family: var(--serif); font-style: italic; font-size: 1.5rem;
-    font-weight: 300; color: var(--paper); margin-bottom: 0.4rem;
-    line-height: 1.1;
-  }
-  .tooltip-cluster {
-    font-family: var(--mono); font-size: 0.52rem;
-    letter-spacing: 0.22em; text-transform: uppercase;
-    margin-bottom: 0.75rem; opacity: 0.8;
-  }
-  .tooltip-meta {
-    font-family: var(--mono); font-size: 0.52rem;
-    letter-spacing: 0.08em; color: rgba(74,90,114,0.7);
-    line-height: 1.7;
-  }
-  .cluster-legend {
-    display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem;
-  }
-  .legend-item {
-    display: flex; align-items: center; gap: 0.6rem;
-    font-family: var(--mono); font-size: 0.55rem;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--fog);
-  }
-  .legend-dot {
-    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-  }
+/* ── NODE DETAIL ── */
+#node-detail {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--blue-G);
+  min-height: 140px;
+  max-height: 42vh;
+  overflow-y: auto;
+  transition: background 0.3s;
+}
+#node-detail .nd-cluster {
+  font-size: 0.46rem; letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+#node-detail .nd-label {
+  font-family: var(--sans); font-size: 1.0rem; font-weight: 400;
+  color: var(--ink); margin-bottom: 0.5rem; line-height: 1.2;
+}
+#node-detail .nd-weight {
+  font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-dim);
+  margin-bottom: 0.8rem;
+}
+#node-detail .nd-connections {
+  font-size: 0.55rem; color: var(--ink-dim); line-height: 1.7;
+}
+#node-detail .nd-connections span {
+  display: inline-block; background: rgba(26,44,107,0.07);
+  border: 1px solid rgba(26,44,107,0.12); padding: 0.1rem 0.35rem;
+  margin: 0.1rem 0.15rem 0.1rem 0; font-size: 0.44rem;
+  letter-spacing: 0.08em;
+}
 
-  /* ── CLUSTERS ────────────────────────────────── */
-  #clusters {
-    padding: 8rem 3rem;
-    background: rgba(228,224,216,0.97);
-    color: var(--ink);
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-  }
-  #clusters .section-label { color: var(--rust); }
-  #clusters .section-label::before { background: var(--rust); }
-  .clusters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2px;
-  }
-  .cluster-card {
-    padding: 2.5rem 2rem;
-    background: rgba(255,255,255,0.5);
-    border: 1px solid rgba(0,0,0,0.08);
-    position: relative; overflow: hidden;
-  }
-  .cluster-card::before {
-    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
-    width: 2px;
-  }
-  .cluster-card:nth-child(1)::before { background: var(--c0); }
-  .cluster-card:nth-child(2)::before { background: var(--c1); }
-  .cluster-card:nth-child(3)::before { background: var(--c2); }
-  .cluster-card:nth-child(4)::before { background: var(--c3); }
-  .cluster-card:nth-child(5)::before { background: var(--c4); }
-  .cluster-card:nth-child(6)::before { background: var(--c5); }
-  .cluster-card:nth-child(7)::before { background: var(--c6); }
-  .cluster-id {
-    font-family: var(--mono); font-size: 0.52rem;
-    letter-spacing: 0.2em; color: rgba(0,0,0,0.25); margin-bottom: 1rem;
-  }
-  .cluster-name {
-    font-size: 1.2rem; font-weight: 400; margin-bottom: 0.75rem;
-    color: var(--ink);
-  }
-  .cluster-desc {
-    font-size: 0.88rem; font-weight: 300; color: #444;
-    line-height: 1.75; margin-bottom: 1.5rem;
-  }
-  .cluster-nodes {
-    display: flex; flex-wrap: wrap; gap: 0.4rem;
-  }
-  .cluster-node-tag {
-    font-family: var(--mono); font-size: 0.5rem;
-    letter-spacing: 0.1em; padding: 0.2rem 0.55rem;
-    border-radius: 2px; color: #555;
-    background: rgba(0,0,0,0.06);
-    border: 1px solid rgba(0,0,0,0.1);
-  }
+/* ── CLUSTER LIST ── */
+#cluster-list {
+  flex: 1; overflow-y: auto; padding: 1rem 1.5rem;
+}
+.cluster-item {
+  display: flex; gap: 0.8rem; padding: 0.9rem 0;
+  border-bottom: 1px solid var(--blue-G);
+  cursor: pointer; transition: background 0.15s;
+  border-radius: 2px;
+}
+.cluster-item:hover { background: rgba(26,44,107,0.03); }
+.cluster-item.active { background: rgba(26,44,107,0.05); }
+.cluster-swatch {
+  width: 3px; flex-shrink: 0; border-radius: 1px; margin-top: 2px;
+}
+.cluster-body { flex: 1; }
+.cluster-name {
+  font-size: 0.55rem; letter-spacing: 0.08em; color: var(--ink);
+  margin-bottom: 0.25rem; font-weight: 400;
+}
+.cluster-desc {
+  font-size: 0.5rem; color: var(--ink-dim); line-height: 1.65;
+}
+.cluster-count {
+  font-size: 0.44rem; letter-spacing: 0.15em; color: var(--ink-faint);
+  margin-top: 0.3rem;
+}
 
-  /* ── PAPERS ──────────────────────────────────── */
-  #papers {
-    padding: 8rem 3rem;
-    background: rgba(228,224,216,0.97);
-    color: var(--ink);
-  }
-  .papers-table {
-    width: 100%; border-collapse: collapse;
-  }
-  .papers-table th {
-    font-family: var(--mono); font-size: 0.55rem;
-    letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--fog); text-align: left;
-    padding: 0 0 1.2rem 0;
-    border-bottom: 1px solid rgba(0,0,0,0.12);
-  }
-  .papers-table td {
-    padding: 2rem 1.5rem 2rem 0;
-    border-bottom: 1px solid rgba(0,0,0,0.07);
-    vertical-align: top;
-  }
-  .paper-year {
-    font-family: var(--mono); font-size: 0.6rem;
-    letter-spacing: 0.1em; color: var(--fog); white-space: nowrap;
-    width: 60px;
-  }
-  .paper-title {
-    font-size: 1.05rem; font-weight: 400; margin-bottom: 0.3rem;
-    color: var(--ink);
-  }
-  .paper-venue {
-    font-family: var(--mono); font-size: 0.55rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--fog);
-  }
-  .paper-link {
-    color: var(--rust); text-decoration: none;
-    font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.1em;
-  }
-  .paper-link:hover { text-decoration: underline; }
-  .paper-nodes {
-    display: flex; flex-wrap: wrap; gap: 0.35rem;
-  }
-  .paper-node-tag {
-    font-family: var(--mono); font-size: 0.5rem;
-    letter-spacing: 0.08em; padding: 0.2rem 0.55rem;
-    border: 1px solid rgba(214,104,83,0.3);
-    color: #8a5040; background: rgba(214,104,83,0.06);
-    border-radius: 2px;
-  }
+/* ── HUD ── */
+#hud {
+  position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem;
+}
+.hud-phase {
+  font-size: 0.46rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.hud-bar { width: 48px; height: 1px; background: var(--ink-faint); position: relative; }
+#hud-bar-fill { position: absolute; left: 0; top: 0; height: 100%; background: #7777FF; width: 0%; transition: width 0.8s; }
+.hud-ring-wrap { width: 12px; height: 12px; display: flex; align-items: center; justify-content: center; }
+.hud-ring { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-faint); transition: background 2s; }
 
-  /* ── FOOTER ──────────────────────────────────── */
-  footer {
-    background: rgba(228,224,216,0.97); padding: 2rem 3rem;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid rgba(0,0,0,0.07);
-  }
-  footer p { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; color: var(--fog); }
+/* ── STATS BAR ── */
+#stats-bar {
+  position: absolute; bottom: 2rem; right: 1.8rem; z-index: 10;
+  font-size: 0.44rem; letter-spacing: 0.18em; color: var(--ink-faint);
+  text-align: right; line-height: 1.8;
+}
 
-  /* ── REVEAL ──────────────────────────────────── */
-  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+/* ── CLUSTER OVERLAY ── */
+#cluster-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(245,242,236,0.97);
+  backdrop-filter: blur(8px);
+  overflow-y: auto;
+  padding: 3rem 2.5rem 4rem;
+}
+#cluster-overlay.open { display: block; }
+.overlay-close {
+  position: fixed; top: 1.5rem; right: 1.8rem;
+  font-family: var(--mono); font-size: 0.52rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-dim); background: none; border: none;
+  cursor: pointer; padding: 0.4rem 0.8rem;
+  border: 1px solid var(--ink-faint);
+  transition: color 0.2s, border-color 0.2s;
+}
+.overlay-close:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
+.overlay-cluster-name {
+  font-family: var(--sans); font-size: 1.5rem; font-weight: 300;
+  color: var(--ink); margin-bottom: 0.4rem; letter-spacing: -0.01em;
+}
+.overlay-cluster-desc {
+  font-size: 0.65rem; color: var(--ink-dim); line-height: 1.85;
+  max-width: 560px; margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem; border-bottom: 1px solid var(--blue-G);
+}
+.overlay-papers-label {
+  font-size: 0.48rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink-blue); margin-bottom: 1.2rem;
+}
+.overlay-paper {
+  display: grid; grid-template-columns: 64px 1fr;
+  gap: 1rem; padding: 1.2rem 0;
+  border-bottom: 1px solid var(--blue-G);
+  align-items: baseline;
+}
+.overlay-paper-year {
+  font-size: 0.5rem; letter-spacing: 0.12em; color: var(--ink-faint);
+}
+.overlay-paper-title {
+  font-family: var(--sans); font-size: 0.88rem; font-weight: 400;
+  color: var(--ink); margin-bottom: 0.3rem; line-height: 1.3;
+  text-decoration: none; border-bottom: 1px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+}
+a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
+.overlay-paper-venue {
+  font-size: 0.55rem; color: var(--ink-dim); margin-bottom: 0.4rem;
+}
+.overlay-paper-nodes {
+  display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem;
+}
+.overlay-paper-node {
+  font-size: 0.44rem; letter-spacing: 0.08em;
+  border: 1px solid rgba(26,44,107,0.18);
+  color: var(--ink-blue); padding: 0.15rem 0.4rem;
+}
+.overlay-empty {
+  font-size: 0.62rem; color: var(--ink-dim); font-style: italic;
+  padding: 1rem 0;
+}
 
-  /* ── MOBILE ──────────────────────────────────── */
-  @media (max-width: 900px) {
-    nav { padding: 1.2rem 1.5rem; }
-    .nav-title { display: none; }
-    .nav-links { gap: 1.2rem; }
-    #hero, #model, #phases, #network, #clusters, #papers { padding: 5rem 1.5rem; }
-    .model-pillars { grid-template-columns: 1fr; }
-    .phase-flow { grid-template-columns: 1fr 1fr; }
-    .phases-header, .network-header { grid-template-columns: 1fr; gap: 2rem; }
-    #graph-canvas { height: 400px; }
-  }
+/* ── CURSOR ── */
+.cursor { position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; }
+.cursor-ring { position: fixed; width: 22px; height: 22px; border: 1px solid var(--ink-faint); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.25s; }
 </style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
-<nav>
-  <a href="index.html" class="nav-back">← back to site</a>
-  <span class="nav-title">Knowledge Graph</span>
-  <ul class="nav-links">
-    <li><a href="#model">Model</a></li>
-    <li><a href="#phases">States</a></li>
-    <li><a href="#network">Network</a></li>
-    <li><a href="#clusters">Clusters</a></li>
-    <li><a href="#papers">Papers</a></li>
-  </ul>
-</nav>
+<div class="cursor" id="cursor">+</div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-<!-- ── HERO ── -->
-<section id="hero">
-  <p class="hero-eyebrow">Knowledge Graph · Semantic Topology</p>
-  <h1 class="hero-title">The Research<br><em>Landscape</em></h1>
-  <p class="hero-sub">The animation in the background of this website is not decorative. It is a <strong>live computational model</strong> of a researcher's semantic space — constructed from publications, driven by spreading activation, and shaped by Bayesian surprise.</p>
-  <div class="hero-scroll">Scroll to explore</div>
-</section>
-
-<!-- ── HOW IT WORKS ── -->
-<section id="model">
-  <p class="section-label">How It Works</p>
-  <div class="model-intro reveal">
-    <h2>A mind, <em>modelled</em></h2>
-    <p>Three ideas compose the system. Together they produce something that is less background decoration and more cognitive portrait — a landscape that thinks.</p>
-  </div>
-  <div class="model-pillars">
-    <div class="pillar reveal">
-      <p class="pillar-num">01 / Semantic Graph</p>
-      <h3>Concepts as nodes.<br>Theory as edges.</h3>
-      <p>Key constructs from research publications are encoded as nodes in a weighted graph. Edges connect nodes that share theoretical relationships — the stronger the coupling, the stronger the edge. The graph is <em>built from papers</em>, not imposed.</p>
-    </div>
-    <div class="pillar reveal">
-      <p class="pillar-num">02 / Spreading Activation</p>
-      <h3>A mind<br>in motion.</h3>
-      <p>An attention cursor wanders the graph — visiting nodes, boosting their activation. Energy flows outward along edges, lighting up connected concepts. The 3D surface rises wherever activation peaks, creating a <em>landscape shaped by thought</em>.</p>
-    </div>
-    <div class="pillar reveal">
-      <p class="pillar-num">03 / Bayesian Surprise</p>
-      <h3>Prediction error<br>drives change.</h3>
-      <p>A global <em>surprise</em> parameter — semantic distance — controls how far the attention cursor jumps. Low surprise: local, predictable movement. High surprise: sudden far jumps across the graph, as if a new idea has violated prior belief. The topology doesn't just animate — it updates.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── FIVE STATES ── -->
-<section id="phases">
-  <p class="section-label">Five States of Mind</p>
-  <div class="phases-header">
-    <h2 class="reveal">Surprise as a<br>narrative arc</h2>
-    <p class="reveal">The background cycles through five cognitive states, driven by a random walk in semantic distance. Each state has a distinct phenomenology — a different relationship between what the mind expects and what it finds. The HUD in the bottom-right corner shows which state is active.</p>
-  </div>
-  <div class="phase-flow">
-    <div class="phase-card reveal">
-      <div class="phase-indicator"></div>
-      <p class="phase-range">0 – 20 % surprise</p>
-      <h3 class="phase-name">predicting</h3>
-      <p class="phase-desc">The network rests in stable equilibrium. Attention moves locally along strong edges, reinforcing familiar associations. Priors hold. The landscape barely shifts.</p>
-    </div>
-    <div class="phase-card reveal">
-      <div class="phase-indicator"></div>
-      <p class="phase-range">20 – 45 % surprise</p>
-      <h3 class="phase-name">wandering</h3>
-      <p class="phase-desc">Prediction error begins to accumulate. Attention drifts between related clusters — curiosity without commitment. The mesh ripples gently at the edges.</p>
-    </div>
-    <div class="phase-card reveal">
-      <div class="phase-indicator"></div>
-      <p class="phase-range">45 – 65 % surprise</p>
-      <h3 class="phase-name">surprised</h3>
-      <p class="phase-desc">A signal violates expectation. The pulse trails heat from blue to amber. Activation spreads beyond its local neighbourhood. Something unexpected has arrived.</p>
-    </div>
-    <div class="phase-card reveal">
-      <div class="phase-indicator"></div>
-      <p class="phase-range">65 – 82 % surprise</p>
-      <h3 class="phase-name">revising</h3>
-      <p class="phase-desc">Belief updating is underway. Distant concepts are recruited across cluster boundaries. The landscape dramatically reshapes — prior models yielding to new evidence.</p>
-    </div>
-    <div class="phase-card reveal">
-      <div class="phase-indicator"></div>
-      <p class="phase-range">82 – 100 % surprise</p>
-      <h3 class="phase-name">integrating</h3>
-      <p class="phase-desc">A new model is forming. The network seeks a new equilibrium. Understanding has expanded. The mind is more open than it was a moment ago.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── NETWORK CANVAS ── -->
-<section id="network">
-  <p class="section-label">The Network</p>
-  <div class="network-header">
-    <h2 class="reveal">Every node.<br>Every edge.</h2>
-    <p class="reveal">The full semantic graph, rendered in two dimensions. Node size reflects conceptual centrality (weight). Edge opacity encodes theoretical coupling strength. Hover any node to explore its connections and publication provenance.</p>
-  </div>
-  <div class="canvas-wrap reveal">
+<div id="app">
+  <div id="canvas-wrap">
     <canvas id="graph-canvas"></canvas>
-    <div class="canvas-tooltip" id="canvas-tooltip">
-      <div class="tooltip-label" id="tt-label">—</div>
-      <div class="tooltip-cluster" id="tt-cluster"></div>
-      <div class="tooltip-meta" id="tt-meta"></div>
+    <a href="index.html" id="back">← Shabnam Hakimi</a>
+
+    <div id="hud">
+      <div class="hud-phase" id="hud-phase">predicting</div>
+      <div class="hud-bar"><div id="hud-bar-fill"></div></div>
+      <div class="hud-ring-wrap"><div class="hud-ring" id="hud-ring"></div></div>
+    </div>
+
+    <div id="title-block">
+      <h1>Research Knowledge Graph</h1>
+      <p>42 concepts · 100 connections · 7 research clusters</p>
+    </div>
+
+    <div id="stats-bar">
+      <div id="stat-active">hover a node · click to activate</div>
     </div>
   </div>
-  <div class="cluster-legend" id="cluster-legend"></div>
-</section>
 
-<!-- ── CLUSTERS ── -->
-<section id="clusters">
-  <p class="section-label">Research Clusters</p>
-  <div class="clusters-grid" id="clusters-grid">
-    <!-- populated by JS -->
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <h2>Semantic topology</h2>
+      <p>A live map of the conceptual space underlying this research. Nodes are key constructs weighted by theoretical centrality; edges encode semantic proximity between ideas.</p>
+      <p style="margin-top:0.6rem;font-size:0.52rem;color:var(--ink-dim);line-height:1.75;border-top:1px solid var(--blue-G);padding-top:0.7rem;">The contour lines show <strong style="color:var(--ink-blue)">spreading activation</strong> — a computational model of how concepts in memory illuminate each other along associative pathways (Collins &amp; Loftus, 1975). The topography is the same mathematics as a <strong style="color:var(--ink-blue)">gradient descent loss landscape</strong>: peaks form where activation concentrates, valleys where it is absent. Tighter contours = steeper gradient = faster change in activation.</p>
+    </div>
+
+    <div id="node-detail">
+      <div class="nd-cluster" id="nd-cluster" style="color:var(--ink-blue)">Select a node to inspect</div>
+      <div class="nd-label" id="nd-label" style="color:var(--ink-dim);font-size:0.65rem;font-family:var(--mono)">Click any concept in the graph</div>
+      <div class="nd-weight" id="nd-weight"></div>
+      <div class="nd-connections" id="nd-connections"></div>
+    </div>
+
+    <div id="topo-legend" style="padding:1rem 1.5rem;border-bottom:1px solid var(--blue-G);">
+      <div style="font-size:0.46rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-blue);margin-bottom:0.7rem;">Activation intensity</div>
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+        <div style="flex:1;height:6px;border-radius:2px;background:linear-gradient(to right,
+          rgba(26,44,107,0.08),
+          rgba(26,44,107,0.15),
+          rgba(26,44,107,0.22),
+          rgba(26,44,107,0.30)
+        );border:1px solid rgba(26,44,107,0.12);"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:0.44rem;letter-spacing:0.12em;color:var(--ink-dim);">
+        <span>low activation</span><span>high activation</span>
+      </div>
+      <div style="margin-top:0.7rem;font-size:0.48rem;color:var(--ink-dim);line-height:1.7;">
+        Contour lines show activation density. Tighter spacing = steeper gradient. Peaks form where semantically related concepts activate together.
+      </div>
+    </div>
+
+    <div id="cluster-list">
+      <div class="cluster-item" data-cluster="0" onclick="focusCluster(0)">
+        <div class="cluster-swatch" style="background:#7777FF"></div>
+        <div class="cluster-body">
+          <div class="cluster-name">Self-Regulation</div>
+          <div class="cluster-desc">Core cognitive processes enabling adaptive responses to context: emotion regulation, executive function, and flexible goal pursuit.</div>
+          <div class="cluster-count" id="cluster-count-0"></div>
+        </div>
+      </div>
+      <div class="cluster-item" data-cluster="1" onclick="focusCluster(1)">
+        <div class="cluster-swatch" style="background:#C977FF"></div>
+        <div class="cluster-body">
+          <div class="cluster-name">Predictive Brain</div>
+          <div class="cluster-desc">Computational frameworks for how the brain forms predictions, encodes surprise, and updates beliefs in response to expectancy violations.</div>
+          <div class="cluster-count" id="cluster-count-1"></div>
+        </div>
+      </div>
+      <div class="cluster-item" data-cluster="2" onclick="focusCluster(2)">
+        <div class="cluster-swatch" style="background:#FF77E4"></div>
+        <div class="cluster-body">
+          <div class="cluster-name">Generative AI</div>
+          <div class="cluster-desc">Large language models, text-to-image systems, and their applications in behavior change, creativity support, and intervention design.</div>
+          <div class="cluster-count" id="cluster-count-2"></div>
+        </div>
+      </div>
+      <div class="cluster-item" data-cluster="3" onclick="focusCluster(3)">
+        <div class="cluster-swatch" style="background:#FF7792"></div>
+        <div class="cluster-body">
+          <div class="cluster-name">Interventions</div>
+          <div class="cluster-desc">Translational work designing, testing, and personalizing behavior change interventions — from health apps to AI-assisted driving interfaces.</div>
+          <div class="cluster-count" id="cluster-count-3"></div>
+        </div>
+      </div>
+      <div class="cluster-item" data-cluster="4" onclick="focusCluster(4)">
+        <div class="cluster-swatch" style="background:#FFFF77"></div>
+        <div class="cluster-body">
+          <div class="cluster-name">Neuroeconomics</div>
+          <div class="cluster-desc">Neural and computational basis of value, reward learning, intertemporal choice, and how motivation shapes decision-making under uncertainty.</div>
+          <div class="cluster-count" id="cluster-count-4"></div>
+        </div>
+      </div>
+      <div class="cluster-item" data-cluster="5" onclick="focusCluster(5)">
+        <div class="cluster-swatch" style="background:#FFAE77"></div>
+        <div class="cluster-body">
+          <div class="cluster-name">Social Neuroscience</div>
+          <div class="cluster-desc">How social context and emotion modulate cognition — including social learning, moral judgment, empathy, and bias in consequential decisions.</div>
+          <div class="cluster-count" id="cluster-count-5"></div>
+        </div>
+      </div>
+      <div class="cluster-item" data-cluster="6" onclick="focusCluster(6)">
+        <div class="cluster-swatch" style="background:#77FFE4"></div>
+        <div class="cluster-body">
+          <div class="cluster-name">Consumer & Preference</div>
+          <div class="cluster-desc">Preference elicitation, cognitive complexity of choice, and how perceptual and linguistic features of products predict consumer decisions.</div>
+          <div class="cluster-count" id="cluster-count-6"></div>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
+</div>
 
-<!-- ── PAPERS ── -->
-<section id="papers">
-  <p class="section-label">Papers → Concepts</p>
-  <table class="papers-table" id="papers-table">
-    <thead>
-      <tr>
-        <th>Year</th>
-        <th>Paper</th>
-        <th>Concepts contributed</th>
-      </tr>
-    </thead>
-    <tbody id="papers-tbody">
-      <!-- populated by JS -->
-    </tbody>
-  </table>
-</section>
+<!-- ── CLUSTER OVERLAY ── -->
+<div id="cluster-overlay">
+  <button class="overlay-close" onclick="closeOverlay()">✕ close</button>
+  <div id="overlay-content"></div>
+</div>
 
-<footer>
-  <p>© 2026 Shabnam Hakimi</p>
-  <p>Graph built from publication history · <a href="index.html" style="color:var(--fog);text-decoration:none;">← back to site</a></p>
-</footer>
+<script type="application/json" id="graph-data">
+{
+  "version": "1.0",
+  "meta": {
+    "title": "Shabnam Hakimi \u2014 Research Knowledge Graph",
+    "description": "Semantic graph of research concepts across publications. Nodes are key constructs; edges encode theoretical relationships and their strength.",
+    "clusters": [
+      {
+        "id": 0,
+        "name": "Psychology / Cognition"
+      },
+      {
+        "id": 1,
+        "name": "Computational / Bayesian"
+      },
+      {
+        "id": 2,
+        "name": "AI / Generative"
+      },
+      {
+        "id": 3,
+        "name": "Application / Intervention"
+      },
+      {
+        "id": 4,
+        "name": "Neuroeconomics"
+      },
+      {
+        "id": 5,
+        "name": "Social Neuroscience"
+      },
+      {
+        "id": 6,
+        "name": "Consumer / Preference"
+      }
+    ],
+    "papers": [
+      {
+        "id": "hakimi2025iccc",
+        "title": "Psychologically-inspired generative AI videos for supporting creativity",
+        "venue": "ICCC 2025",
+        "year": 2025,
+        "url": "https://computationalcreativity.net/iccc25/papers/iccc25-hakimi2025psychologically.pdf",
+        "nodes_contributed": [
+          "bayesian_surprise",
+          "pred_processing",
+          "belief_updating",
+          "pred_error",
+          "event_segmentation",
+          "semantic_distance",
+          "active_inference",
+          "temporal_res",
+          "psych_flex",
+          "creativity",
+          "open_mindedness",
+          "affect",
+          "awe",
+          "expectancy_viol",
+          "exec_function",
+          "gen_ai",
+          "llm",
+          "text_to_image",
+          "intervention",
+          "video",
+          "personalization",
+          "human_centered"
+        ]
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "psych_flex",
+      "label": "psychological\nflexibility",
+      "weight": 1,
+      "cluster": 0
+    },
+    {
+      "id": "creativity",
+      "label": "creativity",
+      "weight": 0.9,
+      "cluster": 0
+    },
+    {
+      "id": "open_mindedness",
+      "label": "open-\nmindedness",
+      "weight": 0.65,
+      "cluster": 0
+    },
+    {
+      "id": "affect",
+      "label": "affect",
+      "weight": 0.72,
+      "cluster": 0
+    },
+    {
+      "id": "awe",
+      "label": "awe",
+      "weight": 0.55,
+      "cluster": 0
+    },
+    {
+      "id": "expectancy_viol",
+      "label": "expectancy\nviolation",
+      "weight": 0.68,
+      "cluster": 0
+    },
+    {
+      "id": "exec_function",
+      "label": "executive\nfunction",
+      "weight": 0.65,
+      "cluster": 0
+    },
+    {
+      "id": "self_regulation",
+      "label": "self-\nregulation",
+      "weight": 0.85,
+      "cluster": 0
+    },
+    {
+      "id": "intrinsic_motiv",
+      "label": "intrinsic\nmotivation",
+      "weight": 0.78,
+      "cluster": 0
+    },
+    {
+      "id": "behavior_change",
+      "label": "behavior\nchange",
+      "weight": 0.72,
+      "cluster": 0
+    },
+    {
+      "id": "bayesian_surprise",
+      "label": "Bayesian\nsurprise",
+      "weight": 0.95,
+      "cluster": 1
+    },
+    {
+      "id": "pred_processing",
+      "label": "predictive\nprocessing",
+      "weight": 0.85,
+      "cluster": 1
+    },
+    {
+      "id": "belief_updating",
+      "label": "belief\nupdating",
+      "weight": 0.8,
+      "cluster": 1
+    },
+    {
+      "id": "pred_error",
+      "label": "prediction\nerror",
+      "weight": 0.78,
+      "cluster": 1
+    },
+    {
+      "id": "event_segmentation",
+      "label": "event\nsegmentation",
+      "weight": 0.65,
+      "cluster": 1
+    },
+    {
+      "id": "semantic_distance",
+      "label": "semantic\ndistance",
+      "weight": 0.72,
+      "cluster": 1
+    },
+    {
+      "id": "active_inference",
+      "label": "active\ninference",
+      "weight": 0.7,
+      "cluster": 1
+    },
+    {
+      "id": "temporal_res",
+      "label": "temporal\nresolution",
+      "weight": 0.6,
+      "cluster": 1
+    },
+    {
+      "id": "gen_ai",
+      "label": "generative\nAI",
+      "weight": 0.88,
+      "cluster": 2
+    },
+    {
+      "id": "llm",
+      "label": "LLM",
+      "weight": 0.72,
+      "cluster": 2
+    },
+    {
+      "id": "text_to_image",
+      "label": "text-to-\nimage",
+      "weight": 0.52,
+      "cluster": 2
+    },
+    {
+      "id": "product_design",
+      "label": "product\ndesign",
+      "weight": 0.75,
+      "cluster": 2
+    },
+    {
+      "id": "intervention",
+      "label": "intervention",
+      "weight": 0.75,
+      "cluster": 3
+    },
+    {
+      "id": "video",
+      "label": "video",
+      "weight": 0.52,
+      "cluster": 3
+    },
+    {
+      "id": "personalization",
+      "label": "personalization",
+      "weight": 0.7,
+      "cluster": 3
+    },
+    {
+      "id": "human_centered",
+      "label": "human-\ncentered",
+      "weight": 0.65,
+      "cluster": 3
+    },
+    {
+      "id": "temporal_discounting",
+      "label": "temporal\ndiscounting",
+      "weight": 0.85,
+      "cluster": 4
+    },
+    {
+      "id": "vmPFC",
+      "label": "vmPFC",
+      "weight": 0.8,
+      "cluster": 4
+    },
+    {
+      "id": "dlPFC",
+      "label": "dlPFC",
+      "weight": 0.75,
+      "cluster": 4
+    },
+    {
+      "id": "reward_value",
+      "label": "reward\nvaluation",
+      "weight": 0.82,
+      "cluster": 4
+    },
+    {
+      "id": "future_simulation",
+      "label": "future\nsimulation",
+      "weight": 0.72,
+      "cluster": 4
+    },
+    {
+      "id": "intertemporal",
+      "label": "intertemporal\nchoice",
+      "weight": 0.78,
+      "cluster": 4
+    },
+    {
+      "id": "individual_diff",
+      "label": "individual\ndifferences",
+      "weight": 0.68,
+      "cluster": 4
+    },
+    {
+      "id": "social_cognition",
+      "label": "social\ncognition",
+      "weight": 0.82,
+      "cluster": 5
+    },
+    {
+      "id": "moral_judgment",
+      "label": "moral\njudgment",
+      "weight": 0.68,
+      "cluster": 5
+    },
+    {
+      "id": "decision_bias",
+      "label": "decision\nbias",
+      "weight": 0.65,
+      "cluster": 5
+    },
+    {
+      "id": "fMRI",
+      "label": "fMRI",
+      "weight": 0.75,
+      "cluster": 5
+    },
+    {
+      "id": "affect_regulation",
+      "label": "affect\nregulation",
+      "weight": 0.7,
+      "cluster": 5
+    },
+    {
+      "id": "cog_complexity",
+      "label": "cognitive\ncomplexity",
+      "weight": 0.8,
+      "cluster": 6
+    },
+    {
+      "id": "pref_elicitation",
+      "label": "preference\nelicitation",
+      "weight": 0.82,
+      "cluster": 6
+    },
+    {
+      "id": "aesthetic_percep",
+      "label": "aesthetic\nperception",
+      "weight": 0.68,
+      "cluster": 6
+    },
+    {
+      "id": "consumer_choice",
+      "label": "consumer\nchoice",
+      "weight": 0.72,
+      "cluster": 6
+    }
+  ],
+  "edges": [
+    {
+      "a": "psych_flex",
+      "b": "creativity",
+      "strength": 0.95
+    },
+    {
+      "a": "psych_flex",
+      "b": "open_mindedness",
+      "strength": 0.85
+    },
+    {
+      "a": "psych_flex",
+      "b": "exec_function",
+      "strength": 0.75
+    },
+    {
+      "a": "psych_flex",
+      "b": "self_regulation",
+      "strength": 0.88
+    },
+    {
+      "a": "psych_flex",
+      "b": "affect",
+      "strength": 0.72
+    },
+    {
+      "a": "psych_flex",
+      "b": "behavior_change",
+      "strength": 0.82
+    },
+    {
+      "a": "self_regulation",
+      "b": "exec_function",
+      "strength": 0.8
+    },
+    {
+      "a": "self_regulation",
+      "b": "behavior_change",
+      "strength": 0.85
+    },
+    {
+      "a": "self_regulation",
+      "b": "intrinsic_motiv",
+      "strength": 0.78
+    },
+    {
+      "a": "intrinsic_motiv",
+      "b": "creativity",
+      "strength": 0.8
+    },
+    {
+      "a": "intrinsic_motiv",
+      "b": "behavior_change",
+      "strength": 0.72
+    },
+    {
+      "a": "affect",
+      "b": "creativity",
+      "strength": 0.72
+    },
+    {
+      "a": "affect",
+      "b": "open_mindedness",
+      "strength": 0.68
+    },
+    {
+      "a": "awe",
+      "b": "affect",
+      "strength": 0.8
+    },
+    {
+      "a": "awe",
+      "b": "creativity",
+      "strength": 0.7
+    },
+    {
+      "a": "awe",
+      "b": "open_mindedness",
+      "strength": 0.75
+    },
+    {
+      "a": "expectancy_viol",
+      "b": "affect",
+      "strength": 0.65
+    },
+    {
+      "a": "expectancy_viol",
+      "b": "creativity",
+      "strength": 0.7
+    },
+    {
+      "a": "expectancy_viol",
+      "b": "psych_flex",
+      "strength": 0.74
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "pred_processing",
+      "strength": 0.9
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "belief_updating",
+      "strength": 0.92
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "pred_error",
+      "strength": 0.88
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "semantic_distance",
+      "strength": 0.85
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "event_segmentation",
+      "strength": 0.78
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "expectancy_viol",
+      "strength": 0.8
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "psych_flex",
+      "strength": 0.82
+    },
+    {
+      "a": "bayesian_surprise",
+      "b": "temporal_res",
+      "strength": 0.7
+    },
+    {
+      "a": "pred_processing",
+      "b": "belief_updating",
+      "strength": 0.88
+    },
+    {
+      "a": "pred_processing",
+      "b": "pred_error",
+      "strength": 0.9
+    },
+    {
+      "a": "pred_processing",
+      "b": "active_inference",
+      "strength": 0.85
+    },
+    {
+      "a": "pred_error",
+      "b": "event_segmentation",
+      "strength": 0.75
+    },
+    {
+      "a": "pred_error",
+      "b": "belief_updating",
+      "strength": 0.85
+    },
+    {
+      "a": "active_inference",
+      "b": "gen_ai",
+      "strength": 0.65
+    },
+    {
+      "a": "active_inference",
+      "b": "psych_flex",
+      "strength": 0.72
+    },
+    {
+      "a": "temporal_res",
+      "b": "pred_processing",
+      "strength": 0.65
+    },
+    {
+      "a": "gen_ai",
+      "b": "intervention",
+      "strength": 0.85
+    },
+    {
+      "a": "gen_ai",
+      "b": "llm",
+      "strength": 0.8
+    },
+    {
+      "a": "gen_ai",
+      "b": "text_to_image",
+      "strength": 0.75
+    },
+    {
+      "a": "gen_ai",
+      "b": "creativity",
+      "strength": 0.72
+    },
+    {
+      "a": "gen_ai",
+      "b": "product_design",
+      "strength": 0.82
+    },
+    {
+      "a": "llm",
+      "b": "semantic_distance",
+      "strength": 0.78
+    },
+    {
+      "a": "llm",
+      "b": "cog_complexity",
+      "strength": 0.8
+    },
+    {
+      "a": "llm",
+      "b": "pref_elicitation",
+      "strength": 0.72
+    },
+    {
+      "a": "product_design",
+      "b": "pref_elicitation",
+      "strength": 0.85
+    },
+    {
+      "a": "product_design",
+      "b": "aesthetic_percep",
+      "strength": 0.82
+    },
+    {
+      "a": "product_design",
+      "b": "human_centered",
+      "strength": 0.78
+    },
+    {
+      "a": "intervention",
+      "b": "video",
+      "strength": 0.82
+    },
+    {
+      "a": "intervention",
+      "b": "personalization",
+      "strength": 0.75
+    },
+    {
+      "a": "intervention",
+      "b": "temporal_res",
+      "strength": 0.75
+    },
+    {
+      "a": "intervention",
+      "b": "human_centered",
+      "strength": 0.68
+    },
+    {
+      "a": "personalization",
+      "b": "human_centered",
+      "strength": 0.7
+    },
+    {
+      "a": "personalization",
+      "b": "individual_diff",
+      "strength": 0.72
+    },
+    {
+      "a": "open_mindedness",
+      "b": "creativity",
+      "strength": 0.78
+    },
+    {
+      "a": "semantic_distance",
+      "b": "llm",
+      "strength": 0.72
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "vmPFC",
+      "strength": 0.9
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "dlPFC",
+      "strength": 0.88
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "intertemporal",
+      "strength": 0.95
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "self_regulation",
+      "strength": 0.82
+    },
+    {
+      "a": "temporal_discounting",
+      "b": "reward_value",
+      "strength": 0.88
+    },
+    {
+      "a": "vmPFC",
+      "b": "reward_value",
+      "strength": 0.92
+    },
+    {
+      "a": "vmPFC",
+      "b": "future_simulation",
+      "strength": 0.85
+    },
+    {
+      "a": "dlPFC",
+      "b": "vmPFC",
+      "strength": 0.88
+    },
+    {
+      "a": "dlPFC",
+      "b": "exec_function",
+      "strength": 0.82
+    },
+    {
+      "a": "dlPFC",
+      "b": "self_regulation",
+      "strength": 0.8
+    },
+    {
+      "a": "reward_value",
+      "b": "intrinsic_motiv",
+      "strength": 0.75
+    },
+    {
+      "a": "reward_value",
+      "b": "intertemporal",
+      "strength": 0.86
+    },
+    {
+      "a": "future_simulation",
+      "b": "intertemporal",
+      "strength": 0.82
+    },
+    {
+      "a": "future_simulation",
+      "b": "pred_processing",
+      "strength": 0.72
+    },
+    {
+      "a": "individual_diff",
+      "b": "temporal_discounting",
+      "strength": 0.76
+    },
+    {
+      "a": "individual_diff",
+      "b": "self_regulation",
+      "strength": 0.72
+    },
+    {
+      "a": "fMRI",
+      "b": "vmPFC",
+      "strength": 0.85
+    },
+    {
+      "a": "fMRI",
+      "b": "dlPFC",
+      "strength": 0.85
+    },
+    {
+      "a": "social_cognition",
+      "b": "moral_judgment",
+      "strength": 0.82
+    },
+    {
+      "a": "social_cognition",
+      "b": "decision_bias",
+      "strength": 0.78
+    },
+    {
+      "a": "social_cognition",
+      "b": "affect_regulation",
+      "strength": 0.75
+    },
+    {
+      "a": "social_cognition",
+      "b": "fMRI",
+      "strength": 0.8
+    },
+    {
+      "a": "moral_judgment",
+      "b": "decision_bias",
+      "strength": 0.8
+    },
+    {
+      "a": "moral_judgment",
+      "b": "affect",
+      "strength": 0.72
+    },
+    {
+      "a": "affect_regulation",
+      "b": "self_regulation",
+      "strength": 0.85
+    },
+    {
+      "a": "affect_regulation",
+      "b": "affect",
+      "strength": 0.88
+    },
+    {
+      "a": "affect_regulation",
+      "b": "exec_function",
+      "strength": 0.7
+    },
+    {
+      "a": "decision_bias",
+      "b": "intertemporal",
+      "strength": 0.65
+    },
+    {
+      "a": "decision_bias",
+      "b": "individual_diff",
+      "strength": 0.7
+    },
+    {
+      "a": "cog_complexity",
+      "b": "pref_elicitation",
+      "strength": 0.88
+    },
+    {
+      "a": "cog_complexity",
+      "b": "consumer_choice",
+      "strength": 0.82
+    },
+    {
+      "a": "cog_complexity",
+      "b": "aesthetic_percep",
+      "strength": 0.75
+    },
+    {
+      "a": "pref_elicitation",
+      "b": "consumer_choice",
+      "strength": 0.85
+    },
+    {
+      "a": "pref_elicitation",
+      "b": "individual_diff",
+      "strength": 0.75
+    },
+    {
+      "a": "aesthetic_percep",
+      "b": "consumer_choice",
+      "strength": 0.8
+    },
+    {
+      "a": "aesthetic_percep",
+      "b": "affect",
+      "strength": 0.68
+    },
+    {
+      "a": "consumer_choice",
+      "b": "behavior_change",
+      "strength": 0.65
+    },
+    {
+      "a": "reward_value",
+      "b": "pred_error",
+      "strength": 0.7
+    },
+    {
+      "a": "future_simulation",
+      "b": "belief_updating",
+      "strength": 0.68
+    },
+    {
+      "a": "vmPFC",
+      "b": "social_cognition",
+      "strength": 0.65
+    },
+    {
+      "a": "affect_regulation",
+      "b": "reward_value",
+      "strength": 0.65
+    },
+    {
+      "a": "cog_complexity",
+      "b": "semantic_distance",
+      "strength": 0.75
+    },
+    {
+      "a": "cog_complexity",
+      "b": "llm",
+      "strength": 0.78
+    },
+    {
+      "a": "consumer_choice",
+      "b": "social_cognition",
+      "strength": 0.58
+    },
+    {
+      "a": "creativity",
+      "b": "intrinsic_motiv",
+      "strength": 0.8
+    },
+    {
+      "a": "behavior_change",
+      "b": "intervention",
+      "strength": 0.85
+    }
+  ]
+}
+</script>
+<script type="application/json" id="cluster-data">
+[{"id": 0, "name": "Psychological Flexibility & Self-Regulation", "short": "Self-Regulation", "desc": "Core cognitive processes enabling adaptive responses to context: emotion regulation, executive function, and flexible goal pursuit.", "color": "#7777FF", "hex_r": 119, "hex_g": 119, "hex_b": 255}, {"id": 1, "name": "Bayesian & Predictive Processing", "short": "Predictive Brain", "desc": "Computational frameworks for how the brain forms predictions, encodes surprise, and updates beliefs in response to expectancy violations.", "color": "#C977FF", "hex_r": 201, "hex_g": 119, "hex_b": 255}, {"id": 2, "name": "Generative AI & Language Models", "short": "Generative AI", "desc": "Large language models, text-to-image systems, and their applications in behavior change, creativity support, and intervention design.", "color": "#FF77E4", "hex_r": 255, "hex_g": 119, "hex_b": 228}, {"id": 3, "name": "Applied Interventions", "short": "Interventions", "desc": "Translational work designing, testing, and personalizing behavior change interventions \u2014 from health apps to AI-assisted driving interfaces.", "color": "#FF7792", "hex_r": 255, "hex_g": 119, "hex_b": 146}, {"id": 4, "name": "Neuroeconomics & Reward", "short": "Neuroeconomics", "desc": "Neural and computational basis of value, reward learning, intertemporal choice, and how motivation shapes decision-making under uncertainty.", "color": "#FFFF77", "hex_r": 255, "hex_g": 255, "hex_b": 119}, {"id": 5, "name": "Social Cognition & Affective Neuroscience", "short": "Social Neuroscience", "desc": "How social context and emotion modulate cognition \u2014 including social learning, moral judgment, empathy, and bias in consequential decisions.", "color": "#FFAE77", "hex_r": 255, "hex_g": 174, "hex_b": 119}, {"id": 6, "name": "Consumer Psychology & Preference", "short": "Consumer & Preference", "desc": "Preference elicitation, cognitive complexity of choice, and how perceptual and linguistic features of products predict consumer decisions.", "color": "#77FFE4", "hex_r": 119, "hex_g": 255, "hex_b": 228}]
+</script>
 
 <script>
-// ══════════════════════════════════════════════════════════════════
-//  GRAPH PAGE — loads graph.json, runs force layout, renders canvas
-// ══════════════════════════════════════════════════════════════════
-
-const CLUSTER_META = [
-  { name: 'Psychology / Cognition',  color: '#C9A84C',
-    desc: 'Core psychological constructs underlying flexibility, creativity, and motivated behaviour. Self-regulation, intrinsic motivation, affect, open-mindedness — the mind\'s operating capacities.' },
-  { name: 'Computational / Bayesian', color: '#D66853',
-    desc: 'The mathematical backbone of the research: predictive processing, Bayesian surprise, belief updating, prediction error, active inference. The formal language that lets cognitive theory become quantitative.' },
-  { name: 'AI / Generative',          color: '#5a9aa0',
-    desc: 'Language models, image generators, video synthesis. The technical toolkit for constructing psychologically-informed experiences at scale — where cognitive science meets the generative stack.' },
-  { name: 'Application / Intervention', color: '#7a8aca',
-    desc: 'Where theory meets practice. Personalised video, human-centred design, scalable behaviour change. The translational layer that turns computational models into real-world tools.' },
-  { name: 'Neuroeconomics',           color: '#7aad7a',
-    desc: 'The neural substrate of value and choice: vmPFC, dlPFC, reward valuation, temporal discounting, future simulation. The brain\'s decision machinery, viewed through an economic lens.' },
-  { name: 'Social Neuroscience',      color: '#a07aca',
-    desc: 'Social cognition, moral judgment, affect regulation, fMRI methods. How minds navigate other people and shared contexts — the social brain in action.' },
-  { name: 'Consumer / Preference',    color: '#ca8a5a',
-    desc: 'Aesthetic perception, preference elicitation, consumer choice, cognitive complexity. How minds evaluate and select among options — the applied end of decision neuroscience.' },
-];
-
-(async function () {
-
-  // ── Load data ───────────────────────────────────────────
-  let graphData;
-  try {
-    const res = await fetch('./graph.json');
-    if (!res.ok) throw new Error('not ok');
-    graphData = await res.json();
-  } catch(e) {
-    console.error('Failed to load graph.json', e);
-    // Show a friendly error in the canvas area
-    const el = document.getElementById('graph-canvas');
-    if (el) { el.style.display = 'none'; }
-    const wrap = document.querySelector('.canvas-wrap');
-    if (wrap) wrap.innerHTML = '<p style="padding:3rem;font-family:var(--mono);font-size:0.7rem;color:var(--fog);letter-spacing:0.15em;">graph.json not found — serve this file from a local server.</p>';
-    return;
-  }
-
+(function() {
+  // ── Data ────────────────────────────────────────────────────
+  const graphData   = JSON.parse(document.getElementById('graph-data').textContent);
+  const clusterData = JSON.parse(document.getElementById('cluster-data').textContent);
   const NODES  = graphData.nodes;
   const EDGES  = graphData.edges;
-  const PAPERS = graphData.meta?.papers || [];
+  const PAPERS = (graphData.meta && graphData.meta.papers) || [];
 
-  // Build papers lookup by node id
-  const nodesPaperMap = {};  // nodeId → [paper]
+  // Build node → papers map from nodes_contributed
+  const nodePapers = {};
   PAPERS.forEach(p => {
     (p.nodes_contributed || []).forEach(nid => {
-      if (!nodesPaperMap[nid]) nodesPaperMap[nid] = [];
-      nodesPaperMap[nid].push(p);
+      if (!nodePapers[nid]) nodePapers[nid] = [];
+      nodePapers[nid].push(p);
     });
   });
+
+  // Cluster lookup
+  const CLUSTER_COLOR = clusterData.map(c => c.color);
+  const CLUSTER_RGB   = clusterData.map(c => [c.hex_r, c.hex_g, c.hex_b]);
 
   // Build adjacency
-  const adj = NODES.map(() => []);
+  const nodeIndex = {};
+  NODES.forEach((n, i) => nodeIndex[n.id] = i);
+  const adj = Array.from({length: NODES.length}, () => []);
   EDGES.forEach(e => {
-    const ai = NODES.findIndex(n => n.id === e.a);
-    const bi = NODES.findIndex(n => n.id === e.b);
-    if (ai < 0 || bi < 0) return;
-    adj[ai].push({ idx: bi, e });
-    adj[bi].push({ idx: ai, e });
-  });
-
-  // ── Populate clusters section ────────────────────────────
-  const cGrid = document.getElementById('clusters-grid');
-  CLUSTER_META.forEach((cm, ci) => {
-    const nodesInCluster = NODES.filter(n => n.cluster === ci);
-    const nodeTags = nodesInCluster.map(n =>
-      `<span class="cluster-node-tag">${n.label.replace('\n',' ')}</span>`
-    ).join('');
-    cGrid.innerHTML += `
-      <div class="cluster-card reveal">
-        <p class="cluster-id">Cluster ${String(ci).padStart(2,'0')}</p>
-        <h3 class="cluster-name">${cm.name}</h3>
-        <p class="cluster-desc">${cm.desc}</p>
-        <div class="cluster-nodes">${nodeTags}</div>
-      </div>
-    `;
-  });
-
-  // ── Populate papers table ────────────────────────────────
-  const tbody = document.getElementById('papers-tbody');
-  PAPERS.forEach(p => {
-    const nodeList = (p.nodes_contributed || []).map(nid => {
-      const n = NODES.find(nd => nd.id === nid);
-      return n ? `<span class="paper-node-tag">${n.label.replace('\n',' ')}</span>` : '';
-    }).filter(Boolean).join('');
-    const link = p.url ? `<br><a class="paper-link" href="${p.url}" target="_blank" rel="noopener">read paper →</a>` : '';
-    tbody.innerHTML += `
-      <tr>
-        <td class="paper-year">${p.year}</td>
-        <td><div class="paper-title">${p.title}</div>
-            <div class="paper-venue">${p.venue}</div>${link}</td>
-        <td><div class="paper-nodes">${nodeList}</div></td>
-      </tr>
-    `;
-  });
-
-  // ── Force-directed layout ────────────────────────────────
-  const SEEDS = [
-    {x: 0.32, y: 0.32}, // 0: Psychology
-    {x: 0.20, y: 0.55}, // 1: Bayesian
-    {x: 0.70, y: 0.25}, // 2: AI
-    {x: 0.52, y: 0.68}, // 3: Application
-    {x: 0.14, y: 0.75}, // 4: Neuroeconomics
-    {x: 0.82, y: 0.52}, // 5: Social Neuro
-    {x: 0.75, y: 0.73}, // 6: Consumer
-  ];
-  const pos = NODES.map(n => {
-    const s = SEEDS[n.cluster] || SEEDS[0];
-    return { x: s.x + (Math.random()-0.5)*0.12, y: s.y + (Math.random()-0.5)*0.12, vx:0, vy:0 };
-  });
-
-  const K_REP = 0.00045, K_SPR = 0.12, R_LEN = 0.11, DAMP = 0.82;
-  for (let iter = 0; iter < 450; iter++) {
-    const cool = 0.45 * (1 - iter/450);
-    const nn = NODES.length;
-    for (let i = 0; i < nn; i++) {
-      for (let j = i+1; j < nn; j++) {
-        const dx=pos[i].x-pos[j].x, dy=pos[i].y-pos[j].y;
-        const d=Math.sqrt(dx*dx+dy*dy)+0.001;
-        const f=K_REP/(d*d);
-        pos[i].vx+=f*dx/d; pos[i].vy+=f*dy/d;
-        pos[j].vx-=f*dx/d; pos[j].vy-=f*dy/d;
-      }
+    const ai = nodeIndex[e.a], bi = nodeIndex[e.b];
+    if (ai !== undefined && bi !== undefined) {
+      adj[ai].push({ idx: bi, strength: e.weight || 0.5 });
+      adj[bi].push({ idx: ai, strength: e.weight || 0.5 });
     }
+  });
+
+  // Cluster node counts
+  const clusterCounts = new Array(7).fill(0);
+  NODES.forEach(n => { if (n.cluster < 7) clusterCounts[n.cluster]++; });
+  clusterData.forEach(c => {
+    const el = document.getElementById(`cluster-count-${c.id}`);
+    if (el) el.textContent = `${clusterCounts[c.id]} concept${clusterCounts[c.id]!==1?'s':''}`;
+  });
+
+  // Add "projects →" button to each cluster item
+  clusterData.forEach((c, ci) => {
+    const item = document.querySelector(`[data-cluster="${ci}"]`);
+    if (!item) return;
+    const btn = document.createElement('button');
+    btn.textContent = 'projects →';
+    btn.style.cssText = 'background:none;border:none;font-family:var(--mono);font-size:0.44rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-blue);cursor:pointer;padding:0.35rem 0;margin-top:0.2rem;display:block;opacity:0.65;transition:opacity 0.2s;';
+    btn.addEventListener('mouseenter', () => btn.style.opacity = '1');
+    btn.addEventListener('mouseleave', () => btn.style.opacity = '0.65');
+    btn.addEventListener('click', e => { e.stopPropagation(); openOverlay(ci); });
+    item.querySelector('.cluster-body').appendChild(btn);
+  });
+
+  // ── Force layout ────────────────────────────────────────────
+  const BOUNDS = 7.0, K_REP = 1.8, K_SPRING = 0.12, DAMPING = 0.82;
+  const npos = NODES.map((n, i) => {
+    const angle = (i / NODES.length) * Math.PI * 2;
+    const r = 2 + Math.random() * 3;
+    return { x: Math.cos(angle)*r, y: Math.sin(angle)*r, vx: 0, vy: 0 };
+  });
+  for (let iter = 0; iter < 400; iter++) {
+    const cooling = 1 - iter / 400;
+    for (let i = 0; i < NODES.length; i++) {
+      let fx = 0, fy = 0;
+      // Repulsion
+      for (let j = 0; j < NODES.length; j++) {
+        if (i === j) continue;
+        const dx = npos[i].x - npos[j].x, dy = npos[i].y - npos[j].y;
+        const d2 = dx*dx + dy*dy + 0.01;
+        const f = K_REP / d2;
+        fx += dx * f; fy += dy * f;
+      }
+      // Cluster gravity
+      const ci = NODES[i].cluster;
+      const cx = (ci % 4 - 1.5) * 3.5;
+      const cy = (Math.floor(ci / 4) - 0.5) * 3.5;
+      fx += (cx - npos[i].x) * 0.04;
+      fy += (cy - npos[i].y) * 0.04;
+      npos[i].vx = (npos[i].vx + fx * 0.12) * DAMPING;
+      npos[i].vy = (npos[i].vy + fy * 0.12) * DAMPING;
+    }
+    // Spring edges
     EDGES.forEach(e => {
-      const ai=NODES.findIndex(n=>n.id===e.a), bi=NODES.findIndex(n=>n.id===e.b);
-      if(ai<0||bi<0) return;
-      const dx=pos[bi].x-pos[ai].x, dy=pos[bi].y-pos[ai].y;
-      const d=Math.sqrt(dx*dx+dy*dy)+0.001;
-      const rest=R_LEN/(0.4+e.strength);
-      const f=K_SPR*(d-rest);
-      pos[ai].vx+=f*dx/d; pos[ai].vy+=f*dy/d;
-      pos[bi].vx-=f*dx/d; pos[bi].vy-=f*dy/d;
+      const ai = nodeIndex[e.a], bi = nodeIndex[e.b];
+      if (ai === undefined || bi === undefined) return;
+      const dx = npos[bi].x - npos[ai].x, dy = npos[bi].y - npos[ai].y;
+      const d = Math.sqrt(dx*dx + dy*dy) || 1;
+      const rest = 1.0 + (1 - (e.weight||0.5)) * 1.5;
+      const f = K_SPRING * (d - rest);
+      npos[ai].vx += f * dx/d; npos[ai].vy += f * dy/d;
+      npos[bi].vx -= f * dx/d; npos[bi].vy -= f * dy/d;
     });
-    for (let i=0;i<nn;i++) {
-      pos[i].vx*=DAMP; pos[i].vy*=DAMP;
-      pos[i].x=Math.max(0.04,Math.min(0.96,pos[i].x+pos[i].vx*cool));
-      pos[i].y=Math.max(0.04,Math.min(0.96,pos[i].y+pos[i].vy*cool));
+    for (let i = 0; i < NODES.length; i++) {
+      npos[i].x = Math.max(-BOUNDS, Math.min(BOUNDS, npos[i].x + npos[i].vx * cooling));
+      npos[i].y = Math.max(-BOUNDS, Math.min(BOUNDS, npos[i].y + npos[i].vy * cooling));
     }
   }
 
-  // ── Canvas render ────────────────────────────────────────
-  const canvas   = document.getElementById('graph-canvas');
-  const ctx      = canvas.getContext('2d');
-  const dpr      = Math.min(window.devicePixelRatio || 1, 2);
-  const tooltip  = document.getElementById('canvas-tooltip');
-  const ttLabel  = document.getElementById('tt-label');
-  const ttClust  = document.getElementById('tt-cluster');
-  const ttMeta   = document.getElementById('tt-meta');
-
-  let W, H, hoverIdx = -1, t = 0;
+  // ── Canvas ──────────────────────────────────────────────────
+  const canvas = document.getElementById('graph-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W = 0, H = 0, DPR = 1;
 
   function resize() {
-    W = canvas.clientWidth;
-    H = canvas.clientHeight;
-    canvas.width  = W * dpr;
-    canvas.height = H * dpr;
-    ctx.scale(dpr, dpr);
+    DPR = window.devicePixelRatio || 1;
+    const wrap = canvas.parentElement;
+    W = wrap.clientWidth; H = wrap.clientHeight;
+    canvas.width  = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   }
-  window.addEventListener('resize', () => { resize(); });
+  window.addEventListener('resize', resize);
   resize();
 
-  // Map node pos [0,1] → canvas px
-  const PAD = 48;
-  function cx(x) { return PAD + x * (W - PAD*2); }
-  function cy(y) { return PAD + y * (H - PAD*2); }
+  // World → screen
+  const SCALE = () => Math.min(W, H) * 0.068;
+  function ws(x, y) {
+    return { x: W * 0.5 + x * SCALE(), y: H * 0.52 + y * SCALE() };
+  }
 
-  function draw() {
+  // ── Activation state ────────────────────────────────────────
+  const actTarget   = new Float32Array(NODES.length).fill(0.05);
+  const actSmoothed = new Float32Array(NODES.length).fill(0.05);
+
+  let attentionNode = 0, attentionTimer = 0, interactionCooldown = 0;
+  let semanticDist = 0.1, distVelocity = 0, distTarget = 0.15, distTargetTimer = 0;
+  let userMode = false;  // true when user has clicked a node
+  let userModeTimer = 0; // countdown back to autonomous
+  let t = 0;
+
+  const PHASES = [
+    {name:'predicting', range:[0.00,0.20]},
+    {name:'wandering',  range:[0.20,0.45]},
+    {name:'surprised',  range:[0.45,0.65]},
+    {name:'revising',   range:[0.65,0.82]},
+    {name:'integrating',range:[0.82,1.00]},
+  ];
+  function getPhase(d) { return PHASES.find(p=>d>=p.range[0]&&d<p.range[1])?.name||'predicting'; }
+
+  const hudPhase = document.getElementById('hud-phase');
+  const hudRing  = document.getElementById('hud-ring');
+  let lastPhase = '';
+
+  function lerp(a, b, tau, dt) { return a + (b-a)*(1-Math.exp(-tau*dt)); }
+
+  // ── Hover / selection ───────────────────────────────────────
+  let hoveredNode = -1, selectedNode = -1, focusedCluster = -1;
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    hoveredNode = -1;
+    let bestD = 14;
+    for (let ni = 0; ni < NODES.length; ni++) {
+      const sp = ws(npos[ni].x, npos[ni].y);
+      const d = Math.hypot(mx - sp.x, my - sp.y);
+      if (d < bestD) { bestD = d; hoveredNode = ni; }
+    }
+    if (hoveredNode >= 0) {
+      canvas.style.cursor = 'none';
+      updateNodeDetail(hoveredNode);
+    } else {
+      canvas.style.cursor = 'none';
+    }
+  });
+  canvas.addEventListener('click', e => {
+    if (hoveredNode >= 0) {
+      selectedNode = hoveredNode;
+      attentionNode = hoveredNode;
+      actTarget[hoveredNode] = 1.0;
+      userMode = true;
+      userModeTimer = 6.0; // stay in user mode for 6 seconds
+      // In user mode: fast decay of other nodes so clicked node is clear
+      for (let ni = 0; ni < NODES.length; ni++) {
+        if (ni !== hoveredNode) actTarget[ni] = Math.max(0.02, actTarget[ni] * 0.3);
+      }
+    }
+  });
+
+  function updateNodeDetail(ni) {
+    const node = NODES[ni];
+    const ci   = Math.min(node.cluster, 6);
+    const col  = CLUSTER_COLOR[ci];
+    const safeCol = col === '#FFFF77' ? '#8a7200' : (col === '#77FFE4' ? '#007a68' : col);
+    document.getElementById('nd-cluster').textContent  = clusterData[ci].short;
+    document.getElementById('nd-cluster').style.color  = safeCol;
+    document.getElementById('nd-label').textContent    = node.label.replace('\n', ' ');
+    document.getElementById('nd-label').style.color    = 'var(--ink)';
+    document.getElementById('nd-label').style.fontFamily = 'var(--sans)';
+    document.getElementById('nd-label').style.fontSize = '0.95rem';
+    document.getElementById('nd-weight').textContent   = `centrality ${(node.weight * 100).toFixed(0)}  ·  ${adj[ni].length} connections`;
+
+    // Connected concepts
+    const connected = adj[ni].slice(0, 8)
+      .sort((a,b) => (b.strength||0.5)-(a.strength||0.5))
+      .map(e => ({ label: NODES[e.idx].label.replace('\n',' '), w: e.strength||0.5 }));
+    const papersForNode = nodePapers[node.id] || [];
+
+    let html = '<div style="margin-bottom:0.4rem;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)">Connected concepts</div>';
+    html += connected.map(l => `<span>${l}</span>`).join('');
+
+    if (papersForNode.length) {
+      html += '<div style="margin-top:0.8rem;margin-bottom:0.35rem;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)">Related publications</div>';
+      papersForNode.forEach(p => {
+        const link = p.url || (p.doi ? `https://doi.org/${p.doi}` : null);
+        const year = p.year ? `${p.year} · ` : '';
+        const venue = p.venue || '';
+        if (link) {
+          html += `<div style="margin-bottom:0.45rem;"><a href="${link}" target="_blank" rel="noopener" style="font-size:0.54rem;color:var(--ink-blue);text-decoration:none;border-bottom:1px solid rgba(26,44,107,0.25);line-height:1.6;">${p.title}</a><div style="font-size:0.46rem;color:var(--ink-dim);margin-top:0.1rem;">${year}${venue}</div></div>`;
+        } else {
+          html += `<div style="margin-bottom:0.45rem;font-size:0.54rem;color:var(--ink-dim);line-height:1.6;">${p.title}<div style="font-size:0.46rem;margin-top:0.1rem;">${year}${venue}</div></div>`;
+        }
+      });
+    }
+
+    document.getElementById('nd-connections').innerHTML = html;
+    document.getElementById('stat-active').textContent =
+      `${node.label.replace('\n',' ')} · cluster ${ci} · weight ${node.weight.toFixed(2)}`;
+  }
+
+  window.openOverlay = function(ci) {
+    const c = clusterData[ci];
+    const clusterNodeIds = new Set(NODES.filter(n => n.cluster === ci).map(n => n.id));
+    const clusterPapers = PAPERS.filter(p =>
+      (p.nodes_contributed || []).some(nid => clusterNodeIds.has(nid))
+    );
+
+    let html = '<div style="margin-bottom:0.5rem;font-size:0.5rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink-dim)">Research cluster ' + ci + '</div>';
+    html += '<div class="overlay-cluster-name">' + c.name + '</div>';
+    html += '<div class="overlay-cluster-desc">' + c.desc + '</div>';
+    html += '<div class="overlay-papers-label">Publications</div>';
+
+    if (clusterPapers.length === 0) {
+      html += '<div class="overlay-empty">No papers linked to this cluster yet. Use <code style="font-size:0.6rem;background:rgba(26,44,107,0.07);padding:0.1rem 0.3rem;">node index.js add --doi …</code> to add papers.</div>';
+    } else {
+      clusterPapers.forEach(function(p) {
+        const link = p.url || (p.doi ? 'https://doi.org/' + p.doi : null);
+        const titleEl = link
+          ? '<a class="overlay-paper-title" href="' + link + '" target="_blank" rel="noopener">' + p.title + '</a>'
+          : '<div class="overlay-paper-title">' + p.title + '</div>';
+        const nodes = (p.nodes_contributed || [])
+          .filter(function(nid) { return clusterNodeIds.has(nid); })
+          .map(function(nid) {
+            const n = NODES.find(function(nd) { return nd.id === nid; });
+            return n ? n.label.replace('\n', ' ') : nid;
+          });
+        const nodeTags = nodes.map(function(l) {
+          return '<span class="overlay-paper-node">' + l + '</span>';
+        }).join('');
+        html += '<div class="overlay-paper">'
+          + '<div class="overlay-paper-year">' + (p.year || '—') + '</div>'
+          + '<div>'
+          + titleEl
+          + '<div class="overlay-paper-venue">' + (p.venue || '') + '</div>'
+          + '<div class="overlay-paper-nodes">' + nodeTags + '</div>'
+          + '</div></div>';
+      });
+    }
+
+    document.getElementById('overlay-content').innerHTML = html;
+    document.getElementById('cluster-overlay').classList.add('open');
+  }
+
+  // Close on Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') window.closeOverlay(); });
+
+  window.focusCluster = function(ci) {
+    focusedCluster = focusedCluster === ci ? -1 : ci;
+    document.querySelectorAll('.cluster-item').forEach(el => el.classList.remove('active'));
+    if (focusedCluster >= 0) {
+      document.querySelector(`[data-cluster="${ci}"]`).classList.add('active');
+      // Boost activation for all nodes in this cluster
+      NODES.forEach((n, ni) => {
+        if (n.cluster === ci) actTarget[ni] = Math.min(1, actTarget[ni] + 0.5);
+      });
+    }
+  };
+
+  // ── Animation ───────────────────────────────────────────────
+  let lastTime = performance.now();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const now = performance.now();
+    const dt  = Math.min((now - lastTime) / 1000, 0.05);
+    lastTime  = now; t += dt;
+
+    const nn = NODES.length;
+
+    // Narrative
+    distTargetTimer -= dt;
+    if (distTargetTimer <= 0) {
+      distTarget = Math.random() < 0.15 ? 0.55 + Math.random() * 0.45
+        : Math.max(0, Math.min(1, distTarget + (Math.random()-0.45)*0.14));
+      distTargetTimer = 3 + Math.random() * 5;
+    }
+    distVelocity += (distTarget - semanticDist) * 8 * dt;
+    distVelocity *= Math.exp(-5*dt);
+    semanticDist = Math.max(0, Math.min(1, semanticDist + distVelocity * dt));
+
+    // ── Mode management ─────────────────────────────────────────
+    if (userMode) {
+      userModeTimer -= dt;
+      if (userModeTimer <= 0) { userMode = false; }
+    }
+
+    // Mode parameters
+    const DECAY  = userMode ? 0.80  : 0.30;   // faster decay in user mode → cleaner signal
+    const SPREAD = userMode ? 1.20  : 0.30;   // faster spread in user mode → visible propagation
+    const BASE   = userMode ? 0.01  : 0.04;   // lower floor in user mode → contrast
+    const TAU    = userMode ? 2.5   : 3.5;    // faster smoothing in user mode
+    const PULSE_THRESH = userMode ? 0.15 : 0.40; // lower threshold for pulses in user mode
+    const PULSE_RATE   = userMode ? 1.2  : 0.25;
+
+    // ── Attention: weighted random walk ──────────────────────────
+    attentionTimer -= dt;
+    if (attentionTimer <= 0 || attentionNode >= nn) {
+      if (selectedNode >= 0) {
+        attentionNode = selectedNode; selectedNode = -1;
+      } else if (!userMode) {
+        // Autonomous mode: wander the graph
+        const edges = adj[attentionNode] || [];
+        if (edges.length && Math.random() > semanticDist * 0.55) {
+          const total = edges.reduce((s, e) => s + e.strength, 0);
+          let r = Math.random() * total;
+          for (const e of edges) { r -= e.strength; if (r <= 0) { attentionNode = e.idx; break; } }
+        } else {
+          const ci = NODES[attentionNode].cluster;
+          const far = NODES.map((_,i)=>i).filter(i => NODES[i].cluster !== ci);
+          attentionNode = far.length ? far[Math.floor(Math.random()*far.length)] : Math.floor(Math.random()*nn);
+        }
+        actTarget[attentionNode] = Math.min(userMode ? 1.0 : 0.45, actTarget[attentionNode] + (userMode ? 0.75 : 0.30));
+      }
+      attentionTimer = userMode
+        ? 2.0 + Math.random() * 1.0      // user mode: give time to read
+        : 3.0 + (1-semanticDist)*4 + Math.random()*2; // autonomous: slow drift
+    }
+
+    // ── Spreading activation (Collins & Loftus 1975) ─────────────
+    const newAct = new Float32Array(nn);
+    for (let ni = 0; ni < nn; ni++) newAct[ni] = actTarget[ni] * Math.exp(-DECAY * dt);
+    for (let ni = 0; ni < nn; ni++) {
+      if (actTarget[ni] < (userMode ? 0.05 : 0.10)) continue;
+      for (const e of adj[ni]) {
+        newAct[e.idx] = Math.min(1.0, newAct[e.idx] + actTarget[ni] * e.strength * SPREAD * dt);
+      }
+    }
+    for (let ni = 0; ni < nn; ni++) actTarget[ni] = Math.max(BASE, newAct[ni]);
+
+    for (let ni = 0; ni < nn; ni++) actSmoothed[ni] = lerp(actSmoothed[ni], actTarget[ni], TAU, dt);
+
+    // ── Edge pulses ───────────────────────────────────────────────
+    if (!window._pulses) window._pulses = [];
+    const pulses = window._pulses;
+    for (let ni = 0; ni < nn; ni++) {
+      if (actSmoothed[ni] < PULSE_THRESH) continue;
+      for (const e of adj[ni]) {
+        if (Math.random() < actSmoothed[ni] * e.strength * PULSE_RATE * dt) {
+          pulses.push({ from: ni, to: e.idx, age: 0,
+            dur: userMode ? 0.35 + Math.random()*0.2 : 0.7 + Math.random()*0.4,
+            str: actSmoothed[ni], user: userMode });
+        }
+      }
+    }
+    for (let i = pulses.length-1; i >= 0; i--) { pulses[i].age += dt; if (pulses[i].age >= pulses[i].dur) pulses.splice(i,1); }
+    while (pulses.length > (userMode ? 120 : 40)) pulses.shift();
+
+    // ── Draw ─────────────────────────────────────────────────
     ctx.clearRect(0, 0, W, H);
+
+    // Cluster halos — soft highlighter wash
+    const clusterPos = clusterData.map((c, ci) => {
+      let sx = 0, sy = 0, n = 0;
+      NODES.forEach((node, ni) => {
+        if (node.cluster === ci) { const sp = ws(npos[ni].x, npos[ni].y); sx += sp.x; sy += sp.y; n++; }
+      });
+      return n > 0 ? { x: sx/n, y: sy/n } : { x: W/2, y: H/2 };
+    });
+    clusterData.forEach((c, ci) => {
+      const pos = clusterPos[ci];
+      const clAct = Math.max(...NODES.map((n,ni) => n.cluster===ci ? actSmoothed[ni] : 0));
+      const alpha = 0.02 + clAct * 0.05 + (focusedCluster===ci ? 0.03 : 0);
+      if (alpha < 0.01) return;
+      const r = SCALE() * 2.8;
+      const [rv,gv,bv] = CLUSTER_RGB[ci];
+      const grd = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r);
+      grd.addColorStop(0, `rgba(${rv},${gv},${bv},${alpha.toFixed(3)})`);
+      grd.addColorStop(1, `rgba(${rv},${gv},${bv},0)`);
+      ctx.beginPath(); ctx.arc(pos.x, pos.y, r, 0, Math.PI*2);
+      ctx.fillStyle = grd; ctx.fill();
+    });
+
+    // ── Topographic height field + contour lines ────────────────
+    // The height field is defined by node activations at their force-layout
+    // positions. High activation = high terrain. Contour lines show the
+    // semantic landscape topology — the same landscape as the hero animation
+    // but here grounded to actual node positions.
+    const TGRID = 48; // field resolution
+    const tField = new Float32Array(TGRID * TGRID);
+    // Map grid → world coords (same space as npos)
+    const tExtent = BOUNDS + 1.0;
+    for (let row = 0; row < TGRID; row++) {
+      for (let col = 0; col < TGRID; col++) {
+        const wx = (col / (TGRID-1)) * 2 * tExtent - tExtent;
+        const wz = (row / (TGRID-1)) * 2 * tExtent - tExtent;
+        let fh = 0;
+        // Each node contributes a Gaussian hill at its position,
+        // scaled by weight × smoothed activation
+        for (let ni = 0; ni < nn; ni++) {
+          const act = actSmoothed[ni];
+          if (act < 0.04) continue;
+          const dx = wx - npos[ni].x, dy = wz - npos[ni].y;
+          const d2 = dx*dx + dy*dy;
+          const sigma = 1.8 + NODES[ni].weight * 0.8;
+          fh += Math.exp(-d2 / (sigma*sigma)) * act * NODES[ni].weight;
+        }
+        // Gentle base undulation for topographic texture even at rest
+        fh += Math.sin(t*0.08 + wx*0.35 + wz*0.25)*0.03
+            + Math.sin(t*0.05 + wx*0.22)*0.02;
+        tField[row*TGRID+col] = fh;
+      }
+    }
+
+    // Find range
+    let tfMin = Infinity, tfMax = -Infinity;
+    for (let i = 0; i < tField.length; i++) {
+      if (tField[i] < tfMin) tfMin = tField[i];
+      if (tField[i] > tfMax) tfMax = tField[i];
+    }
+    const tfRange = Math.max(tfMax - tfMin, 0.01);
+
+    // Marching squares
+    const MS_T = {
+      1:[[3,0]],2:[[0,1]],3:[[3,1]],4:[[1,2]],5:[[3,2],[0,1]],
+      6:[[0,2]],7:[[3,2]],8:[[2,3]],9:[[2,0]],10:[[0,3],[1,2]],
+      11:[[2,1]],12:[[1,3]],13:[[1,0]],14:[[0,3]]
+    };
+
+    // Map topo grid coord → screen (same transform as ws())
+    function tgs(col, row) {
+      const wx = (col/(TGRID-1))*2*tExtent - tExtent;
+      const wz = (row/(TGRID-1))*2*tExtent - tExtent;
+      return ws(wx, wz);
+    }
+
+    // Single ink color — opacity + weight encode intensity only.
+    // Color is reserved for cluster identity on nodes.
+    const N_TOPO = 8;
+    for (let lv = 0; lv < N_TOPO; lv++) {
+      const threshold = tfMin + ((lv + 0.6) / N_TOPO) * tfRange;
+      const rv = 26, gv = 44, bv = 107; // deep ink blue
+      const alpha = 0.05 + (lv / N_TOPO) * 0.22;
+      const lw    = 0.4 + (lv / N_TOPO) * 1.0;
+      ctx.beginPath();
+      for (let row = 0; row < TGRID-1; row++) {
+        for (let col = 0; col < TGRID-1; col++) {
+          const v00=tField[row*TGRID+col], v10=tField[row*TGRID+col+1];
+          const v01=tField[(row+1)*TGRID+col], v11=tField[(row+1)*TGRID+col+1];
+          const idx=(v00>threshold?8:0)|(v10>threshold?4:0)|(v11>threshold?2:0)|(v01>threshold?1:0);
+          if (!idx||idx===15) continue;
+          const e01 = Math.abs(v10-v00)<1e-6?0:Math.max(0,Math.min(1,(threshold-v00)/(v10-v00)));
+          const e12 = Math.abs(v11-v10)<1e-6?0:Math.max(0,Math.min(1,(threshold-v10)/(v11-v10)));
+          const e23 = Math.abs(v11-v01)<1e-6?0:Math.max(0,Math.min(1,(threshold-v01)/(v11-v01)));
+          const e30 = Math.abs(v01-v00)<1e-6?0:Math.max(0,Math.min(1,(threshold-v00)/(v01-v00)));
+          const ep = [
+            tgs(col+e01, row),
+            tgs(col+1, row+e12),
+            tgs(col+e23, row+1),
+            tgs(col, row+e30),
+          ];
+          const lines = MS_T[idx];
+          if (lines) lines.forEach(([a,b]) => {
+            ctx.moveTo(ep[a].x, ep[a].y);
+            ctx.lineTo(ep[b].x, ep[b].y);
+          });
+        }
+      }
+      ctx.strokeStyle = `rgba(${rv},${gv},${bv},${alpha.toFixed(3)})`;
+      ctx.lineWidth = lw;
+      ctx.stroke();
+    }
 
     // Edges
     EDGES.forEach(e => {
-      const ai = NODES.findIndex(n => n.id === e.a);
-      const bi = NODES.findIndex(n => n.id === e.b);
-      if (ai < 0 || bi < 0) return;
-      const isHoverEdge = hoverIdx >= 0 && (ai === hoverIdx || bi === hoverIdx);
-      const baseAlpha = hoverIdx >= 0 ? (isHoverEdge ? e.strength * 0.65 : 0.04) : e.strength * 0.25;
-      ctx.beginPath();
-      ctx.moveTo(cx(pos[ai].x), cy(pos[ai].y));
-
-      // Gentle quadratic curve
-      const mx = (pos[ai].x + pos[bi].x) / 2 + (pos[bi].y - pos[ai].y) * 0.08;
-      const my = (pos[ai].y + pos[bi].y) / 2 - (pos[bi].x - pos[ai].x) * 0.08;
-      ctx.quadraticCurveTo(cx(mx), cy(my), cx(pos[bi].x), cy(pos[bi].y));
-
-      if (isHoverEdge) {
-        ctx.strokeStyle = `rgba(200,185,155,${baseAlpha})`;
-        ctx.lineWidth = 1;
-      } else {
-        ctx.strokeStyle = `rgba(100,130,170,${baseAlpha})`;
-        ctx.lineWidth = 0.6;
-      }
+      const ai = nodeIndex[e.a], bi = nodeIndex[e.b];
+      if (ai === undefined || bi === undefined) return;
+      const act      = Math.max(actSmoothed[ai], actSmoothed[bi]);
+      const w        = e.weight || e.strength || 0.5; // semantic edge weight 0→1
+      const isFocused = focusedCluster >= 0 && (NODES[ai].cluster === focusedCluster || NODES[bi].cluster === focusedCluster);
+      // Opacity: base weight-driven + activation boost
+      const baseAlpha = 0.01 + Math.pow(w, 1.8) * 0.22;
+      const alpha = isFocused
+        ? baseAlpha * 2.2 + act * 0.20
+        : (focusedCluster >= 0 ? baseAlpha * 0.4 : baseAlpha + act * 0.12);
+      // Thickness: weight 0.5→1.0 maps to 0.4→1.8px, plus activation
+      const lw = 0.2 + Math.pow(w, 1.5) * 2.0 + act * 0.4;
+      const pa = ws(npos[ai].x, npos[ai].y), pb = ws(npos[bi].x, npos[bi].y);
+      ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y);
+      ctx.strokeStyle = `rgba(40,28,20,${alpha.toFixed(3)})`;  // warm ink, distinct from blue contours
+      ctx.lineWidth = lw;
       ctx.stroke();
     });
 
+    // ── Draw edge pulses ────────────────────────────────────────
+    if (window._pulses) for (const p of window._pulses) {
+      const pa = ws(npos[p.from].x, npos[p.from].y);
+      const pb = ws(npos[p.to].x,   npos[p.to].y);
+      const frac = p.age / p.dur;
+      const px = pa.x + (pb.x - pa.x) * frac;
+      const py = pa.y + (pb.y - pa.y) * frac;
+      const alpha = p.user ? p.str * (1 - frac) * 0.92 : p.str * (1 - frac) * 0.35;
+      const radius = p.user ? 3.5 : 2.0;
+      const ci = Math.min(NODES[p.from].cluster, 6);
+      const [rv,gv,bv] = CLUSTER_RGB[ci];
+      ctx.beginPath();
+      ctx.arc(px, py, radius, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${rv},${gv},${bv},${alpha.toFixed(2)})`;
+      ctx.fill();
+      // Trail line for user mode
+      if (p.user && frac > 0.05) {
+        const ptx = pa.x + (pb.x-pa.x)*(frac-0.05);
+        const pty = pa.y + (pb.y-pa.y)*(frac-0.05);
+        ctx.beginPath(); ctx.moveTo(ptx,pty); ctx.lineTo(px,py);
+        ctx.strokeStyle = `rgba(${rv},${gv},${bv},${(alpha*0.5).toFixed(2)})`;
+        ctx.lineWidth = 1.2; ctx.stroke();
+      }
+    }
+
     // Nodes
-    NODES.forEach((n, ni) => {
-      const x = cx(pos[ni].x), y = cy(pos[ni].y);
-      const baseR = 4 + n.weight * 8;
-      const breathR = baseR * (1 + 0.055 * Math.sin(t * 1.6 + ni * 0.9));
-      const isHover = ni === hoverIdx;
-      const cm = CLUSTER_META[n.cluster] || CLUSTER_META[0];
+    for (let ni = 0; ni < nn; ni++) {
+      const act  = actSmoothed[ni];
+      const node = NODES[ni];
+      const ci   = Math.min(node.cluster, 6);
+      const sp   = ws(npos[ni].x, npos[ni].y);
+      const isAtt  = ni === attentionNode;
+      const isHov  = ni === hoveredNode;
+      const isFoc  = focusedCluster < 0 || node.cluster === focusedCluster;
+      const [rv,gv,bv] = CLUSTER_RGB[ci];
+
+      if (!isFoc && act < 0.15) continue;
+
+      const r = (2.5 + node.weight * 3 + act * 2.5) * (isHov ? 1.3 : 1);
 
       // Glow
-      if (isHover) {
-        ctx.save();
-        ctx.shadowBlur = 22;
-        ctx.shadowColor = cm.color;
+      if (act > 0.15 || isHov || isAtt) {
+        const gr = ctx.createRadialGradient(sp.x, sp.y, 0, sp.x, sp.y, r*4);
+        const ga = isAtt ? 0.20 : (isHov ? 0.15 : act*0.10);
+        gr.addColorStop(0, `rgba(${rv},${gv},${bv},${ga.toFixed(3)})`);
+        gr.addColorStop(1, `rgba(${rv},${gv},${bv},0)`);
+        ctx.beginPath(); ctx.arc(sp.x, sp.y, r*4, 0, Math.PI*2);
+        ctx.fillStyle = gr; ctx.fill();
       }
 
-      // Circle
-      ctx.beginPath();
-      ctx.arc(x, y, isHover ? breathR * 1.3 : breathR, 0, Math.PI*2);
-      ctx.fillStyle = isHover
-        ? cm.color + 'ee'
-        : cm.color + (hoverIdx >= 0 ? '55' : '99');
+      // Node circle
+      ctx.beginPath(); ctx.arc(sp.x, sp.y, r, 0, Math.PI*2);
+      const nodeAlpha = isFoc ? (0.35 + act*0.55) : 0.15;
+      ctx.fillStyle = `rgba(${rv},${gv},${bv},${nodeAlpha.toFixed(2)})`;
       ctx.fill();
-
-      if (isHover) ctx.restore();
-
-      // Tiny bright core
-      ctx.beginPath();
-      ctx.arc(x, y, isHover ? 3 : 1.5, 0, Math.PI*2);
-      ctx.fillStyle = isHover ? '#fff' : cm.color + 'cc';
-      ctx.fill();
-
-      // Label (always shown, fades if not hovered when something else is)
-      const labelAlpha = hoverIdx < 0 ? 0.45 : (isHover ? 0.9 : 0.18);
-      if (labelAlpha > 0.05) {
-        const lines = n.label.split('\n');
-        ctx.font = `italic 300 ${isHover ? 12 : 10}px "Cormorant Garamond", serif`;
-        ctx.fillStyle = `rgba(200,212,224,${labelAlpha})`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const lineH = isHover ? 14 : 12;
-        const yOff  = breathR + 8;
-        lines.forEach((ln, li) => {
-          ctx.fillText(ln, x, y + yOff + (li - (lines.length-1)/2) * lineH);
-        });
+      ctx.strokeStyle = `rgba(${rv},${gv},${bv},${(nodeAlpha+0.2).toFixed(2)})`;
+      ctx.lineWidth = isAtt ? 2.0 : 0.8;
+      ctx.stroke();
+      // Attended node: pulsing outer ring
+      if (isAtt) {
+        const pulse = 0.5 + 0.5 * Math.sin(t * 4);
+        ctx.beginPath(); ctx.arc(sp.x, sp.y, r + 4 + pulse*2, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(${rv},${gv},${bv},${(0.5*pulse).toFixed(2)})`;
+        ctx.lineWidth = 1.0; ctx.stroke();
       }
-    });
+
+      // Label
+      const showLabel = isHov || isAtt || act > 0.35 || (isFoc && act > 0.12);
+      if (!showLabel) continue;
+      const lines  = node.label.split('\n');
+      const fsize  = isHov || isAtt ? 11 : 9;
+      const lalpha = isHov || isAtt ? 0.95 : Math.min(0.8, 0.3 + act*0.7);
+      ctx.save();
+      ctx.globalAlpha = lalpha;
+      ctx.font = `${fsize}px 'Space Mono', monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      // Highlight background for attended node
+      if (isAtt || isHov) {
+        const tw = Math.max(...lines.map(l => ctx.measureText(l).width));
+        const th = lines.length * (fsize + 2);
+        ctx.fillStyle = `rgba(${rv},${gv},${bv},0.18)`;
+        ctx.fillRect(sp.x - tw/2 - 3, sp.y + r + 3, tw + 6, th + 4);
+      }
+      ctx.fillStyle = `rgba(17,17,24,${lalpha.toFixed(2)})`;
+      lines.forEach((line, li) => ctx.fillText(line, sp.x, sp.y + r + 4 + li*(fsize+2)));
+      ctx.restore();
+    }
+
+    // ── HUD ──
+    const phase = getPhase(semanticDist);
+    if (phase !== lastPhase) { if (hudPhase) hudPhase.textContent = phase; lastPhase = phase; }
+    const barEl = document.getElementById('hud-bar-fill');
+    if (barEl) barEl.style.width = (semanticDist*100).toFixed(1)+'%';
+    if (hudRing) {
+      const ci = Math.min(NODES[attentionNode]?.cluster||0, 6);
+      const [rv,gv,bv] = CLUSTER_RGB[ci];
+      const act = actSmoothed[attentionNode]||0;
+      hudRing.style.background = `rgba(${rv},${gv},${bv},${(0.4+act*0.5).toFixed(2)})`;
+    }
   }
 
-  function animate() {
-    t += 0.016;
-    draw();
-    requestAnimationFrame(animate);
-  }
   animate();
 
-  // ── Hover interaction ────────────────────────────────────
-  canvas.addEventListener('mousemove', ev => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = ev.clientX - rect.left;
-    const my = ev.clientY - rect.top;
-    let closest = -1, minD = 28;
-    NODES.forEach((n, ni) => {
-      const dx = cx(pos[ni].x) - mx, dy = cy(pos[ni].y) - my;
-      const d = Math.sqrt(dx*dx + dy*dy);
-      if (d < minD) { minD = d; closest = ni; }
-    });
-    hoverIdx = closest;
-    if (closest >= 0) {
-      const n  = NODES[closest];
-      const cm = CLUSTER_META[n.cluster] || CLUSTER_META[0];
-      ttLabel.textContent = n.label.replace('\n',' ');
-      ttClust.textContent = cm.name;
-      ttClust.style.color = cm.color;
-      const degree = adj[closest].length;
-      const papers = nodesPaperMap[closest] || nodesPaperMap[n.id] || [];
-      const paperStr = papers.length
-        ? papers.map(p => p.venue).join(', ')
-        : 'no paper yet';
-      ttMeta.innerHTML = `${degree} connection${degree !== 1 ? 's' : ''}<br>from: ${paperStr}`;
-      tooltip.classList.add('visible');
-    } else {
-      tooltip.classList.remove('visible');
-    }
-  });
-  canvas.addEventListener('mouseleave', () => {
-    hoverIdx = -1;
-    tooltip.classList.remove('visible');
-  });
-
-  // ── Cluster legend ───────────────────────────────────────
-  const legendEl = document.getElementById('cluster-legend');
-  CLUSTER_META.forEach((cm, ci) => {
-    const count = NODES.filter(n => n.cluster === ci).length;
-    legendEl.innerHTML += `
-      <div class="legend-item">
-        <div class="legend-dot" style="background:${cm.color};box-shadow:0 0 6px ${cm.color}55"></div>
-        ${cm.name} <span style="opacity:0.45">(${count})</span>
-      </div>
-    `;
-  });
-
-  // ── Scroll reveal ────────────────────────────────────────
-  const revealEls = document.querySelectorAll('.reveal');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => obs.observe(el));
-
+  // ── Cursor ──
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function moveCursor() {
+    requestAnimationFrame(moveCursor);
+    rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+    cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  })();
 })();
 </script>
 </body>

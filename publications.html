@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publications — Shabnam Hakimi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a, button { cursor: none; }
+:root {
+  --paper:     #f5f2ec;
+  --paper-2:   #edeae1;
+  --ink:       #111118;
+  --ink-blue:  #1a2c6b;
+  --ink-dim:   rgba(17,17,24,0.45);
+  --ink-faint: rgba(17,17,24,0.15);
+  --blue-g:    rgba(80,140,200,0.20);
+  --blue-G:    rgba(80,140,200,0.42);
+  --h-yellow:  #FFFF77;
+  --h-slate:   #7777FF;
+  --h-helio:   #C977FF;
+  --h-violet:  #FF77E4;
+  --h-red:     #FF7792;
+  --h-cheese:  #FFAE77;
+  --h-mint:    #77FFE4;
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+/* Cluster colors */
+.c0 { --cc: var(--h-slate);  }
+.c1 { --cc: var(--h-helio);  }
+.c2 { --cc: var(--h-violet); }
+.c3 { --cc: var(--h-red);    }
+.c4 { --cc: var(--h-yellow); }
+.c5 { --cc: var(--h-cheese); }
+.c6 { --cc: var(--h-mint);   }
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+  background-image:
+    linear-gradient(var(--blue-G) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-G) 1px, transparent 1px),
+    linear-gradient(var(--blue-g) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-g) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 2.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--blue-G);
+}
+.nav-logo {
+  display: inline-block; position: relative;
+  font-family: var(--mono); font-weight: 700;
+  font-size: 0.62rem; letter-spacing: 0.25em;
+  color: var(--ink); text-decoration: none; line-height: 1;
+}
+.nav-logo-hl {
+  position: absolute; left: -3px; right: -3px;
+  top: 28%; height: 40%; opacity: 0.78;
+  transition: background-color 1.2s ease; pointer-events: none;
+}
+.nav-logo-text { position: relative; z-index: 1; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--ink); }
+.nav-sub { font-size: 0.46rem; letter-spacing: 0.1em; color: var(--ink-faint); margin-left: 0.5rem; }
+.nav-sub a { font-size: 0.46rem; letter-spacing: 0.1em; color: var(--ink-faint); text-decoration: none; transition: color 0.2s; }
+.nav-sub a:hover, .nav-sub a.active { color: var(--ink-blue); }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  padding: 8rem 2.5rem 3rem;
+  border-bottom: 1px solid var(--blue-G);
+  max-width: 900px;
+}
+.page-eyebrow {
+  font-size: 0.52rem; letter-spacing: 0.38em; text-transform: uppercase;
+  color: var(--ink-blue); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.page-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: currentColor; }
+.page-title {
+  font-family: var(--sans); font-size: clamp(2rem,5vw,3.5rem); font-weight: 300;
+  color: var(--ink); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 0.6rem;
+}
+.page-meta { font-size: 0.55rem; color: var(--ink-dim); }
+.page-meta a { color: var(--ink-blue); text-decoration: none; border-bottom: 1px solid rgba(26,44,107,0.25); }
+.page-meta a:hover { border-color: var(--ink-blue); }
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  padding: 1.2rem 2.5rem;
+  display: flex; gap: 0.4rem; flex-wrap: wrap;
+  border-bottom: 1px solid var(--blue-G);
+  position: sticky; top: 57px; z-index: 50;
+  background: rgba(244,241,235,0.95); backdrop-filter: blur(6px);
+}
+.filter-btn {
+  font-family: var(--mono); font-size: 0.44rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--ink-dim);
+  background: none; border: 1px solid var(--ink-faint);
+  padding: 0.28rem 0.65rem; cursor: none; transition: all 0.15s;
+}
+.filter-btn:hover { color: var(--ink); border-color: var(--ink-dim); }
+.filter-btn.active { color: var(--ink); border-color: var(--ink-dim); background: rgba(17,17,24,0.04); }
+.filter-btn[data-cluster="0"].active, .filter-btn[data-cluster="0"]:hover { border-color: var(--h-slate);  background: rgba(119,119,255,0.10); }
+.filter-btn[data-cluster="1"].active, .filter-btn[data-cluster="1"]:hover { border-color: var(--h-helio);  background: rgba(201,119,255,0.10); }
+.filter-btn[data-cluster="2"].active, .filter-btn[data-cluster="2"]:hover { border-color: var(--h-violet); background: rgba(255,119,228,0.10); }
+.filter-btn[data-cluster="3"].active, .filter-btn[data-cluster="3"]:hover { border-color: var(--h-red);    background: rgba(255,119,146,0.10); }
+.filter-btn[data-cluster="4"].active, .filter-btn[data-cluster="4"]:hover { border-color: #a09000;         background: rgba(255,255,119,0.18); }
+.filter-btn[data-cluster="5"].active, .filter-btn[data-cluster="5"]:hover { border-color: var(--h-cheese); background: rgba(255,174,119,0.12); }
+.filter-btn[data-cluster="6"].active, .filter-btn[data-cluster="6"]:hover { border-color: var(--h-mint);   background: rgba(119,255,228,0.10); }
+
+/* ── PUB LIST ── */
+.pub-list {
+  padding: 0 2.5rem 6rem;
+  max-width: 900px;
+}
+
+/* ── YEAR GROUP ── */
+.year-group { margin-top: 0; }
+.year-heading {
+  font-size: 0.48rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--ink-blue); padding: 6px 0 0.8rem;
+  margin-top: 48px;
+  border-top: 1.5px solid var(--ink-blue);
+}
+
+/* ── PUBLICATION ENTRY ── */
+.pub-entry {
+  display: grid;
+  grid-template-columns: 2fr 80px;
+  gap: 1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--blue-G);
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.pub-entry.visible { opacity: 1; transform: translateY(0); }
+
+.pub-main {}
+.pub-title {
+  font-family: var(--sans); font-size: 0.9rem; font-weight: 400;
+  color: var(--ink); line-height: 1.35; margin-bottom: 0.35rem;
+}
+.pub-title a {
+  color: inherit; text-decoration: none;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+}
+.pub-title a:hover { border-color: var(--ink-dim); }
+.pub-authors { font-size: 0.58rem; color: var(--ink-dim); margin-bottom: 0.2rem; line-height: 1.6; }
+.pub-authors strong { color: var(--ink); font-weight: 400; }
+.pub-venue { font-size: 0.55rem; color: var(--ink-dim); }
+.pub-venue em { font-style: normal; color: var(--ink-blue); }
+
+.pub-aside {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 0.4rem; padding-top: 0.1rem;
+}
+.pub-year { font-size: 0.5rem; letter-spacing: 0.12em; color: var(--ink-dim); }
+.pub-cluster {
+  font-size: 0.42rem; letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid; padding: 0.12rem 0.4rem;
+  color: var(--cc, var(--ink-blue));
+  border-color: var(--cc, var(--ink-blue));
+  opacity: 0.8;
+}
+.pub-link {
+  font-size: 0.44rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-blue); text-decoration: none;
+  border-bottom: 1px solid rgba(26,44,107,0.25); padding-bottom: 0.05rem;
+  transition: border-color 0.2s;
+}
+.pub-link:hover { border-color: var(--ink-blue); }
+
+/* ── CURSOR ── */
+.cursor {
+  position: fixed; pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
+  color: var(--ink); line-height: 1;
+  width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.12s ease, color 0.12s ease; will-change: transform;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--paper-2); padding: 1.5rem 2.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--blue-G); position: relative; z-index: 10;
+}
+footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); }
+
+@media (max-width: 700px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1.2rem; }
+  .page-header, .pub-list, .filter-bar { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .pub-entry { grid-template-columns: 1fr; }
+  .pub-aside { flex-direction: row; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor">+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-hl" id="nav-logo-hl"></span>
+    <span class="nav-logo-text">SH</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#research">Research</a>
+      <span class="nav-sub"><a href="publications.html" class="active">Publications</a> · <a href="index.html#cv">CV</a></span>
+    </li>
+    <li><a href="projects.html">Extracurriculars</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <p class="page-eyebrow">Research</p>
+  <h1 class="page-title">Publications</h1>
+  <p class="page-meta">29 publications · ~3,400 citations ·
+    <a href="https://scholar.google.com/citations?user=KVRrn40AAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+  </p>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-cluster="all">All</button>
+  <button class="filter-btn" data-cluster="0">Self-regulation</button>
+  <button class="filter-btn" data-cluster="1">Predictive brain</button>
+  <button class="filter-btn" data-cluster="2">Generative AI</button>
+  <button class="filter-btn" data-cluster="3">Interventions</button>
+  <button class="filter-btn" data-cluster="4">Neuroeconomics</button>
+  <button class="filter-btn" data-cluster="5">Social neuroscience</button>
+  <button class="filter-btn" data-cluster="6">Consumer &amp; preference</button>
+</div>
+
+<div class="pub-list" id="pub-list">
+
+  <!-- ── 2025 ── -->
+  <div class="year-group" data-year="2025">
+    <div class="year-heading">2025</div>
+
+    <div class="pub-entry reveal c1" data-clusters="1 2 3">
+      <div class="pub-main">
+        <div class="pub-title"><a href="https://computationalcreativity.net/iccc25/papers/iccc25-hakimi2025psychologically.pdf" target="_blank" rel="noopener">Psychologically-inspired generative AI videos for supporting creativity</a></div>
+        <div class="pub-authors"><strong>Hakimi, S.</strong>, Paredes, P., Hong, M., &amp; Klenk, M.</div>
+        <div class="pub-venue"><em>ICCC 2025</em> — International Conference on Computational Creativity</div>
+      </div>
+      <div class="pub-aside">
+        <span class="pub-year">2025</span>
+        <span class="pub-cluster">Predictive brain</span>
+        <a href="https://computationalcreativity.net/iccc25/papers/iccc25-hakimi2025psychologically.pdf" class="pub-link" target="_blank" rel="noopener">PDF →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2024 ── -->
+  <div class="year-group" data-year="2024">
+    <div class="year-heading">2024</div>
+
+    <div class="pub-entry reveal c3" data-clusters="3 0 4">
+      <div class="pub-main">
+        <div class="pub-title"><a href="#" target="_blank" rel="noopener">Personalizing driver safety interfaces via driver cognitive factors inference</a></div>
+        <div class="pub-authors">Sumner, J., <strong>Hakimi, S.</strong>, Liao, Y., Zhao, S., Scholl, J., Yamani, Y., &amp; Srinivasan, A. R.</div>
+        <div class="pub-venue"><em>Scientific Reports</em>, 14, 2024</div>
+      </div>
+      <div class="pub-aside">
+        <span class="pub-year">2024</span>
+        <span class="pub-cluster">Interventions</span>
+        <a href="#" class="pub-link">DOI →</a>
+      </div>
+    </div>
+
+    <div class="pub-entry reveal c2" data-clusters="2 3">
+      <div class="pub-main">
+        <div class="pub-title"><a href="#" target="_blank" rel="noopener">Creative Commuter: Towards designing moments for idea generation during the commute</a></div>
+        <div class="pub-authors">Paredes, P., Hong, M., <strong>Hakimi, S.</strong>, &amp; Klenk, M.</div>
+        <div class="pub-venue"><em>CHI 2024</em> — ACM Conference on Human Factors in Computing Systems</div>
+      </div>
+      <div class="pub-aside">
+        <span class="pub-year">2024</span>
+        <span class="pub-cluster">Generative AI</span>
+        <a href="#" class="pub-link">DOI →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2023 ── -->
+  <div class="year-group" data-year="2023">
+    <div class="year-heading">2023</div>
+
+    <div class="pub-entry reveal c2" data-clusters="2 1">
+      <div class="pub-main">
+        <div class="pub-title"><a href="#" target="_blank" rel="noopener">Anticipatory thinking in design</a></div>
+        <div class="pub-authors">Klenk, M., Hong, M., &amp; <strong>Hakimi, S.</strong></div>
+        <div class="pub-venue"><em>AI Magazine</em>, 44(1), 2023</div>
+      </div>
+      <div class="pub-aside">
+        <span class="pub-year">2023</span>
+        <span class="pub-cluster">Generative AI</span>
+        <a href="#" class="pub-link">DOI →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2022 ── -->
+  <div class="year-group" data-year="2022">
+    <div class="year-heading">2022</div>
+
+    <div class="pub-entry reveal c5" data-clusters="5 4">
+      <div class="pub-main">
+        <div class="pub-title"><a href="#" target="_blank" rel="noopener">Social cognitive processes explain bias in juror decisions</a></div>
+        <div class="pub-authors">Castrellon, J. J., <strong>Hakimi, S.</strong>, Parelman, J. M., Yin, L., Ball, S. B., Raman, A., Bernard, R. M., &amp; Zucker, N. L.</div>
+        <div class="pub-venue"><em>Social Cognitive and Affective Neuroscience</em>, 2022</div>
+      </div>
+      <div class="pub-aside">
+        <span class="pub-year">2022</span>
+        <span class="pub-cluster">Social neuroscience</span>
+        <a href="#" class="pub-link">DOI →</a>
+      </div>
+    </div>
+
+    <div class="pub-entry reveal c4" data-clusters="4 0">
+      <div class="pub-main">
+        <div class="pub-title"><a href="#" target="_blank" rel="noopener">Striatal prediction errors support dynamic control of declarative memory</a></div>
+        <div class="pub-authors"><strong>Hakimi, S.</strong>, &amp; Haber, S. N.</div>
+        <div class="pub-venue"><em>Nature Communications</em>, 2022</div>
+      </div>
+      <div class="pub-aside">
+        <span class="pub-year">2022</span>
+        <span class="pub-cluster">Neuroeconomics</span>
+        <a href="#" class="pub-link">DOI →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Earlier — placeholder ── -->
+  <div class="year-group" data-year="earlier">
+    <div class="year-heading">Earlier</div>
+    <div class="pub-entry reveal" data-clusters="all" style="grid-template-columns:1fr;">
+      <div class="pub-main">
+        <div class="pub-title" style="font-family:var(--mono);font-size:0.6rem;color:var(--ink-dim);">25 additional publications (2008–2021)</div>
+        <div class="pub-authors" style="margin-top:.4rem;">Full list on <a href="https://scholar.google.com/citations?user=KVRrn40AAAAJ" target="_blank" rel="noopener" style="color:var(--ink-blue);text-decoration:none;border-bottom:1px solid rgba(26,44,107,0.25);">Google Scholar</a> · Add papers via <code style="font-size:0.5rem;background:rgba(26,44,107,0.06);padding:.1rem .3rem;">node index.js add --doi</code></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Shabnam Hakimi, Ph.D. — Toyota Research Institute</p>
+  <p>MMXXVI</p>
+</footer>
+
+<script>
+// ── FILTER ────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cluster = btn.dataset.cluster;
+    document.querySelectorAll('.pub-entry').forEach(entry => {
+      if (cluster === 'all') {
+        entry.style.display = '';
+      } else {
+        const clusters = (entry.dataset.clusters || '').split(' ');
+        entry.style.display = clusters.includes(cluster) ? '' : 'none';
+      }
+    });
+    // Hide year headings with no visible entries
+    document.querySelectorAll('.year-group').forEach(group => {
+      const visible = [...group.querySelectorAll('.pub-entry')]
+        .some(e => e.style.display !== 'none');
+      group.style.display = visible ? '' : 'none';
+    });
+  });
+});
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────
+const obs = new IntersectionObserver(
+  entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  }), { threshold: 0.06 }
+);
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ── CURSOR ────────────────────────────────────────────────────────
+(function() {
+  const cursor = document.getElementById('cursor');
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1.9)'; cursor.style.color = 'var(--ink-blue)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursor.style.color = 'var(--ink)'; });
+  });
+})();
+
+// ── LOGO HIGHLIGHT CYCLE ──────────────────────────────────────────
+(function() {
+  const COLORS = ['#FFFF77','#7777FF','#C977FF','#FF77E4','#FF7792','#FFAE77'];
+  let idx = 0, hovered = false, lastSwap = 0;
+  const hl = document.getElementById('nav-logo-hl');
+  const logo = document.querySelector('.nav-logo');
+  if (!hl || !logo) return;
+  hl.style.backgroundColor = COLORS[0];
+  logo.addEventListener('mouseenter', () => hovered = true);
+  logo.addEventListener('mouseleave', () => hovered = false);
+  function tick(ts) {
+    if (ts - lastSwap > (hovered ? 600 : 3000)) {
+      idx = (idx + 1) % COLORS.length;
+      hl.style.backgroundColor = COLORS[idx];
+      lastSwap = ts;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

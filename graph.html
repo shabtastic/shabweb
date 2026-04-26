@@ -1821,6 +1821,27 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     cursor.style.left=mx+'px'; cursor.style.top=my+'px';
     ring.style.left=rx+'px'; ring.style.top=ry+'px';
   })();
+
+// ── LOGO HIGHLIGHT CYCLE ──
+(function() {
+  const COLORS = ['#FFFF77','#7777FF','#C977FF','#FF77E4','#FF7792','#FFAE77'];
+  let idx = 0, hovered = false, lastSwap = 0;
+  const hl = document.getElementById('nav-logo-hl');
+  const logo = document.querySelector('.nav-logo');
+  if (!hl || !logo) return;
+  hl.style.backgroundColor = COLORS[0];
+  logo.addEventListener('mouseenter', () => hovered = true);
+  logo.addEventListener('mouseleave', () => hovered = false);
+  function tick(ts) {
+    if (ts - lastSwap > (hovered ? 600 : 3000)) {
+      idx = (idx + 1) % COLORS.length;
+      hl.style.backgroundColor = COLORS[idx];
+      lastSwap = ts;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
 })();
 </script>
 </body>

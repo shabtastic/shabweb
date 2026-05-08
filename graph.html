@@ -240,9 +240,32 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   padding: 1rem 0;
 }
 
+
+/* ── SUB-NAV ── */
+.sub-nav {
+  position: fixed; top: 45px; left: 0; right: 0; z-index: 99;
+  padding: 0 2.5rem;
+  display: flex; align-items: center; gap: 2rem;
+  height: 28px;
+  background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(80,140,200,0.42);
+}
+.sub-nav a {
+  font-size: 0.48rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-faint); text-decoration: none; transition: color 0.2s;
+  line-height: 28px;
+}
+.sub-nav a:hover { color: var(--ink-dim); }
+.sub-nav a.active { color: var(--ink-blue); }
+.sub-nav-label {
+  font-size: 0.46rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-faint); margin-right: 0.5rem;
+}
+
 /* ── CURSOR ── */
 .cursor { position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; }
 .cursor-ring { position: fixed; width: 22px; height: 22px; border: 1px solid var(--ink-faint); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.25s; }
+
 </style>
 </head>
 <body>
@@ -1842,6 +1865,26 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   }
   requestAnimationFrame(tick);
 })();
+})();
+
+// ── GRID SNAP ──────────────────────────────────────────────────────
+(function() {
+  const CELL = 16;
+  function snap() {
+    document.querySelectorAll('.year-heading, .section-divider, .page-index, .page-header').forEach(el => {
+      el.style.paddingTop = '';
+      const absTop = el.getBoundingClientRect().top + window.scrollY;
+      const rem = absTop % CELL;
+      if (rem > 0.5) {
+        const nudge = CELL - rem;
+        const current = parseFloat(getComputedStyle(el).paddingTop) || 0;
+        el.style.paddingTop = (current + nudge) + 'px';
+      }
+    });
+  }
+  window.addEventListener('load', snap);
+  window.addEventListener('resize', snap);
+  if (document.fonts) document.fonts.ready.then(snap);
 })();
 </script>
 </body>

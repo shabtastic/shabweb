@@ -57,6 +57,8 @@ body {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
 }
 
+
+
 /* ── CURSOR ── */
 .cursor {
   position: fixed; pointer-events: none; z-index: 9999;
@@ -80,30 +82,39 @@ nav, section, footer { position: relative; z-index: 10; }
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.2rem 2.5rem;
+  padding: 16px 2.5rem;
   display: flex; justify-content: space-between; align-items: center;
-  background: rgba(244,241,235,0.88);
-  backdrop-filter: blur(8px);
+  background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--blue-G);
 }
+.nav-logo {
+  display: inline-block; position: relative;
+  font-family: var(--mono); font-weight: 700;
+  font-size: 0.62rem; letter-spacing: 0.25em;
+  color: var(--ink); text-decoration: none; line-height: 1;
+}
+.nav-logo-hl { position: absolute; left: -3px; right: -3px; top: 28%; height: 40%; opacity: 0.78; transition: background-color 1.2s ease; pointer-events: none; }
+.nav-logo-text { position: relative; z-index: 1; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: flex-start; padding-top: 0.15rem; }
+.nav-links li { display: flex; flex-direction: column; gap: 0.22rem; }
+.nav-links > li > a {
+  font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
+}
+.nav-links > li > a:hover, .nav-links > li > a.active { color: var(--ink); }
+.nav-sub-links { display: flex; gap: 1rem; }
+.nav-sub-links a {
+  font-size: 0.44rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-faint); text-decoration: none; transition: color 0.2s; line-height: 1;
+}
+.nav-sub-links a:hover { color: var(--ink-dim); }
+.nav-sub-links a.active { color: var(--ink-blue); }
 .nav-logo {
   font-family: var(--mono); font-size: 0.62rem;
   letter-spacing: 0.25em; color: var(--ink);
   text-transform: uppercase; text-decoration: none;
   font-weight: 700;
 }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; }
-.nav-links a {
-  font-family: var(--mono); font-size: 0.58rem;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--ink-dim); text-decoration: none; transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--ink-blue); }
-.nav-sub {
-  font-size: 0.46rem; letter-spacing: 0.1em;
-  color: var(--ink-faint); margin-left: 0.5rem;
-}
-.nav-sub a { font-size: 0.46rem; letter-spacing: 0.1em; color: var(--ink-faint); text-decoration: none; transition: color 0.2s; }
 .nav-sub a:hover { color: var(--ink-blue); }
 
 /* ── HERO ── */
@@ -337,6 +348,28 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
 .admin-node-tag.new { border-color:rgba(0,137,107,0.5); color:var(--viridian); }
 .admin-divider { border:none; border-top:1px solid var(--blue-G); }
 .admin-hint { font-size:0.5rem; letter-spacing:0.12em; color:var(--ink-dim); }
+
+/* Nav: exactly 48px tall */
+nav { padding: 16px 2.5rem !important; }
+
+/* Page headers: top padding clears nav + lands on grid */
+.page-header { padding- }
+
+/* Index bar: 16px padding */
+.page-index { padding-bottom: 16px !important; }
+
+/* Year headings and section dividers */
+.year-heading  { margin- }
+.section-divider { margin- }
+
+/* Publication entries: padding multiples of 16 */
+.pub-entry { padding-bottom: 16px !important; }
+.project-item { padding-top: 32px !important; }
+
+/* Work items, research items */
+.work-item { padding-bottom: 16px !important; }
+.research-item { padding-bottom: 16px !important; }
+
 </style>
 </head>
 <body>
@@ -354,7 +387,7 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#research">Research</a>
-      <span class="nav-sub"><a href="publications.html">Publications</a> · <a href="#cv">CV</a></span>
+      <div class="nav-sub-links"><a href="publications.html">Publications</a><a href="#cv">CV</a></div>
     </li>
     <li><a href="projects.html">Extracurriculars</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -2141,6 +2174,35 @@ Rules:
     el.className = 'admin-status' + (type ? ' ' + type : '');
   }
 
+})();
+
+// ── GRID SNAP — align structural borders to 16px graph paper grid ──
+(function() {
+  const CELL = 16; // must match CSS background-size minor grid
+  function snap() {
+    // Elements whose top border should land on a grid line
+    // We nudge padding-top so the border offset from page top = multiple of CELL
+    const targets = [
+      ...document.querySelectorAll('.year-heading, .section-divider, .page-index, .page-header'),
+    ];
+    targets.forEach(el => {
+      // Reset any previous nudge
+      el.style.paddingTop = '';
+      const rect = el.getBoundingClientRect();
+      const absTop = rect.top + window.scrollY;
+      const rem = absTop % CELL;
+      if (rem > 0.5) {
+        const nudge = CELL - rem;
+        const current = parseFloat(getComputedStyle(el).paddingTop) || 0;
+        el.style.paddingTop = (current + nudge) + 'px';
+      }
+    });
+  }
+  // Run after layout settles
+  window.addEventListener('load', snap);
+  window.addEventListener('resize', snap);
+  // Also run after fonts load (affects layout)
+  if (document.fonts) document.fonts.ready.then(snap);
 })();
 </script>
 </body>

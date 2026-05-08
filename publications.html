@@ -59,11 +59,33 @@ body {
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.2rem 2.5rem;
+  padding: 16px 2.5rem;
   display: flex; justify-content: space-between; align-items: center;
   background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--blue-G);
 }
+.nav-logo {
+  display: inline-block; position: relative;
+  font-family: var(--mono); font-weight: 700;
+  font-size: 0.62rem; letter-spacing: 0.25em;
+  color: var(--ink); text-decoration: none; line-height: 1;
+}
+.nav-logo-hl { position: absolute; left: -3px; right: -3px; top: 28%; height: 40%; opacity: 0.78; transition: background-color 1.2s ease; pointer-events: none; }
+.nav-logo-text { position: relative; z-index: 1; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: flex-start; padding-top: 0.15rem; }
+.nav-links li { display: flex; flex-direction: column; gap: 0.22rem; }
+.nav-links > li > a {
+  font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
+}
+.nav-links > li > a:hover, .nav-links > li > a.active { color: var(--ink); }
+.nav-sub-links { display: flex; gap: 1rem; }
+.nav-sub-links a {
+  font-size: 0.44rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-faint); text-decoration: none; transition: color 0.2s; line-height: 1;
+}
+.nav-sub-links a:hover { color: var(--ink-dim); }
+.nav-sub-links a.active { color: var(--ink-blue); }
 .nav-logo {
   display: inline-block; position: relative;
   font-family: var(--mono); font-weight: 700;
@@ -76,19 +98,11 @@ nav {
   transition: background-color 1.2s ease; pointer-events: none;
 }
 .nav-logo-text { position: relative; z-index: 1; }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; }
-.nav-links a {
-  font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--ink-dim); text-decoration: none; transition: color 0.2s;
-}
-.nav-links a:hover, .nav-links a.active { color: var(--ink); }
-.nav-sub { font-size: 0.46rem; letter-spacing: 0.1em; color: var(--ink-faint); margin-left: 0.5rem; }
-.nav-sub a { font-size: 0.46rem; letter-spacing: 0.1em; color: var(--ink-faint); text-decoration: none; transition: color 0.2s; }
 .nav-sub a:hover, .nav-sub a.active { color: var(--ink-blue); }
 
 /* ── PAGE HEADER ── */
 .page-header {
-  padding: 8rem 2.5rem 3rem;
+  padding: 8.8rem 2.5rem 3rem;
   border-bottom: 1px solid var(--blue-G);
   max-width: 900px;
 }
@@ -107,28 +121,24 @@ nav {
 .page-meta a:hover { border-color: var(--ink-blue); }
 
 /* ── FILTER BAR ── */
-.filter-bar {
-  padding: 1.2rem 2.5rem;
-  display: flex; gap: 0.4rem; flex-wrap: wrap;
+.page-index {
+  padding: 16px 2.5rem;
+  display: flex; gap: 2rem; align-items: center;
   border-bottom: 1px solid var(--blue-G);
-  position: sticky; top: 57px; z-index: 50;
-  background: rgba(244,241,235,0.95); backdrop-filter: blur(6px);
 }
-.filter-btn {
-  font-family: var(--mono); font-size: 0.44rem; letter-spacing: 0.15em;
+.page-index a {
+  font-family: var(--mono); font-size: 0.46rem; letter-spacing: 0.22em;
   text-transform: uppercase; color: var(--ink-dim);
-  background: none; border: 1px solid var(--ink-faint);
-  padding: 0.28rem 0.65rem; cursor: none; transition: all 0.15s;
+  text-decoration: none; transition: color 0.2s, background 0.2s;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid transparent;
 }
-.filter-btn:hover { color: var(--ink); border-color: var(--ink-dim); }
-.filter-btn.active { color: var(--ink); border-color: var(--ink-dim); background: rgba(17,17,24,0.04); }
-.filter-btn[data-cluster="0"].active, .filter-btn[data-cluster="0"]:hover { border-color: var(--h-slate);  background: rgba(119,119,255,0.10); }
-.filter-btn[data-cluster="1"].active, .filter-btn[data-cluster="1"]:hover { border-color: var(--h-helio);  background: rgba(201,119,255,0.10); }
-.filter-btn[data-cluster="2"].active, .filter-btn[data-cluster="2"]:hover { border-color: var(--h-violet); background: rgba(255,119,228,0.10); }
-.filter-btn[data-cluster="3"].active, .filter-btn[data-cluster="3"]:hover { border-color: var(--h-red);    background: rgba(255,119,146,0.10); }
-.filter-btn[data-cluster="4"].active, .filter-btn[data-cluster="4"]:hover { border-color: #a09000;         background: rgba(255,255,119,0.18); }
-.filter-btn[data-cluster="5"].active, .filter-btn[data-cluster="5"]:hover { border-color: var(--h-cheese); background: rgba(255,174,119,0.12); }
-.filter-btn[data-cluster="6"].active, .filter-btn[data-cluster="6"]:hover { border-color: var(--h-mint);   background: rgba(119,255,228,0.10); }
+.page-index a:hover {
+  color: var(--ink-blue);
+  border-color: rgba(26,44,107,0.25);
+  background: rgba(26,44,107,0.04);
+}
+.page-index-sep { color: var(--ink-faint); font-size: 0.4rem; }
 
 /* ── PUB LIST ── */
 .pub-list {
@@ -140,7 +150,7 @@ nav {
 .year-group { margin-top: 0; }
 .year-heading {
   font-size: 0.48rem; letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--ink-blue); padding: 6px 0 0.8rem;
+  color: var(--ink-blue); padding: 16px 0 8px;
   margin-top: 48px;
   border-top: 1.5px solid var(--ink-blue);
 }
@@ -192,6 +202,8 @@ nav {
 }
 .pub-link:hover { border-color: var(--ink-blue); }
 
+
+
 /* ── CURSOR ── */
 .cursor {
   position: fixed; pointer-events: none; z-index: 9999;
@@ -232,7 +244,7 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
   <ul class="nav-links">
     <li><a href="index.html#about">About</a></li>
     <li><a href="index.html#research">Research</a>
-      <span class="nav-sub"><a href="publications.html" class="active">Publications</a> · <a href="index.html#cv">CV</a></span>
+      <div class="nav-sub-links"><a href="publications.html" class="active">Publications</a><a href="index.html#cv">CV</a></div>
     </li>
     <li><a href="projects.html">Extracurriculars</a></li>
     <li><a href="index.html#contact">Contact</a></li>
@@ -247,22 +259,22 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
   </p>
 </div>
 
-<div class="filter-bar">
-  <button class="filter-btn active" data-cluster="all">All</button>
-  <button class="filter-btn" data-cluster="0">Self-regulation</button>
-  <button class="filter-btn" data-cluster="1">Predictive brain</button>
-  <button class="filter-btn" data-cluster="2">Generative AI</button>
-  <button class="filter-btn" data-cluster="3">Interventions</button>
-  <button class="filter-btn" data-cluster="4">Neuroeconomics</button>
-  <button class="filter-btn" data-cluster="5">Social neuroscience</button>
-  <button class="filter-btn" data-cluster="6">Consumer &amp; preference</button>
+<div class="page-index">
+  <a href="#year-2025">2025</a>
+  <span class="page-index-sep">·</span>
+  <a href="#year-2024">2024</a>
+  <span class="page-index-sep">·</span>
+  <a href="#year-2023">2023</a>
+  <span class="page-index-sep">·</span>
+  <a href="#year-2022">2022</a>
+  <span class="page-index-sep">·</span>
+  <a href="#year-earlier">Earlier</a>
 </div>
 
 <div class="pub-list" id="pub-list">
 
-  <!-- ── 2025 ── -->
   <div class="year-group" data-year="2025">
-    <div class="year-heading">2025</div>
+    <div class="year-heading" id="year-2025">2025</div>
 
     <div class="pub-entry reveal c1" data-clusters="1 2 3">
       <div class="pub-main">
@@ -280,7 +292,7 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
 
   <!-- ── 2024 ── -->
   <div class="year-group" data-year="2024">
-    <div class="year-heading">2024</div>
+    <div class="year-heading" id="year-2024">2024</div>
 
     <div class="pub-entry reveal c3" data-clusters="3 0 4">
       <div class="pub-main">
@@ -311,7 +323,7 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
 
   <!-- ── 2023 ── -->
   <div class="year-group" data-year="2023">
-    <div class="year-heading">2023</div>
+    <div class="year-heading" id="year-2023">2023</div>
 
     <div class="pub-entry reveal c2" data-clusters="2 1">
       <div class="pub-main">
@@ -329,7 +341,7 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
 
   <!-- ── 2022 ── -->
   <div class="year-group" data-year="2022">
-    <div class="year-heading">2022</div>
+    <div class="year-heading" id="year-2022">2022</div>
 
     <div class="pub-entry reveal c5" data-clusters="5 4">
       <div class="pub-main">
@@ -344,12 +356,7 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
       </div>
     </div>
 
-    <div class="pub-entry reveal c4" data-clusters="4 0">
-      <div class="pub-main">
-        <div class="pub-title"><a href="#" target="_blank" rel="noopener">Striatal prediction errors support dynamic control of declarative memory</a></div>
-        <div class="pub-authors"><strong>Hakimi, S.</strong>, &amp; Haber, S. N.</div>
-        <div class="pub-venue"><em>Nature Communications</em>, 2022</div>
-      </div>
+    
       <div class="pub-aside">
         <span class="pub-year">2022</span>
         <span class="pub-cluster">Neuroeconomics</span>
@@ -360,7 +367,7 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
 
   <!-- ── Earlier — placeholder ── -->
   <div class="year-group" data-year="earlier">
-    <div class="year-heading">Earlier</div>
+    <div class="year-heading" id="year-earlier">Earlier</div>
     <div class="pub-entry reveal" data-clusters="all" style="grid-template-columns:1fr;">
       <div class="pub-main">
         <div class="pub-title" style="font-family:var(--mono);font-size:0.6rem;color:var(--ink-dim);">25 additional publications (2008–2021)</div>
@@ -377,29 +384,6 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
 </footer>
 
 <script>
-// ── FILTER ────────────────────────────────────────────────────────
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const cluster = btn.dataset.cluster;
-    document.querySelectorAll('.pub-entry').forEach(entry => {
-      if (cluster === 'all') {
-        entry.style.display = '';
-      } else {
-        const clusters = (entry.dataset.clusters || '').split(' ');
-        entry.style.display = clusters.includes(cluster) ? '' : 'none';
-      }
-    });
-    // Hide year headings with no visible entries
-    document.querySelectorAll('.year-group').forEach(group => {
-      const visible = [...group.querySelectorAll('.pub-entry')]
-        .some(e => e.style.display !== 'none');
-      group.style.display = visible ? '' : 'none';
-    });
-  });
-});
-
 // ── SCROLL REVEAL ─────────────────────────────────────────────────
 const obs = new IntersectionObserver(
   entries => entries.forEach(e => {
@@ -441,6 +425,35 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+})();
+
+// ── GRID SNAP — align structural borders to 16px graph paper grid ──
+(function() {
+  const CELL = 16; // must match CSS background-size minor grid
+  function snap() {
+    // Elements whose top border should land on a grid line
+    // We nudge padding-top so the border offset from page top = multiple of CELL
+    const targets = [
+      ...document.querySelectorAll('.year-heading, .section-divider, .page-index, .page-header'),
+    ];
+    targets.forEach(el => {
+      // Reset any previous nudge
+      el.style.paddingTop = '';
+      const rect = el.getBoundingClientRect();
+      const absTop = rect.top + window.scrollY;
+      const rem = absTop % CELL;
+      if (rem > 0.5) {
+        const nudge = CELL - rem;
+        const current = parseFloat(getComputedStyle(el).paddingTop) || 0;
+        el.style.paddingTop = (current + nudge) + 'px';
+      }
+    });
+  }
+  // Run after layout settles
+  window.addEventListener('load', snap);
+  window.addEventListener('resize', snap);
+  // Also run after fonts load (affects layout)
+  if (document.fonts) document.fonts.ready.then(snap);
 })();
 </script>
 </body>

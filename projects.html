@@ -200,6 +200,13 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
   .project-item { grid-template-columns: 1fr; gap: 0.5rem; }
   .project-meta { flex-direction: row; gap: 1rem; }
 }
+
+/* ── CONTENT CARD ── */
+.content-card {
+  background: rgba(245,242,236,0.80);
+  margin: 0 1rem;
+  padding: 0;
+}
 </style>
 </head>
 <body>
@@ -220,6 +227,23 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
 </nav>
+
+<div class="content-card">
+<div class="page-header">
+  <p class="page-eyebrow">Extracurriculars</p>
+  <h1 class="page-title">Personal &amp; Side Projects</h1>
+  <p class="page-desc">Creative and technical work made outside the lab — experiments, tools, and things built out of curiosity or compulsion.</p>
+</div>
+
+<div class="page-index">
+  <a href="#section-creative">Creative</a>
+  <span class="page-index-sep">·</span>
+  <a href="#section-side-project">Side projects</a>
+  <span class="page-index-sep">·</span>
+  <a href="#section-writing">Writing</a>
+</div>
+
+<div class="project-list">
 
 <div class="section-divider" id="section-creative" style="color:#C977FF;">Creative</div>
 
@@ -273,6 +297,9 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
     </div>
   </div>
 
+</div>
+</div>
+</div>
 </div>
 
 <footer>

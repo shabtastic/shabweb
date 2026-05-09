@@ -393,6 +393,114 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   // Also run after fonts load (affects layout)
   if (document.fonts) document.fonts.ready.then(snap);
 })();
+
+// ── EULERIAN DOODLES ─────────────────────────────────────────────
+const DOODLES_ENABLED = true; // set to false to disable
+(function() {
+  if (!DOODLES_ENABLED) return;
+  const HUES = ['#7777FF','#C977FF','#FF77E4','#FF7792','#FFAE77','#FFFF77'];
+  const GRAPHS = [
+    {n:7,nodes:[{x:.5,y:.1},{x:.85,y:.3},{x:.85,y:.7},{x:.5,y:.9},{x:.15,y:.7},{x:.15,y:.3},{x:.5,y:.5}],edges:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6]]},
+    {n:4,nodes:[{x:.5,y:.12},{x:.88,y:.75},{x:.12,y:.75},{x:.5,y:.5}],edges:[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]]},
+    {n:8,nodes:[{x:.1,y:.1},{x:.9,y:.1},{x:.9,y:.9},{x:.1,y:.9},{x:.3,y:.3},{x:.7,y:.3},{x:.7,y:.7},{x:.3,y:.7}],edges:[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]},
+    {n:7,nodes:[{x:.5,y:.5},{x:.5,y:.08},{x:.85,y:.72},{x:.15,y:.72},{x:.85,y:.28},{x:.15,y:.28},{x:.5,y:.92}],edges:[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,4],[4,2],[2,6],[6,3],[3,5],[5,1]]},
+    {n:6,nodes:[{x:.15,y:.2},{x:.85,y:.2},{x:.15,y:.5},{x:.85,y:.5},{x:.15,y:.8},{x:.85,y:.8}],edges:[[0,1],[2,3],[4,5],[0,2],[2,4],[1,3],[3,5],[0,3],[1,2],[2,5],[3,4]]},
+    {n:9,nodes:[{x:.15,y:.15},{x:.5,y:.15},{x:.85,y:.15},{x:.15,y:.5},{x:.5,y:.5},{x:.85,y:.5},{x:.15,y:.85},{x:.5,y:.85},{x:.85,y:.85}],edges:[[0,1],[1,2],[3,4],[4,5],[6,7],[7,8],[0,3],[3,6],[1,4],[4,7],[2,5],[5,8],[0,4],[4,8],[2,4],[4,6]]},
+    {n:6,nodes:[{x:.5,y:.1},{x:.85,y:.3},{x:.85,y:.7},{x:.5,y:.9},{x:.15,y:.7},{x:.15,y:.3}],edges:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,2],[1,3],[2,4],[3,5],[4,0],[5,1]]},
+    {n:7,nodes:[{x:.5,y:.1},{x:.9,y:.8},{x:.1,y:.8},{x:.5,y:.55},{x:.72,y:.2},{x:.28,y:.2},{x:.5,y:.85}],edges:[[0,1],[1,2],[2,0],[3,4],[4,5],[5,3],[0,4],[0,5],[1,3],[1,5],[2,3],[2,4]]},
+    {n:8,nodes:[{x:.5,y:.5},{x:.2,y:.2},{x:.5,y:.1},{x:.8,y:.2},{x:.2,y:.8},{x:.5,y:.9},{x:.8,y:.8},{x:.5,y:.5}],edges:[[0,1],[1,2],[2,3],[3,0],[0,4],[4,5],[5,6],[6,0],[1,3],[4,6]]},
+    {n:9,nodes:[{x:.5,y:.5},{x:.5,y:.1},{x:.9,y:.5},{x:.5,y:.9},{x:.1,y:.5},{x:.72,y:.28},{x:.72,y:.72},{x:.28,y:.72},{x:.28,y:.28}],edges:[[0,1],[0,2],[0,3],[0,4],[1,5],[5,2],[2,6],[6,3],[3,7],[7,4],[4,8],[8,1],[1,2],[2,3],[3,4],[4,1]]},
+    {n:6,nodes:[{x:.15,y:.2},{x:.85,y:.2},{x:.15,y:.5},{x:.85,y:.5},{x:.15,y:.8},{x:.85,y:.8}],edges:[[0,1],[2,3],[4,5],[0,2],[2,4],[1,3],[3,5],[0,3],[1,2],[2,5],[3,4]]},
+    {n:8,nodes:[{x:.1,y:.1},{x:.9,y:.1},{x:.9,y:.9},{x:.1,y:.9},{x:.3,y:.3},{x:.7,y:.3},{x:.7,y:.7},{x:.3,y:.7}],edges:[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]},
+  ];
+
+  function eulerPath(n, edges) {
+    const adj = Array.from({length:n}, ()=>[]);
+    const used = new Array(edges.length).fill(false);
+    edges.forEach(([a,b],i) => { adj[a].push({to:b,i}); adj[b].push({to:a,i}); });
+    const ptr = new Array(n).fill(0), stack = [0], path = [];
+    while(stack.length) {
+      const v = stack[stack.length-1]; let found = false;
+      while(ptr[v] < adj[v].length) { const {to,i} = adj[v][ptr[v]++]; if(!used[i]){used[i]=true;stack.push(to);found=true;break;} }
+      if(!found) path.push(stack.pop());
+    }
+    return path.reverse();
+  }
+
+  // Create canvas
+  const cv = document.createElement('canvas');
+  cv.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
+  document.body.insertBefore(cv, document.body.firstChild);
+
+  const COUNT = 5;
+  const SIZE  = 160;
+  const OP    = 0.15;
+
+  function mkD(i) {
+    const gi = (i * 2) % GRAPHS.length;
+    const g  = GRAPHS[gi];
+    // Spread positions: vary x and y so they scatter across the page
+    const xFrac = 0.1 + (((i * 0.618) % 1) * 0.8); // golden ratio spacing
+    const yFrac = 0.1 + (i / COUNT) * 0.8;
+    return { xFrac, yFrac, g, path: eulerPath(g.n, g.edges),
+      pt:0, sT: i*1.7, ph:'draw', fa:1, segs:[], ci:i, gi };
+  }
+
+  let doodles = Array.from({length:COUNT}, (_,i) => mkD(i));
+  let W=0, H=0, t0=null;
+
+  function resize() {
+    W = window.innerWidth; H = document.body.scrollHeight || window.innerHeight;
+    cv.width = W; cv.height = H;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function step(d, dt) {
+    if(d.ph==='draw') {
+      d.sT += dt*2.2;
+      while(d.sT>=1 && d.pt<d.path.length-1) {
+        d.sT-=1; d.segs.push({a:d.g.nodes[d.path[d.pt]], b:d.g.nodes[d.path[d.pt+1]]}); d.pt++;
+      }
+      if(d.pt >= d.path.length-1) { d.ph='hold'; d.sT=0; }
+    } else if(d.ph==='hold') {
+      d.sT+=dt; if(d.sT>2) { d.ph='fade'; d.sT=0; d.fa=1; }
+    } else {
+      d.fa -= dt*0.5;
+      if(d.fa<=0) {
+        d.ci++; d.gi=(d.gi+1)%GRAPHS.length; d.g=GRAPHS[d.gi];
+        d.path=eulerPath(d.g.n,d.g.edges); d.segs=[]; d.pt=0; d.sT=0; d.ph='draw'; d.fa=1;
+      }
+    }
+  }
+
+  function draw(ctx, d) {
+    const col = HUES[d.ci % HUES.length];
+    const a   = (d.ph==='fade' ? d.fa : 1) * OP;
+    const cx  = d.xFrac * W;
+    const cy  = d.yFrac * H;
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath();
+    d.segs.forEach(({a,b}) => {
+      ctx.moveTo(cx+(a.x-.5)*SIZE, cy+(a.y-.5)*SIZE);
+      ctx.lineTo(cx+(b.x-.5)*SIZE, cy+(b.y-.5)*SIZE);
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function tick(ts) {
+    requestAnimationFrame(tick);
+    if(!t0) t0=ts;
+    const dt = Math.min((ts-t0)/1000, 0.05); t0=ts;
+    const ctx = cv.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    doodles.forEach(d => { step(d,dt); draw(ctx,d); });
+  }
+  requestAnimationFrame(tick);
+})();
 </script>
 </body>
 </html>

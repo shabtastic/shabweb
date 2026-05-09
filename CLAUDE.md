@@ -163,6 +163,23 @@ Each item:
 ```
 `data-type`: `creative`, `side-project`, or `writing`
 
+## Eulerian doodles (publications.html + projects.html)
+5 animated Eulerian graph doodles per page, rendered on a fixed canvas behind all content.
+Each doodle cycles through 12 graphs in order, one highlighter color at a time.
+Key constants at the top of the doodle JS block:
+```js
+const DOODLES_ENABLED = true;  // toggle off with false
+const COUNT = 5;               // number of doodles
+const SIZE  = 160;             // px — 2× major grid cell (80px)
+const OP    = 0.15;            // opacity
+```
+Positions use golden ratio horizontal spacing across the page height.
+
+## Content card
+publications.html and projects.html have a semi-transparent content card
+(`rgba(245,242,236,0.80)`) wrapping all content. index.html is full-bleed (intentional).
+graph.html has its own full-screen canvas UI.
+
 ## Known TODOs (priority order)
 1. **Populate publications.html** from bib files in CV repo
    - Parse all `.bib` entries: title, authors, year, venue, DOI/URL

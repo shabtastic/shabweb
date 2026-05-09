@@ -17,6 +17,12 @@
   --ink-faint:rgba(17,17,24,0.12);
   --blue-g:   rgba(80,140,200,0.18);
   --blue-G:   rgba(80,140,200,0.40);
+  --h-yellow: #FFFF77;
+  --h-slate:  #7777FF;
+  --h-helio:  #C977FF;
+  --h-violet: #FF77E4;
+  --h-red:    #FF7792;
+  --h-cheese: #FFAE77;
   --mono: 'Space Mono', monospace;
   --sans: 'DM Sans', sans-serif;
 }
@@ -1834,36 +1840,17 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   animate();
 
   // ── Cursor ──
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursorRing');
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
-  (function moveCursor() {
-    requestAnimationFrame(moveCursor);
-    rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
-    cursor.style.left=mx+'px'; cursor.style.top=my+'px';
-    ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  })();
-
-// ── LOGO HIGHLIGHT CYCLE ──
 (function() {
-  const COLORS = ['#FFFF77','#7777FF','#C977FF','#FF77E4','#FF7792','#FFAE77'];
-  let idx = 0, hovered = false, lastSwap = 0;
-  const hl = document.getElementById('nav-logo-hl');
-  const logo = document.querySelector('.nav-logo');
-  if (!hl || !logo) return;
-  hl.style.backgroundColor = COLORS[0];
-  logo.addEventListener('mouseenter', () => hovered = true);
-  logo.addEventListener('mouseleave', () => hovered = false);
-  function tick(ts) {
-    if (ts - lastSwap > (hovered ? 600 : 3000)) {
-      idx = (idx + 1) % COLORS.length;
-      hl.style.backgroundColor = COLORS[idx];
-      lastSwap = ts;
-    }
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
+  const cursor = document.getElementById('cursor');
+  let mx=0, my=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform='translate(-50%,-50%) scale(1.9)'; cursor.style.color='var(--ink-blue)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform='translate(-50%,-50%) scale(1)'; cursor.style.color='var(--ink)'; });
+  });
 })();
 })();
 

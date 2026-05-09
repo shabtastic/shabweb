@@ -46,10 +46,15 @@ Graph paper background is CSS `background-image` with 4 gradients:
 ## Navigation structure
 ```
 SH    ABOUT    RESEARCH    EXTRACURRICULARS    CONTACT
-                ↓
-           Publications · CV    (sub-links, absolute-positioned below RESEARCH)
+                ↓ (hover only)
+           Publications · CV
 ```
-Nav HTML pattern (same across all pages):
+- Sub-links are `position: absolute`, out of flow — don't affect nav height
+- Appear on hover over RESEARCH `li` via `max-height` + `opacity` transition
+- Nav stays single-height at rest, equal spacing between all items
+- graph.html uses a simple `#back` link, no full nav
+
+Nav HTML pattern (index, publications, projects):
 ```html
 <nav>
   <a href="index.html" class="nav-logo">
@@ -68,6 +73,18 @@ Nav HTML pattern (same across all pages):
     <li><a href="...#contact">Contact</a></li>
   </ul>
 </nav>
+```
+Key CSS:
+```css
+.nav-links li { position: relative; }
+.nav-sub-links {
+  position: absolute; top: 100%; left: 0;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
+}
+.nav-links li:hover .nav-sub-links {
+  max-height: 2rem; opacity: 1; padding-top: 0.3rem;
+}
 ```
 
 ## SH Logo
@@ -156,7 +173,7 @@ Each item:
 
 2. **Fill in projects.html** — all 3 items are placeholder templates
 
-3. **Review/edit about copy** — written from public sources, needs your voice
+3. **Review/edit about copy** — written from public sources, needs your voice. Placeholder '[hobby / interest]' sentence has been removed.
 
 4. **CV PDF link** — `href="#"` in contact section, needs real file
 

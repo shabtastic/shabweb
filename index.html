@@ -82,7 +82,7 @@ nav, section, footer { position: relative; z-index: 10; }
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 16px 2.5rem;
+  padding: 1.2rem 2.5rem;
   display: flex; justify-content: space-between; align-items: center;
   background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--blue-G);
@@ -95,14 +95,27 @@ nav {
 }
 .nav-logo-hl { position: absolute; left: -3px; right: -3px; top: 28%; height: 40%; opacity: 0.78; transition: background-color 1.2s ease; pointer-events: none; }
 .nav-logo-text { position: relative; z-index: 1; }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: flex-start; padding-top: 0.15rem; }
-.nav-links li { display: flex; flex-direction: column; gap: 0.22rem; }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: flex-start; }
+.nav-links li { position: relative; }
 .nav-links > li > a {
   font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
   color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
 }
 .nav-links > li > a:hover, .nav-links > li > a.active { color: var(--ink); }
-.nav-sub-links { display: flex; gap: 1rem; }
+.nav-sub-links {
+  display: flex; gap: 1rem;
+  position: absolute; top: 100%; left: 0;
+  padding-top: 0;
+  max-height: 0; overflow: hidden; opacity: 0;
+  pointer-events: none;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
+  background: rgba(244,241,235,0.95);
+  white-space: nowrap;
+}
+.nav-links li:hover .nav-sub-links {
+  max-height: 2rem; opacity: 1;
+  pointer-events: auto; padding-top: 0.3rem;
+}
 .nav-sub-links a {
   font-size: 0.44rem; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--ink-faint); text-decoration: none; transition: color 0.2s; line-height: 1;

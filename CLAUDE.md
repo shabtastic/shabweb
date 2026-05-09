@@ -175,17 +175,19 @@ Each item:
 
 3. **Review/edit about copy** — written from public sources, needs your voice. Placeholder '[hobby / interest]' sentence has been removed.
 
-4. **CV PDF link** — `href="#"` in contact section, needs real file
+4. **`cv.html`** — standalone CV page doesn't exist yet. Nav sub-link currently points to `index.html#cv` (a section). Build a full page from the LaTeX CV source. Should include: full employment history, education, publications list (or link to publications.html), awards, talks.
 
-5. **Mobile CSS pass** — untested at ≤768px; graph.html sidebar especially
+5. **CV PDF link** — `href="#"` in contact section, needs real file
+
+6. **Mobile CSS pass** — untested at ≤768px; graph.html sidebar especially
    needs rethinking (sidebar is 320px fixed, will overflow on mobile)
 
-6. **Inline graph sync** — `graph.json` has papers in `meta.papers` but
+7. **Inline graph sync** — `graph.json` has papers in `meta.papers` but
    `index.html` and `graph.html` inline the graph data. After `node index.js add --doi`,
    need a step to re-inline the updated graph.json into both HTML files.
    Look at how graph data is loaded: `<script type="application/json" id="graph-data">`
 
-7. **Nav active state** — currently no scroll-spy; active link doesn't update on scroll
+8. **Nav active state** — currently no scroll-spy; active link doesn't update on scroll
 
 ## CV source
 Shabnam has a private local LaTeX CV repo with `.bib` files.

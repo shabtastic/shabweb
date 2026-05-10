@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Shabnam Hakimi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a, button { cursor: none; }
+:root {
+  --paper:    #f5f2ec;
+  --paper-2:  #edeae1;
+  --ink:      #111118;
+  --ink-blue: #1a2c6b;
+  --ink-dim:  rgba(17,17,24,0.45);
+  --ink-faint:rgba(17,17,24,0.15);
+  --blue-g:   rgba(80,140,200,0.20);
+  --blue-G:   rgba(80,140,200,0.42);
+  --h-yellow: #FFFF77;
+  --h-slate:  #7777FF;
+  --h-helio:  #C977FF;
+  --h-violet: #FF77E4;
+  --h-red:    #FF7792;
+  --h-cheese: #FFAE77;
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  min-height: 100vh;
+  cursor: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image:
+    linear-gradient(var(--blue-G) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-G) 1px, transparent 1px),
+    linear-gradient(var(--blue-g) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-g) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+}
+
+.wrap {
+  text-align: left;
+  max-width: 540px;
+  padding: 2rem 2.5rem;
+}
+
+.eyebrow {
+  font-size: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink-blue); margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: currentColor; }
+
+h1 {
+  font-family: var(--sans);
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: 1.4rem;
+  color: var(--ink);
+}
+h1 em {
+  font-style: normal;
+  color: var(--ink-blue);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.07em;
+}
+
+.desc {
+  font-size: 0.7rem; color: var(--ink-dim); line-height: 1.95;
+  margin-bottom: 2.4rem; max-width: 440px;
+}
+
+.links {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+}
+.links a {
+  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--ink-faint);
+  transition: color 0.2s, border-color 0.2s;
+}
+.links a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
+
+footer {
+  position: fixed; bottom: 1.5rem; left: 2.5rem;
+  font-size: 0.44rem; letter-spacing: 0.22em; color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+/* Cursor crosshair (desktop) */
+.cursor {
+  position: fixed; pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
+  color: var(--ink); line-height: 1;
+  width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.12s ease, color 0.12s ease;
+}
+
+@media (max-width: 700px) {
+  body, a, button { cursor: auto; }
+  .cursor { display: none; }
+  footer { left: 1.5rem; }
+  .wrap { padding: 2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor">+</div>
+
+<div class="wrap">
+  <p class="eyebrow">404</p>
+  <h1>this concept isn't <em>in the graph</em>.</h1>
+  <p class="desc">The page you're looking for doesn't exist (or has moved). Try one of the sections below, or head back to the home page.</p>
+  <div class="links">
+    <a href="/">Home</a>
+    <a href="/graph">Graph</a>
+    <a href="/cv">CV</a>
+    <a href="/projects">Projects</a>
+    <a href="/extracurriculars">Extracurriculars</a>
+  </div>
+</div>
+
+<footer>Shabnam Hakimi, Ph.D.</footer>
+
+<script>
+(function() {
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1.9)';
+      cursor.style.color = 'var(--ink-blue)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      cursor.style.color = 'var(--ink)';
+    });
+  });
+})();
+</script>
+</body>
+</html>

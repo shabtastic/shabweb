@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.shabnamhakimi.com" }],
+      "destination": "https://shabnamhakimi.com/$1",
+      "permanent": true
+    },
+    { "source": "/publications.html", "destination": "/cv", "permanent": true },
+    { "source": "/publications",      "destination": "/cv", "permanent": true }
+  ]
+}

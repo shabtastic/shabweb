@@ -268,14 +268,15 @@
     ],
     "year": 2024,
     "venue": "International Conference on Design Computing and Cognition",
-    "url": null,
+    "url": "https://doi.org/10.1007/978-3-031-71922-6_16",
     "pubType": "conf-full",
     "authorPosition": "last",
     "paperWeight": 0.4,
     "keywords": [
       "selected"
     ],
-    "addendum": "Best Paper Award"
+    "addendum": "Best Paper Award",
+    "doi": "10.1007/978-3-031-71922-6_16"
   },
   {
     "id": "Sinclair2024pausing",
@@ -594,11 +595,12 @@
     ],
     "year": 2022,
     "venue": "Human-centered Intelligent Services Safety and Trustworthiness (HCIS) Workshop at IEEE/CVF CVPRW 2022",
-    "url": null,
+    "url": "https://doi.org/10.1109/cvprw56347.2022.00480",
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": []
+    "keywords": [],
+    "doi": "10.1109/cvprw56347.2022.00480"
   },
   {
     "id": "Hakimi2021pairing",

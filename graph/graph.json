@@ -35,6 +35,19 @@
     ],
     "papers": [
       {
+        "id": "Nath2026rewards",
+        "title": "Designing Rewards for Rewarding Designs: Demonstrating the Impact of Rewards on the Creative Design Process",
+        "year": 2026,
+        "venue": "Preprint",
+        "arxivId": "2604.26083",
+        "url": "https://arxiv.org/abs/2604.26083",
+        "pubType": "preprint",
+        "authorPosition": "last",
+        "paperWeight": 0.56,
+        "nodes_contributed": [],
+        "added": "2026-05-10T22:33:25.324Z"
+      },
+      {
         "id": "Klenk2026cats",
         "title": "Reassessing the value of creative activity traces for understanding and supporting creative work",
         "year": 2026,

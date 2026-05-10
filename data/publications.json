@@ -1,0 +1,953 @@
+[
+  {
+    "id": "Klenk2026cats",
+    "title": "Reassessing the value of creative activity traces for understanding and supporting creative work",
+    "authors": [
+      "Klenk, Matthew",
+      "Hakimi, Shabnam",
+      "Hong, Matthew",
+      "Paredes, Pablo",
+      "Chen, Yan-Ying"
+    ],
+    "year": 2026,
+    "venue": "Herding CATs: Making Sense of Creative Activity Traces Workshop at CHI 2026",
+    "url": null,
+    "pubType": "conf-workshop",
+    "authorPosition": "second",
+    "paperWeight": 0.3,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "kim2026personagrambridgingpersonasproduct",
+    "title": "Personagram: Bridging Personas and Product Design for Creative Ideation with Multimodal LLMs",
+    "authors": [
+      "Taewook Kim",
+      "Matthew K. Hong",
+      "Yan-Ying Chen",
+      "Jonathan Q. Li",
+      "Monica P Van",
+      "Shabnam Hakimi",
+      "Matthew Kay",
+      "Matthew Klenk"
+    ],
+    "year": 2026,
+    "venue": "Preprint",
+    "arxivId": "2602.06197",
+    "url": "https://arxiv.org/abs/2602.06197",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": []
+  },
+  {
+    "id": "hong2026deconstructingtastehumancenteredai",
+    "title": "Deconstructing Taste: Toward a Human-Centered AI Framework for Modeling Consumer Aesthetic Perceptions",
+    "authors": [
+      "Matthew K. Hong",
+      "Joey Li",
+      "Alexandre Filipowicz",
+      "Monica Van",
+      "Kalani Murakami",
+      "Yan-Ying Chen",
+      "Shiwali Mohan",
+      "Shabnam Hakimi",
+      "Matthew Klenk"
+    ],
+    "year": 2026,
+    "venue": "Preprint",
+    "arxivId": "2601.17134",
+    "url": "https://arxiv.org/abs/2601.17134",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": []
+  },
+  {
+    "id": "Hakimi2025creativity",
+    "title": "Psychologically-inspired generative AI videos for supporting creativity",
+    "authors": [
+      "Hakimi, Shabnam",
+      "Van, M.",
+      "Hong, M. K.",
+      "Murakami, K.",
+      "Paredes, P. E.",
+      "Klenk, M."
+    ],
+    "year": 2025,
+    "venue": "2025 International Conference on Computational Creativity",
+    "url": null,
+    "pubType": "conf-full",
+    "authorPosition": "first",
+    "paperWeight": 0.5,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Hakimi2025semantic",
+    "title": "Semantic properties of abstract prompts shape sequential decision making in design",
+    "authors": [
+      "Hakimi, Shabnam",
+      "Nandy, A.",
+      "Van, M.",
+      "Goucher-Lambert, K.",
+      "Klenk, M."
+    ],
+    "year": 2025,
+    "venue": "2025 Multidisciplinary Conference on Reinforcement Learning and Decision Making",
+    "url": null,
+    "pubType": "conf-full",
+    "authorPosition": "shared-first",
+    "paperWeight": 0.5,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Chen2025learning",
+    "title": "Learning to represent individual differences for choice decision making",
+    "authors": [
+      "Chen, Y.-Y.",
+      "Weng, Y.",
+      "Filipowicz, A.",
+      "Iliev, R.",
+      "Chen, F.",
+      "Hakimi, Shabnam",
+      "Zhang, Y.",
+      "Lee, M.",
+      "Lyons, K.",
+      "Wu, C."
+    ],
+    "year": 2025,
+    "venue": "Preprint",
+    "arxivId": "2503.21704",
+    "url": "https://arxiv.org/abs/2503.21704",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": []
+  },
+  {
+    "id": "Eum2025aidriven",
+    "title": "AI-driven interpretable visual features for demand neuroforecasting",
+    "authors": [
+      "Eum, B.",
+      "Knutson, B.",
+      "Daviet, R.",
+      "Hakimi, Shabnam",
+      "Webb, R."
+    ],
+    "year": 2025,
+    "venue": "2025 Conference on Artificial Intelligence, Machine Learning, and Business Analytics",
+    "url": null,
+    "pubType": "conf-full",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Knutson2024brain",
+    "title": "Brain activity forecasts changing market demand for innovative vehicles",
+    "authors": [
+      "Knutson, B.",
+      "Christiano, D. X.",
+      "Wu, C.",
+      "Srirangarajan, T.",
+      "Deng, W.",
+      "Klenk, M.",
+      "Wu, C.",
+      "Hakimi, Shabnam"
+    ],
+    "year": 2024,
+    "venue": "Preprint",
+    "url": "https://osf.io/xd9mk/",
+    "pubType": "preprint",
+    "authorPosition": "last",
+    "paperWeight": 0.56,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Hakimi2024cognitive",
+    "title": "Understanding the Cognitive Complexity in Language Elicited by Product Images",
+    "authors": [
+      "Hakimi, Shabnam",
+      "Chen, Y.-Y.",
+      "Van, M.",
+      "Chen, F.",
+      "Hong, M.",
+      "Klenk, M.",
+      "Wu, C."
+    ],
+    "year": 2024,
+    "venue": "ICML 2024 Workshop on LLMs and Cognition",
+    "url": null,
+    "pubType": "conf-workshop",
+    "authorPosition": "shared-first",
+    "paperWeight": 0.5,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Wright2024motivation",
+    "title": "The Motivation Beliefs Questionnaire (MBQ): Measuring beliefs about the controllability, usefulness, and goal-specificity of motivational states",
+    "authors": [
+      "Wright, R. N.",
+      "Hakimi, Shabnam",
+      "LaBar, K.",
+      "Adcock, R. A."
+    ],
+    "year": 2024,
+    "venue": "Preprint",
+    "url": "https://osf.io/k8dy4/",
+    "pubType": "preprint",
+    "authorPosition": "second",
+    "paperWeight": 0.42,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Sumner2024personalizing",
+    "title": "Personalizing driver safety interfaces via driver cognitive factors inference",
+    "authors": [
+      "Sumner, E. S.",
+      "DeCastro, J.",
+      "Costa, J.",
+      "Gopinath, D. E.",
+      "Kimani, E.",
+      "Hakimi, Shabnam",
+      "Rosman, G."
+    ],
+    "year": 2024,
+    "venue": "Scientific Reports",
+    "doi": "10.1038/s41598-024-65144-8",
+    "url": "https://doi.org/10.1038/s41598-024-65144-8",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.4,
+    "keywords": []
+  },
+  {
+    "id": "Nandy2024semantic",
+    "title": "Semantic Properties of Word Prompts Shape Design Outcomes: Understanding the Influence of Semantic Richness and Similarity",
+    "authors": [
+      "Nandy, A.",
+      "Van, M.",
+      "Li, J.",
+      "Goucher-Lambert, K.",
+      "Klenk, M.",
+      "Hakimi, Shabnam"
+    ],
+    "year": 2024,
+    "venue": "International Conference on Design Computing and Cognition",
+    "url": null,
+    "pubType": "conf-full",
+    "authorPosition": "last",
+    "paperWeight": 0.4,
+    "keywords": [
+      "selected"
+    ],
+    "addendum": "Best Paper Award"
+  },
+  {
+    "id": "Sinclair2024pausing",
+    "title": "Pausing to reflect during news consumption counteracts negativity biases in memory",
+    "authors": [
+      "Sinclair, A. H.",
+      "Hsiung, A.",
+      "Wright, R. N.",
+      "Hakimi, Shabnam",
+      "Adcock, R. A."
+    ],
+    "year": 2024,
+    "venue": "Preprint",
+    "url": "https://osf.io/83ny2/",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": []
+  },
+  {
+    "id": "Paredes2024commuter",
+    "title": "Creative Commuter: Towards Designing Moments for Idea Generation and Incubation during the Commute",
+    "authors": [
+      "Paredes, P. E.",
+      "Hong, M. K.",
+      "Hakimi, Shabnam",
+      "Klenk, M. E."
+    ],
+    "year": 2024,
+    "venue": "Adjunct Proceedings of the 16th International Conference on Automotive User Interfaces and Interactive Vehicular Applications",
+    "doi": "10.1145/3641308.3685022",
+    "url": "https://doi.org/10.1145/3641308.3685022",
+    "pubType": "conf-full",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": []
+  },
+  {
+    "id": "Hong2024unstuck",
+    "title": "Unstuck: Charting the Design Space of Generative AI-based Creativity Interventions",
+    "authors": [
+      "Hong, M. K.",
+      "Paredes, P.",
+      "Hakimi, Shabnam",
+      "Van, M.",
+      "Klenk, M."
+    ],
+    "year": 2024,
+    "venue": "Generative AI and HCI (GenAICHI) Workshop at CHI 2024",
+    "url": null,
+    "pubType": "conf-workshop",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": []
+  },
+  {
+    "id": "Hakimi2023ml",
+    "title": "Machine learning-based measure of cognitive complexity explains variance in rank-ordered preference",
+    "authors": [
+      "Hakimi, Shabnam",
+      "Chen, Y.",
+      "Van, M.",
+      "Carter, S.",
+      "Sumner, E.",
+      "Bravo, N. B.",
+      "Murakami, K.",
+      "Zhang, Y.",
+      "Wu, C. C.",
+      "Klenk, M."
+    ],
+    "year": 2023,
+    "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
+    "url": null,
+    "pubType": "conf-full",
+    "authorPosition": "first",
+    "paperWeight": 0.5,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Hong2023genai",
+    "title": "Generative AI for Product Design: Getting the Right Design and the Design Right",
+    "authors": [
+      "Hong, M. K.",
+      "Hakimi, Shabnam",
+      "Chen, Y.",
+      "Toyoda, H.",
+      "Wu, C.",
+      "Klenk, M."
+    ],
+    "year": 2023,
+    "venue": "Generative AI and HCI (GenAICHI) Workshop at CHI 2023",
+    "url": null,
+    "pubType": "conf-workshop",
+    "authorPosition": "second",
+    "paperWeight": 0.3,
+    "keywords": []
+  },
+  {
+    "id": "Filipowicz2023visual",
+    "title": "Visual elements and cognitive biases influence interpretations of trends in scatter plots",
+    "authors": [
+      "Filipowicz, A.",
+      "Carter, S.",
+      "Bravo, N.",
+      "Iliev, R.",
+      "Hakimi, Shabnam",
+      "Shamma, D. A.",
+      "Lyons, K.",
+      "Hogan, C.",
+      "Wu, C."
+    ],
+    "year": 2023,
+    "venue": "Preprint",
+    "arxivId": "2310.15406",
+    "url": "https://arxiv.org/abs/2310.15406",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": []
+  },
+  {
+    "id": "Klenk2023anticipatory",
+    "title": "Anticipatory thinking in design",
+    "authors": [
+      "Klenk, M.",
+      "Hong, M.",
+      "Hakimi, Shabnam",
+      "Wu, C."
+    ],
+    "year": 2023,
+    "venue": "AI Magazine",
+    "doi": "10.1002/aaai.12101",
+    "url": "https://doi.org/10.1002/aaai.12101",
+    "pubType": "commentary",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": [
+      "commentary"
+    ]
+  },
+  {
+    "id": "Castrellon2022social",
+    "title": "Social cognitive processes explain bias in juror decisions",
+    "authors": [
+      "Castrellon, J. J.",
+      "Hakimi, Shabnam",
+      "Parelman, J. M.",
+      "Yin, L.",
+      "Law, J. R.",
+      "Skene, J. A. G.",
+      "Ball, D. A.",
+      "Malekpour, A.",
+      "Beskind, D. H.",
+      "Vidmar, N.",
+      "Pearson, J. M.",
+      "Skene, J. H. P.",
+      "Carter, R. M."
+    ],
+    "year": 2022,
+    "venue": "Social Cognitive and Affective Neuroscience",
+    "doi": "10.1093/scan/nsac057",
+    "url": "https://doi.org/10.1093/scan/nsac057",
+    "pubType": "journal",
+    "authorPosition": "second",
+    "paperWeight": 0.6,
+    "keywords": []
+  },
+  {
+    "id": "Castrellon2022neural",
+    "title": "Neural Support for Contributions of Utility and Narrative Processing of Evidence in Juror Decision Making",
+    "authors": [
+      "Castrellon, J. J.",
+      "Hakimi, Shabnam",
+      "Parelman, J. M.",
+      "Yin, L.",
+      "Law, J. R.",
+      "Skene, J. A. G.",
+      "Ball, D. A.",
+      "Malekpour, A.",
+      "Beskind, D. H.",
+      "Vidmar, N.",
+      "Pearson, J. M.",
+      "Carter, R. M.",
+      "Skene, J. H. P."
+    ],
+    "year": 2022,
+    "venue": "Journal of Neuroscience",
+    "doi": "10.1523/JNEUROSCI.2434-21.2022",
+    "url": "https://doi.org/10.1523/JNEUROSCI.2434-21.2022",
+    "pubType": "journal",
+    "authorPosition": "second",
+    "paperWeight": 0.6,
+    "keywords": []
+  },
+  {
+    "id": "DeCastro2022latent",
+    "title": "Learning latent traits for simulated cooperative driving tasks",
+    "authors": [
+      "DeCastro, J. A.",
+      "Gopinath, D.",
+      "Rosman, G.",
+      "Sumner, E.",
+      "Hakimi, Shabnam",
+      "Stent, S."
+    ],
+    "year": 2022,
+    "venue": "Preprint",
+    "arxivId": "2207.09619",
+    "url": "https://arxiv.org/abs/2207.09619",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": []
+  },
+  {
+    "id": "Hsiung2022heuristics",
+    "title": "Between heuristics and optimality: Flexible integration of cost and evidence during information sampling",
+    "authors": [
+      "Hsiung, A.",
+      "Pearson, J. M.",
+      "Poh, J.-H.",
+      "Hakimi, Shabnam",
+      "Adcock, R. A.",
+      "Huettel, S. A."
+    ],
+    "year": 2022,
+    "venue": "Preprint",
+    "doi": "10.1101/2022.05.17.492355",
+    "url": "https://doi.org/10.1101/2022.05.17.492355",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": []
+  },
+  {
+    "id": "Filipowicz2022familiarity",
+    "title": "Familiarity plays a unique role in increasing preferences for battery electric vehicle adoption",
+    "authors": [
+      "Filipowicz, A. L. S.",
+      "Wu, C. C.",
+      "Lee, M. L.",
+      "Shamma, D. A.",
+      "Hakimi, Shabnam",
+      "Carter, S.",
+      "Iliev, R.",
+      "Harinen, T.",
+      "Sumner, E.",
+      "Hogan, C."
+    ],
+    "year": 2022,
+    "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
+    "url": null,
+    "pubType": "conf-full",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": []
+  },
+  {
+    "id": "Harinen2022ml",
+    "title": "Machine learning reveals how personalized climate communication can both succeed and backfire",
+    "authors": [
+      "Harinen, T.",
+      "Filipowicz, A.",
+      "Hakimi, Shabnam",
+      "Iliev, R.",
+      "Klenk, M.",
+      "Sumner, E."
+    ],
+    "year": 2022,
+    "venue": "CML4Impact Workshop at NeurIPS 2022",
+    "url": null,
+    "pubType": "conf-workshop",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": []
+  },
+  {
+    "id": "Zhang2022conjointnet",
+    "title": "ConjointNet: Enhancing Conjoint Analysis for Preference Prediction with Representation Learning",
+    "authors": [
+      "Zhang, Y.",
+      "Chen, F.",
+      "Hakimi, Shabnam",
+      "Harinen, T.",
+      "Filipowicz, A.",
+      "Chen, Y.",
+      "Iliev, R.",
+      "Arechiga, N.",
+      "Murakami, K.",
+      "Lyons, K.",
+      "Wu, C.",
+      "Klenk, M."
+    ],
+    "year": 2022,
+    "venue": "13th Multidisciplinary Workshop on Advances in Preference Handling (M-PREF 2022) at IJCAI 2022",
+    "arxivId": "2503.11710",
+    "url": "https://arxiv.org/abs/2503.11710",
+    "pubType": "conf-workshop",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": []
+  },
+  {
+    "id": "Gopinath2022hmiway",
+    "title": "HMIway-env: A framework for simulating behaviors and preferences to support human-AI teaming in driving",
+    "authors": [
+      "Gopinath, D.",
+      "DeCastro, J.",
+      "Sumner, E.",
+      "Morgan, A.",
+      "Hakimi, Shabnam",
+      "Rosman, G.",
+      "Stent, S."
+    ],
+    "year": 2022,
+    "venue": "Human-centered Intelligent Services Safety and Trustworthiness (HCIS) Workshop at IEEE/CVF CVPRW 2022",
+    "url": null,
+    "pubType": "conf-workshop",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": []
+  },
+  {
+    "id": "Hakimi2021pairing",
+    "title": "Pairing Facts with Imagined Consequences Improves Pandemic-Related Risk Perception",
+    "authors": [
+      "Sinclair, A. H.",
+      "Hakimi, Shabnam",
+      "Stanley, M.",
+      "Adcock, R. A.",
+      "Samanez-Larkin, G. R."
+    ],
+    "year": 2021,
+    "venue": "Proceedings of the National Academy of Sciences",
+    "doi": "10.1073/pnas.2100970118",
+    "url": "https://doi.org/10.1073/pnas.2100970118",
+    "pubType": "journal",
+    "authorPosition": "shared-first",
+    "paperWeight": 1,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Sinclair2021imagining",
+    "title": "Imagining a personalized scenario selectively increases perceived risk of viral transmission for older adults",
+    "authors": [
+      "Sinclair, A. H.",
+      "Stanley, M. L.",
+      "Hakimi, Shabnam",
+      "Adcock, R. A.",
+      "Samanez-Larkin, G. R."
+    ],
+    "year": 2021,
+    "venue": "Nature Aging",
+    "doi": "10.1038/s43587-021-00095-7",
+    "url": "https://doi.org/10.1038/s43587-021-00095-7",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.4,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Hakimi2020behavioral",
+    "title": "Applying behavioral economics to improve adolescent and young adult health: A developmentally-sensitive approach",
+    "authors": [
+      "Wong, C. A.",
+      "Hakimi, Shabnam",
+      "Santanam, T. S.",
+      "Madanay, F.",
+      "Fridman, I.",
+      "Ford, C.",
+      "Patel, M.",
+      "Ubel, P. A."
+    ],
+    "year": 2020,
+    "venue": "Journal of Adolescent Health",
+    "doi": "10.1016/j.jadohealth.2020.10.007",
+    "url": "https://doi.org/10.1016/j.jadohealth.2020.10.007",
+    "pubType": "journal",
+    "authorPosition": "shared-first",
+    "paperWeight": 1,
+    "keywords": []
+  },
+  {
+    "id": "Botvinik2020variability",
+    "title": "Variability in the analysis of a single neuroimaging dataset by many teams",
+    "authors": [
+      "Botvinik-Nezer, R.",
+      "Holzmeister, F.",
+      "Camerer, C. F.",
+      "Dreber, A.",
+      "Huber, J.",
+      "Johannesson, M.",
+      "Kirchler, M.",
+      "Iwanir, R.",
+      "Mumford, J. A.",
+      "others, including Hakimi, Shabnam",
+      "Nichols, T. E.",
+      "Poldrack, R. A.",
+      "Schonberg, T."
+    ],
+    "year": 2020,
+    "venue": "Nature",
+    "doi": "10.1038/s41586-020-2314-9",
+    "url": "https://doi.org/10.1038/s41586-020-2314-9",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.4,
+    "keywords": []
+  },
+  {
+    "id": "Bachman2020journal",
+    "title": "How we formed a `journal club' for equity in science",
+    "authors": [
+      "Bachman, M.",
+      "Dickerson, K. C.",
+      "Hakimi, Shabnam",
+      "Li, R.",
+      "Yang, B."
+    ],
+    "year": 2020,
+    "venue": "Nature",
+    "doi": "10.1038/d41586-020-02794-4",
+    "url": "https://doi.org/10.1038/d41586-020-02794-4",
+    "pubType": "scicomm",
+    "authorPosition": "middle",
+    "paperWeight": 0.12,
+    "keywords": [
+      "scicomm"
+    ],
+    "addendum": "Authors contributed equally and are listed alphabetically."
+  },
+  {
+    "id": "Mosner2019neural",
+    "title": "Neural mechanisms of reward prediction error in Autism Spectrum Disorder",
+    "authors": [
+      "Mosner, M. G.",
+      "McLaurin, R. E.",
+      "Kinard, J. L.",
+      "Hakimi, Shabnam",
+      "Parelman, J.",
+      "Shah, J. S.",
+      "Bizzell, J.",
+      "Greene, R. K.",
+      "Addicott, M. A.",
+      "Carter, R. M.",
+      "Dichter, G. S."
+    ],
+    "year": 2019,
+    "venue": "Autism Research and Treatment",
+    "doi": "10.1155/2019/5469191",
+    "url": "https://doi.org/10.1155/2019/5469191",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.32,
+    "keywords": []
+  },
+  {
+    "id": "Hsiung2018curiosity",
+    "title": "Unpacking the different flavors of curiosity",
+    "authors": [
+      "Hsiung, A.",
+      "Hakimi, Shabnam",
+      "Adcock, R. A."
+    ],
+    "year": 2018,
+    "venue": "IEEE CIS Newsletter on Cognitive and Developmental Systems",
+    "url": null,
+    "pubType": "commentary",
+    "authorPosition": "second",
+    "paperWeight": 0.24,
+    "keywords": [
+      "commentary"
+    ]
+  },
+  {
+    "id": "Sukumar2017overcoming",
+    "title": "Overcoming temptation: Incentive design for intertemporal choice",
+    "authors": [
+      "Sukumar, S.",
+      "Ward, A. F.",
+      "Elliott-Williams, C.",
+      "Hakimi, Shabnam",
+      "Mozer, M. C."
+    ],
+    "year": 2017,
+    "venue": "Proceedings of the 3rd Multidisciplinary Conference on Reinforcement Learning and Decision Making",
+    "arxivId": "2203.05782",
+    "url": "https://arxiv.org/abs/2203.05782",
+    "pubType": "conf-full",
+    "authorPosition": "middle",
+    "paperWeight": 0.16,
+    "keywords": []
+  },
+  {
+    "id": "Wang2016autism",
+    "title": "Revealing the world of autism through the lens of a camera",
+    "authors": [
+      "Wang, S.",
+      "Fan, S.",
+      "Chen, B.",
+      "Hakimi, Shabnam",
+      "Paul, L. K.",
+      "Zhao, Q.",
+      "Adolphs, R."
+    ],
+    "year": 2016,
+    "venue": "Current Biology",
+    "doi": "10.1016/j.cub.2016.08.055",
+    "url": "https://doi.org/10.1016/j.cub.2016.08.055",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.32,
+    "keywords": []
+  },
+  {
+    "id": "Hakimi2015enhanced",
+    "title": "Enhanced neural responses to imagined primary rewards predict reduced monetary temporal discounting",
+    "authors": [
+      "Hakimi, Shabnam",
+      "Hare, T. A."
+    ],
+    "year": 2015,
+    "venue": "Journal of Neuroscience",
+    "doi": "10.1523/JNEUROSCI.1863-15.2015",
+    "url": "https://doi.org/10.1523/JNEUROSCI.1863-15.2015",
+    "pubType": "journal",
+    "authorPosition": "shared-first",
+    "paperWeight": 0.8,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Hakimi2014activity",
+    "title": "Activity in dlPFC and its effective connectivity to vmPFC are associated with temporal discounting",
+    "authors": [
+      "Hakimi, Shabnam",
+      "Hare, T. A.",
+      "Rangel, A."
+    ],
+    "year": 2014,
+    "venue": "Frontiers in Neuroscience",
+    "doi": "10.3389/fnins.2014.00050",
+    "url": "https://doi.org/10.3389/fnins.2014.00050",
+    "pubType": "journal",
+    "authorPosition": "shared-first",
+    "paperWeight": 0.6,
+    "keywords": [
+      "selected"
+    ]
+  },
+  {
+    "id": "Zink2011vasopressin",
+    "title": "Vasopressin modulates social recognition-related activity in the left temporoparietal junction in humans",
+    "authors": [
+      "Zink, C. F.",
+      "Kempf, L.",
+      "Hakimi, Shabnam",
+      "Rainey, C. A.",
+      "Stein, J. L.",
+      "Meyer-Lindenberg, A."
+    ],
+    "year": 2011,
+    "venue": "Translational Psychiatry",
+    "doi": "10.1038/tp.2011.2",
+    "url": "https://doi.org/10.1038/tp.2011.2",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.24,
+    "keywords": []
+  },
+  {
+    "id": "Tost2010oxtr",
+    "title": "Common alleles in OXTR impact prosocial temperament and human hypothalamic-limbic structure and function",
+    "authors": [
+      "Tost, H.",
+      "Kolachana, B.",
+      "Hakimi, Shabnam",
+      "Lemaitre, H.",
+      "Verchinski, B. A.",
+      "Mattay, V. S.",
+      "Weinberger, D. R.",
+      "Meyer-Lindenberg, A."
+    ],
+    "year": 2010,
+    "venue": "Proceedings of the National Academy of Sciences",
+    "doi": "10.1073/pnas.1003296107",
+    "url": "https://doi.org/10.1073/pnas.1003296107",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.24,
+    "keywords": []
+  },
+  {
+    "id": "Tost2010acute",
+    "title": "Acute D2 receptor blockade induces rapid, reversible remodeling in human cortical-striatal circuits",
+    "authors": [
+      "Tost, H.",
+      "Braus, D. F.",
+      "Hakimi, Shabnam",
+      "Hohn, F.",
+      "Ruf, M.",
+      "Meyer-Lindenberg, A."
+    ],
+    "year": 2010,
+    "venue": "Nature Neuroscience",
+    "doi": "10.1038/nn.2572",
+    "url": "https://doi.org/10.1038/nn.2572",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.24,
+    "keywords": []
+  },
+  {
+    "id": "Zink2010vasopressin",
+    "title": "Vasopressin modulates medial prefrontal cortex-amygdala circuitry during emotion processing in humans",
+    "authors": [
+      "Zink, C. F.",
+      "Stein, J. L.",
+      "Kempf, L.",
+      "Hakimi, Shabnam",
+      "Meyer-Lindenberg, A."
+    ],
+    "year": 2010,
+    "venue": "Journal of Neuroscience",
+    "doi": "10.1523/JNEUROSCI.4899-09.2010",
+    "url": "https://doi.org/10.1523/JNEUROSCI.4899-09.2010",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.24,
+    "keywords": []
+  },
+  {
+    "id": "Goldin2009neural",
+    "title": "Neural bases of social anxiety disorder: Emotional reactivity and cognitive regulation during social and physical threat",
+    "authors": [
+      "Goldin, P. R.",
+      "Manber, T.",
+      "Hakimi, Shabnam",
+      "Canli, T.",
+      "Gross, J. J."
+    ],
+    "year": 2009,
+    "venue": "Archives of General Psychiatry",
+    "doi": "10.1001/archgenpsychiatry.2008.525",
+    "url": "https://doi.org/10.1001/archgenpsychiatry.2008.525",
+    "pubType": "journal",
+    "authorPosition": "middle",
+    "paperWeight": 0.24,
+    "keywords": []
+  },
+  {
+    "id": "Tost2009mri",
+    "title": "Magnetic resonance biomarkers in schizophrenia research",
+    "authors": [
+      "Tost, H.",
+      "Hakimi, Shabnam",
+      "Meyer-Lindenberg, A."
+    ],
+    "year": 2009,
+    "venue": "Handbook of Neuropsychiatric Biomarkers, Endophenotypes, and Genes: Promises, Advances, and Challenges",
+    "doi": "10.1007/978-1-4020-9831-4_6",
+    "url": "https://doi.org/10.1007/978-1-4020-9831-4_6",
+    "pubType": "book-chapter",
+    "authorPosition": "second",
+    "paperWeight": 0.18,
+    "keywords": [
+      "bookchapter"
+    ]
+  },
+  {
+    "id": "Tost2009dopamine",
+    "title": "Dopamine dysfunction in schizophrenia: From genetic susceptibility to cognitive impairment",
+    "authors": [
+      "Tost, H.",
+      "Hakimi, Shabnam",
+      "Meyer-Lindenberg, A."
+    ],
+    "year": 2009,
+    "venue": "Dopamine Handbook",
+    "doi": "10.1093/acprof:oso/9780195373035.003.0039",
+    "url": "https://doi.org/10.1093/acprof:oso/9780195373035.003.0039",
+    "pubType": "book-chapter",
+    "authorPosition": "second",
+    "paperWeight": 0.18,
+    "keywords": [
+      "bookchapter"
+    ]
+  }
+]

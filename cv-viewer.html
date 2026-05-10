@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV (PDF) — Shabnam Hakimi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a, button { cursor: none; }
+:root {
+  --paper:     #f5f2ec;
+  --paper-2:   #edeae1;
+  --ink:       #111118;
+  --ink-blue:  #1a2c6b;
+  --ink-dim:   rgba(17,17,24,0.45);
+  --ink-faint: rgba(17,17,24,0.15);
+  --blue-g:    rgba(80,140,200,0.20);
+  --blue-G:    rgba(80,140,200,0.42);
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: none;
+  display: flex; flex-direction: column;
+}
+
+/* ── TOOLBAR ── */
+.toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.8rem 2.5rem;
+  border-bottom: 1px solid var(--blue-G);
+  background: rgba(244,241,235,0.95); backdrop-filter: blur(8px);
+  flex-shrink: 0; z-index: 10;
+}
+.toolbar-left { display: flex; align-items: center; gap: 1.5rem; }
+.toolbar-back {
+  font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none;
+  transition: color 0.2s;
+}
+.toolbar-back:hover { color: var(--ink-blue); }
+.toolbar-title {
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 400;
+  color: var(--ink);
+}
+.toolbar-right { display: flex; align-items: center; gap: 1rem; }
+.toolbar-btn {
+  font-family: var(--mono); font-size: 0.46rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-blue); text-decoration: none;
+  border: 1px solid rgba(26,44,107,0.25);
+  padding: 0.45rem 0.9rem;
+  background: none; transition: background 0.2s, border-color 0.2s;
+}
+.toolbar-btn:hover { background: rgba(26,44,107,0.04); border-color: var(--ink-blue); }
+
+/* ── PDF EMBED ── */
+.pdf-wrap {
+  flex: 1; display: flex; align-items: stretch;
+  background: var(--paper-2);
+}
+.pdf-wrap iframe, .pdf-wrap embed, .pdf-wrap object {
+  width: 100%; height: 100%; border: none;
+}
+.pdf-fallback {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1.5rem;
+  padding: 3rem;
+}
+.pdf-fallback p {
+  font-size: 0.6rem; color: var(--ink-dim); text-align: center; line-height: 1.8;
+}
+
+/* ── CURSOR ── */
+.cursor {
+  position: fixed; pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
+  color: var(--ink); line-height: 1;
+  width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.12s ease, color 0.12s ease; will-change: transform;
+}
+
+@media (max-width: 700px) {
+  .toolbar { padding: 0.8rem 1.5rem; }
+  .toolbar-title { font-size: 0.7rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor">+</div>
+
+<div class="toolbar">
+  <div class="toolbar-left">
+    <a href="cv.html" class="toolbar-back">← Back to CV</a>
+    <span class="toolbar-title">Shabnam Hakimi — Full CV</span>
+  </div>
+  <div class="toolbar-right">
+    <a href="" id="download-btn" class="toolbar-btn" download="ShabnamHakimi-CV.pdf">Download PDF</a>
+  </div>
+</div>
+
+<div class="pdf-wrap" id="pdf-wrap">
+  <div class="pdf-fallback" id="pdf-fallback">
+    <p>Loading CV&hellip;</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  // PDF source: public GitHub repo raw URL
+  // Update this when the CV repo is made public
+  const PDF_URL = 'https://raw.githubusercontent.com/shabtastic/cv-that-is-awesome/main/cv-full.pdf';
+
+  const wrap = document.getElementById('pdf-wrap');
+  const fallback = document.getElementById('pdf-fallback');
+  const downloadBtn = document.getElementById('download-btn');
+
+  downloadBtn.href = PDF_URL;
+
+  // Try embedding the PDF
+  // Most desktop browsers handle PDF embedding natively
+  const embed = document.createElement('embed');
+  embed.type = 'application/pdf';
+  embed.src = PDF_URL;
+  embed.style.width = '100%';
+  embed.style.height = '100%';
+
+  // On mobile or if embed fails, show fallback with download link
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    fallback.innerHTML =
+      '<p>PDF viewer is best on desktop.</p>' +
+      '<a href="' + PDF_URL + '" class="toolbar-btn" download="ShabnamHakimi-CV.pdf">Download PDF</a>' +
+      '<a href="' + PDF_URL + '" class="toolbar-btn" target="_blank" rel="noopener">Open in new tab</a>';
+  } else {
+    wrap.innerHTML = '';
+    wrap.appendChild(embed);
+
+    // Fallback if embed fails to load
+    embed.onerror = function() {
+      wrap.innerHTML = '';
+      wrap.appendChild(fallback);
+      fallback.innerHTML =
+        '<p>Could not load PDF. The CV may not be available yet.</p>' +
+        '<a href="' + PDF_URL + '" class="toolbar-btn" target="_blank" rel="noopener">Try opening directly</a>' +
+        '<a href="cv.html" class="toolbar-btn">Back to CV</a>';
+    };
+  }
+
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+  });
+  document.addEventListener('mouseover', e => {
+    const link = e.target.closest('a, button');
+    if (link) { cursor.style.transform = 'translate(-50%,-50%) scale(1.9)'; cursor.style.color = 'var(--ink-blue)'; }
+    else { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursor.style.color = 'var(--ink)'; }
+  });
+})();
+</script>
+</body>
+</html>

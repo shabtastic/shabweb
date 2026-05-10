@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV — Shabnam Hakimi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a, button { cursor: none; }
+:root {
+  --paper:     #f5f2ec;
+  --paper-2:   #edeae1;
+  --ink:       #111118;
+  --ink-blue:  #1a2c6b;
+  --ink-dim:   rgba(17,17,24,0.45);
+  --ink-faint: rgba(17,17,24,0.15);
+  --blue-g:    rgba(80,140,200,0.20);
+  --blue-G:    rgba(80,140,200,0.42);
+  --h-yellow:  #FFFF77;
+  --h-slate:   #7777FF;
+  --h-helio:   #C977FF;
+  --h-violet:  #FF77E4;
+  --h-red:     #FF7792;
+  --h-cheese:  #FFAE77;
+  --h-mint:    #77FFE4;
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+  background-image:
+    linear-gradient(var(--blue-G) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-G) 1px, transparent 1px),
+    linear-gradient(var(--blue-g) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-g) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 2.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--blue-G);
+}
+.nav-logo {
+  display: inline-block; position: relative;
+  font-family: var(--mono); font-weight: 700;
+  font-size: 0.62rem; letter-spacing: 0.25em;
+  color: var(--ink); text-decoration: none; line-height: 1;
+}
+.nav-logo-hl { position: absolute; left: -3px; right: -3px; top: 28%; height: 40%; opacity: 0.78; transition: background-color 1.2s ease; pointer-events: none; }
+.nav-logo-text { position: relative; z-index: 1; }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: flex-start; }
+.nav-links li { position: relative; }
+.nav-links > li > a {
+  font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
+}
+.nav-links > li > a:hover, .nav-links > li > a.active { color: var(--ink); }
+.nav-sub-links {
+  display: flex; gap: 1rem;
+  position: absolute; top: 100%; left: 0;
+  padding-top: 0; max-height: 0; overflow: hidden; opacity: 0;
+  pointer-events: none;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
+  background: rgba(244,241,235,0.95); white-space: nowrap;
+}
+.nav-links li:hover .nav-sub-links {
+  max-height: 2rem; opacity: 1; pointer-events: auto; padding-top: 0.3rem;
+}
+.nav-sub-links a {
+  font-size: 0.44rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-faint); text-decoration: none; transition: color 0.2s; line-height: 1;
+}
+.nav-sub-links a:hover { color: var(--ink-dim); }
+.nav-sub-links a.active { color: var(--ink-blue); }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  padding: 8.8rem 2.5rem 3rem;
+  border-bottom: 1px solid var(--blue-G);
+  max-width: 900px;
+}
+.page-eyebrow {
+  font-size: 0.52rem; letter-spacing: 0.38em; text-transform: uppercase;
+  color: var(--ink-blue); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.page-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: currentColor; }
+.page-title {
+  font-family: var(--sans); font-size: clamp(2rem,5vw,3.5rem); font-weight: 300;
+  color: var(--ink); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 0.6rem;
+}
+.page-meta { font-size: 0.55rem; color: var(--ink-dim); line-height: 1.8; }
+.page-meta a { color: var(--ink-blue); text-decoration: none; border-bottom: 1px solid rgba(26,44,107,0.25); }
+.page-meta a:hover { border-color: var(--ink-blue); }
+
+/* ── SECTION DIVIDER ── */
+.cv-section-heading {
+  font-size: 0.48rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--ink-blue); padding: 16px 0 8px;
+  margin-top: 48px;
+  border-top: 1.5px solid var(--ink-blue);
+}
+.cv-section-heading > .hl {
+  display: inline-block;
+  padding: 0 6px;
+  margin-left: -6px;
+  background-image: linear-gradient(
+    transparent 30%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 30%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 85%,
+    transparent 85%
+  );
+}
+.cv-section-heading.s-slate  { --hl-rgb: 119 119 255; --hl-a: 0.65; }
+.cv-section-heading.s-helio  { --hl-rgb: 201 119 255; --hl-a: 0.55; }
+.cv-section-heading.s-violet { --hl-rgb: 255 119 228; --hl-a: 0.55; }
+.cv-section-heading.s-red    { --hl-rgb: 255 119 146; --hl-a: 0.55; }
+.cv-section-heading.s-cheese { --hl-rgb: 255 174 119; --hl-a: 0.65; }
+.cv-section-heading.s-yellow { --hl-rgb: 255 255 119; --hl-a: 0.75; }
+.cv-section-heading.s-mint   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
+
+/* ── CV ENTRIES (education, positions) ── */
+.cv-content { padding: 0 2.5rem 2rem; max-width: 900px; }
+.cv-entry {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--blue-G);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.cv-entry.visible { opacity: 1; transform: translateY(0); }
+.cv-entry-year {
+  font-size: 0.5rem; letter-spacing: 0.12em; color: var(--ink-dim);
+  padding-top: 0.15rem;
+}
+.cv-entry-title {
+  font-family: var(--sans); font-size: 0.88rem; font-weight: 400;
+  color: var(--ink); line-height: 1.3; margin-bottom: 0.2rem;
+}
+.cv-entry-sub { font-size: 0.55rem; color: var(--ink-dim); line-height: 1.6; }
+
+/* ── PUBLICATION ENTRIES ── */
+.pub-list { padding: 0 2.5rem 4rem; max-width: 900px; }
+.pub-year-heading {
+  font-family: var(--mono);
+  font-size: 0.55rem; letter-spacing: 0.22em;
+  color: var(--ink);
+  padding: 0.8rem 0 0.4rem;
+  margin-top: 1.2rem;
+  border-bottom: 1px solid var(--ink-dim);
+  --hl-rgb: 255 255 119;
+  --hl-a: 0.65;
+}
+.pub-year-heading:first-child { margin-top: 0.6rem; }
+.pub-year-heading > .hl {
+  display: inline-block;
+  padding: 0 6px;
+  margin-left: -6px;
+  background-image: linear-gradient(
+    transparent 30%,
+    rgb(var(--hl-rgb) / var(--hl-a)) 30%,
+    rgb(var(--hl-rgb) / var(--hl-a)) 85%,
+    transparent 85%
+  );
+}
+.pub-entry {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--blue-G);
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.pub-entry.visible { opacity: 1; transform: translateY(0); }
+.pub-title {
+  font-family: var(--sans); font-size: 0.88rem; font-weight: 400;
+  color: var(--ink); line-height: 1.35; margin-bottom: 0.3rem;
+}
+.pub-title a {
+  color: inherit; text-decoration: none;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+}
+.pub-title a:hover { border-color: var(--ink-dim); }
+.pub-authors { font-size: 0.55rem; color: var(--ink-dim); margin-bottom: 0.15rem; line-height: 1.6; }
+.pub-authors strong { color: var(--ink); font-weight: 400; }
+.pub-venue { font-size: 0.52rem; color: var(--ink-dim); }
+.pub-venue em { font-style: normal; color: var(--ink-blue); }
+.pub-aside {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 0.35rem; padding-top: 0.1rem;
+  white-space: nowrap;
+}
+.pub-year { font-size: 0.5rem; letter-spacing: 0.12em; color: var(--ink-dim); }
+.pub-type {
+  font-size: 0.42rem; letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--ink-faint); padding: 0.12rem 0.4rem;
+  color: var(--ink-dim);
+}
+.pub-link {
+  font-size: 0.44rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-blue); text-decoration: none;
+  border-bottom: 1px solid rgba(26,44,107,0.25); padding-bottom: 0.05rem;
+  transition: border-color 0.2s;
+}
+.pub-link:hover { border-color: var(--ink-blue); }
+.pub-addendum {
+  font-size: 0.44rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--h-red); margin-top: 0.1rem;
+}
+
+/* ── FULL CV LINK ── */
+.full-cv-link {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-blue); text-decoration: none;
+  border: 1px solid rgba(26,44,107,0.25); padding: 0.6rem 1.2rem;
+  margin-top: 2rem; transition: background 0.2s, border-color 0.2s;
+}
+.full-cv-link:hover { background: rgba(26,44,107,0.04); border-color: var(--ink-blue); }
+
+/* ── CURSOR ── */
+.cursor {
+  position: fixed; pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
+  color: var(--ink); line-height: 1;
+  width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.12s ease, color 0.12s ease; will-change: transform;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--paper-2); padding: 1.5rem 2.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--blue-G); position: relative; z-index: 10;
+}
+footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); }
+
+@media (max-width: 700px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1.2rem; }
+  .page-header, .cv-content, .pub-list { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .pub-entry { grid-template-columns: 1fr; }
+  .pub-aside { flex-direction: row; align-items: center; }
+  .cv-entry { grid-template-columns: 1fr; gap: 0.3rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor">+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-hl" id="nav-logo-hl"></span>
+    <span class="nav-logo-text">SH</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#research">Research</a>
+      <div class="nav-sub-links"><a href="graph.html">Graph</a><a href="projects.html">Projects</a><a href="cv.html" class="active">CV</a></div>
+    </li>
+    <li><a href="extracurriculars.html">Extracurriculars</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <p class="page-eyebrow">Research</p>
+  <h1 class="page-title">Curriculum Vitae</h1>
+  <p class="page-meta">
+    <a href="cv-viewer.html">View full CV (PDF) →</a>
+  </p>
+</div>
+
+<!-- ── Education & Positions ── -->
+<div class="cv-content">
+  <div class="cv-section-heading s-slate"><span class="hl">Education</span></div>
+
+  <div class="cv-entry reveal">
+    <span class="cv-entry-year">2008–14</span>
+    <div>
+      <div class="cv-entry-title">PhD, Computation & Neural Systems</div>
+      <div class="cv-entry-sub">California Institute of Technology</div>
+    </div>
+  </div>
+  <div class="cv-entry reveal">
+    <span class="cv-entry-year">2002–06</span>
+    <div>
+      <div class="cv-entry-title">BA, Psychology</div>
+      <div class="cv-entry-sub">Stanford University</div>
+    </div>
+  </div>
+
+  <div class="cv-section-heading s-helio"><span class="hl">Positions</span></div>
+
+  <div class="cv-entry reveal">
+    <span class="cv-entry-year">2021–</span>
+    <div>
+      <div class="cv-entry-title">Senior Research Scientist</div>
+      <div class="cv-entry-sub">Toyota Research Institute, Human-Centered AI</div>
+    </div>
+  </div>
+  <div class="cv-entry reveal">
+    <span class="cv-entry-year">2016–21</span>
+    <div>
+      <div class="cv-entry-title">Postdoctoral Researcher</div>
+      <div class="cv-entry-sub">Duke University, Center for Cognitive Neuroscience</div>
+    </div>
+  </div>
+  <div class="cv-entry reveal">
+    <span class="cv-entry-year">2013–15</span>
+    <div>
+      <div class="cv-entry-title">Director, Behavioral Labs</div>
+      <div class="cv-entry-sub">Welltok</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Selected Publications (populated from publications.json) ── -->
+<div class="cv-content">
+  <div class="cv-section-heading s-violet"><span class="hl">Selected Publications</span></div>
+</div>
+<div class="pub-list" id="pub-list"></div>
+
+<div class="cv-content" style="padding-top:0;">
+  <a href="cv-viewer.html" class="full-cv-link">View full CV →</a>
+</div>
+
+<footer>
+  <p>Shabnam Hakimi, Ph.D. — Toyota Research Institute</p>
+  <p>MMXXVI</p>
+</footer>
+
+<script>
+// ── LOAD PUBLICATIONS ────────────────────────────────────────────
+(function() {
+  fetch('data/publications.json')
+    .then(r => r.json())
+    .then(pubs => {
+      const selected = pubs.filter(p => p.keywords && p.keywords.includes('selected'));
+      selected.sort((a, b) => b.year - a.year || b.paperWeight - a.paperWeight);
+
+      const list = document.getElementById('pub-list');
+      let currentYear = null;
+
+      selected.forEach(pub => {
+        // Year heading
+        if (pub.year !== currentYear) {
+          currentYear = pub.year;
+          const heading = document.createElement('div');
+          heading.className = 'pub-year-heading';
+          heading.innerHTML = '<span class="hl">' + currentYear + '</span>';
+          list.appendChild(heading);
+        }
+
+        const entry = document.createElement('div');
+        entry.className = 'pub-entry reveal';
+
+        // Format authors — bold Hakimi
+        const authors = pub.authors.map(a => {
+          if (/hakimi/i.test(a)) return '<strong>Hakimi, S.</strong>';
+          const parts = a.split(',');
+          if (parts.length === 2) {
+            const last = parts[0].trim();
+            const first = parts[1].trim();
+            const initials = first.split(/\s+/).map(w => w[0] + '.').join(' ');
+            return last + ', ' + initials;
+          }
+          // Already "First Last" format
+          const words = a.trim().split(/\s+/);
+          if (words.length >= 2) {
+            const last = words[words.length - 1];
+            const initials = words.slice(0, -1).map(w => w[0] + '.').join(' ');
+            return last + ', ' + initials;
+          }
+          return a;
+        }).join(', ');
+
+        // Format venue
+        const venue = pub.venue || '';
+
+        // Type label
+        const typeLabels = {
+          'journal': 'Journal',
+          'conf-full': 'Conference',
+          'conf-workshop': 'Workshop',
+          'preprint': 'Preprint',
+          'commentary': 'Commentary',
+          'book-chapter': 'Chapter',
+          'scicomm': 'Sci-comm',
+        };
+        const typeLabel = typeLabels[pub.pubType] || pub.pubType;
+
+        // Link
+        const linkText = pub.doi ? 'DOI →' : (pub.arxivId ? 'arXiv →' : (pub.url ? 'Link →' : ''));
+        const linkUrl = pub.url || (pub.doi ? 'https://doi.org/' + pub.doi : '');
+
+        entry.innerHTML =
+          '<div class="pub-main">' +
+            '<div class="pub-title">' +
+              (linkUrl ? '<a href="' + linkUrl + '" target="_blank" rel="noopener">' + pub.title + '</a>' : pub.title) +
+            '</div>' +
+            '<div class="pub-authors">' + authors + '</div>' +
+            '<div class="pub-venue"><em>' + venue + '</em></div>' +
+          '</div>' +
+          '<div class="pub-aside">' +
+            '<span class="pub-year">' + pub.year + '</span>' +
+            '<span class="pub-type">' + typeLabel + '</span>' +
+            (linkUrl && linkText ? '<a href="' + linkUrl + '" class="pub-link" target="_blank" rel="noopener">' + linkText + '</a>' : '') +
+            (pub.addendum ? '<span class="pub-addendum">' + pub.addendum + '</span>' : '') +
+          '</div>';
+
+        list.appendChild(entry);
+      });
+
+      // Reveal animation
+      const obs = new IntersectionObserver(
+        entries => entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+        }), { threshold: 0.06 }
+      );
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    })
+    .catch(err => {
+      console.error('Failed to load publications:', err);
+      document.getElementById('pub-list').innerHTML =
+        '<p style="padding:2rem 2.5rem;color:var(--ink-dim);font-size:0.6rem;">Publications loading failed. Ensure data/publications.json is available.</p>';
+    });
+})();
+
+// ── CURSOR ────────────────────────────────────────────────────────
+(function() {
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+  });
+  document.addEventListener('mouseover', e => {
+    const link = e.target.closest('a, button');
+    if (link) { cursor.style.transform = 'translate(-50%,-50%) scale(1.9)'; cursor.style.color = 'var(--ink-blue)'; }
+    else { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursor.style.color = 'var(--ink)'; }
+  });
+})();
+
+// ── LOGO HIGHLIGHT CYCLE ──────────────────────────────────────────
+(function() {
+  const COLORS = ['#FFFF77','#7777FF','#C977FF','#FF77E4','#FF7792','#FFAE77'];
+  let idx = 0, hovered = false, lastSwap = 0;
+  const hl = document.getElementById('nav-logo-hl');
+  const logo = document.querySelector('.nav-logo');
+  if (!hl || !logo) return;
+  hl.style.backgroundColor = COLORS[0];
+  logo.addEventListener('mouseenter', () => hovered = true);
+  logo.addEventListener('mouseleave', () => hovered = false);
+  function tick(ts) {
+    if (ts - lastSwap > (hovered ? 600 : 3000)) {
+      idx = (idx + 1) % COLORS.length;
+      hl.style.backgroundColor = COLORS[idx];
+      lastSwap = ts;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+// ── GRID SNAP ────────────────────────────────────────────────────
+(function() {
+  const CELL = 16;
+  function snap() {
+    document.querySelectorAll('.cv-section-heading, .page-header').forEach(el => {
+      el.style.paddingTop = '';
+      const absTop = el.getBoundingClientRect().top + window.scrollY;
+      const rem = absTop % CELL;
+      if (rem > 0.5) {
+        const nudge = CELL - rem;
+        const current = parseFloat(getComputedStyle(el).paddingTop) || 0;
+        el.style.paddingTop = (current + nudge) + 'px';
+      }
+    });
+  }
+  window.addEventListener('load', snap);
+  window.addEventListener('resize', snap);
+  if (document.fonts) document.fonts.ready.then(snap);
+})();
+</script>
+</body>
+</html>

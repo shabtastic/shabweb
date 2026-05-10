@@ -58,16 +58,29 @@ body {
   width: 100%; height: 100%;
 }
 
-/* ── BACK LINK ── */
-#back {
-  position: absolute; top: 1.5rem; left: 1.8rem;
+/* ── BACK / SIBLINGS NAV ── */
+#nav-mini {
+  position: absolute; top: 1.5rem; left: 1.8rem; z-index: 10;
+  display: flex; align-items: baseline; gap: 1.2rem;
   font-size: 0.5rem; letter-spacing: 0.22em; text-transform: uppercase;
+}
+#nav-mini #back {
   color: var(--ink-dim); text-decoration: none;
   border-bottom: 1px solid var(--ink-faint);
-  padding-bottom: 0.1rem; z-index: 10;
+  padding-bottom: 0.1rem;
   transition: color 0.2s, border-color 0.2s;
 }
-#back:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
+#nav-mini #back:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
+#nav-mini .sib-label { font-size: 0.42rem; color: var(--ink-faint); letter-spacing: 0.18em; }
+#nav-mini .sib-links { display: flex; gap: 0.7rem; }
+#nav-mini .sib-links a {
+  font-size: 0.44rem; color: var(--ink-faint); text-decoration: none;
+  letter-spacing: 0.18em;
+  transition: color 0.2s;
+}
+#nav-mini .sib-links a:hover { color: var(--ink-blue); }
+#nav-mini .sib-links a.active { color: var(--ink-blue); }
+#nav-mini .sib-sep { color: var(--ink-faint); font-size: 0.4rem; }
 
 /* ── TITLE BLOCK ── */
 #title-block {
@@ -87,8 +100,13 @@ body {
   border-left: 1px solid var(--blue-G);
   background: rgba(245,242,236,0.96);
   display: flex; flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(26,44,107,0.3) transparent;
 }
+#sidebar::-webkit-scrollbar { width: 6px; }
+#sidebar::-webkit-scrollbar-thumb { background: rgba(26,44,107,0.25); border-radius: 3px; }
+#sidebar::-webkit-scrollbar-thumb:hover { background: rgba(26,44,107,0.45); }
 #sidebar-header {
   padding: 1.5rem 1.5rem 1rem;
   border-bottom: 1px solid var(--blue-G);
@@ -106,8 +124,6 @@ body {
   padding: 1.5rem;
   border-bottom: 1px solid var(--blue-G);
   min-height: 140px;
-  max-height: 42vh;
-  overflow-y: auto;
   transition: background 0.3s;
 }
 #node-detail .nd-cluster {
@@ -134,7 +150,7 @@ body {
 
 /* ── CLUSTER LIST ── */
 #cluster-list {
-  flex: 1; overflow-y: auto; padding: 1rem 1.5rem;
+  flex: 0 0 auto; padding: 1rem 1.5rem;
 }
 .cluster-item {
   display: flex; gap: 0.8rem; padding: 0.9rem 0;
@@ -272,6 +288,40 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
 .cursor { position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; }
 .cursor-ring { position: fixed; width: 22px; height: 22px; border: 1px solid var(--ink-faint); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.25s; }
 
+/* ── MOBILE / NARROW VIEWPORT ── */
+@media (max-width: 768px) {
+  /* Stack canvas above sidebar instead of side-by-side */
+  #app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 60vh 40vh;
+  }
+  #sidebar {
+    border-left: none;
+    border-top: 1px solid var(--blue-G);
+  }
+
+  /* Cursor crosshair is desktop-only — touch devices don't have a cursor */
+  body, a, button { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+
+  /* Nav-mini: collapse to two rows so the sibling links don't push off-screen */
+  #nav-mini {
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: flex-start;
+  }
+  #nav-mini .sib-label { display: none; }
+  #nav-mini .sib-links { gap: 0.9rem; }
+
+  /* Title-block at bottom-left can overlap nodes; tighten it */
+  #title-block { bottom: 1rem; left: 1rem; }
+  #title-block h1 { font-size: 0.85rem; }
+  #stats-bar { bottom: 1rem; right: 1rem; font-size: 0.4rem; }
+
+  /* HUD progress bar — keep top-right but smaller */
+  #hud { top: 1rem; right: 1rem; }
+}
+
 </style>
 </head>
 <body>
@@ -282,7 +332,17 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
 <div id="app">
   <div id="canvas-wrap">
     <canvas id="graph-canvas"></canvas>
-    <a href="index.html" id="back">← Shabnam Hakimi</a>
+    <div id="nav-mini">
+      <a href="index.html" id="back">← Shabnam Hakimi</a>
+      <span class="sib-label">Research:</span>
+      <span class="sib-links">
+        <a href="graph.html" class="active">Graph</a>
+        <span class="sib-sep">·</span>
+        <a href="projects.html">Projects</a>
+        <span class="sib-sep">·</span>
+        <a href="cv.html">CV</a>
+      </span>
+    </div>
 
     <div id="hud">
       <div class="hud-phase" id="hud-phase">predicting</div>
@@ -292,7 +352,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
 
     <div id="title-block">
       <h1>Research Knowledge Graph</h1>
-      <p>42 concepts · 100 connections · 7 research clusters</p>
+      <p id="title-stats"></p>
     </div>
 
     <div id="stats-bar">
@@ -403,7 +463,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
 {
   "version": "1.0",
   "meta": {
-    "title": "Shabnam Hakimi \u2014 Research Knowledge Graph",
+    "title": "Shabnam Hakimi — Research Knowledge Graph",
     "description": "Semantic graph of research concepts across publications. Nodes are key constructs; edges encode theoretical relationships and their strength.",
     "clusters": [
       {
@@ -437,9 +497,75 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     ],
     "papers": [
       {
-        "id": "hakimi2025iccc",
+        "id": "Klenk2026cats",
+        "title": "Reassessing the value of creative activity traces for understanding and supporting creative work",
+        "year": 2026,
+        "venue": "Herding CATs: Making Sense of Creative Activity Traces Workshop at CHI 2026",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "second",
+        "paperWeight": 0.3,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.698Z"
+      },
+      {
+        "id": "kim2026personagrambridgingpersonasproduct",
+        "title": "Personagram: Bridging Personas and Product Design for Creative Ideation with Multimodal LLMs",
+        "year": 2026,
+        "venue": "Preprint",
+        "arxivId": "2602.06197",
+        "url": "https://arxiv.org/abs/2602.06197",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T18:59:34.514Z",
+        "nodes_contributed": [
+          "persona_theater",
+          "mllm_pipeline",
+          "product_reference",
+          "census_persona",
+          "design_feature_extract",
+          "structured_ideation",
+          "multimodal_reasoning",
+          "designer_satisfaction",
+          "prompt_refinement",
+          "design_speculation"
+        ]
+      },
+      {
+        "id": "hong2026deconstructingtastehumancenteredai",
+        "title": "Deconstructing Taste: Toward a Human-Centered AI Framework for Modeling Consumer Aesthetic Perceptions",
+        "year": 2026,
+        "venue": "Preprint",
+        "arxivId": "2601.17134",
+        "url": "https://arxiv.org/abs/2601.17134",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T18:59:55.684Z",
+        "nodes_contributed": [
+          "style_descriptor",
+          "design_feature_link",
+          "perceptual_analysis",
+          "explicit_classification",
+          "cognitive_mastering",
+          "domain_expertise",
+          "wheel_aesthetics",
+          "spoke_config",
+          "low_level_visual",
+          "high_level_semantic",
+          "human_ai_cocreative",
+          "preference_dataset",
+          "reward_model_taste",
+          "design_communication"
+        ]
+      },
+      {
+        "id": "Hakimi2025creativity",
         "title": "Psychologically-inspired generative AI videos for supporting creativity",
-        "venue": "ICCC 2025",
+        "venue": "2025 International Conference on Computational Creativity",
         "year": 2025,
         "url": "https://computationalcreativity.net/iccc25/papers/iccc25-hakimi2025psychologically.pdf",
         "nodes_contributed": [
@@ -465,7 +591,778 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
           "video",
           "personalization",
           "human_centered"
+        ],
+        "pubType": "conf-full",
+        "authorPosition": "first",
+        "paperWeight": 0.5
+      },
+      {
+        "id": "Hakimi2025semantic",
+        "title": "Semantic properties of abstract prompts shape sequential decision making in design",
+        "year": 2025,
+        "venue": "2025 Multidisciplinary Conference on Reinforcement Learning and Decision Making",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "shared-first",
+        "paperWeight": 0.5,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.708Z"
+      },
+      {
+        "id": "Chen2025learning",
+        "title": "Learning to represent individual differences for choice decision making",
+        "year": 2025,
+        "venue": "Preprint",
+        "arxivId": "2503.21704",
+        "url": "https://arxiv.org/abs/2503.21704",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T19:00:38.607Z",
+        "nodes_contributed": [
+          "rep_learning_id",
+          "indiv_embedding",
+          "choice_prediction",
+          "free_text_embed",
+          "risky_gambling",
+          "psychometric_limit",
+          "user_embedding",
+          "behavioral_model_compare"
         ]
+      },
+      {
+        "id": "Eum2025aidriven",
+        "title": "AI-driven interpretable visual features for demand neuroforecasting",
+        "year": 2025,
+        "venue": "2025 Conference on Artificial Intelligence, Machine Learning, and Business Analytics",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.708Z"
+      },
+      {
+        "id": "Knutson2024brain",
+        "title": "Brain activity forecasts changing market demand for innovative vehicles",
+        "year": 2024,
+        "venue": "Preprint",
+        "url": "https://osf.io/xd9mk/",
+        "pubType": "preprint",
+        "authorPosition": "last",
+        "paperWeight": 0.56,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.708Z"
+      },
+      {
+        "id": "Hakimi2024cognitive",
+        "title": "Understanding the Cognitive Complexity in Language Elicited by Product Images",
+        "year": 2024,
+        "venue": "ICML 2024 Workshop on LLMs and Cognition",
+        "url": "https://arxiv.org/pdf/2409.16521.pdf",
+        "abstractOnly": false,
+        "pubType": "conf-workshop",
+        "authorPosition": "shared-first",
+        "paperWeight": 0.5,
+        "added": "2026-03-15T19:04:48.877Z",
+        "nodes_contributed": [
+          "cog_complex_text",
+          "visibility_score",
+          "semantic_dist_model",
+          "uniqueness_measure",
+          "concreteness_rating",
+          "product_image_label",
+          "vision_lang_embed",
+          "llm_human_detect",
+          "label_elicit_task",
+          "crowdsourced_rating"
+        ]
+      },
+      {
+        "id": "Wright2024motivation",
+        "title": "The Motivation Beliefs Questionnaire (MBQ): Measuring beliefs about the controllability, usefulness, and goal-specificity of motivational states",
+        "year": 2024,
+        "venue": "Preprint",
+        "url": "https://osf.io/k8dy4/",
+        "pubType": "preprint",
+        "authorPosition": "second",
+        "paperWeight": 0.42,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.708Z"
+      },
+      {
+        "id": "Sumner2024personalizing",
+        "title": "Personalizing driver safety interfaces via driver cognitive factors inference",
+        "year": 2024,
+        "venue": "Scientific Reports",
+        "doi": "10.1038/s41598-024-65144-8",
+        "url": "https://doi.org/10.1038/s41598-024-65144-8",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.4,
+        "added": "2026-03-15T18:49:51.824Z",
+        "nodes_contributed": [
+          "adas",
+          "impulsivity",
+          "inhibitory_control",
+          "risky_driving",
+          "latent_state_inf",
+          "rnn_modeling",
+          "driver_behavior",
+          "driving_simulator",
+          "safety_interface",
+          "cog_profiling"
+        ]
+      },
+      {
+        "id": "Nandy2024semantic",
+        "title": "Semantic Properties of Word Prompts Shape Design Outcomes: Understanding the Influence of Semantic Richness and Similarity",
+        "year": 2024,
+        "venue": "International Conference on Design Computing and Cognition",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "last",
+        "paperWeight": 0.4,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Sinclair2024pausing",
+        "title": "Pausing to reflect during news consumption counteracts negativity biases in memory",
+        "year": 2024,
+        "venue": "Preprint",
+        "url": "https://osf.io/83ny2/",
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Paredes2024commuter",
+        "title": "Creative Commuter: Towards Designing Moments for Idea Generation and Incubation during the Commute",
+        "year": 2024,
+        "venue": "Adjunct Proceedings of the 16th International Conference on Automotive User Interfaces and Interactive Vehicular Applications",
+        "doi": "10.1145/3641308.3685022",
+        "url": "https://doi.org/10.1145/3641308.3685022",
+        "abstractOnly": false,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "added": "2026-03-15T19:03:15.241Z",
+        "nodes_contributed": [
+          "idea_incubation",
+          "commute_context",
+          "mindless_task",
+          "context_aware_sensing",
+          "creativity_support",
+          "mild_immersion",
+          "in_car_intelligence",
+          "distraction_min"
+        ]
+      },
+      {
+        "id": "Hong2024unstuck",
+        "title": "Unstuck: Charting the Design Space of Generative AI-based Creativity Interventions",
+        "year": 2024,
+        "venue": "Generative AI and HCI (GenAICHI) Workshop at CHI 2024",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Hakimi2023ml",
+        "title": "Machine learning-based measure of cognitive complexity explains variance in rank-ordered preference",
+        "year": 2023,
+        "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "first",
+        "paperWeight": 0.5,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Hong2023genai",
+        "title": "Generative AI for Product Design: Getting the Right Design and the Design Right",
+        "year": 2023,
+        "venue": "Generative AI and HCI (GenAICHI) Workshop at CHI 2023",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "second",
+        "paperWeight": 0.3,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Filipowicz2023visual",
+        "title": "Visual elements and cognitive biases influence interpretations of trends in scatter plots",
+        "year": 2023,
+        "venue": "Preprint",
+        "arxivId": "2310.15406",
+        "url": "https://arxiv.org/abs/2310.15406",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T19:00:56.623Z",
+        "nodes_contributed": [
+          "scatter_plot_percep",
+          "outlier_influence",
+          "trend_line_effect",
+          "correlation_judgment",
+          "confirmation_bias_viz",
+          "ensemble_coding",
+          "graph_literacy",
+          "visual_misinformation",
+          "marker_properties",
+          "efficient_coding"
+        ]
+      },
+      {
+        "id": "Klenk2023anticipatory",
+        "title": "Anticipatory thinking in design",
+        "year": 2023,
+        "venue": "AI Magazine",
+        "doi": "10.1002/aaai.12101",
+        "url": "https://doi.org/10.1002/aaai.12101",
+        "pubType": "commentary",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Castrellon2022social",
+        "title": "Social cognitive processes explain bias in juror decisions",
+        "year": 2022,
+        "venue": "Social Cognitive and Affective Neuroscience",
+        "doi": "10.1093/scan/nsac057",
+        "url": "https://doi.org/10.1093/scan/nsac057",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "second",
+        "paperWeight": 0.6,
+        "added": "2026-03-15T18:50:04.153Z",
+        "nodes_contributed": [
+          "juror_decision",
+          "crime_type_bias",
+          "mentalizing",
+          "racial_bias",
+          "evidence_strength",
+          "crime_severity",
+          "neural_similarity"
+        ]
+      },
+      {
+        "id": "Castrellon2022neural",
+        "title": "Neural Support for Contributions of Utility and Narrative Processing of Evidence in Juror Decision Making",
+        "year": 2022,
+        "venue": "Journal of Neuroscience",
+        "doi": "10.1523/JNEUROSCI.2434-21.2022",
+        "url": "https://doi.org/10.1523/JNEUROSCI.2434-21.2022",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "second",
+        "paperWeight": 0.6,
+        "added": "2026-03-15T19:55:56.103Z",
+        "nodes_contributed": [
+          "narrative_processing",
+          "utility_processing",
+          "evidence_accumulation",
+          "reading_recall",
+          "relational_logic",
+          "uncertainty_processing",
+          "hierarchical_cog_model",
+          "neurosynth_decode",
+          "complex_decision",
+          "dual_process_integ"
+        ]
+      },
+      {
+        "id": "DeCastro2022latent",
+        "title": "Learning latent traits for simulated cooperative driving tasks",
+        "year": 2022,
+        "venue": "Preprint",
+        "arxivId": "2207.09619",
+        "url": "https://arxiv.org/abs/2207.09619",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T19:01:41.635Z",
+        "nodes_contributed": [
+          "cooperative_teaming",
+          "trait_embedding",
+          "intervention_policy",
+          "driver_distraction",
+          "adversarial_irl",
+          "population_modeling",
+          "cautiousness",
+          "hmi_simulation",
+          "assistance_preference"
+        ]
+      },
+      {
+        "id": "Hsiung2022heuristics",
+        "title": "Between heuristics and optimality: Flexible integration of cost and evidence during information sampling",
+        "year": 2022,
+        "venue": "Preprint",
+        "doi": "10.1101/2022.05.17.492355",
+        "url": "https://doi.org/10.1101/2022.05.17.492355",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T19:02:20.512Z",
+        "nodes_contributed": [
+          "info_sampling",
+          "evidence_accum",
+          "sampling_cost",
+          "heuristic_strategy",
+          "optimal_strategy",
+          "evidence_cost_tradeoff",
+          "stopping_rule",
+          "computational_efficiency",
+          "flexible_integration",
+          "reward_context"
+        ]
+      },
+      {
+        "id": "Filipowicz2022familiarity",
+        "title": "Familiarity plays a unique role in increasing preferences for battery electric vehicle adoption",
+        "year": 2022,
+        "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Harinen2022ml",
+        "title": "Machine learning reveals how personalized climate communication can both succeed and backfire",
+        "year": 2022,
+        "venue": "CML4Impact Workshop at NeurIPS 2022",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Zhang2022conjointnet",
+        "title": "ConjointNet: Enhancing Conjoint Analysis for Preference Prediction with Representation Learning",
+        "year": 2022,
+        "venue": "13th Multidisciplinary Workshop on Advances in Preference Handling (M-PREF 2022) at IJCAI 2022",
+        "arxivId": "2503.11710",
+        "url": "https://arxiv.org/abs/2503.11710",
+        "abstractOnly": false,
+        "pubType": "conf-workshop",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "added": "2026-03-15T19:03:28.085Z",
+        "nodes_contributed": [
+          "conjoint_analysis",
+          "partworth_est",
+          "nonlinear_interact",
+          "auto_encoder_pretrain",
+          "resnet_architecture",
+          "attribute_correlation",
+          "discrete_choice_model",
+          "end_to_end_learning",
+          "multimodal_preference",
+          "semi_supervised_net"
+        ]
+      },
+      {
+        "id": "Gopinath2022hmiway",
+        "title": "HMIway-env: A framework for simulating behaviors and preferences to support human-AI teaming in driving",
+        "year": 2022,
+        "venue": "Human-centered Intelligent Services Safety and Trustworthiness (HCIS) Workshop at IEEE/CVF CVPRW 2022",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Hakimi2021pairing",
+        "title": "Pairing Facts with Imagined Consequences Improves Pandemic-Related Risk Perception",
+        "year": 2021,
+        "venue": "Proceedings of the National Academy of Sciences",
+        "doi": "10.1073/pnas.2100970118",
+        "url": "https://doi.org/10.1073/pnas.2100970118",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "shared-first",
+        "paperWeight": 1,
+        "added": "2026-03-15T18:46:43.402Z",
+        "nodes_contributed": [
+          "risk_perception",
+          "episodic_sim",
+          "info_pred_error",
+          "pandemic_fatigue",
+          "belief_revision",
+          "gist_rep",
+          "risk_estimation",
+          "salience",
+          "compliance",
+          "mental_imagery",
+          "valence_bias"
+        ]
+      },
+      {
+        "id": "Sinclair2021imagining",
+        "title": "Imagining a personalized scenario selectively increases perceived risk of viral transmission for older adults",
+        "year": 2021,
+        "venue": "Nature Aging",
+        "doi": "10.1038/s43587-021-00095-7",
+        "url": "https://doi.org/10.1038/s43587-021-00095-7",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.4,
+        "added": "2026-03-15T18:51:58.953Z",
+        "nodes_contributed": [
+          "personalized_scenario",
+          "age_diff_risk",
+          "viral_transmission",
+          "scenario_specificity",
+          "self_relevance",
+          "protective_behavior",
+          "vulnerability_percep"
+        ]
+      },
+      {
+        "id": "Hakimi2020behavioral",
+        "title": "Applying behavioral economics to improve adolescent and young adult health: A developmentally-sensitive approach",
+        "year": 2020,
+        "venue": "Journal of Adolescent Health",
+        "doi": "10.1016/j.jadohealth.2020.10.007",
+        "url": "https://doi.org/10.1016/j.jadohealth.2020.10.007",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "shared-first",
+        "paperWeight": 1,
+        "added": "2026-03-15T18:52:57.999Z",
+        "nodes_contributed": [
+          "adolescent_dev",
+          "social_choice",
+          "health_behavior",
+          "neurodevelopment",
+          "peer_influence",
+          "choice_architecture",
+          "reward_sensitivity",
+          "dev_sensitive_int"
+        ]
+      },
+      {
+        "id": "Botvinik2020variability",
+        "title": "Variability in the analysis of a single neuroimaging dataset by many teams",
+        "year": 2020,
+        "venue": "Nature",
+        "doi": "10.1038/s41586-020-2314-9",
+        "url": "https://doi.org/10.1038/s41586-020-2314-9",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.4,
+        "added": "2026-03-15T18:53:52.723Z",
+        "nodes_contributed": [
+          "analytic_flex",
+          "researcher_df",
+          "multi_analyst",
+          "pipeline_var",
+          "fmri_preproc",
+          "stat_threshold",
+          "hypothesis_test",
+          "result_robust",
+          "repro_neuro",
+          "spatial_overlap",
+          "effect_hetero",
+          "open_science"
+        ]
+      },
+      {
+        "id": "Bachman2020journal",
+        "title": "How we formed a `journal club' for equity in science",
+        "year": 2020,
+        "venue": "Nature",
+        "doi": "10.1038/d41586-020-02794-4",
+        "url": "https://doi.org/10.1038/d41586-020-02794-4",
+        "pubType": "scicomm",
+        "authorPosition": "middle",
+        "paperWeight": 0.12,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Mosner2019neural",
+        "title": "Neural mechanisms of reward prediction error in Autism Spectrum Disorder",
+        "year": 2019,
+        "venue": "Autism Research and Treatment",
+        "doi": "10.1155/2019/5469191",
+        "url": "https://doi.org/10.1155/2019/5469191",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.32,
+        "added": "2026-03-15T18:54:15.134Z",
+        "nodes_contributed": [
+          "asd_reward",
+          "signed_pred_error",
+          "unsigned_pred_error",
+          "frontostriatal",
+          "paracingulate",
+          "insula_reward",
+          "unpredictability_intol",
+          "reward_learning"
+        ]
+      },
+      {
+        "id": "Hsiung2018curiosity",
+        "title": "Unpacking the different flavors of curiosity",
+        "year": 2018,
+        "venue": "IEEE CIS Newsletter on Cognitive and Developmental Systems",
+        "url": null,
+        "pubType": "commentary",
+        "authorPosition": "second",
+        "paperWeight": 0.24,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Sukumar2017overcoming",
+        "title": "Overcoming temptation: Incentive design for intertemporal choice",
+        "year": 2017,
+        "venue": "Proceedings of the 3rd Multidisciplinary Conference on Reinforcement Learning and Decision Making",
+        "arxivId": "2203.05782",
+        "url": "https://arxiv.org/abs/2203.05782",
+        "abstractOnly": false,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.16,
+        "added": "2026-03-15T19:03:43.447Z",
+        "nodes_contributed": [
+          "plsa",
+          "willpower_fluct",
+          "defection_prob",
+          "delayed_grat_mdp",
+          "incentive_optim",
+          "effort_cost",
+          "persist_defect",
+          "queue_waiting",
+          "personalized_incent",
+          "discount_horizon",
+          "iterated_choice"
+        ]
+      },
+      {
+        "id": "Wang2016autism",
+        "title": "Revealing the world of autism through the lens of a camera",
+        "year": 2016,
+        "venue": "Current Biology",
+        "doi": "10.1016/j.cub.2016.08.055",
+        "url": "https://doi.org/10.1016/j.cub.2016.08.055",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.32,
+        "added": "2026-03-15T18:55:16.883Z",
+        "nodes_contributed": [
+          "photovoice",
+          "autism_percep",
+          "visual_narrative",
+          "lived_experience",
+          "participatory_res",
+          "sensory_exp",
+          "self_expression",
+          "neurodiv_voice",
+          "qual_insight"
+        ]
+      },
+      {
+        "id": "Hakimi2015enhanced",
+        "title": "Enhanced neural responses to imagined primary rewards predict reduced monetary temporal discounting",
+        "year": 2015,
+        "venue": "Journal of Neuroscience",
+        "doi": "10.1523/JNEUROSCI.1863-15.2015",
+        "url": "https://doi.org/10.1523/JNEUROSCI.1863-15.2015",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "shared-first",
+        "paperWeight": 0.8,
+        "added": "2026-03-15T18:55:53.567Z",
+        "nodes_contributed": [
+          "reward_imagination",
+          "primary_reward",
+          "imagination_quality",
+          "discount_rate",
+          "choice_prediction",
+          "therapeutic_target"
+        ]
+      },
+      {
+        "id": "Hakimi2014activity",
+        "title": "Activity in dlPFC and its effective connectivity to vmPFC are associated with temporal discounting",
+        "year": 2014,
+        "venue": "Frontiers in Neuroscience",
+        "doi": "10.3389/fnins.2014.00050",
+        "url": "https://doi.org/10.3389/fnins.2014.00050",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "shared-first",
+        "paperWeight": 0.6,
+        "added": "2026-03-15T18:56:05.325Z",
+        "nodes_contributed": [
+          "delayed_reward_choice",
+          "effective_connectivity",
+          "dlpfc_ba46",
+          "monetary_choice",
+          "cross_domain_mechanism"
+        ]
+      },
+      {
+        "id": "Zink2011vasopressin",
+        "title": "Vasopressin modulates social recognition-related activity in the left temporoparietal junction in humans",
+        "year": 2011,
+        "venue": "Translational Psychiatry",
+        "doi": "10.1038/tp.2011.2",
+        "url": "https://doi.org/10.1038/tp.2011.2",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "added": "2026-03-15T18:56:54.693Z",
+        "nodes_contributed": [
+          "vasopressin",
+          "social_recognition",
+          "temporoparietal_junc",
+          "neuropeptide_effect",
+          "familiarity_assess",
+          "tom_network",
+          "prosocial_behavior"
+        ]
+      },
+      {
+        "id": "Tost2010oxtr",
+        "title": "Common alleles in OXTR impact prosocial temperament and human hypothalamic-limbic structure and function",
+        "year": 2010,
+        "venue": "Proceedings of the National Academy of Sciences",
+        "doi": "10.1073/pnas.1003296107",
+        "url": "https://doi.org/10.1073/pnas.1003296107",
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Tost2010acute",
+        "title": "Acute D2 receptor blockade induces rapid, reversible remodeling in human cortical-striatal circuits",
+        "year": 2010,
+        "venue": "Nature Neuroscience",
+        "doi": "10.1038/nn.2572",
+        "url": "https://doi.org/10.1038/nn.2572",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "added": "2026-03-15T18:57:34.402Z",
+        "nodes_contributed": [
+          "d2_receptor",
+          "dopamine_blockade",
+          "corticostriatal",
+          "circuit_plasticity",
+          "rapid_remodeling",
+          "functional_connect",
+          "pharmacological_fmri",
+          "antipsychotic_mech",
+          "striatal_function",
+          "reversibility"
+        ]
+      },
+      {
+        "id": "Zink2010vasopressin",
+        "title": "Vasopressin modulates medial prefrontal cortex-amygdala circuitry during emotion processing in humans",
+        "year": 2010,
+        "venue": "Journal of Neuroscience",
+        "doi": "10.1523/JNEUROSCI.4899-09.2010",
+        "url": "https://doi.org/10.1523/JNEUROSCI.4899-09.2010",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "added": "2026-03-15T18:58:27.063Z",
+        "nodes_contributed": [
+          "subgenual_cingulate",
+          "supragenual_cingulate",
+          "facial_emotion_proc",
+          "mpfc_amygdala_circuit",
+          "emotion_regulation",
+          "fear_aggression",
+          "anxiety_disorder"
+        ]
+      },
+      {
+        "id": "Goldin2009neural",
+        "title": "Neural bases of social anxiety disorder: Emotional reactivity and cognitive regulation during social and physical threat",
+        "year": 2009,
+        "venue": "Archives of General Psychiatry",
+        "doi": "10.1001/archgenpsychiatry.2008.525",
+        "url": "https://doi.org/10.1001/archgenpsychiatry.2008.525",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "added": "2026-03-15T18:59:18.680Z",
+        "nodes_contributed": [
+          "social_anxiety",
+          "social_threat",
+          "physical_threat",
+          "emotional_reactivity",
+          "cog_reappraisal",
+          "amygdala_reactivity",
+          "pfc_amygdala_reg",
+          "threat_specificity",
+          "negative_evaluation",
+          "insula_activation"
+        ]
+      },
+      {
+        "id": "Tost2009mri",
+        "title": "Magnetic resonance biomarkers in schizophrenia research",
+        "year": 2009,
+        "venue": "Handbook of Neuropsychiatric Biomarkers, Endophenotypes, and Genes: Promises, Advances, and Challenges",
+        "doi": "10.1007/978-1-4020-9831-4_6",
+        "url": "https://doi.org/10.1007/978-1-4020-9831-4_6",
+        "pubType": "book-chapter",
+        "authorPosition": "second",
+        "paperWeight": 0.18,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Tost2009dopamine",
+        "title": "Dopamine dysfunction in schizophrenia: From genetic susceptibility to cognitive impairment",
+        "year": 2009,
+        "venue": "Dopamine Handbook",
+        "doi": "10.1093/acprof:oso/9780195373035.003.0039",
+        "url": "https://doi.org/10.1093/acprof:oso/9780195373035.003.0039",
+        "pubType": "book-chapter",
+        "authorPosition": "second",
+        "paperWeight": 0.18,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
       }
     ]
   },
@@ -474,253 +1371,1947 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       "id": "psych_flex",
       "label": "psychological\nflexibility",
       "weight": 1,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "creativity",
       "label": "creativity",
       "weight": 0.9,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "open_mindedness",
       "label": "open-\nmindedness",
       "weight": 0.65,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "affect",
       "label": "affect",
       "weight": 0.72,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "awe",
       "label": "awe",
       "weight": 0.55,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "expectancy_viol",
       "label": "expectancy\nviolation",
       "weight": 0.68,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "exec_function",
       "label": "executive\nfunction",
       "weight": 0.65,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "self_regulation",
       "label": "self-\nregulation",
       "weight": 0.85,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "intrinsic_motiv",
       "label": "intrinsic\nmotivation",
       "weight": 0.78,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "behavior_change",
       "label": "behavior\nchange",
       "weight": 0.72,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "bayesian_surprise",
       "label": "Bayesian\nsurprise",
       "weight": 0.95,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "pred_processing",
       "label": "predictive\nprocessing",
       "weight": 0.85,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "belief_updating",
       "label": "belief\nupdating",
       "weight": 0.8,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "pred_error",
       "label": "prediction\nerror",
       "weight": 0.78,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "event_segmentation",
       "label": "event\nsegmentation",
       "weight": 0.65,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "semantic_distance",
       "label": "semantic\ndistance",
       "weight": 0.72,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "active_inference",
       "label": "active\ninference",
       "weight": 0.7,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "temporal_res",
       "label": "temporal\nresolution",
       "weight": 0.6,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "gen_ai",
       "label": "generative\nAI",
       "weight": 0.88,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "llm",
       "label": "LLM",
       "weight": 0.72,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "text_to_image",
       "label": "text-to-\nimage",
       "weight": 0.52,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "product_design",
       "label": "product\ndesign",
       "weight": 0.75,
-      "cluster": 2
+      "cluster": 2,
+      "level": "domain"
     },
     {
       "id": "intervention",
       "label": "intervention",
       "weight": 0.75,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "video",
       "label": "video",
       "weight": 0.52,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "personalization",
       "label": "personalization",
       "weight": 0.7,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "human_centered",
       "label": "human-\ncentered",
       "weight": 0.65,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "temporal_discounting",
       "label": "temporal\ndiscounting",
       "weight": 0.85,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "vmPFC",
       "label": "vmPFC",
       "weight": 0.8,
-      "cluster": 4
+      "cluster": 4,
+      "level": "mechanism"
     },
     {
       "id": "dlPFC",
       "label": "dlPFC",
       "weight": 0.75,
-      "cluster": 4
+      "cluster": 4,
+      "level": "mechanism"
     },
     {
       "id": "reward_value",
       "label": "reward\nvaluation",
       "weight": 0.82,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "future_simulation",
       "label": "future\nsimulation",
       "weight": 0.72,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "intertemporal",
       "label": "intertemporal\nchoice",
       "weight": 0.78,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "individual_diff",
       "label": "individual\ndifferences",
       "weight": 0.68,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "social_cognition",
       "label": "social\ncognition",
       "weight": 0.82,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "moral_judgment",
       "label": "moral\njudgment",
       "weight": 0.68,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "decision_bias",
       "label": "decision\nbias",
       "weight": 0.65,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "fMRI",
       "label": "fMRI",
       "weight": 0.75,
-      "cluster": 5
+      "cluster": 5,
+      "level": "method"
     },
     {
       "id": "affect_regulation",
       "label": "affect\nregulation",
       "weight": 0.7,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "cog_complexity",
       "label": "cognitive\ncomplexity",
       "weight": 0.8,
-      "cluster": 6
+      "cluster": 6,
+      "level": "construct"
     },
     {
       "id": "pref_elicitation",
       "label": "preference\nelicitation",
       "weight": 0.82,
-      "cluster": 6
+      "cluster": 6,
+      "level": "method"
     },
     {
       "id": "aesthetic_percep",
       "label": "aesthetic\nperception",
       "weight": 0.68,
-      "cluster": 6
+      "cluster": 6,
+      "level": "construct"
     },
     {
       "id": "consumer_choice",
       "label": "consumer\nchoice",
       "weight": 0.72,
-      "cluster": 6
+      "cluster": 6,
+      "level": "domain"
+    },
+    {
+      "id": "risk_perception",
+      "label": "Risk\nPerception",
+      "weight": 0.95,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "episodic_sim",
+      "label": "Episodic\nSimulation",
+      "weight": 0.9,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "info_pred_error",
+      "label": "Information\nPrediction Error",
+      "weight": 0.85,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "pandemic_fatigue",
+      "label": "Pandemic\nFatigue",
+      "weight": 0.6,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "belief_revision",
+      "label": "Belief\nRevision",
+      "weight": 0.75,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "gist_rep",
+      "label": "Gist\nRepresentations",
+      "weight": 0.55,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "risk_estimation",
+      "label": "Risk\nEstimation",
+      "weight": 0.7,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "salience",
+      "label": "Intervention\nSalience",
+      "weight": 0.65,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "compliance",
+      "label": "Health\nCompliance",
+      "weight": 0.7,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "mental_imagery",
+      "label": "Mental\nImagery",
+      "weight": 0.6,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "valence_bias",
+      "label": "Valence Bias\nin Learning",
+      "weight": 0.5,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "adas",
+      "label": "Advanced Driver\nAssistance",
+      "weight": 0.35,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "impulsivity",
+      "label": "Impulsivity",
+      "weight": 0.38,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "inhibitory_control",
+      "label": "Inhibitory\nControl",
+      "weight": 0.38,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "risky_driving",
+      "label": "Risky Driving\nBehavior",
+      "weight": 0.32,
+      "cluster": 0,
+      "level": "domain"
+    },
+    {
+      "id": "latent_state_inf",
+      "label": "Latent State\nInference",
+      "weight": 0.36,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "rnn_modeling",
+      "label": "RNN\nModeling",
+      "weight": 0.28,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "driver_behavior",
+      "label": "Driver\nBehavior",
+      "weight": 0.3,
+      "cluster": 0,
+      "level": "domain"
+    },
+    {
+      "id": "driving_simulator",
+      "label": "Driving\nSimulator",
+      "weight": 0.22,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "safety_interface",
+      "label": "Safety\nInterface",
+      "weight": 0.32,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "cog_profiling",
+      "label": "Cognitive\nProfiling",
+      "weight": 0.34,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "juror_decision",
+      "label": "Juror\nDecision",
+      "weight": 0.54,
+      "cluster": 5,
+      "level": "domain"
+    },
+    {
+      "id": "crime_type_bias",
+      "label": "Crime-Type\nBias",
+      "weight": 0.6,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "mentalizing",
+      "label": "Mentalizing",
+      "weight": 0.54,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "racial_bias",
+      "label": "Racial\nBias",
+      "weight": 0.48,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "evidence_strength",
+      "label": "Evidence\nStrength",
+      "weight": 0.42,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "crime_severity",
+      "label": "Crime\nSeverity",
+      "weight": 0.42,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "neural_similarity",
+      "label": "Neural\nSimilarity",
+      "weight": 0.36,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "personalized_scenario",
+      "label": "Personalized\nScenario",
+      "weight": 0.36,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "age_diff_risk",
+      "label": "Age Differences\nin Risk",
+      "weight": 0.32,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "viral_transmission",
+      "label": "Viral\nTransmission",
+      "weight": 0.28,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "scenario_specificity",
+      "label": "Scenario\nSpecificity",
+      "weight": 0.24,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "self_relevance",
+      "label": "Self-Relevance",
+      "weight": 0.32,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "protective_behavior",
+      "label": "Protective\nBehavior",
+      "weight": 0.24,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "vulnerability_percep",
+      "label": "Vulnerability\nPerception",
+      "weight": 0.28,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "adolescent_dev",
+      "label": "Adolescent\nDevelopment",
+      "weight": 0.9,
+      "cluster": 0,
+      "level": "domain"
+    },
+    {
+      "id": "social_choice",
+      "label": "Social\nChoice",
+      "weight": 0.85,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "health_behavior",
+      "label": "Health\nBehavior",
+      "weight": 0.8,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "neurodevelopment",
+      "label": "Neuro-\ndevelopment",
+      "weight": 0.75,
+      "cluster": 0,
+      "level": "mechanism"
+    },
+    {
+      "id": "peer_influence",
+      "label": "Peer\nInfluence",
+      "weight": 0.7,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "choice_architecture",
+      "label": "Choice\nArchitecture",
+      "weight": 0.65,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "reward_sensitivity",
+      "label": "Reward\nSensitivity",
+      "weight": 0.7,
+      "cluster": 4,
+      "level": "construct"
+    },
+    {
+      "id": "dev_sensitive_int",
+      "label": "Developmentally\nSensitive\nIntervention",
+      "weight": 0.8,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "analytic_flex",
+      "label": "Analytic\nFlexibility",
+      "weight": 0.4,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "researcher_df",
+      "label": "Researcher\nDegrees Freedom",
+      "weight": 0.35,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "multi_analyst",
+      "label": "Multi-Analyst\nApproach",
+      "weight": 0.35,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "pipeline_var",
+      "label": "Pipeline\nVariability",
+      "weight": 0.3,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "fmri_preproc",
+      "label": "fMRI\nPreprocessing",
+      "weight": 0.25,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "stat_threshold",
+      "label": "Statistical\nThresholding",
+      "weight": 0.25,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "hypothesis_test",
+      "label": "Hypothesis\nTesting",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "result_robust",
+      "label": "Result\nRobustness",
+      "weight": 0.3,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "repro_neuro",
+      "label": "Reproducibility\nNeuroimaging",
+      "weight": 0.35,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "spatial_overlap",
+      "label": "Spatial\nOverlap",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "effect_hetero",
+      "label": "Effect Size\nHeterogeneity",
+      "weight": 0.25,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "open_science",
+      "label": "Open Science\nPractices",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "asd_reward",
+      "label": "ASD reward\nprocessing",
+      "weight": 0.29,
+      "cluster": 0,
+      "level": "domain"
+    },
+    {
+      "id": "signed_pred_error",
+      "label": "signed\nprediction error",
+      "weight": 0.26,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "unsigned_pred_error",
+      "label": "unsigned\nprediction error",
+      "weight": 0.26,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "frontostriatal",
+      "label": "frontostriatal\ncircuit",
+      "weight": 0.22,
+      "cluster": 4,
+      "level": "mechanism"
+    },
+    {
+      "id": "paracingulate",
+      "label": "paracingulate\ngyrus",
+      "weight": 0.19,
+      "cluster": 4,
+      "level": "mechanism"
+    },
+    {
+      "id": "insula_reward",
+      "label": "insula\nactivation",
+      "weight": 0.19,
+      "cluster": 4,
+      "level": "mechanism"
+    },
+    {
+      "id": "unpredictability_intol",
+      "label": "unpredictability\nintolerance",
+      "weight": 0.22,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "reward_learning",
+      "label": "reward\nlearning",
+      "weight": 0.26,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "photovoice",
+      "label": "photovoice\nmethod",
+      "weight": 0.28,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "autism_percep",
+      "label": "autistic\nperception",
+      "weight": 0.32,
+      "cluster": 0,
+      "level": "domain"
+    },
+    {
+      "id": "visual_narrative",
+      "label": "visual\nnarrative",
+      "weight": 0.24,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "lived_experience",
+      "label": "lived\nexperience",
+      "weight": 0.26,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "participatory_res",
+      "label": "participatory\nresearch",
+      "weight": 0.22,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "sensory_exp",
+      "label": "sensory\nexperience",
+      "weight": 0.24,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "self_expression",
+      "label": "self\nexpression",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "neurodiv_voice",
+      "label": "neurodivergent\nvoice",
+      "weight": 0.22,
+      "cluster": 5,
+      "level": "domain"
+    },
+    {
+      "id": "qual_insight",
+      "label": "qualitative\ninsight",
+      "weight": 0.18,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "reward_imagination",
+      "label": "reward\nimagination",
+      "weight": 0.72,
+      "cluster": 4,
+      "level": "construct"
+    },
+    {
+      "id": "primary_reward",
+      "label": "primary\nreward",
+      "weight": 0.56,
+      "cluster": 4,
+      "level": "construct"
+    },
+    {
+      "id": "imagination_quality",
+      "label": "imagination\nquality",
+      "weight": 0.64,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "discount_rate",
+      "label": "discount\nrate",
+      "weight": 0.68,
+      "cluster": 4,
+      "level": "construct"
+    },
+    {
+      "id": "choice_prediction",
+      "label": "choice\nprediction",
+      "weight": 0.52,
+      "cluster": 4,
+      "level": "construct"
+    },
+    {
+      "id": "therapeutic_target",
+      "label": "therapeutic\ntarget",
+      "weight": 0.48,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "delayed_reward_choice",
+      "label": "delayed\nreward choice",
+      "weight": 0.54,
+      "cluster": 4,
+      "level": "construct"
+    },
+    {
+      "id": "effective_connectivity",
+      "label": "effective\nconnectivity",
+      "weight": 0.48,
+      "cluster": 4,
+      "level": "method"
+    },
+    {
+      "id": "dlpfc_ba46",
+      "label": "dlPFC\nBA-46",
+      "weight": 0.48,
+      "cluster": 4,
+      "level": "mechanism"
+    },
+    {
+      "id": "monetary_choice",
+      "label": "monetary\nchoice",
+      "weight": 0.36,
+      "cluster": 4,
+      "level": "method"
+    },
+    {
+      "id": "cross_domain_mechanism",
+      "label": "cross-domain\nmechanism",
+      "weight": 0.42,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "vasopressin",
+      "label": "Vasopressin",
+      "weight": 0.24,
+      "cluster": 0,
+      "level": "mechanism"
+    },
+    {
+      "id": "social_recognition",
+      "label": "Social\nRecognition",
+      "weight": 0.22,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "temporoparietal_junc",
+      "label": "Temporoparietal\nJunction",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "mechanism"
+    },
+    {
+      "id": "neuropeptide_effect",
+      "label": "Neuropeptide\nEffects",
+      "weight": 0.14,
+      "cluster": 0,
+      "level": "mechanism"
+    },
+    {
+      "id": "familiarity_assess",
+      "label": "Familiarity\nAssessment",
+      "weight": 0.12,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "tom_network",
+      "label": "Theory of\nMind Network",
+      "weight": 0.16,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "prosocial_behavior",
+      "label": "Prosocial\nBehavior",
+      "weight": 0.14,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "oxtr_gene",
+      "label": "OXTR\ngene",
+      "weight": 0.24,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "rs53576",
+      "label": "rs53576\npolymorphism",
+      "weight": 0.22,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "prosocial_temp",
+      "label": "prosocial\ntemperament",
+      "weight": 0.2,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "hypothalamus",
+      "label": "hypothalamus",
+      "weight": 0.18,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "amygdala",
+      "label": "amygdala",
+      "weight": 0.19,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "gray_matter_vol",
+      "label": "gray matter\nvolume",
+      "weight": 0.15,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "oxytocin_system",
+      "label": "oxytocin\nsystem",
+      "weight": 0.22,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "gene_brain_behav",
+      "label": "gene-brain-\nbehavior",
+      "weight": 0.17,
+      "cluster": 5,
+      "level": "theory"
+    },
+    {
+      "id": "limbic_structure",
+      "label": "limbic\nstructure",
+      "weight": 0.16,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "allelic_variation",
+      "label": "allelic\nvariation",
+      "weight": 0.14,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "d2_receptor",
+      "label": "D2\nReceptor",
+      "weight": 0.24,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "dopamine_blockade",
+      "label": "Dopamine\nBlockade",
+      "weight": 0.22,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "corticostriatal",
+      "label": "Corticostriatal\nCircuits",
+      "weight": 0.24,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "circuit_plasticity",
+      "label": "Circuit\nPlasticity",
+      "weight": 0.2,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "rapid_remodeling",
+      "label": "Rapid\nRemodeling",
+      "weight": 0.19,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "functional_connect",
+      "label": "Functional\nConnectivity",
+      "weight": 0.18,
+      "cluster": 5,
+      "level": "method"
+    },
+    {
+      "id": "pharmacological_fmri",
+      "label": "Pharmacological\nfMRI",
+      "weight": 0.15,
+      "cluster": 5,
+      "level": "method"
+    },
+    {
+      "id": "antipsychotic_mech",
+      "label": "Antipsychotic\nMechanism",
+      "weight": 0.14,
+      "cluster": 3,
+      "level": "mechanism"
+    },
+    {
+      "id": "striatal_function",
+      "label": "Striatal\nFunction",
+      "weight": 0.17,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "reversibility",
+      "label": "Neural\nReversibility",
+      "weight": 0.16,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "subgenual_cingulate",
+      "label": "Subgenual\nCingulate",
+      "weight": 0.22,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "supragenual_cingulate",
+      "label": "Supragenual\nCingulate",
+      "weight": 0.17,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "facial_emotion_proc",
+      "label": "Facial Emotion\nProcessing",
+      "weight": 0.19,
+      "cluster": 5,
+      "level": "construct"
+    },
+    {
+      "id": "mpfc_amygdala_circuit",
+      "label": "mPFC-Amygdala\nCircuit",
+      "weight": 0.24,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "emotion_regulation",
+      "label": "Emotion\nRegulation",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "fear_aggression",
+      "label": "Fear &\nAggression",
+      "weight": 0.15,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "anxiety_disorder",
+      "label": "Anxiety\nDisorder",
+      "weight": 0.14,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "social_anxiety",
+      "label": "Social\nAnxiety",
+      "weight": 0.22,
+      "cluster": 0,
+      "level": "domain"
+    },
+    {
+      "id": "social_threat",
+      "label": "Social\nThreat",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "physical_threat",
+      "label": "Physical\nThreat",
+      "weight": 0.16,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "emotional_reactivity",
+      "label": "Emotional\nReactivity",
+      "weight": 0.18,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "cog_reappraisal",
+      "label": "Cognitive\nReappraisal",
+      "weight": 0.19,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "amygdala_reactivity",
+      "label": "Amygdala\nReactivity",
+      "weight": 0.17,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "pfc_amygdala_reg",
+      "label": "PFC-Amygdala\nRegulation",
+      "weight": 0.18,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "threat_specificity",
+      "label": "Threat\nSpecificity",
+      "weight": 0.14,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "negative_evaluation",
+      "label": "Negative\nEvaluation Fear",
+      "weight": 0.15,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "insula_activation",
+      "label": "Insula\nActivation",
+      "weight": 0.14,
+      "cluster": 5,
+      "level": "mechanism"
+    },
+    {
+      "id": "persona_theater",
+      "label": "Persona\nTheater",
+      "weight": 0.22,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "mllm_pipeline",
+      "label": "MLLM\nPipeline",
+      "weight": 0.26,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "product_reference",
+      "label": "Product\nReference",
+      "weight": 0.24,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "census_persona",
+      "label": "Census-Based\nPersona",
+      "weight": 0.22,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "design_feature_extract",
+      "label": "Design Feature\nExtraction",
+      "weight": 0.25,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "structured_ideation",
+      "label": "Structured\nIdeation",
+      "weight": 0.24,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "multimodal_reasoning",
+      "label": "Multimodal\nReasoning",
+      "weight": 0.23,
+      "cluster": 2,
+      "level": "theory"
+    },
+    {
+      "id": "designer_satisfaction",
+      "label": "Designer\nSatisfaction",
+      "weight": 0.18,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "prompt_refinement",
+      "label": "Prompt\nRefinement",
+      "weight": 0.16,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "design_speculation",
+      "label": "Design\nSpeculation",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "style_descriptor",
+      "label": "Style\nDescriptor",
+      "weight": 0.22,
+      "cluster": 6,
+      "level": "construct"
+    },
+    {
+      "id": "design_feature_link",
+      "label": "Design\nFeature Link",
+      "weight": 0.25,
+      "cluster": 6,
+      "level": "construct"
+    },
+    {
+      "id": "perceptual_analysis",
+      "label": "Perceptual\nAnalysis",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "explicit_classification",
+      "label": "Explicit\nClassification",
+      "weight": 0.18,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "cognitive_mastering",
+      "label": "Cognitive\nMastering",
+      "weight": 0.17,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "domain_expertise",
+      "label": "Domain\nExpertise",
+      "weight": 0.15,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "wheel_aesthetics",
+      "label": "Wheel\nAesthetics",
+      "weight": 0.19,
+      "cluster": 6,
+      "level": "domain"
+    },
+    {
+      "id": "spoke_config",
+      "label": "Spoke\nConfiguration",
+      "weight": 0.16,
+      "cluster": 6,
+      "level": "domain"
+    },
+    {
+      "id": "low_level_visual",
+      "label": "Low-Level\nVisual Features",
+      "weight": 0.21,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "high_level_semantic",
+      "label": "High-Level\nSemantic",
+      "weight": 0.2,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "human_ai_cocreative",
+      "label": "Human-AI\nCo-Creative",
+      "weight": 0.23,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "preference_dataset",
+      "label": "Preference\nDataset",
+      "weight": 0.18,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "reward_model_taste",
+      "label": "Reward Model\nTaste",
+      "weight": 0.17,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "design_communication",
+      "label": "Design\nCommunication",
+      "weight": 0.16,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "rep_learning_id",
+      "label": "representation\nlearning",
+      "weight": 0.28,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "indiv_embedding",
+      "label": "individual\nembedding",
+      "weight": 0.25,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "free_text_embed",
+      "label": "free text\nembedding",
+      "weight": 0.2,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "risky_gambling",
+      "label": "risky gambling\ntask",
+      "weight": 0.18,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "psychometric_limit",
+      "label": "psychometric\nlimitations",
+      "weight": 0.15,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "user_embedding",
+      "label": "user\nembedding",
+      "weight": 0.17,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "behavioral_model_compare",
+      "label": "behavioral\nmodel compare",
+      "weight": 0.14,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "scatter_plot_percep",
+      "label": "scatter plot\nperception",
+      "weight": 0.25,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "outlier_influence",
+      "label": "outlier\ninfluence",
+      "weight": 0.22,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "trend_line_effect",
+      "label": "trend line\neffect",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "correlation_judgment",
+      "label": "correlation\njudgment",
+      "weight": 0.18,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "confirmation_bias_viz",
+      "label": "confirmation\nbias (viz)",
+      "weight": 0.17,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "ensemble_coding",
+      "label": "ensemble\ncoding",
+      "weight": 0.15,
+      "cluster": 0,
+      "level": "theory"
+    },
+    {
+      "id": "graph_literacy",
+      "label": "graph\nliteracy",
+      "weight": 0.14,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "visual_misinformation",
+      "label": "visual\nmisinformation",
+      "weight": 0.16,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "marker_properties",
+      "label": "marker\nproperties",
+      "weight": 0.13,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "efficient_coding",
+      "label": "efficient\ncoding",
+      "weight": 0.14,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "cooperative_teaming",
+      "label": "Cooperative\nTeaming",
+      "weight": 0.25,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "trait_embedding",
+      "label": "Trait\nEmbedding",
+      "weight": 0.28,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "intervention_policy",
+      "label": "Intervention\nPolicy",
+      "weight": 0.25,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "driver_distraction",
+      "label": "Driver\nDistraction",
+      "weight": 0.22,
+      "cluster": 0,
+      "level": "domain"
+    },
+    {
+      "id": "adversarial_irl",
+      "label": "Adversarial\nIRL",
+      "weight": 0.2,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "population_modeling",
+      "label": "Population\nModeling",
+      "weight": 0.18,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "cautiousness",
+      "label": "Cautiousness",
+      "weight": 0.15,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "hmi_simulation",
+      "label": "HMI\nSimulation",
+      "weight": 0.18,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "assistance_preference",
+      "label": "Assistance\nPreference",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "info_sampling",
+      "label": "information\nsampling",
+      "weight": 0.28,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "evidence_accum",
+      "label": "evidence\naccumulation",
+      "weight": 0.25,
+      "cluster": 0,
+      "level": "theory"
+    },
+    {
+      "id": "sampling_cost",
+      "label": "sampling\ncost",
+      "weight": 0.22,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "heuristic_strategy",
+      "label": "heuristic\nstrategy",
+      "weight": 0.2,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "optimal_strategy",
+      "label": "optimal\nstrategy",
+      "weight": 0.2,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "evidence_cost_tradeoff",
+      "label": "evidence-cost\ntradeoff",
+      "weight": 0.26,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "stopping_rule",
+      "label": "stopping\nrule",
+      "weight": 0.22,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "computational_efficiency",
+      "label": "computational\nefficiency",
+      "weight": 0.18,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "flexible_integration",
+      "label": "flexible\nintegration",
+      "weight": 0.24,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "reward_context",
+      "label": "reward\ncontext",
+      "weight": 0.17,
+      "cluster": 4,
+      "level": "construct"
+    },
+    {
+      "id": "idea_incubation",
+      "label": "idea\nincubation",
+      "weight": 0.23,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "commute_context",
+      "label": "commute\ncontext",
+      "weight": 0.21,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "mindless_task",
+      "label": "mindless\ntask",
+      "weight": 0.18,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "context_aware_sensing",
+      "label": "context-aware\nsensing",
+      "weight": 0.2,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "creativity_support",
+      "label": "creativity\nsupport tools",
+      "weight": 0.22,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "mild_immersion",
+      "label": "mild\nimmersion",
+      "weight": 0.16,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "in_car_intelligence",
+      "label": "in-car\nintelligence",
+      "weight": 0.18,
+      "cluster": 2,
+      "level": "domain"
+    },
+    {
+      "id": "distraction_min",
+      "label": "distraction\nminimization",
+      "weight": 0.19,
+      "cluster": 3,
+      "level": "construct"
+    },
+    {
+      "id": "conjoint_analysis",
+      "label": "conjoint\nanalysis",
+      "weight": 0.23,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "partworth_est",
+      "label": "partworth\nestimation",
+      "weight": 0.18,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "nonlinear_interact",
+      "label": "nonlinear\ninteractions",
+      "weight": 0.21,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "auto_encoder_pretrain",
+      "label": "autoencoder\npretraining",
+      "weight": 0.16,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "resnet_architecture",
+      "label": "ResNet\narchitecture",
+      "weight": 0.14,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "attribute_correlation",
+      "label": "attribute\ncorrelation",
+      "weight": 0.13,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "discrete_choice_model",
+      "label": "discrete choice\nmodel",
+      "weight": 0.19,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "end_to_end_learning",
+      "label": "end-to-end\nlearning",
+      "weight": 0.15,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "multimodal_preference",
+      "label": "multimodal\npreference",
+      "weight": 0.14,
+      "cluster": 2,
+      "level": "construct"
+    },
+    {
+      "id": "semi_supervised_net",
+      "label": "semi-supervised\nnetwork",
+      "weight": 0.13,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "plsa",
+      "label": "prize-linked\nsavings",
+      "weight": 0.22,
+      "cluster": 3,
+      "level": "domain"
+    },
+    {
+      "id": "willpower_fluct",
+      "label": "willpower\nfluctuation",
+      "weight": 0.24,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "defection_prob",
+      "label": "defection\nprobability",
+      "weight": 0.2,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "delayed_grat_mdp",
+      "label": "delayed-grat\nMDP",
+      "weight": 0.27,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "incentive_optim",
+      "label": "incentive\noptimization",
+      "weight": 0.25,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "effort_cost",
+      "label": "effort\ncost",
+      "weight": 0.18,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "persist_defect",
+      "label": "persist vs\ndefect choice",
+      "weight": 0.21,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "queue_waiting",
+      "label": "queue waiting\ntask",
+      "weight": 0.16,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "personalized_incent",
+      "label": "personalized\nincentive",
+      "weight": 0.24,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "discount_horizon",
+      "label": "known time\nhorizon",
+      "weight": 0.17,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "iterated_choice",
+      "label": "iterated\nchoice",
+      "weight": 0.18,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "cog_complex_text",
+      "label": "cognitive\ncomplexity",
+      "weight": 0.65,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "visibility_score",
+      "label": "visibility\nscore",
+      "weight": 0.45,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "semantic_dist_model",
+      "label": "semantic\ndistance model",
+      "weight": 0.45,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "uniqueness_measure",
+      "label": "uniqueness\nmeasure",
+      "weight": 0.4,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "concreteness_rating",
+      "label": "concreteness\nrating",
+      "weight": 0.5,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "product_image_label",
+      "label": "product image\nlabeling",
+      "weight": 0.55,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "vision_lang_embed",
+      "label": "vision-language\nembedding",
+      "weight": 0.5,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "llm_human_detect",
+      "label": "LLM vs human\ndetection",
+      "weight": 0.35,
+      "cluster": 2,
+      "level": "method"
+    },
+    {
+      "id": "label_elicit_task",
+      "label": "label elicitation\ntask",
+      "weight": 0.45,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "crowdsourced_rating",
+      "label": "crowdsourced\nrating",
+      "weight": 0.4,
+      "cluster": 3,
+      "level": "method"
+    },
+    {
+      "id": "narrative_processing",
+      "label": "narrative\nprocessing",
+      "weight": 0.54,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "utility_processing",
+      "label": "utility\nprocessing",
+      "weight": 0.48,
+      "cluster": 4,
+      "level": "construct"
+    },
+    {
+      "id": "evidence_accumulation",
+      "label": "evidence\naccumulation",
+      "weight": 0.54,
+      "cluster": 0,
+      "level": "theory"
+    },
+    {
+      "id": "reading_recall",
+      "label": "reading\n& recall",
+      "weight": 0.36,
+      "cluster": 0,
+      "level": "method"
+    },
+    {
+      "id": "relational_logic",
+      "label": "relational\nlogic",
+      "weight": 0.42,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "uncertainty_processing",
+      "label": "uncertainty\nprocessing",
+      "weight": 0.42,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "hierarchical_cog_model",
+      "label": "hierarchical\ncog model",
+      "weight": 0.36,
+      "cluster": 1,
+      "level": "theory"
+    },
+    {
+      "id": "neurosynth_decode",
+      "label": "neurosynth\ndecoding",
+      "weight": 0.3,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "complex_decision",
+      "label": "complex\ndecision",
+      "weight": 0.48,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "dual_process_integ",
+      "label": "dual process\nintegration",
+      "weight": 0.42,
+      "cluster": 0,
+      "level": "theory"
     }
   ],
   "edges": [
@@ -1022,12 +3613,12 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "vmPFC",
       "b": "reward_value",
-      "strength": 0.92
+      "strength": 0.9
     },
     {
       "a": "vmPFC",
       "b": "future_simulation",
-      "strength": 0.85
+      "strength": 0.83
     },
     {
       "a": "dlPFC",
@@ -1042,7 +3633,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "dlPFC",
       "b": "self_regulation",
-      "strength": 0.8
+      "strength": 0.77
     },
     {
       "a": "reward_value",
@@ -1223,6 +3814,3338 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       "a": "behavior_change",
       "b": "intervention",
       "strength": 0.85
+    },
+    {
+      "a": "risk_perception",
+      "b": "compliance",
+      "strength": 0.85
+    },
+    {
+      "a": "episodic_sim",
+      "b": "info_pred_error",
+      "strength": 0.8
+    },
+    {
+      "a": "info_pred_error",
+      "b": "belief_revision",
+      "strength": 0.85
+    },
+    {
+      "a": "info_pred_error",
+      "b": "pred_error",
+      "strength": 0.9
+    },
+    {
+      "a": "episodic_sim",
+      "b": "future_simulation",
+      "strength": 0.85
+    },
+    {
+      "a": "episodic_sim",
+      "b": "salience",
+      "strength": 0.75
+    },
+    {
+      "a": "salience",
+      "b": "behavior_change",
+      "strength": 0.7
+    },
+    {
+      "a": "episodic_sim",
+      "b": "mental_imagery",
+      "strength": 0.8
+    },
+    {
+      "a": "mental_imagery",
+      "b": "gist_rep",
+      "strength": 0.65
+    },
+    {
+      "a": "gist_rep",
+      "b": "belief_revision",
+      "strength": 0.6
+    },
+    {
+      "a": "risk_perception",
+      "b": "risk_estimation",
+      "strength": 0.9
+    },
+    {
+      "a": "belief_updating",
+      "b": "belief_revision",
+      "strength": 0.85
+    },
+    {
+      "a": "valence_bias",
+      "b": "belief_revision",
+      "strength": 0.6
+    },
+    {
+      "a": "pandemic_fatigue",
+      "b": "compliance",
+      "strength": 0.55
+    },
+    {
+      "a": "risk_perception",
+      "b": "decision_bias",
+      "strength": 0.6
+    },
+    {
+      "a": "episodic_sim",
+      "b": "self_regulation",
+      "strength": 0.7
+    },
+    {
+      "a": "info_pred_error",
+      "b": "bayesian_surprise",
+      "strength": 0.75
+    },
+    {
+      "a": "risk_estimation",
+      "b": "intervention",
+      "strength": 0.7
+    },
+    {
+      "a": "impulsivity",
+      "b": "risky_driving",
+      "strength": 0.75
+    },
+    {
+      "a": "inhibitory_control",
+      "b": "risky_driving",
+      "strength": 0.72
+    },
+    {
+      "a": "inhibitory_control",
+      "b": "exec_function",
+      "strength": 0.8
+    },
+    {
+      "a": "impulsivity",
+      "b": "self_regulation",
+      "strength": 0.7
+    },
+    {
+      "a": "latent_state_inf",
+      "b": "rnn_modeling",
+      "strength": 0.78
+    },
+    {
+      "a": "driver_behavior",
+      "b": "latent_state_inf",
+      "strength": 0.72
+    },
+    {
+      "a": "cog_profiling",
+      "b": "personalization",
+      "strength": 0.75
+    },
+    {
+      "a": "cog_profiling",
+      "b": "impulsivity",
+      "strength": 0.7
+    },
+    {
+      "a": "cog_profiling",
+      "b": "inhibitory_control",
+      "strength": 0.7
+    },
+    {
+      "a": "safety_interface",
+      "b": "adas",
+      "strength": 0.8
+    },
+    {
+      "a": "safety_interface",
+      "b": "behavior_change",
+      "strength": 0.65
+    },
+    {
+      "a": "personalization",
+      "b": "safety_interface",
+      "strength": 0.72
+    },
+    {
+      "a": "individual_diff",
+      "b": "cog_profiling",
+      "strength": 0.68
+    },
+    {
+      "a": "latent_state_inf",
+      "b": "bayesian_surprise",
+      "strength": 0.45
+    },
+    {
+      "a": "adas",
+      "b": "intervention",
+      "strength": 0.7
+    },
+    {
+      "a": "driving_simulator",
+      "b": "driver_behavior",
+      "strength": 0.6
+    },
+    {
+      "a": "social_cognition",
+      "b": "juror_decision",
+      "strength": 0.85
+    },
+    {
+      "a": "social_cognition",
+      "b": "crime_type_bias",
+      "strength": 0.9
+    },
+    {
+      "a": "mentalizing",
+      "b": "crime_type_bias",
+      "strength": 0.8
+    },
+    {
+      "a": "mentalizing",
+      "b": "social_cognition",
+      "strength": 0.85
+    },
+    {
+      "a": "racial_bias",
+      "b": "crime_type_bias",
+      "strength": 0.75
+    },
+    {
+      "a": "racial_bias",
+      "b": "social_cognition",
+      "strength": 0.7
+    },
+    {
+      "a": "crime_severity",
+      "b": "evidence_strength",
+      "strength": 0.7
+    },
+    {
+      "a": "crime_type_bias",
+      "b": "evidence_strength",
+      "strength": 0.8
+    },
+    {
+      "a": "affect",
+      "b": "juror_decision",
+      "strength": 0.4
+    },
+    {
+      "a": "moral_judgment",
+      "b": "juror_decision",
+      "strength": 0.45
+    },
+    {
+      "a": "decision_bias",
+      "b": "crime_type_bias",
+      "strength": 0.75
+    },
+    {
+      "a": "fMRI",
+      "b": "neural_similarity",
+      "strength": 0.8
+    },
+    {
+      "a": "neural_similarity",
+      "b": "crime_type_bias",
+      "strength": 0.7
+    },
+    {
+      "a": "personalized_scenario",
+      "b": "episodic_sim",
+      "strength": 0.8
+    },
+    {
+      "a": "personalized_scenario",
+      "b": "risk_perception",
+      "strength": 0.85
+    },
+    {
+      "a": "mental_imagery",
+      "b": "personalized_scenario",
+      "strength": 0.75
+    },
+    {
+      "a": "age_diff_risk",
+      "b": "risk_perception",
+      "strength": 0.7
+    },
+    {
+      "a": "self_relevance",
+      "b": "personalized_scenario",
+      "strength": 0.8
+    },
+    {
+      "a": "self_relevance",
+      "b": "salience",
+      "strength": 0.65
+    },
+    {
+      "a": "vulnerability_percep",
+      "b": "risk_perception",
+      "strength": 0.75
+    },
+    {
+      "a": "vulnerability_percep",
+      "b": "age_diff_risk",
+      "strength": 0.7
+    },
+    {
+      "a": "viral_transmission",
+      "b": "risk_estimation",
+      "strength": 0.6
+    },
+    {
+      "a": "protective_behavior",
+      "b": "behavior_change",
+      "strength": 0.7
+    },
+    {
+      "a": "protective_behavior",
+      "b": "compliance",
+      "strength": 0.65
+    },
+    {
+      "a": "scenario_specificity",
+      "b": "episodic_sim",
+      "strength": 0.7
+    },
+    {
+      "a": "scenario_specificity",
+      "b": "personalized_scenario",
+      "strength": 0.75
+    },
+    {
+      "a": "personalized_scenario",
+      "b": "intervention",
+      "strength": 0.6
+    },
+    {
+      "a": "individual_diff",
+      "b": "age_diff_risk",
+      "strength": 0.55
+    },
+    {
+      "a": "adolescent_dev",
+      "b": "temporal_discounting",
+      "strength": 0.85
+    },
+    {
+      "a": "adolescent_dev",
+      "b": "neurodevelopment",
+      "strength": 0.9
+    },
+    {
+      "a": "social_choice",
+      "b": "behavior_change",
+      "strength": 0.8
+    },
+    {
+      "a": "social_choice",
+      "b": "peer_influence",
+      "strength": 0.85
+    },
+    {
+      "a": "health_behavior",
+      "b": "behavior_change",
+      "strength": 0.9
+    },
+    {
+      "a": "neurodevelopment",
+      "b": "reward_sensitivity",
+      "strength": 0.8
+    },
+    {
+      "a": "neurodevelopment",
+      "b": "impulsivity",
+      "strength": 0.75
+    },
+    {
+      "a": "peer_influence",
+      "b": "social_cognition",
+      "strength": 0.7
+    },
+    {
+      "a": "choice_architecture",
+      "b": "intervention",
+      "strength": 0.85
+    },
+    {
+      "a": "reward_sensitivity",
+      "b": "reward_value",
+      "strength": 0.8
+    },
+    {
+      "a": "reward_sensitivity",
+      "b": "temporal_discounting",
+      "strength": 0.75
+    },
+    {
+      "a": "dev_sensitive_int",
+      "b": "adolescent_dev",
+      "strength": 0.9
+    },
+    {
+      "a": "dev_sensitive_int",
+      "b": "intervention",
+      "strength": 0.85
+    },
+    {
+      "a": "inhibitory_control",
+      "b": "neurodevelopment",
+      "strength": 0.7
+    },
+    {
+      "a": "vmPFC",
+      "b": "neurodevelopment",
+      "strength": 0.65
+    },
+    {
+      "a": "analytic_flex",
+      "b": "researcher_df",
+      "strength": 0.9
+    },
+    {
+      "a": "analytic_flex",
+      "b": "pipeline_var",
+      "strength": 0.85
+    },
+    {
+      "a": "multi_analyst",
+      "b": "repro_neuro",
+      "strength": 0.8
+    },
+    {
+      "a": "multi_analyst",
+      "b": "result_robust",
+      "strength": 0.75
+    },
+    {
+      "a": "pipeline_var",
+      "b": "fmri_preproc",
+      "strength": 0.8
+    },
+    {
+      "a": "pipeline_var",
+      "b": "stat_threshold",
+      "strength": 0.75
+    },
+    {
+      "a": "fmri_preproc",
+      "b": "fMRI",
+      "strength": 0.7
+    },
+    {
+      "a": "stat_threshold",
+      "b": "hypothesis_test",
+      "strength": 0.7
+    },
+    {
+      "a": "researcher_df",
+      "b": "effect_hetero",
+      "strength": 0.65
+    },
+    {
+      "a": "effect_hetero",
+      "b": "spatial_overlap",
+      "strength": 0.6
+    },
+    {
+      "a": "result_robust",
+      "b": "spatial_overlap",
+      "strength": 0.7
+    },
+    {
+      "a": "repro_neuro",
+      "b": "open_science",
+      "strength": 0.6
+    },
+    {
+      "a": "analytic_flex",
+      "b": "fMRI",
+      "strength": 0.5
+    },
+    {
+      "a": "multi_analyst",
+      "b": "individual_diff",
+      "strength": 0.4
+    },
+    {
+      "a": "hypothesis_test",
+      "b": "belief_updating",
+      "strength": 0.35
+    },
+    {
+      "a": "asd_reward",
+      "b": "pred_error",
+      "strength": 0.85
+    },
+    {
+      "a": "signed_pred_error",
+      "b": "pred_error",
+      "strength": 0.9
+    },
+    {
+      "a": "unsigned_pred_error",
+      "b": "pred_error",
+      "strength": 0.9
+    },
+    {
+      "a": "signed_pred_error",
+      "b": "paracingulate",
+      "strength": 0.7
+    },
+    {
+      "a": "unsigned_pred_error",
+      "b": "insula_reward",
+      "strength": 0.7
+    },
+    {
+      "a": "frontostriatal",
+      "b": "reward_learning",
+      "strength": 0.8
+    },
+    {
+      "a": "asd_reward",
+      "b": "frontostriatal",
+      "strength": 0.75
+    },
+    {
+      "a": "unpredictability_intol",
+      "b": "asd_reward",
+      "strength": 0.7
+    },
+    {
+      "a": "reward_learning",
+      "b": "pred_processing",
+      "strength": 0.8
+    },
+    {
+      "a": "asd_reward",
+      "b": "bayesian_surprise",
+      "strength": 0.6
+    },
+    {
+      "a": "unpredictability_intol",
+      "b": "expectancy_viol",
+      "strength": 0.65
+    },
+    {
+      "a": "frontostriatal",
+      "b": "vmPFC",
+      "strength": 0.7
+    },
+    {
+      "a": "photovoice",
+      "b": "autism_percep",
+      "strength": 0.85
+    },
+    {
+      "a": "photovoice",
+      "b": "visual_narrative",
+      "strength": 0.8
+    },
+    {
+      "a": "autism_percep",
+      "b": "sensory_exp",
+      "strength": 0.75
+    },
+    {
+      "a": "lived_experience",
+      "b": "neurodiv_voice",
+      "strength": 0.7
+    },
+    {
+      "a": "participatory_res",
+      "b": "photovoice",
+      "strength": 0.78
+    },
+    {
+      "a": "visual_narrative",
+      "b": "self_expression",
+      "strength": 0.65
+    },
+    {
+      "a": "autism_percep",
+      "b": "pred_processing",
+      "strength": 0.55
+    },
+    {
+      "a": "sensory_exp",
+      "b": "asd_reward",
+      "strength": 0.5
+    },
+    {
+      "a": "lived_experience",
+      "b": "self_relevance",
+      "strength": 0.6
+    },
+    {
+      "a": "neurodiv_voice",
+      "b": "social_cognition",
+      "strength": 0.45
+    },
+    {
+      "a": "qual_insight",
+      "b": "participatory_res",
+      "strength": 0.7
+    },
+    {
+      "a": "photovoice",
+      "b": "mental_imagery",
+      "strength": 0.5
+    },
+    {
+      "a": "reward_imagination",
+      "b": "vmPFC",
+      "strength": 0.88
+    },
+    {
+      "a": "reward_imagination",
+      "b": "temporal_discounting",
+      "strength": 0.85
+    },
+    {
+      "a": "imagination_quality",
+      "b": "discount_rate",
+      "strength": 0.82
+    },
+    {
+      "a": "primary_reward",
+      "b": "reward_value",
+      "strength": 0.75
+    },
+    {
+      "a": "reward_imagination",
+      "b": "future_simulation",
+      "strength": 0.8
+    },
+    {
+      "a": "discount_rate",
+      "b": "intertemporal",
+      "strength": 0.85
+    },
+    {
+      "a": "imagination_quality",
+      "b": "individual_diff",
+      "strength": 0.7
+    },
+    {
+      "a": "choice_prediction",
+      "b": "fMRI",
+      "strength": 0.65
+    },
+    {
+      "a": "reward_imagination",
+      "b": "mental_imagery",
+      "strength": 0.82
+    },
+    {
+      "a": "therapeutic_target",
+      "b": "behavior_change",
+      "strength": 0.6
+    },
+    {
+      "a": "therapeutic_target",
+      "b": "intervention",
+      "strength": 0.65
+    },
+    {
+      "a": "discount_rate",
+      "b": "impulsivity",
+      "strength": 0.58
+    },
+    {
+      "a": "imagination_quality",
+      "b": "episodic_sim",
+      "strength": 0.72
+    },
+    {
+      "a": "dlpfc_ba46",
+      "b": "dlPFC",
+      "strength": 0.9
+    },
+    {
+      "a": "dlpfc_ba46",
+      "b": "delayed_reward_choice",
+      "strength": 0.85
+    },
+    {
+      "a": "effective_connectivity",
+      "b": "dlpfc_ba46",
+      "strength": 0.8
+    },
+    {
+      "a": "effective_connectivity",
+      "b": "vmPFC",
+      "strength": 0.8
+    },
+    {
+      "a": "effective_connectivity",
+      "b": "discount_rate",
+      "strength": 0.75
+    },
+    {
+      "a": "delayed_reward_choice",
+      "b": "temporal_discounting",
+      "strength": 0.9
+    },
+    {
+      "a": "monetary_choice",
+      "b": "intertemporal",
+      "strength": 0.8
+    },
+    {
+      "a": "individual_diff",
+      "b": "discount_rate",
+      "strength": 0.7
+    },
+    {
+      "a": "cross_domain_mechanism",
+      "b": "self_regulation",
+      "strength": 0.65
+    },
+    {
+      "a": "fMRI",
+      "b": "effective_connectivity",
+      "strength": 0.6
+    },
+    {
+      "a": "vasopressin",
+      "b": "social_recognition",
+      "strength": 0.85
+    },
+    {
+      "a": "vasopressin",
+      "b": "temporoparietal_junc",
+      "strength": 0.8
+    },
+    {
+      "a": "social_recognition",
+      "b": "temporoparietal_junc",
+      "strength": 0.75
+    },
+    {
+      "a": "temporoparietal_junc",
+      "b": "tom_network",
+      "strength": 0.9
+    },
+    {
+      "a": "social_recognition",
+      "b": "familiarity_assess",
+      "strength": 0.7
+    },
+    {
+      "a": "vasopressin",
+      "b": "prosocial_behavior",
+      "strength": 0.65
+    },
+    {
+      "a": "tom_network",
+      "b": "mentalizing",
+      "strength": 0.85
+    },
+    {
+      "a": "vasopressin",
+      "b": "neuropeptide_effect",
+      "strength": 0.8
+    },
+    {
+      "a": "temporoparietal_junc",
+      "b": "social_cognition",
+      "strength": 0.75
+    },
+    {
+      "a": "social_recognition",
+      "b": "social_cognition",
+      "strength": 0.7
+    },
+    {
+      "a": "oxtr_gene",
+      "b": "rs53576",
+      "strength": 0.95
+    },
+    {
+      "a": "rs53576",
+      "b": "prosocial_temp",
+      "strength": 0.75
+    },
+    {
+      "a": "oxtr_gene",
+      "b": "oxytocin_system",
+      "strength": 0.9
+    },
+    {
+      "a": "oxytocin_system",
+      "b": "prosocial_behavior",
+      "strength": 0.8
+    },
+    {
+      "a": "rs53576",
+      "b": "hypothalamus",
+      "strength": 0.7
+    },
+    {
+      "a": "rs53576",
+      "b": "amygdala",
+      "strength": 0.72
+    },
+    {
+      "a": "hypothalamus",
+      "b": "limbic_structure",
+      "strength": 0.85
+    },
+    {
+      "a": "amygdala",
+      "b": "limbic_structure",
+      "strength": 0.85
+    },
+    {
+      "a": "rs53576",
+      "b": "gray_matter_vol",
+      "strength": 0.65
+    },
+    {
+      "a": "gene_brain_behav",
+      "b": "oxtr_gene",
+      "strength": 0.8
+    },
+    {
+      "a": "gene_brain_behav",
+      "b": "individual_diff",
+      "strength": 0.6
+    },
+    {
+      "a": "oxytocin_system",
+      "b": "social_cognition",
+      "strength": 0.75
+    },
+    {
+      "a": "prosocial_temp",
+      "b": "prosocial_behavior",
+      "strength": 0.88
+    },
+    {
+      "a": "amygdala",
+      "b": "affect_regulation",
+      "strength": 0.65
+    },
+    {
+      "a": "allelic_variation",
+      "b": "individual_diff",
+      "strength": 0.7
+    },
+    {
+      "a": "oxtr_gene",
+      "b": "vasopressin",
+      "strength": 0.55
+    },
+    {
+      "a": "limbic_structure",
+      "b": "social_cognition",
+      "strength": 0.6
+    },
+    {
+      "a": "d2_receptor",
+      "b": "dopamine_blockade",
+      "strength": 0.95
+    },
+    {
+      "a": "dopamine_blockade",
+      "b": "corticostriatal",
+      "strength": 0.85
+    },
+    {
+      "a": "corticostriatal",
+      "b": "rapid_remodeling",
+      "strength": 0.8
+    },
+    {
+      "a": "rapid_remodeling",
+      "b": "circuit_plasticity",
+      "strength": 0.85
+    },
+    {
+      "a": "circuit_plasticity",
+      "b": "reversibility",
+      "strength": 0.75
+    },
+    {
+      "a": "corticostriatal",
+      "b": "frontostriatal",
+      "strength": 0.9
+    },
+    {
+      "a": "d2_receptor",
+      "b": "reward_learning",
+      "strength": 0.7
+    },
+    {
+      "a": "striatal_function",
+      "b": "corticostriatal",
+      "strength": 0.85
+    },
+    {
+      "a": "pharmacological_fmri",
+      "b": "fMRI",
+      "strength": 0.8
+    },
+    {
+      "a": "dopamine_blockade",
+      "b": "antipsychotic_mech",
+      "strength": 0.75
+    },
+    {
+      "a": "functional_connect",
+      "b": "effective_connectivity",
+      "strength": 0.7
+    },
+    {
+      "a": "d2_receptor",
+      "b": "signed_pred_error",
+      "strength": 0.6
+    },
+    {
+      "a": "corticostriatal",
+      "b": "dlPFC",
+      "strength": 0.65
+    },
+    {
+      "a": "striatal_function",
+      "b": "reward_value",
+      "strength": 0.7
+    },
+    {
+      "a": "antipsychotic_mech",
+      "b": "intervention",
+      "strength": 0.55
+    },
+    {
+      "a": "vasopressin",
+      "b": "subgenual_cingulate",
+      "strength": 0.85
+    },
+    {
+      "a": "subgenual_cingulate",
+      "b": "supragenual_cingulate",
+      "strength": 0.8
+    },
+    {
+      "a": "subgenual_cingulate",
+      "b": "amygdala",
+      "strength": 0.75
+    },
+    {
+      "a": "mpfc_amygdala_circuit",
+      "b": "emotion_regulation",
+      "strength": 0.82
+    },
+    {
+      "a": "vasopressin",
+      "b": "mpfc_amygdala_circuit",
+      "strength": 0.78
+    },
+    {
+      "a": "vasopressin",
+      "b": "effective_connectivity",
+      "strength": 0.72
+    },
+    {
+      "a": "facial_emotion_proc",
+      "b": "amygdala",
+      "strength": 0.7
+    },
+    {
+      "a": "vasopressin",
+      "b": "fear_aggression",
+      "strength": 0.65
+    },
+    {
+      "a": "emotion_regulation",
+      "b": "anxiety_disorder",
+      "strength": 0.6
+    },
+    {
+      "a": "neuropeptide_effect",
+      "b": "social_cognition",
+      "strength": 0.68
+    },
+    {
+      "a": "subgenual_cingulate",
+      "b": "vmPFC",
+      "strength": 0.75
+    },
+    {
+      "a": "social_anxiety",
+      "b": "anxiety_disorder",
+      "strength": 0.85
+    },
+    {
+      "a": "social_anxiety",
+      "b": "social_threat",
+      "strength": 0.8
+    },
+    {
+      "a": "social_anxiety",
+      "b": "emotional_reactivity",
+      "strength": 0.75
+    },
+    {
+      "a": "social_threat",
+      "b": "amygdala_reactivity",
+      "strength": 0.72
+    },
+    {
+      "a": "physical_threat",
+      "b": "amygdala_reactivity",
+      "strength": 0.65
+    },
+    {
+      "a": "threat_specificity",
+      "b": "social_threat",
+      "strength": 0.7
+    },
+    {
+      "a": "threat_specificity",
+      "b": "physical_threat",
+      "strength": 0.7
+    },
+    {
+      "a": "cog_reappraisal",
+      "b": "emotion_regulation",
+      "strength": 0.82
+    },
+    {
+      "a": "cog_reappraisal",
+      "b": "pfc_amygdala_reg",
+      "strength": 0.78
+    },
+    {
+      "a": "pfc_amygdala_reg",
+      "b": "mpfc_amygdala_circuit",
+      "strength": 0.75
+    },
+    {
+      "a": "pfc_amygdala_reg",
+      "b": "dlPFC",
+      "strength": 0.68
+    },
+    {
+      "a": "amygdala_reactivity",
+      "b": "amygdala",
+      "strength": 0.9
+    },
+    {
+      "a": "emotional_reactivity",
+      "b": "amygdala_reactivity",
+      "strength": 0.76
+    },
+    {
+      "a": "emotional_reactivity",
+      "b": "insula_activation",
+      "strength": 0.65
+    },
+    {
+      "a": "insula_activation",
+      "b": "insula_reward",
+      "strength": 0.55
+    },
+    {
+      "a": "negative_evaluation",
+      "b": "social_anxiety",
+      "strength": 0.78
+    },
+    {
+      "a": "negative_evaluation",
+      "b": "social_cognition",
+      "strength": 0.6
+    },
+    {
+      "a": "cog_reappraisal",
+      "b": "affect_regulation",
+      "strength": 0.72
+    },
+    {
+      "a": "social_anxiety",
+      "b": "fear_aggression",
+      "strength": 0.5
+    },
+    {
+      "a": "mllm_pipeline",
+      "b": "llm",
+      "strength": 0.85
+    },
+    {
+      "a": "mllm_pipeline",
+      "b": "text_to_image",
+      "strength": 0.8
+    },
+    {
+      "a": "census_persona",
+      "b": "pref_elicitation",
+      "strength": 0.65
+    },
+    {
+      "a": "product_reference",
+      "b": "product_design",
+      "strength": 0.75
+    },
+    {
+      "a": "design_feature_extract",
+      "b": "mllm_pipeline",
+      "strength": 0.78
+    },
+    {
+      "a": "structured_ideation",
+      "b": "creativity",
+      "strength": 0.7
+    },
+    {
+      "a": "multimodal_reasoning",
+      "b": "gen_ai",
+      "strength": 0.72
+    },
+    {
+      "a": "persona_theater",
+      "b": "human_centered",
+      "strength": 0.55
+    },
+    {
+      "a": "census_persona",
+      "b": "persona_theater",
+      "strength": 0.6
+    },
+    {
+      "a": "design_speculation",
+      "b": "creativity",
+      "strength": 0.68
+    },
+    {
+      "a": "product_reference",
+      "b": "design_feature_extract",
+      "strength": 0.75
+    },
+    {
+      "a": "structured_ideation",
+      "b": "mllm_pipeline",
+      "strength": 0.7
+    },
+    {
+      "a": "designer_satisfaction",
+      "b": "structured_ideation",
+      "strength": 0.62
+    },
+    {
+      "a": "prompt_refinement",
+      "b": "llm",
+      "strength": 0.58
+    },
+    {
+      "a": "multimodal_reasoning",
+      "b": "design_feature_extract",
+      "strength": 0.72
+    },
+    {
+      "a": "personalization",
+      "b": "census_persona",
+      "strength": 0.65
+    },
+    {
+      "a": "intervention",
+      "b": "structured_ideation",
+      "strength": 0.55
+    },
+    {
+      "a": "aesthetic_percep",
+      "b": "style_descriptor",
+      "strength": 0.75
+    },
+    {
+      "a": "style_descriptor",
+      "b": "design_feature_link",
+      "strength": 0.8
+    },
+    {
+      "a": "design_feature_link",
+      "b": "consumer_choice",
+      "strength": 0.65
+    },
+    {
+      "a": "perceptual_analysis",
+      "b": "explicit_classification",
+      "strength": 0.7
+    },
+    {
+      "a": "explicit_classification",
+      "b": "cognitive_mastering",
+      "strength": 0.65
+    },
+    {
+      "a": "domain_expertise",
+      "b": "cognitive_mastering",
+      "strength": 0.55
+    },
+    {
+      "a": "pref_elicitation",
+      "b": "preference_dataset",
+      "strength": 0.7
+    },
+    {
+      "a": "preference_dataset",
+      "b": "reward_model_taste",
+      "strength": 0.75
+    },
+    {
+      "a": "low_level_visual",
+      "b": "high_level_semantic",
+      "strength": 0.6
+    },
+    {
+      "a": "low_level_visual",
+      "b": "aesthetic_percep",
+      "strength": 0.65
+    },
+    {
+      "a": "high_level_semantic",
+      "b": "aesthetic_percep",
+      "strength": 0.7
+    },
+    {
+      "a": "human_ai_cocreative",
+      "b": "product_design",
+      "strength": 0.75
+    },
+    {
+      "a": "gen_ai",
+      "b": "human_ai_cocreative",
+      "strength": 0.6
+    },
+    {
+      "a": "wheel_aesthetics",
+      "b": "spoke_config",
+      "strength": 0.8
+    },
+    {
+      "a": "wheel_aesthetics",
+      "b": "style_descriptor",
+      "strength": 0.7
+    },
+    {
+      "a": "design_communication",
+      "b": "design_feature_link",
+      "strength": 0.65
+    },
+    {
+      "a": "llm",
+      "b": "high_level_semantic",
+      "strength": 0.55
+    },
+    {
+      "a": "text_to_image",
+      "b": "low_level_visual",
+      "strength": 0.5
+    },
+    {
+      "a": "human_centered",
+      "b": "human_ai_cocreative",
+      "strength": 0.7
+    },
+    {
+      "a": "individual_diff",
+      "b": "style_descriptor",
+      "strength": 0.45
+    },
+    {
+      "a": "rep_learning_id",
+      "b": "individual_diff",
+      "strength": 0.85
+    },
+    {
+      "a": "rep_learning_id",
+      "b": "indiv_embedding",
+      "strength": 0.9
+    },
+    {
+      "a": "indiv_embedding",
+      "b": "choice_prediction",
+      "strength": 0.8
+    },
+    {
+      "a": "free_text_embed",
+      "b": "indiv_embedding",
+      "strength": 0.75
+    },
+    {
+      "a": "risky_gambling",
+      "b": "risk_perception",
+      "strength": 0.7
+    },
+    {
+      "a": "individual_diff",
+      "b": "choice_prediction",
+      "strength": 0.75
+    },
+    {
+      "a": "psychometric_limit",
+      "b": "rep_learning_id",
+      "strength": 0.6
+    },
+    {
+      "a": "user_embedding",
+      "b": "personalization",
+      "strength": 0.7
+    },
+    {
+      "a": "behavioral_model_compare",
+      "b": "choice_prediction",
+      "strength": 0.55
+    },
+    {
+      "a": "free_text_embed",
+      "b": "pref_elicitation",
+      "strength": 0.5
+    },
+    {
+      "a": "risky_gambling",
+      "b": "decision_bias",
+      "strength": 0.6
+    },
+    {
+      "a": "indiv_embedding",
+      "b": "consumer_choice",
+      "strength": 0.45
+    },
+    {
+      "a": "scatter_plot_percep",
+      "b": "outlier_influence",
+      "strength": 0.85
+    },
+    {
+      "a": "scatter_plot_percep",
+      "b": "trend_line_effect",
+      "strength": 0.8
+    },
+    {
+      "a": "scatter_plot_percep",
+      "b": "correlation_judgment",
+      "strength": 0.9
+    },
+    {
+      "a": "outlier_influence",
+      "b": "ensemble_coding",
+      "strength": 0.7
+    },
+    {
+      "a": "ensemble_coding",
+      "b": "efficient_coding",
+      "strength": 0.75
+    },
+    {
+      "a": "confirmation_bias_viz",
+      "b": "correlation_judgment",
+      "strength": 0.6
+    },
+    {
+      "a": "confirmation_bias_viz",
+      "b": "belief_updating",
+      "strength": 0.55
+    },
+    {
+      "a": "trend_line_effect",
+      "b": "outlier_influence",
+      "strength": 0.65
+    },
+    {
+      "a": "visual_misinformation",
+      "b": "scatter_plot_percep",
+      "strength": 0.5
+    },
+    {
+      "a": "visual_misinformation",
+      "b": "confirmation_bias_viz",
+      "strength": 0.55
+    },
+    {
+      "a": "graph_literacy",
+      "b": "scatter_plot_percep",
+      "strength": 0.6
+    },
+    {
+      "a": "marker_properties",
+      "b": "scatter_plot_percep",
+      "strength": 0.55
+    },
+    {
+      "a": "marker_properties",
+      "b": "low_level_visual",
+      "strength": 0.65
+    },
+    {
+      "a": "efficient_coding",
+      "b": "pred_processing",
+      "strength": 0.5
+    },
+    {
+      "a": "correlation_judgment",
+      "b": "decision_bias",
+      "strength": 0.45
+    },
+    {
+      "a": "trait_embedding",
+      "b": "latent_state_inf",
+      "strength": 0.8
+    },
+    {
+      "a": "trait_embedding",
+      "b": "cog_profiling",
+      "strength": 0.75
+    },
+    {
+      "a": "intervention_policy",
+      "b": "adas",
+      "strength": 0.7
+    },
+    {
+      "a": "intervention_policy",
+      "b": "safety_interface",
+      "strength": 0.65
+    },
+    {
+      "a": "driver_distraction",
+      "b": "impulsivity",
+      "strength": 0.6
+    },
+    {
+      "a": "driver_distraction",
+      "b": "risky_driving",
+      "strength": 0.7
+    },
+    {
+      "a": "cooperative_teaming",
+      "b": "personalization",
+      "strength": 0.65
+    },
+    {
+      "a": "cooperative_teaming",
+      "b": "social_cognition",
+      "strength": 0.5
+    },
+    {
+      "a": "adversarial_irl",
+      "b": "rnn_modeling",
+      "strength": 0.55
+    },
+    {
+      "a": "adversarial_irl",
+      "b": "behavioral_model_compare",
+      "strength": 0.5
+    },
+    {
+      "a": "population_modeling",
+      "b": "individual_diff",
+      "strength": 0.6
+    },
+    {
+      "a": "population_modeling",
+      "b": "indiv_embedding",
+      "strength": 0.7
+    },
+    {
+      "a": "hmi_simulation",
+      "b": "driving_simulator",
+      "strength": 0.85
+    },
+    {
+      "a": "hmi_simulation",
+      "b": "driver_behavior",
+      "strength": 0.7
+    },
+    {
+      "a": "assistance_preference",
+      "b": "pref_elicitation",
+      "strength": 0.6
+    },
+    {
+      "a": "assistance_preference",
+      "b": "intervention_policy",
+      "strength": 0.75
+    },
+    {
+      "a": "cautiousness",
+      "b": "risk_perception",
+      "strength": 0.55
+    },
+    {
+      "a": "trait_embedding",
+      "b": "assistance_preference",
+      "strength": 0.7
+    },
+    {
+      "a": "driver_distraction",
+      "b": "inhibitory_control",
+      "strength": 0.5
+    },
+    {
+      "a": "info_sampling",
+      "b": "evidence_accum",
+      "strength": 0.85
+    },
+    {
+      "a": "info_sampling",
+      "b": "sampling_cost",
+      "strength": 0.8
+    },
+    {
+      "a": "evidence_accum",
+      "b": "sampling_cost",
+      "strength": 0.75
+    },
+    {
+      "a": "evidence_cost_tradeoff",
+      "b": "stopping_rule",
+      "strength": 0.82
+    },
+    {
+      "a": "heuristic_strategy",
+      "b": "optimal_strategy",
+      "strength": 0.7
+    },
+    {
+      "a": "flexible_integration",
+      "b": "heuristic_strategy",
+      "strength": 0.65
+    },
+    {
+      "a": "flexible_integration",
+      "b": "optimal_strategy",
+      "strength": 0.65
+    },
+    {
+      "a": "evidence_cost_tradeoff",
+      "b": "flexible_integration",
+      "strength": 0.78
+    },
+    {
+      "a": "computational_efficiency",
+      "b": "heuristic_strategy",
+      "strength": 0.72
+    },
+    {
+      "a": "reward_context",
+      "b": "evidence_cost_tradeoff",
+      "strength": 0.55
+    },
+    {
+      "a": "info_sampling",
+      "b": "decision_bias",
+      "strength": 0.45
+    },
+    {
+      "a": "evidence_accum",
+      "b": "bayesian_surprise",
+      "strength": 0.5
+    },
+    {
+      "a": "stopping_rule",
+      "b": "exec_function",
+      "strength": 0.48
+    },
+    {
+      "a": "reward_context",
+      "b": "reward_value",
+      "strength": 0.6
+    },
+    {
+      "a": "flexible_integration",
+      "b": "self_regulation",
+      "strength": 0.42
+    },
+    {
+      "a": "idea_incubation",
+      "b": "creativity",
+      "strength": 0.85
+    },
+    {
+      "a": "commute_context",
+      "b": "driver_behavior",
+      "strength": 0.7
+    },
+    {
+      "a": "mindless_task",
+      "b": "exec_function",
+      "strength": 0.55
+    },
+    {
+      "a": "context_aware_sensing",
+      "b": "gen_ai",
+      "strength": 0.75
+    },
+    {
+      "a": "creativity_support",
+      "b": "intervention",
+      "strength": 0.8
+    },
+    {
+      "a": "mild_immersion",
+      "b": "idea_incubation",
+      "strength": 0.7
+    },
+    {
+      "a": "in_car_intelligence",
+      "b": "adas",
+      "strength": 0.65
+    },
+    {
+      "a": "distraction_min",
+      "b": "driver_distraction",
+      "strength": 0.9
+    },
+    {
+      "a": "context_aware_sensing",
+      "b": "safety_interface",
+      "strength": 0.75
+    },
+    {
+      "a": "idea_incubation",
+      "b": "commute_context",
+      "strength": 0.8
+    },
+    {
+      "a": "creativity_support",
+      "b": "gen_ai",
+      "strength": 0.7
+    },
+    {
+      "a": "mindless_task",
+      "b": "idea_incubation",
+      "strength": 0.65
+    },
+    {
+      "a": "mild_immersion",
+      "b": "personalization",
+      "strength": 0.5
+    },
+    {
+      "a": "conjoint_analysis",
+      "b": "preference_dataset",
+      "strength": 0.85
+    },
+    {
+      "a": "conjoint_analysis",
+      "b": "partworth_est",
+      "strength": 0.9
+    },
+    {
+      "a": "conjoint_analysis",
+      "b": "consumer_choice",
+      "strength": 0.75
+    },
+    {
+      "a": "partworth_est",
+      "b": "discrete_choice_model",
+      "strength": 0.8
+    },
+    {
+      "a": "nonlinear_interact",
+      "b": "rep_learning_id",
+      "strength": 0.7
+    },
+    {
+      "a": "nonlinear_interact",
+      "b": "discrete_choice_model",
+      "strength": 0.65
+    },
+    {
+      "a": "auto_encoder_pretrain",
+      "b": "semi_supervised_net",
+      "strength": 0.85
+    },
+    {
+      "a": "auto_encoder_pretrain",
+      "b": "end_to_end_learning",
+      "strength": 0.6
+    },
+    {
+      "a": "resnet_architecture",
+      "b": "nonlinear_interact",
+      "strength": 0.7
+    },
+    {
+      "a": "attribute_correlation",
+      "b": "conjoint_analysis",
+      "strength": 0.55
+    },
+    {
+      "a": "discrete_choice_model",
+      "b": "consumer_choice",
+      "strength": 0.7
+    },
+    {
+      "a": "end_to_end_learning",
+      "b": "pref_elicitation",
+      "strength": 0.5
+    },
+    {
+      "a": "multimodal_preference",
+      "b": "rep_learning_id",
+      "strength": 0.65
+    },
+    {
+      "a": "multimodal_preference",
+      "b": "indiv_embedding",
+      "strength": 0.6
+    },
+    {
+      "a": "reward_model_taste",
+      "b": "conjoint_analysis",
+      "strength": 0.55
+    },
+    {
+      "a": "user_embedding",
+      "b": "multimodal_preference",
+      "strength": 0.5
+    },
+    {
+      "a": "plsa",
+      "b": "temporal_discounting",
+      "strength": 0.7
+    },
+    {
+      "a": "willpower_fluct",
+      "b": "persist_defect",
+      "strength": 0.85
+    },
+    {
+      "a": "delayed_grat_mdp",
+      "b": "temporal_discounting",
+      "strength": 0.8
+    },
+    {
+      "a": "delayed_grat_mdp",
+      "b": "reward_value",
+      "strength": 0.65
+    },
+    {
+      "a": "incentive_optim",
+      "b": "personalized_incent",
+      "strength": 0.9
+    },
+    {
+      "a": "personalized_incent",
+      "b": "behavior_change",
+      "strength": 0.75
+    },
+    {
+      "a": "effort_cost",
+      "b": "defection_prob",
+      "strength": 0.7
+    },
+    {
+      "a": "willpower_fluct",
+      "b": "defection_prob",
+      "strength": 0.8
+    },
+    {
+      "a": "plsa",
+      "b": "incentive_optim",
+      "strength": 0.65
+    },
+    {
+      "a": "persist_defect",
+      "b": "delayed_reward_choice",
+      "strength": 0.75
+    },
+    {
+      "a": "discount_horizon",
+      "b": "delayed_grat_mdp",
+      "strength": 0.7
+    },
+    {
+      "a": "iterated_choice",
+      "b": "persist_defect",
+      "strength": 0.65
+    },
+    {
+      "a": "queue_waiting",
+      "b": "delayed_grat_mdp",
+      "strength": 0.6
+    },
+    {
+      "a": "personalized_incent",
+      "b": "individual_diff",
+      "strength": 0.7
+    },
+    {
+      "a": "delayed_grat_mdp",
+      "b": "self_regulation",
+      "strength": 0.6
+    },
+    {
+      "a": "effort_cost",
+      "b": "temporal_discounting",
+      "strength": 0.55
+    },
+    {
+      "a": "cog_complex_text",
+      "b": "cog_complexity",
+      "strength": 0.85
+    },
+    {
+      "a": "cog_complex_text",
+      "b": "visibility_score",
+      "strength": 0.7
+    },
+    {
+      "a": "cog_complex_text",
+      "b": "semantic_dist_model",
+      "strength": 0.75
+    },
+    {
+      "a": "cog_complex_text",
+      "b": "uniqueness_measure",
+      "strength": 0.65
+    },
+    {
+      "a": "cog_complex_text",
+      "b": "concreteness_rating",
+      "strength": 0.8
+    },
+    {
+      "a": "cog_complex_text",
+      "b": "consumer_choice",
+      "strength": 0.6
+    },
+    {
+      "a": "product_image_label",
+      "b": "pref_elicitation",
+      "strength": 0.7
+    },
+    {
+      "a": "product_image_label",
+      "b": "aesthetic_percep",
+      "strength": 0.55
+    },
+    {
+      "a": "vision_lang_embed",
+      "b": "llm",
+      "strength": 0.6
+    },
+    {
+      "a": "vision_lang_embed",
+      "b": "semantic_distance",
+      "strength": 0.7
+    },
+    {
+      "a": "llm_human_detect",
+      "b": "llm",
+      "strength": 0.75
+    },
+    {
+      "a": "llm_human_detect",
+      "b": "cog_complex_text",
+      "strength": 0.6
+    },
+    {
+      "a": "label_elicit_task",
+      "b": "product_image_label",
+      "strength": 0.85
+    },
+    {
+      "a": "label_elicit_task",
+      "b": "crowdsourced_rating",
+      "strength": 0.75
+    },
+    {
+      "a": "crowdsourced_rating",
+      "b": "cog_complex_text",
+      "strength": 0.7
+    },
+    {
+      "a": "concreteness_rating",
+      "b": "semantic_distance",
+      "strength": 0.5
+    },
+    {
+      "a": "visibility_score",
+      "b": "vision_lang_embed",
+      "strength": 0.6
+    },
+    {
+      "a": "narrative_processing",
+      "b": "evidence_accumulation",
+      "strength": 0.85
+    },
+    {
+      "a": "utility_processing",
+      "b": "evidence_accumulation",
+      "strength": 0.55
+    },
+    {
+      "a": "reading_recall",
+      "b": "narrative_processing",
+      "strength": 0.8
+    },
+    {
+      "a": "uncertainty_processing",
+      "b": "utility_processing",
+      "strength": 0.7
+    },
+    {
+      "a": "relational_logic",
+      "b": "evidence_accumulation",
+      "strength": 0.65
+    },
+    {
+      "a": "evidence_accumulation",
+      "b": "juror_decision",
+      "strength": 0.85
+    },
+    {
+      "a": "narrative_processing",
+      "b": "utility_processing",
+      "strength": 0.5
+    },
+    {
+      "a": "hierarchical_cog_model",
+      "b": "narrative_processing",
+      "strength": 0.6
+    },
+    {
+      "a": "neurosynth_decode",
+      "b": "evidence_accumulation",
+      "strength": 0.55
+    },
+    {
+      "a": "complex_decision",
+      "b": "narrative_processing",
+      "strength": 0.75
+    },
+    {
+      "a": "complex_decision",
+      "b": "utility_processing",
+      "strength": 0.6
+    },
+    {
+      "a": "dual_process_integ",
+      "b": "narrative_processing",
+      "strength": 0.7
+    },
+    {
+      "a": "dual_process_integ",
+      "b": "utility_processing",
+      "strength": 0.7
+    },
+    {
+      "a": "evidence_strength",
+      "b": "evidence_accumulation",
+      "strength": 0.8
+    },
+    {
+      "a": "mentalizing",
+      "b": "narrative_processing",
+      "strength": 0.55
+    },
+    {
+      "a": "fMRI",
+      "b": "neurosynth_decode",
+      "strength": 0.75
+    },
+    {
+      "a": "reward_value",
+      "b": "utility_processing",
+      "strength": 0.5
+    }
+  ],
+  "layout": [
+    {
+      "id": "psych_flex",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "creativity",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "open_mindedness",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "affect",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "awe",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "expectancy_viol",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "exec_function",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "self_regulation",
+      "x": 1.518636337731347,
+      "y": 2.737176834478264
+    },
+    {
+      "id": "intrinsic_motiv",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "behavior_change",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "bayesian_surprise",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "pred_processing",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "belief_updating",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "pred_error",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "event_segmentation",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "semantic_distance",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "active_inference",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "temporal_res",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "gen_ai",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "llm",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "text_to_image",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "product_design",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "intervention",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "video",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "personalization",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "human_centered",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "temporal_discounting",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "vmPFC",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "dlPFC",
+      "x": -3.2134079623987843,
+      "y": 0.8142521438490171
+    },
+    {
+      "id": "reward_value",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "future_simulation",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "intertemporal",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "individual_diff",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "social_cognition",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "moral_judgment",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "decision_bias",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "fMRI",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "affect_regulation",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "cog_complexity",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "pref_elicitation",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "aesthetic_percep",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "consumer_choice",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "risk_perception",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "episodic_sim",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "info_pred_error",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "pandemic_fatigue",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "belief_revision",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "gist_rep",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "risk_estimation",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "salience",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "compliance",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "mental_imagery",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "valence_bias",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "adas",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "impulsivity",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "inhibitory_control",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "risky_driving",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "latent_state_inf",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "rnn_modeling",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "driver_behavior",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "driving_simulator",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "safety_interface",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "cog_profiling",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "juror_decision",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "crime_type_bias",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "mentalizing",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "racial_bias",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "evidence_strength",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "crime_severity",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "neural_similarity",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "personalized_scenario",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "age_diff_risk",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "viral_transmission",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "scenario_specificity",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "self_relevance",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "protective_behavior",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "vulnerability_percep",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "adolescent_dev",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "social_choice",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "health_behavior",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "neurodevelopment",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "peer_influence",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "choice_architecture",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "reward_sensitivity",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "dev_sensitive_int",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "analytic_flex",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "researcher_df",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "multi_analyst",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "pipeline_var",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "fmri_preproc",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "stat_threshold",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "hypothesis_test",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "result_robust",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "repro_neuro",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "spatial_overlap",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "effect_hetero",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "open_science",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "asd_reward",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "signed_pred_error",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "unsigned_pred_error",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "frontostriatal",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "paracingulate",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "insula_reward",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "unpredictability_intol",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "reward_learning",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "photovoice",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "autism_percep",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "visual_narrative",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "lived_experience",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "participatory_res",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "sensory_exp",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "self_expression",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "neurodiv_voice",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "qual_insight",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "reward_imagination",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "primary_reward",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "imagination_quality",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "discount_rate",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "choice_prediction",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "therapeutic_target",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "delayed_reward_choice",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "effective_connectivity",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "dlpfc_ba46",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "monetary_choice",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "cross_domain_mechanism",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "vasopressin",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "social_recognition",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "temporoparietal_junc",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "neuropeptide_effect",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "familiarity_assess",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "tom_network",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "prosocial_behavior",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "oxtr_gene",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "rs53576",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "prosocial_temp",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "hypothalamus",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "amygdala",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "gray_matter_vol",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "oxytocin_system",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "gene_brain_behav",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "limbic_structure",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "allelic_variation",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "d2_receptor",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "dopamine_blockade",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "corticostriatal",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "circuit_plasticity",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "rapid_remodeling",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "functional_connect",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "pharmacological_fmri",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "antipsychotic_mech",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "striatal_function",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "reversibility",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "subgenual_cingulate",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "supragenual_cingulate",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "facial_emotion_proc",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "mpfc_amygdala_circuit",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "emotion_regulation",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "fear_aggression",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "anxiety_disorder",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "social_anxiety",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "social_threat",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "physical_threat",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "emotional_reactivity",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "cog_reappraisal",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "amygdala_reactivity",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "pfc_amygdala_reg",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "threat_specificity",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "negative_evaluation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "insula_activation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "persona_theater",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "mllm_pipeline",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "product_reference",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "census_persona",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "design_feature_extract",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "structured_ideation",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "multimodal_reasoning",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "designer_satisfaction",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "prompt_refinement",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "design_speculation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "style_descriptor",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "design_feature_link",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "perceptual_analysis",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "explicit_classification",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "cognitive_mastering",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "domain_expertise",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "wheel_aesthetics",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "spoke_config",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "low_level_visual",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "high_level_semantic",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "human_ai_cocreative",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "preference_dataset",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "reward_model_taste",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "design_communication",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "rep_learning_id",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "indiv_embedding",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "free_text_embed",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "risky_gambling",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "psychometric_limit",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "user_embedding",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "behavioral_model_compare",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "scatter_plot_percep",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "outlier_influence",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "trend_line_effect",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "correlation_judgment",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "confirmation_bias_viz",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "ensemble_coding",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "graph_literacy",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "visual_misinformation",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "marker_properties",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "efficient_coding",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "cooperative_teaming",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "trait_embedding",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "intervention_policy",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "driver_distraction",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "adversarial_irl",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "population_modeling",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "cautiousness",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "hmi_simulation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "assistance_preference",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "info_sampling",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "evidence_accum",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "sampling_cost",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "heuristic_strategy",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "optimal_strategy",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "evidence_cost_tradeoff",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "stopping_rule",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "computational_efficiency",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "flexible_integration",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "reward_context",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "idea_incubation",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "commute_context",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "mindless_task",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "context_aware_sensing",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "creativity_support",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "mild_immersion",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "in_car_intelligence",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "distraction_min",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "conjoint_analysis",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "partworth_est",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "nonlinear_interact",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "auto_encoder_pretrain",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "resnet_architecture",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "attribute_correlation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "discrete_choice_model",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "end_to_end_learning",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "multimodal_preference",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "semi_supervised_net",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "plsa",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "willpower_fluct",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "defection_prob",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "delayed_grat_mdp",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "incentive_optim",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "effort_cost",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "persist_defect",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "queue_waiting",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "personalized_incent",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "discount_horizon",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "iterated_choice",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "cog_complex_text",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "visibility_score",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "semantic_dist_model",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "uniqueness_measure",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "concreteness_rating",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "product_image_label",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "vision_lang_embed",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "llm_human_detect",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "label_elicit_task",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "crowdsourced_rating",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "narrative_processing",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "utility_processing",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "evidence_accumulation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "reading_recall",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "relational_logic",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "uncertainty_processing",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "hierarchical_cog_model",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "neurosynth_decode",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "complex_decision",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "dual_process_integ",
+      "x": 6.5,
+      "y": 6.5
     }
   ]
 }
@@ -1236,9 +7159,55 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   // ── Data ────────────────────────────────────────────────────
   const graphData   = JSON.parse(document.getElementById('graph-data').textContent);
   const clusterData = JSON.parse(document.getElementById('cluster-data').textContent);
-  const NODES  = graphData.nodes;
-  const EDGES  = graphData.edges;
+
+  // Display cap: pick a subset of nodes to render so the graph stays readable
+  // as graph.json grows. Two stages:
+  //   1. Filter by abstraction level (default: constructs + theories — the
+  //      "core ideas" of the research; methods/mechanisms/domains are hidden)
+  //   2. Pick top-N from that pool by weight, bracketed by MIN/MAX_NODES,
+  //      with the kneedle method (Satopää et al., 2011) finding the natural
+  //      break in the weight distribution as the preferred N.
+  const VISIBLE_LEVELS = new Set(['construct', 'theory']);
+  const MIN_NODES = 20;
+  const MAX_NODES = 60;
+
+  function kneeIndex(sortedDesc) {
+    const N = sortedDesc.length;
+    if (N < 3) return N;
+    const max = sortedDesc[0], min = sortedDesc[N - 1];
+    const range = Math.max(1e-9, max - min);
+    // For a sorted-descending curve, the knee is the point farthest BELOW the
+    // diagonal from (0, 1) to (1, 0) in normalized coords — argmax of (1 - x - y).
+    let bestIdx = 0, bestDist = -Infinity;
+    for (let i = 0; i < N; i++) {
+      const x = i / (N - 1);
+      const y = (sortedDesc[i] - min) / range;
+      const dist = 1 - x - y;
+      if (dist > bestDist) { bestDist = dist; bestIdx = i; }
+    }
+    return bestIdx + 1; // number of nodes to keep
+  }
+
+  const allNodes = graphData.nodes;
+  // Stage 1: level filter. Nodes without a level fall back to 'construct'
+  // (matches classify-levels.js default) so legacy data stays visible.
+  const levelFiltered = allNodes.filter(n => VISIBLE_LEVELS.has(n.level || 'construct'));
+  const sortedNodes = levelFiltered.sort((a, b) => (b.weight || 0) - (a.weight || 0));
+  // Stage 2: weight-driven count, bounded.
+  const knee = kneeIndex(sortedNodes.map(n => n.weight || 0));
+  const keepCount = Math.max(MIN_NODES, Math.min(MAX_NODES, knee));
+  const NODES = sortedNodes.slice(0, keepCount);
+  const visibleIds = new Set(NODES.map(n => n.id));
+  const EDGES = graphData.edges.filter(e => visibleIds.has(e.a) && visibleIds.has(e.b));
   const PAPERS = (graphData.meta && graphData.meta.papers) || [];
+  const CLUSTER_COUNT = (graphData.meta && graphData.meta.clusters) ? graphData.meta.clusters.length : 0;
+
+  // Title-block stats — derive from rendered subset so the count matches what's drawn
+  const titleStats = document.getElementById('title-stats');
+  if (titleStats) {
+    titleStats.textContent =
+      `${NODES.length} concepts · ${EDGES.length} connections · ${CLUSTER_COUNT} research clusters`;
+  }
 
   // Build node → papers map from nodes_contributed
   const nodePapers = {};
@@ -1287,10 +7256,20 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   });
 
   // ── Force layout ────────────────────────────────────────────
-  const BOUNDS = 7.0, K_REP = 1.8, K_SPRING = 0.12, DAMPING = 0.82;
+  // SIZE_SCALE grows the world with node count so density stays constant.
+  // Calibrated against the original 42-node tuning (BOUNDS=7, cluster spacing 3.5).
+  const SIZE_SCALE = Math.sqrt(NODES.length / 42);
+  // Slack factor > 1 gives nodes breathing room so they don't pile at the boundary.
+  const BOUNDS = 7.0 * SIZE_SCALE * 1.25;
+  const CLUSTER_SPACING = 3.5 * SIZE_SCALE;
+  // Per-pair repulsion shrinks with node count so total per-node repulsion stays
+  // bounded — otherwise every node is pushed against BOUNDS and the contour
+  // renders as a rectangle along the edge.
+  const K_REP = 1.8 / SIZE_SCALE;
+  const K_SPRING = 0.12, DAMPING = 0.82;
   const npos = NODES.map((n, i) => {
     const angle = (i / NODES.length) * Math.PI * 2;
-    const r = 2 + Math.random() * 3;
+    const r = (2 + Math.random() * 3) * SIZE_SCALE;
     return { x: Math.cos(angle)*r, y: Math.sin(angle)*r, vx: 0, vy: 0 };
   });
   for (let iter = 0; iter < 400; iter++) {
@@ -1307,8 +7286,8 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       }
       // Cluster gravity
       const ci = NODES[i].cluster;
-      const cx = (ci % 4 - 1.5) * 3.5;
-      const cy = (Math.floor(ci / 4) - 0.5) * 3.5;
+      const cx = (ci % 4 - 1.5) * CLUSTER_SPACING;
+      const cy = (Math.floor(ci / 4) - 0.5) * CLUSTER_SPACING;
       fx += (cx - npos[i].x) * 0.04;
       fy += (cy - npos[i].y) * 0.04;
       npos[i].vx = (npos[i].vx + fx * 0.12) * DAMPING;
@@ -1320,7 +7299,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       if (ai === undefined || bi === undefined) return;
       const dx = npos[bi].x - npos[ai].x, dy = npos[bi].y - npos[ai].y;
       const d = Math.sqrt(dx*dx + dy*dy) || 1;
-      const rest = 1.0 + (1 - (e.weight||0.5)) * 1.5;
+      const rest = (1.0 + (1 - (e.weight||0.5)) * 1.5) * SIZE_SCALE;
       const f = K_SPRING * (d - rest);
       npos[ai].vx += f * dx/d; npos[ai].vy += f * dy/d;
       npos[bi].vx -= f * dx/d; npos[bi].vy -= f * dy/d;
@@ -1341,16 +7320,23 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     const wrap = canvas.parentElement;
     W = wrap.clientWidth; H = wrap.clientHeight;
     canvas.width  = W * DPR; canvas.height = H * DPR;
-    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   }
   window.addEventListener('resize', resize);
   resize();
 
-  // World → screen
-  const SCALE = () => Math.min(W, H) * 0.068;
+  // World → screen — leave buffers so graph doesn't overlap nav-mini / HUD (top)
+  // or the title-block / stats-bar (bottom). Centered in the usable region.
+  const TOP_PAD = 48;
+  const BOTTOM_PAD = 64;
+  const usableHPx = () => Math.max(40, H - TOP_PAD - BOTTOM_PAD);
+  // Divide by SIZE_SCALE so a bigger world still fits the canvas. The 1.25
+  // tracks the BOUNDS slack factor so nodes near the boundary still render on-screen.
+  // STRETCH_X widens the graph horizontally without distorting the layout physics.
+  const STRETCH_X = 1.3;
+  const SCALE = () => Math.min(W, usableHPx()) * 0.068 / (SIZE_SCALE * 1.25);
   function ws(x, y) {
-    return { x: W * 0.5 + x * SCALE(), y: H * 0.52 + y * SCALE() };
+    return { x: W * 0.5 + x * SCALE() * STRETCH_X, y: TOP_PAD + usableHPx() * 0.5 + y * SCALE() };
   }
 
   // ── Activation state ────────────────────────────────────────
@@ -1380,6 +7366,13 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
 
   // ── Hover / selection ───────────────────────────────────────
   let hoveredNode = -1, selectedNode = -1, focusedCluster = -1;
+  // After a click, briefly expose the K strongest neighbors so the user can
+  // read the surrounding context. Visibility is tied to userModeTimer so the
+  // labels stay up exactly as long as the activations stay boosted, and fade
+  // out over the last EXPOSE_FADE_TAIL seconds.
+  const EXPOSE_TOP_K = 5;
+  const EXPOSE_FADE_TAIL = 1.2; // seconds of fade at the tail
+  let exposedNeighbors = new Set();
   canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     const mx = e.clientX - rect.left, my = e.clientY - rect.top;
@@ -1408,6 +7401,14 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       for (let ni = 0; ni < NODES.length; ni++) {
         if (ni !== hoveredNode) actTarget[ni] = Math.max(0.02, actTarget[ni] * 0.3);
       }
+      // Briefly expose the strongest neighbors of the clicked node.
+      exposedNeighbors = new Set(
+        (adj[hoveredNode] || [])
+          .slice()
+          .sort((a, b) => (b.strength || 0) - (a.strength || 0))
+          .slice(0, EXPOSE_TOP_K)
+          .map(e => e.idx)
+      );
     }
   });
 
@@ -1418,7 +7419,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     const safeCol = col === '#FFFF77' ? '#8a7200' : (col === '#77FFE4' ? '#007a68' : col);
     document.getElementById('nd-cluster').textContent  = clusterData[ci].short;
     document.getElementById('nd-cluster').style.color  = safeCol;
-    document.getElementById('nd-label').textContent    = node.label.replace('\n', ' ');
+    document.getElementById('nd-label').textContent    = node.label.replace('\n', ' ').toLowerCase();
     document.getElementById('nd-label').style.color    = 'var(--ink)';
     document.getElementById('nd-label').style.fontFamily = 'var(--sans)';
     document.getElementById('nd-label').style.fontSize = '0.95rem';
@@ -1427,11 +7428,15 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     // Connected concepts
     const connected = adj[ni].slice(0, 8)
       .sort((a,b) => (b.strength||0.5)-(a.strength||0.5))
-      .map(e => ({ label: NODES[e.idx].label.replace('\n',' '), w: e.strength||0.5 }));
+      .map(e => ({ label: NODES[e.idx].label.replace('\n',' ').toLowerCase(), w: e.strength||0.5 }));
     const papersForNode = nodePapers[node.id] || [];
 
     let html = '<div style="margin-bottom:0.4rem;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)">Connected concepts</div>';
-    html += connected.map(l => `<span>${l}</span>`).join('');
+    html += '<div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.2rem;">'
+      + connected.map(l =>
+          `<span style="font-size:0.5rem;padding:0.15rem 0.45rem;border:1px solid rgba(26,44,107,0.2);color:var(--ink-blue);opacity:${(0.55 + l.w * 0.45).toFixed(2)};">${l.label}</span>`
+        ).join('')
+      + '</div>';
 
     if (papersForNode.length) {
       html += '<div style="margin-top:0.8rem;margin-bottom:0.35rem;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)">Related publications</div>';
@@ -1449,7 +7454,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
 
     document.getElementById('nd-connections').innerHTML = html;
     document.getElementById('stat-active').textContent =
-      `${node.label.replace('\n',' ')} · cluster ${ci} · weight ${node.weight.toFixed(2)}`;
+      `${node.label.replace('\n',' ').toLowerCase()} · cluster ${ci} · weight ${node.weight.toFixed(2)}`;
   }
 
   window.openOverlay = function(ci) {
@@ -1476,7 +7481,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
           .filter(function(nid) { return clusterNodeIds.has(nid); })
           .map(function(nid) {
             const n = NODES.find(function(nd) { return nd.id === nid; });
-            return n ? n.label.replace('\n', ' ') : nid;
+            return n ? n.label.replace('\n', ' ').toLowerCase() : nid;
           });
         const nodeTags = nodes.map(function(l) {
           return '<span class="overlay-paper-node">' + l + '</span>';
@@ -1802,11 +7807,17 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       }
 
       // Label
-      const showLabel = isHov || isAtt || act > 0.35 || (isFoc && act > 0.12);
+      // Labels follow attention + hover by default. After a click, the top-K
+      // strongest neighbors stay lit for as long as user mode is active, then
+      // fade out over EXPOSE_FADE_TAIL seconds as userModeTimer expires.
+      const exposeFade = userMode && exposedNeighbors.has(ni)
+        ? Math.min(1, userModeTimer / EXPOSE_FADE_TAIL)
+        : 0;
+      const showLabel = isHov || isAtt || exposeFade > 0.02;
       if (!showLabel) continue;
-      const lines  = node.label.split('\n');
+      const lines  = node.label.toLowerCase().split('\n');
       const fsize  = isHov || isAtt ? 11 : 9;
-      const lalpha = isHov || isAtt ? 0.95 : Math.min(0.8, 0.3 + act*0.7);
+      const lalpha = isHov || isAtt ? 0.95 : 0.85 * exposeFade;
       ctx.save();
       ctx.globalAlpha = lalpha;
       ctx.font = `${fsize}px 'Space Mono', monospace`;

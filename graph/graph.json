@@ -35,9 +35,75 @@
     ],
     "papers": [
       {
-        "id": "hakimi2025iccc",
+        "id": "Klenk2026cats",
+        "title": "Reassessing the value of creative activity traces for understanding and supporting creative work",
+        "year": 2026,
+        "venue": "Herding CATs: Making Sense of Creative Activity Traces Workshop at CHI 2026",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "second",
+        "paperWeight": 0.3,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.698Z"
+      },
+      {
+        "id": "kim2026personagrambridgingpersonasproduct",
+        "title": "Personagram: Bridging Personas and Product Design for Creative Ideation with Multimodal LLMs",
+        "year": 2026,
+        "venue": "Preprint",
+        "arxivId": "2602.06197",
+        "url": "https://arxiv.org/abs/2602.06197",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T18:59:34.514Z",
+        "nodes_contributed": [
+          "persona_theater",
+          "mllm_pipeline",
+          "product_reference",
+          "census_persona",
+          "design_feature_extract",
+          "structured_ideation",
+          "multimodal_reasoning",
+          "designer_satisfaction",
+          "prompt_refinement",
+          "design_speculation"
+        ]
+      },
+      {
+        "id": "hong2026deconstructingtastehumancenteredai",
+        "title": "Deconstructing Taste: Toward a Human-Centered AI Framework for Modeling Consumer Aesthetic Perceptions",
+        "year": 2026,
+        "venue": "Preprint",
+        "arxivId": "2601.17134",
+        "url": "https://arxiv.org/abs/2601.17134",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T18:59:55.684Z",
+        "nodes_contributed": [
+          "style_descriptor",
+          "design_feature_link",
+          "perceptual_analysis",
+          "explicit_classification",
+          "cognitive_mastering",
+          "domain_expertise",
+          "wheel_aesthetics",
+          "spoke_config",
+          "low_level_visual",
+          "high_level_semantic",
+          "human_ai_cocreative",
+          "preference_dataset",
+          "reward_model_taste",
+          "design_communication"
+        ]
+      },
+      {
+        "id": "Hakimi2025creativity",
         "title": "Psychologically-inspired generative AI videos for supporting creativity",
-        "venue": "ICCC 2025",
+        "venue": "2025 International Conference on Computational Creativity",
         "year": 2025,
         "url": "https://computationalcreativity.net/iccc25/papers/iccc25-hakimi2025psychologically.pdf",
         "nodes_contributed": [
@@ -63,21 +129,422 @@
           "video",
           "personalization",
           "human_centered"
+        ],
+        "pubType": "conf-full",
+        "authorPosition": "first",
+        "paperWeight": 0.5
+      },
+      {
+        "id": "Hakimi2025semantic",
+        "title": "Semantic properties of abstract prompts shape sequential decision making in design",
+        "year": 2025,
+        "venue": "2025 Multidisciplinary Conference on Reinforcement Learning and Decision Making",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "shared-first",
+        "paperWeight": 0.5,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.708Z"
+      },
+      {
+        "id": "Chen2025learning",
+        "title": "Learning to represent individual differences for choice decision making",
+        "year": 2025,
+        "venue": "Preprint",
+        "arxivId": "2503.21704",
+        "url": "https://arxiv.org/abs/2503.21704",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T19:00:38.607Z",
+        "nodes_contributed": [
+          "rep_learning_id",
+          "indiv_embedding",
+          "choice_prediction",
+          "free_text_embed",
+          "risky_gambling",
+          "psychometric_limit",
+          "user_embedding",
+          "behavioral_model_compare"
         ]
       },
       {
-        "id": "paper_1773600403402",
-        "title": "Pairing facts with imagined consequences improves pandemic-related risk perception",
+        "id": "Eum2025aidriven",
+        "title": "AI-driven interpretable visual features for demand neuroforecasting",
+        "year": 2025,
+        "venue": "2025 Conference on Artificial Intelligence, Machine Learning, and Business Analytics",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.708Z"
+      },
+      {
+        "id": "Knutson2024brain",
+        "title": "Brain activity forecasts changing market demand for innovative vehicles",
+        "year": 2024,
+        "venue": "Preprint",
+        "url": "https://osf.io/xd9mk/",
+        "pubType": "preprint",
+        "authorPosition": "last",
+        "paperWeight": 0.56,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.708Z"
+      },
+      {
+        "id": "Hakimi2024cognitive",
+        "title": "Understanding the Cognitive Complexity in Language Elicited by Product Images",
+        "year": 2024,
+        "venue": "ICML 2024 Workshop on LLMs and Cognition",
+        "url": "https://arxiv.org/pdf/2409.16521.pdf",
+        "abstractOnly": false,
+        "pubType": "conf-workshop",
+        "authorPosition": "shared-first",
+        "paperWeight": 0.5,
+        "added": "2026-03-15T19:04:48.877Z",
+        "nodes_contributed": [
+          "cog_complex_text",
+          "visibility_score",
+          "semantic_dist_model",
+          "uniqueness_measure",
+          "concreteness_rating",
+          "product_image_label",
+          "vision_lang_embed",
+          "llm_human_detect",
+          "label_elicit_task",
+          "crowdsourced_rating"
+        ]
+      },
+      {
+        "id": "Wright2024motivation",
+        "title": "The Motivation Beliefs Questionnaire (MBQ): Measuring beliefs about the controllability, usefulness, and goal-specificity of motivational states",
+        "year": 2024,
+        "venue": "Preprint",
+        "url": "https://osf.io/k8dy4/",
+        "pubType": "preprint",
+        "authorPosition": "second",
+        "paperWeight": 0.42,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.708Z"
+      },
+      {
+        "id": "Sumner2024personalizing",
+        "title": "Personalizing driver safety interfaces via driver cognitive factors inference",
+        "year": 2024,
+        "venue": "Scientific Reports",
+        "doi": "10.1038/s41598-024-65144-8",
+        "url": "https://doi.org/10.1038/s41598-024-65144-8",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.4,
+        "added": "2026-03-15T18:49:51.824Z",
+        "nodes_contributed": [
+          "adas",
+          "impulsivity",
+          "inhibitory_control",
+          "risky_driving",
+          "latent_state_inf",
+          "rnn_modeling",
+          "driver_behavior",
+          "driving_simulator",
+          "safety_interface",
+          "cog_profiling"
+        ]
+      },
+      {
+        "id": "Nandy2024semantic",
+        "title": "Semantic Properties of Word Prompts Shape Design Outcomes: Understanding the Influence of Semantic Richness and Similarity",
+        "year": 2024,
+        "venue": "International Conference on Design Computing and Cognition",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "last",
+        "paperWeight": 0.4,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Sinclair2024pausing",
+        "title": "Pausing to reflect during news consumption counteracts negativity biases in memory",
+        "year": 2024,
+        "venue": "Preprint",
+        "url": "https://osf.io/83ny2/",
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Paredes2024commuter",
+        "title": "Creative Commuter: Towards Designing Moments for Idea Generation and Incubation during the Commute",
+        "year": 2024,
+        "venue": "Adjunct Proceedings of the 16th International Conference on Automotive User Interfaces and Interactive Vehicular Applications",
+        "doi": "10.1145/3641308.3685022",
+        "url": "https://doi.org/10.1145/3641308.3685022",
+        "abstractOnly": false,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "added": "2026-03-15T19:03:15.241Z",
+        "nodes_contributed": [
+          "idea_incubation",
+          "commute_context",
+          "mindless_task",
+          "context_aware_sensing",
+          "creativity_support",
+          "mild_immersion",
+          "in_car_intelligence",
+          "distraction_min"
+        ]
+      },
+      {
+        "id": "Hong2024unstuck",
+        "title": "Unstuck: Charting the Design Space of Generative AI-based Creativity Interventions",
+        "year": 2024,
+        "venue": "Generative AI and HCI (GenAICHI) Workshop at CHI 2024",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Hakimi2023ml",
+        "title": "Machine learning-based measure of cognitive complexity explains variance in rank-ordered preference",
+        "year": 2023,
+        "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "first",
+        "paperWeight": 0.5,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Hong2023genai",
+        "title": "Generative AI for Product Design: Getting the Right Design and the Design Right",
+        "year": 2023,
+        "venue": "Generative AI and HCI (GenAICHI) Workshop at CHI 2023",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "second",
+        "paperWeight": 0.3,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Filipowicz2023visual",
+        "title": "Visual elements and cognitive biases influence interpretations of trends in scatter plots",
+        "year": 2023,
+        "venue": "Preprint",
+        "arxivId": "2310.15406",
+        "url": "https://arxiv.org/abs/2310.15406",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T19:00:56.623Z",
+        "nodes_contributed": [
+          "scatter_plot_percep",
+          "outlier_influence",
+          "trend_line_effect",
+          "correlation_judgment",
+          "confirmation_bias_viz",
+          "ensemble_coding",
+          "graph_literacy",
+          "visual_misinformation",
+          "marker_properties",
+          "efficient_coding"
+        ]
+      },
+      {
+        "id": "Klenk2023anticipatory",
+        "title": "Anticipatory thinking in design",
+        "year": 2023,
+        "venue": "AI Magazine",
+        "doi": "10.1002/aaai.12101",
+        "url": "https://doi.org/10.1002/aaai.12101",
+        "pubType": "commentary",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Castrellon2022social",
+        "title": "Social cognitive processes explain bias in juror decisions",
+        "year": 2022,
+        "venue": "Social Cognitive and Affective Neuroscience",
+        "doi": "10.1093/scan/nsac057",
+        "url": "https://doi.org/10.1093/scan/nsac057",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "second",
+        "paperWeight": 0.6,
+        "added": "2026-03-15T18:50:04.153Z",
+        "nodes_contributed": [
+          "juror_decision",
+          "crime_type_bias",
+          "mentalizing",
+          "racial_bias",
+          "evidence_strength",
+          "crime_severity",
+          "neural_similarity"
+        ]
+      },
+      {
+        "id": "Castrellon2022neural",
+        "title": "Neural Support for Contributions of Utility and Narrative Processing of Evidence in Juror Decision Making",
+        "year": 2022,
+        "venue": "Journal of Neuroscience",
+        "doi": "10.1523/JNEUROSCI.2434-21.2022",
+        "url": "https://doi.org/10.1523/JNEUROSCI.2434-21.2022",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "second",
+        "paperWeight": 0.6,
+        "added": "2026-03-15T19:55:56.103Z",
+        "nodes_contributed": [
+          "narrative_processing",
+          "utility_processing",
+          "evidence_accumulation",
+          "reading_recall",
+          "relational_logic",
+          "uncertainty_processing",
+          "hierarchical_cog_model",
+          "neurosynth_decode",
+          "complex_decision",
+          "dual_process_integ"
+        ]
+      },
+      {
+        "id": "DeCastro2022latent",
+        "title": "Learning latent traits for simulated cooperative driving tasks",
+        "year": 2022,
+        "venue": "Preprint",
+        "arxivId": "2207.09619",
+        "url": "https://arxiv.org/abs/2207.09619",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T19:01:41.635Z",
+        "nodes_contributed": [
+          "cooperative_teaming",
+          "trait_embedding",
+          "intervention_policy",
+          "driver_distraction",
+          "adversarial_irl",
+          "population_modeling",
+          "cautiousness",
+          "hmi_simulation",
+          "assistance_preference"
+        ]
+      },
+      {
+        "id": "Hsiung2022heuristics",
+        "title": "Between heuristics and optimality: Flexible integration of cost and evidence during information sampling",
+        "year": 2022,
+        "venue": "Preprint",
+        "doi": "10.1101/2022.05.17.492355",
+        "url": "https://doi.org/10.1101/2022.05.17.492355",
+        "abstractOnly": false,
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "added": "2026-03-15T19:02:20.512Z",
+        "nodes_contributed": [
+          "info_sampling",
+          "evidence_accum",
+          "sampling_cost",
+          "heuristic_strategy",
+          "optimal_strategy",
+          "evidence_cost_tradeoff",
+          "stopping_rule",
+          "computational_efficiency",
+          "flexible_integration",
+          "reward_context"
+        ]
+      },
+      {
+        "id": "Filipowicz2022familiarity",
+        "title": "Familiarity plays a unique role in increasing preferences for battery electric vehicle adoption",
+        "year": 2022,
+        "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Harinen2022ml",
+        "title": "Machine learning reveals how personalized climate communication can both succeed and backfire",
+        "year": 2022,
+        "venue": "CML4Impact Workshop at NeurIPS 2022",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Zhang2022conjointnet",
+        "title": "ConjointNet: Enhancing Conjoint Analysis for Preference Prediction with Representation Learning",
+        "year": 2022,
+        "venue": "13th Multidisciplinary Workshop on Advances in Preference Handling (M-PREF 2022) at IJCAI 2022",
+        "arxivId": "2503.11710",
+        "url": "https://arxiv.org/abs/2503.11710",
+        "abstractOnly": false,
+        "pubType": "conf-workshop",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "added": "2026-03-15T19:03:28.085Z",
+        "nodes_contributed": [
+          "conjoint_analysis",
+          "partworth_est",
+          "nonlinear_interact",
+          "auto_encoder_pretrain",
+          "resnet_architecture",
+          "attribute_correlation",
+          "discrete_choice_model",
+          "end_to_end_learning",
+          "multimodal_preference",
+          "semi_supervised_net"
+        ]
+      },
+      {
+        "id": "Gopinath2022hmiway",
+        "title": "HMIway-env: A framework for simulating behaviors and preferences to support human-AI teaming in driving",
+        "year": 2022,
+        "venue": "Human-centered Intelligent Services Safety and Trustworthiness (HCIS) Workshop at IEEE/CVF CVPRW 2022",
+        "url": null,
+        "pubType": "conf-workshop",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Hakimi2021pairing",
+        "title": "Pairing Facts with Imagined Consequences Improves Pandemic-Related Risk Perception",
         "year": 2021,
         "venue": "Proceedings of the National Academy of Sciences",
         "doi": "10.1073/pnas.2100970118",
-        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8364212/",
+        "url": "https://doi.org/10.1073/pnas.2100970118",
         "abstractOnly": false,
         "pubType": "journal",
         "authorPosition": "shared-first",
         "paperWeight": 1,
         "added": "2026-03-15T18:46:43.402Z",
-        "nodesContributed": [
+        "nodes_contributed": [
           "risk_perception",
           "episodic_sim",
           "info_pred_error",
@@ -92,65 +559,18 @@
         ]
       },
       {
-        "id": "paper_1773600591824",
-        "title": "Personalizing driver safety interfaces via driver cognitive factors inference",
-        "year": 2024,
-        "venue": "Intelligent Transportation Systems",
-        "doi": "10.1038/s41598-024-65144-8",
-        "url": "https://doi.org/10.1038/s41598-024-65144-8",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "middle",
-        "paperWeight": 0.4,
-        "added": "2026-03-15T18:49:51.824Z",
-        "nodesContributed": [
-          "adas",
-          "impulsivity",
-          "inhibitory_control",
-          "risky_driving",
-          "latent_state_inf",
-          "rnn_modeling",
-          "driver_behavior",
-          "driving_simulator",
-          "safety_interface",
-          "cog_profiling"
-        ]
-      },
-      {
-        "id": "paper_1773600604153",
-        "title": "Social cognitive processes explain bias in juror decisions",
-        "year": 2024,
-        "venue": "Scientific Reports",
-        "doi": "10.1093/scan/nsac057",
-        "url": "https://academic.oup.com/scan/article-pdf/18/1/nsac057/49315526/nsac057.pdf",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "second",
-        "paperWeight": 0.6,
-        "added": "2026-03-15T18:50:04.153Z",
-        "nodesContributed": [
-          "juror_decision",
-          "crime_type_bias",
-          "mentalizing",
-          "racial_bias",
-          "evidence_strength",
-          "crime_severity",
-          "neural_similarity"
-        ]
-      },
-      {
-        "id": "paper_1773600718953",
+        "id": "Sinclair2021imagining",
         "title": "Imagining a personalized scenario selectively increases perceived risk of viral transmission for older adults",
-        "year": 2024,
-        "venue": "Unknown",
+        "year": 2021,
+        "venue": "Nature Aging",
         "doi": "10.1038/s43587-021-00095-7",
-        "url": "https://www.nature.com/articles/s43587-021-00095-7.pdf",
+        "url": "https://doi.org/10.1038/s43587-021-00095-7",
         "abstractOnly": false,
         "pubType": "journal",
         "authorPosition": "middle",
         "paperWeight": 0.4,
         "added": "2026-03-15T18:51:58.953Z",
-        "nodesContributed": [
+        "nodes_contributed": [
           "personalized_scenario",
           "age_diff_risk",
           "viral_transmission",
@@ -161,18 +581,18 @@
         ]
       },
       {
-        "id": "paper_1773600777999",
-        "title": "Applying Behavioral Economics to Improve Adolescent and Young Adult Health: A Developmentally-Sensitive Approach",
-        "year": 2024,
-        "venue": "Unknown",
+        "id": "Hakimi2020behavioral",
+        "title": "Applying behavioral economics to improve adolescent and young adult health: A developmentally-sensitive approach",
+        "year": 2020,
+        "venue": "Journal of Adolescent Health",
         "doi": "10.1016/j.jadohealth.2020.10.007",
-        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8175460",
+        "url": "https://doi.org/10.1016/j.jadohealth.2020.10.007",
         "abstractOnly": false,
         "pubType": "journal",
         "authorPosition": "shared-first",
         "paperWeight": 1,
         "added": "2026-03-15T18:52:57.999Z",
-        "nodesContributed": [
+        "nodes_contributed": [
           "adolescent_dev",
           "social_choice",
           "health_behavior",
@@ -184,18 +604,18 @@
         ]
       },
       {
-        "id": "paper_1773600832723",
+        "id": "Botvinik2020variability",
         "title": "Variability in the analysis of a single neuroimaging dataset by many teams",
         "year": 2020,
         "venue": "Nature",
         "doi": "10.1038/s41586-020-2314-9",
-        "url": "https://discovery.ucl.ac.uk/10103494/1/Bobadilla%20Suarez_author_accepted_manuscript.pdf",
+        "url": "https://doi.org/10.1038/s41586-020-2314-9",
         "abstractOnly": false,
         "pubType": "journal",
         "authorPosition": "middle",
         "paperWeight": 0.4,
         "added": "2026-03-15T18:53:52.723Z",
-        "nodesContributed": [
+        "nodes_contributed": [
           "analytic_flex",
           "researcher_df",
           "multi_analyst",
@@ -211,18 +631,31 @@
         ]
       },
       {
-        "id": "paper_1773600855134",
-        "title": "Neural Mechanisms of Reward Prediction Error in Autism Spectrum Disorder",
+        "id": "Bachman2020journal",
+        "title": "How we formed a `journal club' for equity in science",
         "year": 2020,
-        "venue": "Journal of Autism and Developmental Disorders",
+        "venue": "Nature",
+        "doi": "10.1038/d41586-020-02794-4",
+        "url": "https://doi.org/10.1038/d41586-020-02794-4",
+        "pubType": "scicomm",
+        "authorPosition": "middle",
+        "paperWeight": 0.12,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Mosner2019neural",
+        "title": "Neural mechanisms of reward prediction error in Autism Spectrum Disorder",
+        "year": 2019,
+        "venue": "Autism Research and Treatment",
         "doi": "10.1155/2019/5469191",
-        "url": "http://downloads.hindawi.com/journals/aurt/2019/5469191.pdf",
+        "url": "https://doi.org/10.1155/2019/5469191",
         "abstractOnly": false,
         "pubType": "journal",
         "authorPosition": "middle",
         "paperWeight": 0.32,
         "added": "2026-03-15T18:54:15.134Z",
-        "nodesContributed": [
+        "nodes_contributed": [
           "asd_reward",
           "signed_pred_error",
           "unsigned_pred_error",
@@ -234,408 +667,30 @@
         ]
       },
       {
-        "id": "paper_1773600916883",
-        "title": "Revealing the world of autism through the lens of a camera",
-        "year": 2024,
-        "venue": "Unknown",
-        "doi": "10.1016/j.cub.2016.08.055",
-        "url": "http://www.cell.com/article/S0960982216310004/pdf",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "middle",
-        "paperWeight": 0.32,
-        "added": "2026-03-15T18:55:16.883Z",
-        "nodesContributed": [
-          "photovoice",
-          "autism_percep",
-          "visual_narrative",
-          "lived_experience",
-          "participatory_res",
-          "sensory_exp",
-          "self_expression",
-          "neurodiv_voice",
-          "qual_insight"
-        ]
-      },
-      {
-        "id": "paper_1773600953567",
-        "title": "Enhanced Neural Responses to Imagined Primary Rewards Predict Reduced Monetary Temporal Discounting",
+        "id": "Hsiung2018curiosity",
+        "title": "Unpacking the different flavors of curiosity",
         "year": 2018,
-        "venue": "Journal of Neuroscience",
-        "doi": "10.1523/JNEUROSCI.1863-15.2015",
-        "url": "https://www.jneurosci.org/content/jneuro/35/38/13103.full.pdf",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "shared-first",
-        "paperWeight": 0.8,
-        "added": "2026-03-15T18:55:53.567Z",
-        "nodesContributed": [
-          "reward_imagination",
-          "primary_reward",
-          "imagination_quality",
-          "discount_rate",
-          "choice_prediction",
-          "therapeutic_target"
-        ]
-      },
-      {
-        "id": "paper_1773600965325",
-        "title": "Activity in dlPFC and its effective connectivity to vmPFC are associated with temporal discounting",
-        "year": 2014,
-        "venue": "Frontiers in Neuroscience",
-        "doi": "10.3389/fnins.2014.00050",
-        "url": "https://www.frontiersin.org/articles/10.3389/fnins.2014.00050/pdf",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "shared-first",
-        "paperWeight": 0.6,
-        "added": "2026-03-15T18:56:05.325Z",
-        "nodesContributed": [
-          "delayed_reward_choice",
-          "effective_connectivity",
-          "dlpfc_ba46",
-          "monetary_choice",
-          "cross_domain_mechanism"
-        ]
-      },
-      {
-        "id": "paper_1773601014693",
-        "title": "Vasopressin modulates social recognition-related activity in the left temporoparietal junction in humans",
-        "year": 2012,
-        "venue": "Translational Psychiatry",
-        "doi": "10.1038/tp.2011.2",
-        "url": "https://www.nature.com/articles/tp20112.pdf",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "middle",
+        "venue": "IEEE CIS Newsletter on Cognitive and Developmental Systems",
+        "url": null,
+        "pubType": "commentary",
+        "authorPosition": "second",
         "paperWeight": 0.24,
-        "added": "2026-03-15T18:56:54.693Z",
-        "nodesContributed": [
-          "vasopressin",
-          "social_recognition",
-          "temporoparietal_junc",
-          "neuropeptide_effect",
-          "familiarity_assess",
-          "tom_network",
-          "prosocial_behavior"
-        ]
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
       },
       {
-        "id": "paper_1773601039147",
-        "title": "A common allele in the oxytocin receptor gene (OXTR) impacts prosocial temperament and human hypothalamic-limbic structure and function",
-        "year": 2012,
-        "venue": "Proceedings of the National Academy of Sciences",
-        "doi": "10.1073/pnas.1113137109",
-        "url": "https://www.pnas.org/content/pnas/107/31/13936.full.pdf",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "middle",
-        "paperWeight": 0.24,
-        "added": "2026-03-15T18:57:19.147Z",
-        "nodesContributed": [
-          "oxtr_gene",
-          "rs53576",
-          "prosocial_temp",
-          "hypothalamus",
-          "amygdala",
-          "gray_matter_vol",
-          "oxytocin_system",
-          "gene_brain_behav",
-          "limbic_structure",
-          "allelic_variation"
-        ]
-      },
-      {
-        "id": "paper_1773601054402",
-        "title": "Acute D2 receptor blockade induces rapid, reversible remodeling in human cortical-striatal circuits",
-        "year": 2024,
-        "venue": "Unknown",
-        "doi": "10.1038/nn.2572",
-        "url": "https://doi.org/10.1038/nn.2572",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "middle",
-        "paperWeight": 0.24,
-        "added": "2026-03-15T18:57:34.402Z",
-        "nodesContributed": [
-          "d2_receptor",
-          "dopamine_blockade",
-          "corticostriatal",
-          "circuit_plasticity",
-          "rapid_remodeling",
-          "functional_connect",
-          "pharmacological_fmri",
-          "antipsychotic_mech",
-          "striatal_function",
-          "reversibility"
-        ]
-      },
-      {
-        "id": "paper_1773601107063",
-        "title": "Vasopressin Modulates Medial Prefrontal Cortex–Amygdala Circuitry during Emotion Processing in Humans",
-        "year": 2010,
-        "venue": "Journal of Neuroscience",
-        "doi": "10.1523/JNEUROSCI.4971-09.2010",
-        "url": "https://www.jneurosci.org/content/jneuro/30/20/7017.full.pdf",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "middle",
-        "paperWeight": 0.24,
-        "added": "2026-03-15T18:58:27.063Z",
-        "nodesContributed": [
-          "subgenual_cingulate",
-          "supragenual_cingulate",
-          "facial_emotion_proc",
-          "mpfc_amygdala_circuit",
-          "emotion_regulation",
-          "fear_aggression",
-          "anxiety_disorder"
-        ]
-      },
-      {
-        "id": "paper_1773601158680",
-        "title": "Neural bases of social anxiety disorder: emotional reactivity and cognitive regulation during social and physical threat",
-        "year": 2024,
-        "venue": "Unknown",
-        "doi": "10.1001/archgenpsychiatry.2008.525",
-        "url": "https://jamanetwork.com/journals/jamapsychiatry/articlepdf/210184/yoa80081_170_180.pdf",
-        "abstractOnly": false,
-        "pubType": "journal",
-        "authorPosition": "middle",
-        "paperWeight": 0.24,
-        "added": "2026-03-15T18:59:18.680Z",
-        "nodesContributed": [
-          "social_anxiety",
-          "social_threat",
-          "physical_threat",
-          "emotional_reactivity",
-          "cog_reappraisal",
-          "amygdala_reactivity",
-          "pfc_amygdala_reg",
-          "threat_specificity",
-          "negative_evaluation",
-          "insula_activation"
-        ]
-      },
-      {
-        "id": "paper_1773601174514",
-        "title": "Personagram: Bridging Personas and Product Design for Creative Ideation with Multimodal LLMs",
-        "year": 2026,
-        "venue": "ACM CHI",
-        "doi": "10.1145/nnnnnnn.nnnnnnn",
-        "arxivId": "2602.06197",
-        "url": "https://arxiv.org/pdf/2602.06197.pdf",
-        "abstractOnly": false,
-        "pubType": "preprint",
-        "authorPosition": "middle",
-        "paperWeight": 0.28,
-        "added": "2026-03-15T18:59:34.514Z",
-        "nodesContributed": [
-          "persona_theater",
-          "mllm_pipeline",
-          "product_reference",
-          "census_persona",
-          "design_feature_extract",
-          "structured_ideation",
-          "multimodal_reasoning",
-          "designer_satisfaction",
-          "prompt_refinement",
-          "design_speculation"
-        ]
-      },
-      {
-        "id": "paper_1773601195684",
-        "title": "Deconstructing Taste: Toward a Human-Centered AI Framework for Modeling Consumer Aesthetic Perceptions",
-        "year": 2026,
-        "venue": "arXiv",
-        "doi": "arXiv:2601.17134",
-        "arxivId": "2601.17134",
-        "url": "https://arxiv.org/pdf/2601.17134.pdf",
-        "abstractOnly": false,
-        "pubType": "preprint",
-        "authorPosition": "middle",
-        "paperWeight": 0.28,
-        "added": "2026-03-15T18:59:55.684Z",
-        "nodesContributed": [
-          "style_descriptor",
-          "design_feature_link",
-          "perceptual_analysis",
-          "explicit_classification",
-          "cognitive_mastering",
-          "domain_expertise",
-          "wheel_aesthetics",
-          "spoke_config",
-          "low_level_visual",
-          "high_level_semantic",
-          "human_ai_cocreative",
-          "preference_dataset",
-          "reward_model_taste",
-          "design_communication"
-        ]
-      },
-      {
-        "id": "paper_1773601238607",
-        "title": "Learning to Represent Individual Differences for Choice Decision Making",
-        "year": 2022,
-        "venue": "MRC Workshop at IJCAI-ECAI 2022",
-        "doi": "arXiv:2503.21704",
-        "arxivId": "2503.21704",
-        "url": "https://arxiv.org/pdf/2503.21704.pdf",
-        "abstractOnly": false,
-        "pubType": "preprint",
-        "authorPosition": "middle",
-        "paperWeight": 0.28,
-        "added": "2026-03-15T19:00:38.607Z",
-        "nodesContributed": [
-          "rep_learning_id",
-          "indiv_embedding",
-          "choice_prediction",
-          "free_text_embed",
-          "risky_gambling",
-          "psychometric_limit",
-          "user_embedding",
-          "behavioral_model_compare"
-        ]
-      },
-      {
-        "id": "paper_1773601256623",
-        "title": "Visual Elements and Cognitive Biases Influence Interpretations of Trends in Scatter Plots",
-        "year": 2023,
-        "venue": "arXiv",
-        "doi": "arXiv:2310.15406",
-        "arxivId": "2310.15406",
-        "url": "https://arxiv.org/pdf/2310.15406.pdf",
-        "abstractOnly": false,
-        "pubType": "preprint",
-        "authorPosition": "middle",
-        "paperWeight": 0.28,
-        "added": "2026-03-15T19:00:56.623Z",
-        "nodesContributed": [
-          "scatter_plot_percep",
-          "outlier_influence",
-          "trend_line_effect",
-          "correlation_judgment",
-          "confirmation_bias_viz",
-          "ensemble_coding",
-          "graph_literacy",
-          "visual_misinformation",
-          "marker_properties",
-          "efficient_coding"
-        ]
-      },
-      {
-        "id": "paper_1773601301635",
-        "title": "Learning Latent Traits for Simulated Cooperative Driving Tasks",
-        "year": 2022,
-        "venue": "arXiv",
-        "doi": "arXiv:2207.09619",
-        "arxivId": "2207.09619",
-        "url": "https://arxiv.org/pdf/2207.09619.pdf",
-        "abstractOnly": false,
-        "pubType": "preprint",
-        "authorPosition": "middle",
-        "paperWeight": 0.28,
-        "added": "2026-03-15T19:01:41.635Z",
-        "nodesContributed": [
-          "cooperative_teaming",
-          "trait_embedding",
-          "intervention_policy",
-          "driver_distraction",
-          "adversarial_irl",
-          "population_modeling",
-          "cautiousness",
-          "hmi_simulation",
-          "assistance_preference"
-        ]
-      },
-      {
-        "id": "paper_1773601340512",
-        "title": "Between heuristics and optimality: Flexible integration of cost and evidence during information sampling",
-        "year": 2024,
-        "venue": "Unknown",
-        "doi": "10.1101/2022.05.17.492355",
-        "url": "https://doi.org/10.1101/2022.05.17.492355",
-        "abstractOnly": false,
-        "pubType": "preprint",
-        "authorPosition": "middle",
-        "paperWeight": 0.28,
-        "added": "2026-03-15T19:02:20.512Z",
-        "nodesContributed": [
-          "info_sampling",
-          "evidence_accum",
-          "sampling_cost",
-          "heuristic_strategy",
-          "optimal_strategy",
-          "evidence_cost_tradeoff",
-          "stopping_rule",
-          "computational_efficiency",
-          "flexible_integration",
-          "reward_context"
-        ]
-      },
-      {
-        "id": "paper_1773601395241",
-        "title": "Creative Commuter: Towards Designing Moments for Idea Generation and Incubation during the Commute",
-        "year": 2024,
-        "venue": "CHI Workshop/Extended Abstract",
-        "doi": "10.1145/3641308.3685022",
-        "url": "https://doi.org/10.1145/3641308.3685022",
-        "abstractOnly": false,
-        "pubType": "conf-workshop",
-        "authorPosition": "middle",
-        "paperWeight": 0.26,
-        "added": "2026-03-15T19:03:15.241Z",
-        "nodesContributed": [
-          "idea_incubation",
-          "commute_context",
-          "mindless_task",
-          "context_aware_sensing",
-          "creativity_support",
-          "mild_immersion",
-          "in_car_intelligence",
-          "distraction_min"
-        ]
-      },
-      {
-        "id": "paper_1773601408085",
-        "title": "ConjointNet: Enhancing Conjoint Analysis for Preference Prediction with Representation Learning",
-        "year": 2025,
-        "venue": "arXiv",
-        "doi": "arXiv:2503.11710",
-        "arxivId": "2503.11710",
-        "url": "https://arxiv.org/pdf/2503.11710.pdf",
-        "abstractOnly": false,
-        "pubType": "conf-workshop",
-        "authorPosition": "middle",
-        "paperWeight": 0.26,
-        "added": "2026-03-15T19:03:28.085Z",
-        "nodesContributed": [
-          "conjoint_analysis",
-          "partworth_est",
-          "nonlinear_interact",
-          "auto_encoder_pretrain",
-          "resnet_architecture",
-          "attribute_correlation",
-          "discrete_choice_model",
-          "end_to_end_learning",
-          "multimodal_preference",
-          "semi_supervised_net"
-        ]
-      },
-      {
-        "id": "paper_1773601423447",
-        "title": "Overcoming Temptation: Incentive Design For Intertemporal Choice",
-        "year": 2022,
-        "venue": "arXiv",
-        "doi": "arXiv:2203.05782v2",
+        "id": "Sukumar2017overcoming",
+        "title": "Overcoming temptation: Incentive design for intertemporal choice",
+        "year": 2017,
+        "venue": "Proceedings of the 3rd Multidisciplinary Conference on Reinforcement Learning and Decision Making",
         "arxivId": "2203.05782",
-        "url": "https://arxiv.org/pdf/2203.05782.pdf",
+        "url": "https://arxiv.org/abs/2203.05782",
         "abstractOnly": false,
         "pubType": "conf-full",
         "authorPosition": "middle",
-        "paperWeight": 0.27,
+        "paperWeight": 0.16,
         "added": "2026-03-15T19:03:43.447Z",
-        "nodesContributed": [
+        "nodes_contributed": [
           "plsa",
           "willpower_fluct",
           "defection_prob",
@@ -650,55 +705,202 @@
         ]
       },
       {
-        "id": "paper_1773601488877",
-        "title": "Understanding the Cognitive Complexity in Language Elicited by Product Images",
-        "year": 2024,
-        "venue": "ICML",
-        "doi": "arXiv:2409.16521",
-        "arxivId": "2409.16521",
-        "url": "https://arxiv.org/pdf/2409.16521.pdf",
+        "id": "Wang2016autism",
+        "title": "Revealing the world of autism through the lens of a camera",
+        "year": 2016,
+        "venue": "Current Biology",
+        "doi": "10.1016/j.cub.2016.08.055",
+        "url": "https://doi.org/10.1016/j.cub.2016.08.055",
         "abstractOnly": false,
-        "pubType": "conf-workshop",
-        "authorPosition": "shared-first",
-        "paperWeight": 0.65,
-        "added": "2026-03-15T19:04:48.877Z",
-        "nodesContributed": [
-          "cog_complex_text",
-          "visibility_score",
-          "semantic_dist_model",
-          "uniqueness_measure",
-          "concreteness_rating",
-          "product_image_label",
-          "vision_lang_embed",
-          "llm_human_detect",
-          "label_elicit_task",
-          "crowdsourced_rating"
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.32,
+        "added": "2026-03-15T18:55:16.883Z",
+        "nodes_contributed": [
+          "photovoice",
+          "autism_percep",
+          "visual_narrative",
+          "lived_experience",
+          "participatory_res",
+          "sensory_exp",
+          "self_expression",
+          "neurodiv_voice",
+          "qual_insight"
         ]
       },
       {
-        "id": "paper_1773604556103",
-        "title": "Neural Support for Contributions of Utility and Narrative Processing of Evidence in Juror Decision Making",
-        "year": 2024,
+        "id": "Hakimi2015enhanced",
+        "title": "Enhanced neural responses to imagined primary rewards predict reduced monetary temporal discounting",
+        "year": 2015,
         "venue": "Journal of Neuroscience",
-        "doi": "10.1523/JNEUROSCI.2434-21.2022",
-        "url": "https://www.jneurosci.org/content/jneuro/42/40/7624.full.pdf",
+        "doi": "10.1523/JNEUROSCI.1863-15.2015",
+        "url": "https://doi.org/10.1523/JNEUROSCI.1863-15.2015",
         "abstractOnly": false,
         "pubType": "journal",
-        "authorPosition": "second",
-        "paperWeight": 0.6,
-        "added": "2026-03-15T19:55:56.103Z",
-        "nodesContributed": [
-          "narrative_processing",
-          "utility_processing",
-          "evidence_accumulation",
-          "reading_recall",
-          "relational_logic",
-          "uncertainty_processing",
-          "hierarchical_cog_model",
-          "neurosynth_decode",
-          "complex_decision",
-          "dual_process_integ"
+        "authorPosition": "shared-first",
+        "paperWeight": 0.8,
+        "added": "2026-03-15T18:55:53.567Z",
+        "nodes_contributed": [
+          "reward_imagination",
+          "primary_reward",
+          "imagination_quality",
+          "discount_rate",
+          "choice_prediction",
+          "therapeutic_target"
         ]
+      },
+      {
+        "id": "Hakimi2014activity",
+        "title": "Activity in dlPFC and its effective connectivity to vmPFC are associated with temporal discounting",
+        "year": 2014,
+        "venue": "Frontiers in Neuroscience",
+        "doi": "10.3389/fnins.2014.00050",
+        "url": "https://doi.org/10.3389/fnins.2014.00050",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "shared-first",
+        "paperWeight": 0.6,
+        "added": "2026-03-15T18:56:05.325Z",
+        "nodes_contributed": [
+          "delayed_reward_choice",
+          "effective_connectivity",
+          "dlpfc_ba46",
+          "monetary_choice",
+          "cross_domain_mechanism"
+        ]
+      },
+      {
+        "id": "Zink2011vasopressin",
+        "title": "Vasopressin modulates social recognition-related activity in the left temporoparietal junction in humans",
+        "year": 2011,
+        "venue": "Translational Psychiatry",
+        "doi": "10.1038/tp.2011.2",
+        "url": "https://doi.org/10.1038/tp.2011.2",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "added": "2026-03-15T18:56:54.693Z",
+        "nodes_contributed": [
+          "vasopressin",
+          "social_recognition",
+          "temporoparietal_junc",
+          "neuropeptide_effect",
+          "familiarity_assess",
+          "tom_network",
+          "prosocial_behavior"
+        ]
+      },
+      {
+        "id": "Tost2010oxtr",
+        "title": "Common alleles in OXTR impact prosocial temperament and human hypothalamic-limbic structure and function",
+        "year": 2010,
+        "venue": "Proceedings of the National Academy of Sciences",
+        "doi": "10.1073/pnas.1003296107",
+        "url": "https://doi.org/10.1073/pnas.1003296107",
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Tost2010acute",
+        "title": "Acute D2 receptor blockade induces rapid, reversible remodeling in human cortical-striatal circuits",
+        "year": 2010,
+        "venue": "Nature Neuroscience",
+        "doi": "10.1038/nn.2572",
+        "url": "https://doi.org/10.1038/nn.2572",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "added": "2026-03-15T18:57:34.402Z",
+        "nodes_contributed": [
+          "d2_receptor",
+          "dopamine_blockade",
+          "corticostriatal",
+          "circuit_plasticity",
+          "rapid_remodeling",
+          "functional_connect",
+          "pharmacological_fmri",
+          "antipsychotic_mech",
+          "striatal_function",
+          "reversibility"
+        ]
+      },
+      {
+        "id": "Zink2010vasopressin",
+        "title": "Vasopressin modulates medial prefrontal cortex-amygdala circuitry during emotion processing in humans",
+        "year": 2010,
+        "venue": "Journal of Neuroscience",
+        "doi": "10.1523/JNEUROSCI.4899-09.2010",
+        "url": "https://doi.org/10.1523/JNEUROSCI.4899-09.2010",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "added": "2026-03-15T18:58:27.063Z",
+        "nodes_contributed": [
+          "subgenual_cingulate",
+          "supragenual_cingulate",
+          "facial_emotion_proc",
+          "mpfc_amygdala_circuit",
+          "emotion_regulation",
+          "fear_aggression",
+          "anxiety_disorder"
+        ]
+      },
+      {
+        "id": "Goldin2009neural",
+        "title": "Neural bases of social anxiety disorder: Emotional reactivity and cognitive regulation during social and physical threat",
+        "year": 2009,
+        "venue": "Archives of General Psychiatry",
+        "doi": "10.1001/archgenpsychiatry.2008.525",
+        "url": "https://doi.org/10.1001/archgenpsychiatry.2008.525",
+        "abstractOnly": false,
+        "pubType": "journal",
+        "authorPosition": "middle",
+        "paperWeight": 0.24,
+        "added": "2026-03-15T18:59:18.680Z",
+        "nodes_contributed": [
+          "social_anxiety",
+          "social_threat",
+          "physical_threat",
+          "emotional_reactivity",
+          "cog_reappraisal",
+          "amygdala_reactivity",
+          "pfc_amygdala_reg",
+          "threat_specificity",
+          "negative_evaluation",
+          "insula_activation"
+        ]
+      },
+      {
+        "id": "Tost2009mri",
+        "title": "Magnetic resonance biomarkers in schizophrenia research",
+        "year": 2009,
+        "venue": "Handbook of Neuropsychiatric Biomarkers, Endophenotypes, and Genes: Promises, Advances, and Challenges",
+        "doi": "10.1007/978-1-4020-9831-4_6",
+        "url": "https://doi.org/10.1007/978-1-4020-9831-4_6",
+        "pubType": "book-chapter",
+        "authorPosition": "second",
+        "paperWeight": 0.18,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
+      },
+      {
+        "id": "Tost2009dopamine",
+        "title": "Dopamine dysfunction in schizophrenia: From genetic susceptibility to cognitive impairment",
+        "year": 2009,
+        "venue": "Dopamine Handbook",
+        "doi": "10.1093/acprof:oso/9780195373035.003.0039",
+        "url": "https://doi.org/10.1093/acprof:oso/9780195373035.003.0039",
+        "pubType": "book-chapter",
+        "authorPosition": "second",
+        "paperWeight": 0.18,
+        "nodes_contributed": [],
+        "added": "2026-05-09T05:25:30.709Z"
       }
     ]
   },
@@ -707,1669 +909,1947 @@
       "id": "psych_flex",
       "label": "psychological\nflexibility",
       "weight": 1,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "creativity",
       "label": "creativity",
       "weight": 0.9,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "open_mindedness",
       "label": "open-\nmindedness",
       "weight": 0.65,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "affect",
       "label": "affect",
       "weight": 0.72,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "awe",
       "label": "awe",
       "weight": 0.55,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "expectancy_viol",
       "label": "expectancy\nviolation",
       "weight": 0.68,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "exec_function",
       "label": "executive\nfunction",
       "weight": 0.65,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "self_regulation",
       "label": "self-\nregulation",
       "weight": 0.85,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "intrinsic_motiv",
       "label": "intrinsic\nmotivation",
       "weight": 0.78,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "behavior_change",
       "label": "behavior\nchange",
       "weight": 0.72,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "bayesian_surprise",
       "label": "Bayesian\nsurprise",
       "weight": 0.95,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "pred_processing",
       "label": "predictive\nprocessing",
       "weight": 0.85,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "belief_updating",
       "label": "belief\nupdating",
       "weight": 0.8,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "pred_error",
       "label": "prediction\nerror",
       "weight": 0.78,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "event_segmentation",
       "label": "event\nsegmentation",
       "weight": 0.65,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "semantic_distance",
       "label": "semantic\ndistance",
       "weight": 0.72,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "active_inference",
       "label": "active\ninference",
       "weight": 0.7,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "temporal_res",
       "label": "temporal\nresolution",
       "weight": 0.6,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "gen_ai",
       "label": "generative\nAI",
       "weight": 0.88,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "llm",
       "label": "LLM",
       "weight": 0.72,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "text_to_image",
       "label": "text-to-\nimage",
       "weight": 0.52,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "product_design",
       "label": "product\ndesign",
       "weight": 0.75,
-      "cluster": 2
+      "cluster": 2,
+      "level": "domain"
     },
     {
       "id": "intervention",
       "label": "intervention",
       "weight": 0.75,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "video",
       "label": "video",
       "weight": 0.52,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "personalization",
       "label": "personalization",
       "weight": 0.7,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "human_centered",
       "label": "human-\ncentered",
       "weight": 0.65,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "temporal_discounting",
       "label": "temporal\ndiscounting",
       "weight": 0.85,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "vmPFC",
       "label": "vmPFC",
       "weight": 0.8,
-      "cluster": 4
+      "cluster": 4,
+      "level": "mechanism"
     },
     {
       "id": "dlPFC",
       "label": "dlPFC",
       "weight": 0.75,
-      "cluster": 4
+      "cluster": 4,
+      "level": "mechanism"
     },
     {
       "id": "reward_value",
       "label": "reward\nvaluation",
       "weight": 0.82,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "future_simulation",
       "label": "future\nsimulation",
       "weight": 0.72,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "intertemporal",
       "label": "intertemporal\nchoice",
       "weight": 0.78,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "individual_diff",
       "label": "individual\ndifferences",
       "weight": 0.68,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "social_cognition",
       "label": "social\ncognition",
       "weight": 0.82,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "moral_judgment",
       "label": "moral\njudgment",
       "weight": 0.68,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "decision_bias",
       "label": "decision\nbias",
       "weight": 0.65,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "fMRI",
       "label": "fMRI",
       "weight": 0.75,
-      "cluster": 5
+      "cluster": 5,
+      "level": "method"
     },
     {
       "id": "affect_regulation",
       "label": "affect\nregulation",
       "weight": 0.7,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "cog_complexity",
       "label": "cognitive\ncomplexity",
       "weight": 0.8,
-      "cluster": 6
+      "cluster": 6,
+      "level": "construct"
     },
     {
       "id": "pref_elicitation",
       "label": "preference\nelicitation",
       "weight": 0.82,
-      "cluster": 6
+      "cluster": 6,
+      "level": "method"
     },
     {
       "id": "aesthetic_percep",
       "label": "aesthetic\nperception",
       "weight": 0.68,
-      "cluster": 6
+      "cluster": 6,
+      "level": "construct"
     },
     {
       "id": "consumer_choice",
       "label": "consumer\nchoice",
       "weight": 0.72,
-      "cluster": 6
+      "cluster": 6,
+      "level": "domain"
     },
     {
       "id": "risk_perception",
       "label": "Risk\nPerception",
       "weight": 0.95,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "episodic_sim",
       "label": "Episodic\nSimulation",
       "weight": 0.9,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "info_pred_error",
       "label": "Information\nPrediction Error",
       "weight": 0.85,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "pandemic_fatigue",
       "label": "Pandemic\nFatigue",
       "weight": 0.6,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "belief_revision",
       "label": "Belief\nRevision",
       "weight": 0.75,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "gist_rep",
       "label": "Gist\nRepresentations",
       "weight": 0.55,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "risk_estimation",
       "label": "Risk\nEstimation",
       "weight": 0.7,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "salience",
       "label": "Intervention\nSalience",
       "weight": 0.65,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "compliance",
       "label": "Health\nCompliance",
       "weight": 0.7,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "mental_imagery",
       "label": "Mental\nImagery",
       "weight": 0.6,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "valence_bias",
       "label": "Valence Bias\nin Learning",
       "weight": 0.5,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "adas",
       "label": "Advanced Driver\nAssistance",
       "weight": 0.35,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "impulsivity",
       "label": "Impulsivity",
       "weight": 0.38,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "inhibitory_control",
       "label": "Inhibitory\nControl",
       "weight": 0.38,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "risky_driving",
       "label": "Risky Driving\nBehavior",
       "weight": 0.32,
-      "cluster": 0
+      "cluster": 0,
+      "level": "domain"
     },
     {
       "id": "latent_state_inf",
       "label": "Latent State\nInference",
       "weight": 0.36,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "rnn_modeling",
       "label": "RNN\nModeling",
       "weight": 0.28,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "driver_behavior",
       "label": "Driver\nBehavior",
       "weight": 0.3,
-      "cluster": 0
+      "cluster": 0,
+      "level": "domain"
     },
     {
       "id": "driving_simulator",
       "label": "Driving\nSimulator",
       "weight": 0.22,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "safety_interface",
       "label": "Safety\nInterface",
       "weight": 0.32,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "cog_profiling",
       "label": "Cognitive\nProfiling",
       "weight": 0.34,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "juror_decision",
       "label": "Juror\nDecision",
       "weight": 0.54,
-      "cluster": 5
+      "cluster": 5,
+      "level": "domain"
     },
     {
       "id": "crime_type_bias",
       "label": "Crime-Type\nBias",
       "weight": 0.6,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "mentalizing",
       "label": "Mentalizing",
       "weight": 0.54,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "racial_bias",
       "label": "Racial\nBias",
       "weight": 0.48,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "evidence_strength",
       "label": "Evidence\nStrength",
       "weight": 0.42,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "crime_severity",
       "label": "Crime\nSeverity",
       "weight": 0.42,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "neural_similarity",
       "label": "Neural\nSimilarity",
       "weight": 0.36,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "personalized_scenario",
       "label": "Personalized\nScenario",
       "weight": 0.36,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "age_diff_risk",
       "label": "Age Differences\nin Risk",
       "weight": 0.32,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "viral_transmission",
       "label": "Viral\nTransmission",
       "weight": 0.28,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "scenario_specificity",
       "label": "Scenario\nSpecificity",
       "weight": 0.24,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "self_relevance",
       "label": "Self-Relevance",
       "weight": 0.32,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "protective_behavior",
       "label": "Protective\nBehavior",
       "weight": 0.24,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "vulnerability_percep",
       "label": "Vulnerability\nPerception",
       "weight": 0.28,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "adolescent_dev",
       "label": "Adolescent\nDevelopment",
       "weight": 0.9,
-      "cluster": 0
+      "cluster": 0,
+      "level": "domain"
     },
     {
       "id": "social_choice",
       "label": "Social\nChoice",
       "weight": 0.85,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "health_behavior",
       "label": "Health\nBehavior",
       "weight": 0.8,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "neurodevelopment",
       "label": "Neuro-\ndevelopment",
       "weight": 0.75,
-      "cluster": 0
+      "cluster": 0,
+      "level": "mechanism"
     },
     {
       "id": "peer_influence",
       "label": "Peer\nInfluence",
       "weight": 0.7,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "choice_architecture",
       "label": "Choice\nArchitecture",
       "weight": 0.65,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "reward_sensitivity",
       "label": "Reward\nSensitivity",
       "weight": 0.7,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "dev_sensitive_int",
       "label": "Developmentally\nSensitive\nIntervention",
       "weight": 0.8,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "analytic_flex",
       "label": "Analytic\nFlexibility",
       "weight": 0.4,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "researcher_df",
       "label": "Researcher\nDegrees Freedom",
       "weight": 0.35,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "multi_analyst",
       "label": "Multi-Analyst\nApproach",
       "weight": 0.35,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "pipeline_var",
       "label": "Pipeline\nVariability",
       "weight": 0.3,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "fmri_preproc",
       "label": "fMRI\nPreprocessing",
       "weight": 0.25,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "stat_threshold",
       "label": "Statistical\nThresholding",
       "weight": 0.25,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "hypothesis_test",
       "label": "Hypothesis\nTesting",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "result_robust",
       "label": "Result\nRobustness",
       "weight": 0.3,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "repro_neuro",
       "label": "Reproducibility\nNeuroimaging",
       "weight": 0.35,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "spatial_overlap",
       "label": "Spatial\nOverlap",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "effect_hetero",
       "label": "Effect Size\nHeterogeneity",
       "weight": 0.25,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "open_science",
       "label": "Open Science\nPractices",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "asd_reward",
       "label": "ASD reward\nprocessing",
       "weight": 0.29,
-      "cluster": 0
+      "cluster": 0,
+      "level": "domain"
     },
     {
       "id": "signed_pred_error",
       "label": "signed\nprediction error",
       "weight": 0.26,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "unsigned_pred_error",
       "label": "unsigned\nprediction error",
       "weight": 0.26,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "frontostriatal",
       "label": "frontostriatal\ncircuit",
       "weight": 0.22,
-      "cluster": 4
+      "cluster": 4,
+      "level": "mechanism"
     },
     {
       "id": "paracingulate",
       "label": "paracingulate\ngyrus",
       "weight": 0.19,
-      "cluster": 4
+      "cluster": 4,
+      "level": "mechanism"
     },
     {
       "id": "insula_reward",
       "label": "insula\nactivation",
       "weight": 0.19,
-      "cluster": 4
+      "cluster": 4,
+      "level": "mechanism"
     },
     {
       "id": "unpredictability_intol",
       "label": "unpredictability\nintolerance",
       "weight": 0.22,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "reward_learning",
       "label": "reward\nlearning",
       "weight": 0.26,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "photovoice",
       "label": "photovoice\nmethod",
       "weight": 0.28,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "autism_percep",
       "label": "autistic\nperception",
       "weight": 0.32,
-      "cluster": 0
+      "cluster": 0,
+      "level": "domain"
     },
     {
       "id": "visual_narrative",
       "label": "visual\nnarrative",
       "weight": 0.24,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "lived_experience",
       "label": "lived\nexperience",
       "weight": 0.26,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "participatory_res",
       "label": "participatory\nresearch",
       "weight": 0.22,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "sensory_exp",
       "label": "sensory\nexperience",
       "weight": 0.24,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "self_expression",
       "label": "self\nexpression",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "neurodiv_voice",
       "label": "neurodivergent\nvoice",
       "weight": 0.22,
-      "cluster": 5
+      "cluster": 5,
+      "level": "domain"
     },
     {
       "id": "qual_insight",
       "label": "qualitative\ninsight",
       "weight": 0.18,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "reward_imagination",
       "label": "reward\nimagination",
       "weight": 0.72,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "primary_reward",
       "label": "primary\nreward",
       "weight": 0.56,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "imagination_quality",
       "label": "imagination\nquality",
       "weight": 0.64,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "discount_rate",
       "label": "discount\nrate",
       "weight": 0.68,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "choice_prediction",
       "label": "choice\nprediction",
       "weight": 0.52,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "therapeutic_target",
       "label": "therapeutic\ntarget",
       "weight": 0.48,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "delayed_reward_choice",
       "label": "delayed\nreward choice",
       "weight": 0.54,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "effective_connectivity",
       "label": "effective\nconnectivity",
       "weight": 0.48,
-      "cluster": 4
+      "cluster": 4,
+      "level": "method"
     },
     {
       "id": "dlpfc_ba46",
       "label": "dlPFC\nBA-46",
       "weight": 0.48,
-      "cluster": 4
+      "cluster": 4,
+      "level": "mechanism"
     },
     {
       "id": "monetary_choice",
       "label": "monetary\nchoice",
       "weight": 0.36,
-      "cluster": 4
+      "cluster": 4,
+      "level": "method"
     },
     {
       "id": "cross_domain_mechanism",
       "label": "cross-domain\nmechanism",
       "weight": 0.42,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "vasopressin",
       "label": "Vasopressin",
       "weight": 0.24,
-      "cluster": 0
+      "cluster": 0,
+      "level": "mechanism"
     },
     {
       "id": "social_recognition",
       "label": "Social\nRecognition",
       "weight": 0.22,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "temporoparietal_junc",
       "label": "Temporoparietal\nJunction",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "mechanism"
     },
     {
       "id": "neuropeptide_effect",
       "label": "Neuropeptide\nEffects",
       "weight": 0.14,
-      "cluster": 0
+      "cluster": 0,
+      "level": "mechanism"
     },
     {
       "id": "familiarity_assess",
       "label": "Familiarity\nAssessment",
       "weight": 0.12,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "tom_network",
       "label": "Theory of\nMind Network",
       "weight": 0.16,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "prosocial_behavior",
       "label": "Prosocial\nBehavior",
       "weight": 0.14,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "oxtr_gene",
       "label": "OXTR\ngene",
       "weight": 0.24,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "rs53576",
       "label": "rs53576\npolymorphism",
       "weight": 0.22,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "prosocial_temp",
       "label": "prosocial\ntemperament",
       "weight": 0.2,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "hypothalamus",
       "label": "hypothalamus",
       "weight": 0.18,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "amygdala",
       "label": "amygdala",
       "weight": 0.19,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "gray_matter_vol",
       "label": "gray matter\nvolume",
       "weight": 0.15,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "oxytocin_system",
       "label": "oxytocin\nsystem",
       "weight": 0.22,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "gene_brain_behav",
       "label": "gene-brain-\nbehavior",
       "weight": 0.17,
-      "cluster": 5
+      "cluster": 5,
+      "level": "theory"
     },
     {
       "id": "limbic_structure",
       "label": "limbic\nstructure",
       "weight": 0.16,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "allelic_variation",
       "label": "allelic\nvariation",
       "weight": 0.14,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "d2_receptor",
       "label": "D2\nReceptor",
       "weight": 0.24,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "dopamine_blockade",
       "label": "Dopamine\nBlockade",
       "weight": 0.22,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "corticostriatal",
       "label": "Corticostriatal\nCircuits",
       "weight": 0.24,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "circuit_plasticity",
       "label": "Circuit\nPlasticity",
       "weight": 0.2,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "rapid_remodeling",
       "label": "Rapid\nRemodeling",
       "weight": 0.19,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "functional_connect",
       "label": "Functional\nConnectivity",
       "weight": 0.18,
-      "cluster": 5
+      "cluster": 5,
+      "level": "method"
     },
     {
       "id": "pharmacological_fmri",
       "label": "Pharmacological\nfMRI",
       "weight": 0.15,
-      "cluster": 5
+      "cluster": 5,
+      "level": "method"
     },
     {
       "id": "antipsychotic_mech",
       "label": "Antipsychotic\nMechanism",
       "weight": 0.14,
-      "cluster": 3
+      "cluster": 3,
+      "level": "mechanism"
     },
     {
       "id": "striatal_function",
       "label": "Striatal\nFunction",
       "weight": 0.17,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "reversibility",
       "label": "Neural\nReversibility",
       "weight": 0.16,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "subgenual_cingulate",
       "label": "Subgenual\nCingulate",
       "weight": 0.22,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "supragenual_cingulate",
       "label": "Supragenual\nCingulate",
       "weight": 0.17,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "facial_emotion_proc",
       "label": "Facial Emotion\nProcessing",
       "weight": 0.19,
-      "cluster": 5
+      "cluster": 5,
+      "level": "construct"
     },
     {
       "id": "mpfc_amygdala_circuit",
       "label": "mPFC-Amygdala\nCircuit",
       "weight": 0.24,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "emotion_regulation",
       "label": "Emotion\nRegulation",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "fear_aggression",
       "label": "Fear &\nAggression",
       "weight": 0.15,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "anxiety_disorder",
       "label": "Anxiety\nDisorder",
       "weight": 0.14,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "social_anxiety",
       "label": "Social\nAnxiety",
       "weight": 0.22,
-      "cluster": 0
+      "cluster": 0,
+      "level": "domain"
     },
     {
       "id": "social_threat",
       "label": "Social\nThreat",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "physical_threat",
       "label": "Physical\nThreat",
       "weight": 0.16,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "emotional_reactivity",
       "label": "Emotional\nReactivity",
       "weight": 0.18,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "cog_reappraisal",
       "label": "Cognitive\nReappraisal",
       "weight": 0.19,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "amygdala_reactivity",
       "label": "Amygdala\nReactivity",
       "weight": 0.17,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "pfc_amygdala_reg",
       "label": "PFC-Amygdala\nRegulation",
       "weight": 0.18,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "threat_specificity",
       "label": "Threat\nSpecificity",
       "weight": 0.14,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "negative_evaluation",
       "label": "Negative\nEvaluation Fear",
       "weight": 0.15,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "insula_activation",
       "label": "Insula\nActivation",
       "weight": 0.14,
-      "cluster": 5
+      "cluster": 5,
+      "level": "mechanism"
     },
     {
       "id": "persona_theater",
       "label": "Persona\nTheater",
       "weight": 0.22,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "mllm_pipeline",
       "label": "MLLM\nPipeline",
       "weight": 0.26,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "product_reference",
       "label": "Product\nReference",
       "weight": 0.24,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "census_persona",
       "label": "Census-Based\nPersona",
       "weight": 0.22,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "design_feature_extract",
       "label": "Design Feature\nExtraction",
       "weight": 0.25,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "structured_ideation",
       "label": "Structured\nIdeation",
       "weight": 0.24,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "multimodal_reasoning",
       "label": "Multimodal\nReasoning",
       "weight": 0.23,
-      "cluster": 2
+      "cluster": 2,
+      "level": "theory"
     },
     {
       "id": "designer_satisfaction",
       "label": "Designer\nSatisfaction",
       "weight": 0.18,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "prompt_refinement",
       "label": "Prompt\nRefinement",
       "weight": 0.16,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "design_speculation",
       "label": "Design\nSpeculation",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "style_descriptor",
       "label": "Style\nDescriptor",
       "weight": 0.22,
-      "cluster": 6
+      "cluster": 6,
+      "level": "construct"
     },
     {
       "id": "design_feature_link",
       "label": "Design\nFeature Link",
       "weight": 0.25,
-      "cluster": 6
+      "cluster": 6,
+      "level": "construct"
     },
     {
       "id": "perceptual_analysis",
       "label": "Perceptual\nAnalysis",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "explicit_classification",
       "label": "Explicit\nClassification",
       "weight": 0.18,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "cognitive_mastering",
       "label": "Cognitive\nMastering",
       "weight": 0.17,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "domain_expertise",
       "label": "Domain\nExpertise",
       "weight": 0.15,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "wheel_aesthetics",
       "label": "Wheel\nAesthetics",
       "weight": 0.19,
-      "cluster": 6
+      "cluster": 6,
+      "level": "domain"
     },
     {
       "id": "spoke_config",
       "label": "Spoke\nConfiguration",
       "weight": 0.16,
-      "cluster": 6
+      "cluster": 6,
+      "level": "domain"
     },
     {
       "id": "low_level_visual",
       "label": "Low-Level\nVisual Features",
       "weight": 0.21,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "high_level_semantic",
       "label": "High-Level\nSemantic",
       "weight": 0.2,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "human_ai_cocreative",
       "label": "Human-AI\nCo-Creative",
       "weight": 0.23,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "preference_dataset",
       "label": "Preference\nDataset",
       "weight": 0.18,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "reward_model_taste",
       "label": "Reward Model\nTaste",
       "weight": 0.17,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "design_communication",
       "label": "Design\nCommunication",
       "weight": 0.16,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "rep_learning_id",
       "label": "representation\nlearning",
       "weight": 0.28,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "indiv_embedding",
       "label": "individual\nembedding",
       "weight": 0.25,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "free_text_embed",
       "label": "free text\nembedding",
       "weight": 0.2,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "risky_gambling",
       "label": "risky gambling\ntask",
       "weight": 0.18,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "psychometric_limit",
       "label": "psychometric\nlimitations",
       "weight": 0.15,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "user_embedding",
       "label": "user\nembedding",
       "weight": 0.17,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "behavioral_model_compare",
       "label": "behavioral\nmodel compare",
       "weight": 0.14,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "scatter_plot_percep",
       "label": "scatter plot\nperception",
       "weight": 0.25,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "outlier_influence",
       "label": "outlier\ninfluence",
       "weight": 0.22,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "trend_line_effect",
       "label": "trend line\neffect",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "correlation_judgment",
       "label": "correlation\njudgment",
       "weight": 0.18,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "confirmation_bias_viz",
       "label": "confirmation\nbias (viz)",
       "weight": 0.17,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "ensemble_coding",
       "label": "ensemble\ncoding",
       "weight": 0.15,
-      "cluster": 0
+      "cluster": 0,
+      "level": "theory"
     },
     {
       "id": "graph_literacy",
       "label": "graph\nliteracy",
       "weight": 0.14,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "visual_misinformation",
       "label": "visual\nmisinformation",
       "weight": 0.16,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "marker_properties",
       "label": "marker\nproperties",
       "weight": 0.13,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "efficient_coding",
       "label": "efficient\ncoding",
       "weight": 0.14,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "cooperative_teaming",
       "label": "Cooperative\nTeaming",
       "weight": 0.25,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "trait_embedding",
       "label": "Trait\nEmbedding",
       "weight": 0.28,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "intervention_policy",
       "label": "Intervention\nPolicy",
       "weight": 0.25,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "driver_distraction",
       "label": "Driver\nDistraction",
       "weight": 0.22,
-      "cluster": 0
+      "cluster": 0,
+      "level": "domain"
     },
     {
       "id": "adversarial_irl",
       "label": "Adversarial\nIRL",
       "weight": 0.2,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "population_modeling",
       "label": "Population\nModeling",
       "weight": 0.18,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "cautiousness",
       "label": "Cautiousness",
       "weight": 0.15,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "hmi_simulation",
       "label": "HMI\nSimulation",
       "weight": 0.18,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "assistance_preference",
       "label": "Assistance\nPreference",
       "weight": 0.2,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "info_sampling",
       "label": "information\nsampling",
       "weight": 0.28,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "evidence_accum",
       "label": "evidence\naccumulation",
       "weight": 0.25,
-      "cluster": 0
+      "cluster": 0,
+      "level": "theory"
     },
     {
       "id": "sampling_cost",
       "label": "sampling\ncost",
       "weight": 0.22,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "heuristic_strategy",
       "label": "heuristic\nstrategy",
       "weight": 0.2,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "optimal_strategy",
       "label": "optimal\nstrategy",
       "weight": 0.2,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "evidence_cost_tradeoff",
       "label": "evidence-cost\ntradeoff",
       "weight": 0.26,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "stopping_rule",
       "label": "stopping\nrule",
       "weight": 0.22,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "computational_efficiency",
       "label": "computational\nefficiency",
       "weight": 0.18,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "flexible_integration",
       "label": "flexible\nintegration",
       "weight": 0.24,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "reward_context",
       "label": "reward\ncontext",
       "weight": 0.17,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "idea_incubation",
       "label": "idea\nincubation",
       "weight": 0.23,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "commute_context",
       "label": "commute\ncontext",
       "weight": 0.21,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "mindless_task",
       "label": "mindless\ntask",
       "weight": 0.18,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "context_aware_sensing",
       "label": "context-aware\nsensing",
       "weight": 0.2,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "creativity_support",
       "label": "creativity\nsupport tools",
       "weight": 0.22,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "mild_immersion",
       "label": "mild\nimmersion",
       "weight": 0.16,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "in_car_intelligence",
       "label": "in-car\nintelligence",
       "weight": 0.18,
-      "cluster": 2
+      "cluster": 2,
+      "level": "domain"
     },
     {
       "id": "distraction_min",
       "label": "distraction\nminimization",
       "weight": 0.19,
-      "cluster": 3
+      "cluster": 3,
+      "level": "construct"
     },
     {
       "id": "conjoint_analysis",
       "label": "conjoint\nanalysis",
       "weight": 0.23,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "partworth_est",
       "label": "partworth\nestimation",
       "weight": 0.18,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "nonlinear_interact",
       "label": "nonlinear\ninteractions",
       "weight": 0.21,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "auto_encoder_pretrain",
       "label": "autoencoder\npretraining",
       "weight": 0.16,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "resnet_architecture",
       "label": "ResNet\narchitecture",
       "weight": 0.14,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "attribute_correlation",
       "label": "attribute\ncorrelation",
       "weight": 0.13,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "discrete_choice_model",
       "label": "discrete choice\nmodel",
       "weight": 0.19,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "end_to_end_learning",
       "label": "end-to-end\nlearning",
       "weight": 0.15,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "multimodal_preference",
       "label": "multimodal\npreference",
       "weight": 0.14,
-      "cluster": 2
+      "cluster": 2,
+      "level": "construct"
     },
     {
       "id": "semi_supervised_net",
       "label": "semi-supervised\nnetwork",
       "weight": 0.13,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "plsa",
       "label": "prize-linked\nsavings",
       "weight": 0.22,
-      "cluster": 3
+      "cluster": 3,
+      "level": "domain"
     },
     {
       "id": "willpower_fluct",
       "label": "willpower\nfluctuation",
       "weight": 0.24,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "defection_prob",
       "label": "defection\nprobability",
       "weight": 0.2,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "delayed_grat_mdp",
       "label": "delayed-grat\nMDP",
       "weight": 0.27,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "incentive_optim",
       "label": "incentive\noptimization",
       "weight": 0.25,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "effort_cost",
       "label": "effort\ncost",
       "weight": 0.18,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "persist_defect",
       "label": "persist vs\ndefect choice",
       "weight": 0.21,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "queue_waiting",
       "label": "queue waiting\ntask",
       "weight": 0.16,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "personalized_incent",
       "label": "personalized\nincentive",
       "weight": 0.24,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "discount_horizon",
       "label": "known time\nhorizon",
       "weight": 0.17,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "iterated_choice",
       "label": "iterated\nchoice",
       "weight": 0.18,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "cog_complex_text",
       "label": "cognitive\ncomplexity",
       "weight": 0.65,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "visibility_score",
       "label": "visibility\nscore",
       "weight": 0.45,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "semantic_dist_model",
       "label": "semantic\ndistance model",
       "weight": 0.45,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "uniqueness_measure",
       "label": "uniqueness\nmeasure",
       "weight": 0.4,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "concreteness_rating",
       "label": "concreteness\nrating",
       "weight": 0.5,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "product_image_label",
       "label": "product image\nlabeling",
       "weight": 0.55,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "vision_lang_embed",
       "label": "vision-language\nembedding",
       "weight": 0.5,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "llm_human_detect",
       "label": "LLM vs human\ndetection",
       "weight": 0.35,
-      "cluster": 2
+      "cluster": 2,
+      "level": "method"
     },
     {
       "id": "label_elicit_task",
       "label": "label elicitation\ntask",
       "weight": 0.45,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "crowdsourced_rating",
       "label": "crowdsourced\nrating",
       "weight": 0.4,
-      "cluster": 3
+      "cluster": 3,
+      "level": "method"
     },
     {
       "id": "narrative_processing",
       "label": "narrative\nprocessing",
       "weight": 0.54,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "utility_processing",
       "label": "utility\nprocessing",
       "weight": 0.48,
-      "cluster": 4
+      "cluster": 4,
+      "level": "construct"
     },
     {
       "id": "evidence_accumulation",
       "label": "evidence\naccumulation",
       "weight": 0.54,
-      "cluster": 0
+      "cluster": 0,
+      "level": "theory"
     },
     {
       "id": "reading_recall",
       "label": "reading\n& recall",
       "weight": 0.36,
-      "cluster": 0
+      "cluster": 0,
+      "level": "method"
     },
     {
       "id": "relational_logic",
       "label": "relational\nlogic",
       "weight": 0.42,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "uncertainty_processing",
       "label": "uncertainty\nprocessing",
       "weight": 0.42,
-      "cluster": 1
+      "cluster": 1,
+      "level": "construct"
     },
     {
       "id": "hierarchical_cog_model",
       "label": "hierarchical\ncog model",
       "weight": 0.36,
-      "cluster": 1
+      "cluster": 1,
+      "level": "theory"
     },
     {
       "id": "neurosynth_decode",
       "label": "neurosynth\ndecoding",
       "weight": 0.3,
-      "cluster": 1
+      "cluster": 1,
+      "level": "method"
     },
     {
       "id": "complex_decision",
       "label": "complex\ndecision",
       "weight": 0.48,
-      "cluster": 0
+      "cluster": 0,
+      "level": "construct"
     },
     {
       "id": "dual_process_integ",
       "label": "dual process\nintegration",
       "weight": 0.42,
-      "cluster": 0
+      "cluster": 0,
+      "level": "theory"
     }
   ],
   "edges": [

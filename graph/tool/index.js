@@ -498,7 +498,7 @@ So: final_node_weight = your_raw_score × ${paperWeight} (clamped to 0.1–1.0).
 
 Return ONLY valid JSON, no markdown fences:
 {
-  "nodes": [{"id":"snake_case_max_3_words","label":"display\\nlabel","weight":0.0-1.0,"cluster":0-6}],
+  "nodes": [{"id":"snake_case_max_3_words","label":"display\\nlabel","weight":0.0-1.0,"cluster":0-6,"level":"construct"}],
   "edges": [{"a":"node_id","b":"node_id","strength":0.0-1.0}],
   "paper": {"title":"...","year":2024,"venue":"...","doi":"..."}
 }
@@ -509,8 +509,15 @@ Guidelines:
 - weight = raw centrality × paperWeight (already factored in above)
 - strength = theoretical coupling tightness
 - 5–15 new nodes maximum; quality over quantity
-- label: use \\n to wrap if display text > 12 chars
-- id: snake_case, max 3 words, must be unique and not a synonym of any existing id`,
+- label: lowercase; use \\n to wrap if display text > 12 chars
+- id: snake_case, max 3 words, must be unique and not a synonym of any existing id
+- level: abstraction level — exactly one of:
+    "theory"     (frameworks/computational models — e.g. predictive processing)
+    "construct"  (mid-level psych/cognitive concepts — DEFAULT for ambiguous cases)
+    "method"     (research methods/instruments — e.g. fMRI, driving simulator)
+    "mechanism"  (brain regions/neurochemicals — e.g. amygdala, vasopressin)
+    "domain"     (application areas/populations — e.g. adolescent development)
+  Prefer "construct" when in doubt; only use mechanism/method when clearly biological/methodological.`,
     messages: [{ role: 'user', content: text.slice(0, 10000) }],
   });
 

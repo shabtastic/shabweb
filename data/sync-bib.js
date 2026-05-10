@@ -14,9 +14,11 @@ const fs = require('fs');
 const path = require('path');
 
 // ── Config ──────────────────────────────────────────────────────────────────
-const DEFAULT_CV_PATH = path.join(
+// CV repo location. Override with --cv-path or CV_PATH env var.
+// Local default is ~/projects/cv. CI clones the public repo into /tmp/cv.
+const DEFAULT_CV_PATH = process.env.CV_PATH || path.join(
   process.env.HOME || process.env.USERPROFILE,
-  'Documents', 'cv'
+  'projects', 'cv'
 );
 const WEBSITE_ROOT = path.resolve(__dirname, '..');
 const OUTPUT_JSON  = path.join(WEBSITE_ROOT, 'data', 'publications.json');

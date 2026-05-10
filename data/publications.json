@@ -207,13 +207,14 @@
     ],
     "year": 2024,
     "venue": "ICML 2024 Workshop on LLMs and Cognition",
-    "url": null,
+    "url": "http://arxiv.org/abs/2409.16521v1",
     "pubType": "conf-workshop",
     "authorPosition": "shared-first",
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ]
+    ],
+    "arxivId": "2409.16521"
   },
   {
     "id": "Wright2024motivation",
@@ -370,11 +371,12 @@
     ],
     "year": 2023,
     "venue": "Generative AI and HCI (GenAICHI) Workshop at CHI 2023",
-    "url": null,
+    "url": "http://arxiv.org/abs/2306.01217v1",
     "pubType": "conf-workshop",
     "authorPosition": "second",
     "paperWeight": 0.3,
-    "keywords": []
+    "keywords": [],
+    "arxivId": "2306.01217"
   },
   {
     "id": "Filipowicz2023visual",
@@ -549,11 +551,12 @@
     ],
     "year": 2022,
     "venue": "CML4Impact Workshop at NeurIPS 2022",
-    "url": null,
+    "url": "http://arxiv.org/abs/2109.05104v1",
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": []
+    "keywords": [],
+    "arxivId": "2109.05104"
   },
   {
     "id": "Zhang2022conjointnet",

@@ -7,13 +7,17 @@ All content is hardcoded HTML — edit in place.
 
 ## File structure
 ```
-index.html        — Main page (hero, about, research, featured projects, CV, contact)
-graph.html        — Scientific knowledge graph visualization
-publications.html — Full publications list
-projects.html     — Personal & side projects (extracurriculars)
-graph.json        — Graph data: 42 nodes, 100 edges, 7 clusters, 1 paper in meta.papers
-index.js          — CLI tool: node index.js add --doi <doi> to add papers to graph.json
-editor.html       — Graph editor (existing, untouched)
+index.html              — Main page (hero, about, research, featured projects, CV, contact)
+graph.html              — Scientific knowledge graph visualization
+cv.html                 — Data-driven CV (selected publications from JSON, education, positions)
+cv-viewer.html          — PDF viewer (fetches CV PDF from CV repo)
+projects.html           — Scientific research projects (Ongoing | Past | Tools & Datasets)
+extracurriculars.html   — Personal & side projects (creative, side projects, writing)
+graph/graph.json        — Graph data: 42 nodes, 100 edges, 7 clusters, papers in meta.papers
+graph/tool/index.js     — CLI tool: node graph/tool/index.js add --doi <doi> to add papers to graph.json
+graph/editor.html       — Graph editor (existing, untouched)
+data/sync-bib.js        — Syncs CV bib files → publications.json + graph.json
+data/publications.json  — Derived from CV bib files
 ```
 
 ## Design system
@@ -54,7 +58,7 @@ SH    ABOUT    RESEARCH    EXTRACURRICULARS    CONTACT
 - Nav stays single-height at rest, equal spacing between all items
 - graph.html uses a simple `#back` link, no full nav
 
-Nav HTML pattern (index, publications, projects):
+Nav HTML pattern (index, cv, projects, extracurriculars):
 ```html
 <nav>
   <a href="index.html" class="nav-logo">
@@ -65,15 +69,17 @@ Nav HTML pattern (index, publications, projects):
     <li><a href="...">About</a></li>
     <li><a href="...">Research</a>
       <div class="nav-sub-links">
-        <a href="publications.html">Publications</a>
-        <a href="...#cv">CV</a>
+        <a href="graph.html">Graph</a>
+        <a href="projects.html">Projects</a>
+        <a href="cv.html">CV</a>
       </div>
     </li>
-    <li><a href="projects.html">Extracurriculars</a></li>
+    <li><a href="extracurriculars.html">Extracurriculars</a></li>
     <li><a href="...#contact">Contact</a></li>
   </ul>
 </nav>
 ```
+graph.html uses a mini-bar at top-left instead of full nav: `← Shabnam Hakimi   Research: Graph · Projects · CV`
 Key CSS:
 ```css
 .nav-links li { position: relative; }
@@ -112,27 +118,17 @@ over `a` and `button` elements. `cursor: none` on `body`, `a`, `button`.
 | CV entries | `<div class="cv-layout">` |
 | Contact links | `<div class="contact-links">` |
 
-## Publications page structure
-Year-grouped entries. Each entry:
-```html
-<div class="pub-entry reveal c1" data-clusters="1 2">
-  <div class="pub-main">
-    <div class="pub-title"><a href="DOI_URL">Title</a></div>
-    <div class="pub-authors">Author, A., <strong>Hakimi, S.</strong>, ...</div>
-    <div class="pub-venue"><em>Journal/Venue</em>, Year</div>
-  </div>
-  <div class="pub-aside">
-    <span class="pub-year">2024</span>
-    <span class="pub-cluster">Cluster name</span>
-    <a href="DOI_URL" class="pub-link">DOI →</a>
-  </div>
-</div>
-```
-`data-clusters` is space-separated cluster numbers (0–6).
-`class="c0"` through `c6` sets the cluster color via `--cc` CSS variable.
+## Node schema (graph/graph.json)
+Each node: `{id, label, weight, cluster, level, nodes_contributed?}`.
+- `level` (added 2026-05-09): one of `theory | construct | method | mechanism | domain`. graph.html only renders `construct + theory` by default (see `VISIBLE_LEVELS` in graph.html). Reclassify all with `node graph/tool/classify-levels.js --all` (uses claude-opus-4-7).
+- After any change to `graph.json`, run `node data/inline-graph.js` to sync the inlined data blocks in `index.html` and `graph.html`.
+- Labels render lowercase site-wide (applied at render time and requested in the extraction prompt).
+
+## Cluster color tokens (used on cv.html, projects.html)
+`class="c0"` through `c6` on a parent element sets `--cc` to the cluster's highlighter color. Children that style themselves with `var(--cc)` (e.g., `.pub-cluster`, `.project-cluster`) pick it up.
 Cluster color for yellow (c4) uses `#9a7c00` (dark amber) for legibility on light bg.
 
-## Research clusters (graph.html + publications.html)
+## Research clusters (graph.html + cv.html + projects.html)
 | # | Name | Color |
 |---|---|---|
 | 0 | Self-regulation | `#7777FF` slate blue |
@@ -143,27 +139,15 @@ Cluster color for yellow (c4) uses `#9a7c00` (dark amber) for legibility on ligh
 | 5 | Social neuroscience | `#FFAE77` mac & cheese |
 | 6 | Consumer & preference | `#77FFE4` mint |
 
-## Projects page structure
-Three sections: Creative, Side projects, Writing.
-Static anchor index at top (no filtering JS).
-Each item:
-```html
-<div class="project-item reveal" data-type="creative">
-  <div class="project-meta">
-    <span class="project-year">2024</span>
-    <span class="project-type" style="color:var(--h-violet)">Creative</span>
-  </div>
-  <div class="project-body">
-    <div class="project-title">Title</div>
-    <p class="project-desc">Description.</p>
-    <div class="project-tags"><span class="project-tag">tag</span></div>
-    <a href="url" class="project-link">View →</a>
-  </div>
-</div>
-```
-`data-type`: `creative`, `side-project`, or `writing`
+## Extracurriculars page structure
+Three sections: Creative, Side projects, Writing. Static anchor index at top (no filtering JS).
+Each `.project-item` has `data-type` of `creative`, `side-project`, or `writing` and a colored `.project-type` label.
 
-## Eulerian doodles (publications.html + projects.html)
+## Projects page structure (scientific research)
+Three sections: Ongoing, Past, Tools & Datasets. Static anchor index at top.
+Each `.project-item` has a `c0`–`c6` cluster class (parent-level), and renders a `.project-cluster` pill in cluster color plus free-form `.project-tag` chips. `.project-status` shows status sub-label (Active / Completed / Released, etc.).
+
+## Eulerian doodles (cv.html + projects.html + extracurriculars.html)
 5 animated Eulerian graph doodles per page, rendered on a fixed canvas behind all content.
 Each doodle cycles through 12 graphs in order, one highlighter color at a time.
 Key constants at the top of the doodle JS block:
@@ -176,35 +160,18 @@ const OP    = 0.15;            // opacity
 Positions use golden ratio horizontal spacing across the page height.
 
 ## Content card
-publications.html and projects.html have a semi-transparent content card
+cv.html, projects.html, and extracurriculars.html have a semi-transparent content card
 (`rgba(245,242,236,0.80)`) wrapping all content. index.html is full-bleed (intentional).
 graph.html has its own full-screen canvas UI.
 
 ## Known TODOs (priority order)
-1. **Populate publications.html** from bib files in CV repo
-   - Parse all `.bib` entries: title, authors, year, venue, DOI/URL
-   - Use `selected` tag to identify featured papers
-   - Update featured projects on index.html `#work` section with selected papers
-   - Assign `data-clusters` to each paper (can be approximate)
-   - Fill in DOI links (currently `href="#"` on several entries)
-
-2. **Fill in projects.html** — all 3 items are placeholder templates
-
-3. **Review/edit about copy** — written from public sources, needs your voice. Placeholder '[hobby / interest]' sentence has been removed.
-
-4. **`cv.html`** — standalone CV page doesn't exist yet. Nav sub-link currently points to `index.html#cv` (a section). Build a full page from the LaTeX CV source. Should include: full employment history, education, publications list (or link to publications.html), awards, talks.
-
-5. **CV PDF link** — `href="#"` in contact section, needs real file
-
-6. **Mobile CSS pass** — untested at ≤768px; graph.html sidebar especially
-   needs rethinking (sidebar is 320px fixed, will overflow on mobile)
-
-7. **Inline graph sync** — `graph.json` has papers in `meta.papers` but
-   `index.html` and `graph.html` inline the graph data. After `node index.js add --doi`,
-   need a step to re-inline the updated graph.json into both HTML files.
-   Look at how graph data is loaded: `<script type="application/json" id="graph-data">`
-
-8. **Nav active state** — currently no scroll-spy; active link doesn't update on scroll
+1. **Fill in projects.html and extracurriculars.html** — both are placeholder templates
+2. **Review/edit about copy on index.html** — written from public sources, needs Shabnam's voice
+3. **CV PDF link** — `href="#"` in contact section, needs real file (or point to cv-viewer.html)
+4. **Mobile CSS pass** — untested at ≤768px; graph.html sidebar (320px fixed) overflows on mobile
+5. ~~**Inline graph sync**~~ — done. `node data/inline-graph.js` re-inlines `graph/graph.json` into both `index.html` and `graph.html`. Run after `node graph/tool/index.js add` or `node data/sync-bib.js`. The `clusterData` block in graph.html is still hard-coded with friendly cluster names (separate from `graphData.meta.clusters`); leave for now unless cluster names change.
+6. **Nav active state** — no scroll-spy on index.html; active link doesn't update on scroll
+7. **Concept extraction** — 19 of 45 publications still have no graph nodes (per memory)
 
 ## CV source
 Shabnam has a private local LaTeX CV repo with `.bib` files.

@@ -1,0 +1,19 @@
+# Node scripts not served (run locally or in CI)
+data/sync-bib.js
+data/inline-graph.js
+data/find-paper-urls.js
+
+# CLI tool + its node_modules
+graph/tool/
+
+# Internal admin UI; not for visitors
+graph/editor.html
+
+# Dev docs
+CLAUDE.md
+README.md
+
+# CI / dev-only files
+.github/
+.env.example
+.gitignore

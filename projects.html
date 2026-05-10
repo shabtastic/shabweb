@@ -25,9 +25,20 @@ a, button { cursor: none; }
   --h-violet: #FF77E4;
   --h-red:    #FF7792;
   --h-cheese: #FFAE77;
+  --h-mint:   #77FFE4;
   --mono: 'Space Mono', monospace;
   --sans: 'DM Sans', sans-serif;
 }
+
+/* Cluster color tokens (graph/publication taxonomy) */
+.c0 { --cc: var(--h-slate);  }
+.c1 { --cc: var(--h-helio);  }
+.c2 { --cc: var(--h-violet); }
+.c3 { --cc: var(--h-red);    }
+.c4 { --cc: #9a7c00;         } /* yellow → dark amber for legibility */
+.c5 { --cc: var(--h-cheese); }
+.c6 { --cc: var(--h-mint);   }
+
 html { scroll-behavior: smooth; }
 body {
   background: var(--paper);
@@ -89,33 +100,19 @@ nav {
 .nav-sub-links a:hover { color: var(--ink-dim); }
 .nav-sub-links a.active { color: var(--ink-blue); }
 
-.nav-logo {
-  display: inline-block; position: relative;
-  font-family: var(--mono); font-weight: 700;
-  font-size: 0.62rem; letter-spacing: 0.25em;
-  color: var(--ink); text-decoration: none; line-height: 1;
-}
-.nav-logo-hl {
-  position: absolute; left: -3px; right: -3px;
-  top: 28%; height: 40%; opacity: 0.78;
-  transition: background-color 1.2s ease; pointer-events: none;
-}
-.nav-logo-text { position: relative; z-index: 1; }
-
 /* ── PAGE ── */
 .page-header {
   padding: 9.8rem 2.5rem 4rem;
   border-bottom: 1px solid var(--blue-G);
   max-width: 820px;
 }
-/* project-list top padding grid-aligned: 16px */
 .project-list { padding-top: 16px; }
 .page-eyebrow { font-size: 0.52rem; letter-spacing: 0.38em; text-transform: uppercase; color: var(--ink-blue); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 1rem; }
 .page-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: currentColor; }
 .page-title { font-family: var(--sans); font-size: clamp(2rem,5vw,3.5rem); font-weight: 300; color: var(--ink); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 1rem; }
 .page-desc { font-size: 0.68rem; color: var(--ink-dim); max-width: 480px; line-height: 1.9; }
 
-/* ── FILTER TABS ── */
+/* ── INDEX ── */
 .page-index {
   padding: 16px 2.5rem;
   display: flex; gap: 2rem; align-items: center;
@@ -139,9 +136,9 @@ nav {
   );
   transition: --hl-a 0.2s;
 }
-.page-index a.s-helio  { --hl-rgb: 201 119 255; --hl-a: 0.55; }
 .page-index a.s-slate  { --hl-rgb: 119 119 255; --hl-a: 0.65; }
 .page-index a.s-cheese { --hl-rgb: 255 174 119; --hl-a: 0.65; }
+.page-index a.s-mint   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
 .page-index-sep { color: var(--ink-faint); font-size: 0.4rem; }
 
 /* ── PROJECT LIST ── */
@@ -157,7 +154,6 @@ nav {
   gap: 1.5rem;
   padding: 2.5rem 0;
   border-bottom: 1px solid var(--blue-G);
-  /* item height multiples vary but border tracks with content */
   opacity: 0; transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
@@ -165,23 +161,24 @@ nav {
 
 .project-meta { display: flex; flex-direction: column; gap: 0.4rem; padding-top: 0.2rem; }
 .project-year { font-size: 0.5rem; letter-spacing: 0.12em; color: var(--ink-dim); }
-.project-type { font-size: 0.44rem; letter-spacing: 0.18em; text-transform: uppercase; }
+.project-status { font-size: 0.44rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
 
 .project-body { display: flex; flex-direction: column; gap: 0.6rem; }
 .project-title { font-family: var(--sans); font-size: 1.05rem; font-weight: 400; color: var(--ink); line-height: 1.2; }
 .project-title a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
 .project-title a:hover { border-color: var(--ink-dim); }
 .project-desc { font-size: 0.65rem; color: var(--ink-dim); line-height: 1.85; max-width: 560px; }
-.project-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.2rem; }
+.project-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.2rem; align-items: center; }
 .project-tag { font-size: 0.44rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-blue); border: 1px solid rgba(26,44,107,0.2); padding: 0.15rem 0.45rem; }
+.project-cluster {
+  font-size: 0.42rem; letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid; padding: 0.12rem 0.4rem;
+  color: var(--cc, var(--ink-blue));
+  border-color: var(--cc, var(--ink-blue));
+  opacity: 0.85;
+}
 .project-link { font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-blue); text-decoration: none; border-bottom: 1px solid rgba(26,44,107,0.25); padding-bottom: 0.1rem; display: inline-block; margin-top: 0.3rem; transition: border-color 0.2s; }
 .project-link:hover { border-color: var(--ink-blue); }
-
-/* Highlighter accent on featured projects */
-.project-item.featured .project-title {
-  background: linear-gradient(transparent 40%, rgba(255,255,119,0.5) 40%, rgba(255,255,119,0.5) 67%, transparent 67%);
-  display: inline;
-}
 
 /* ── SECTION DIVIDER ── */
 .section-divider {
@@ -205,14 +202,8 @@ nav {
   );
 }
 .section-divider.s-slate  { --hl-rgb: 119 119 255; --hl-a: 0.65; }
-.section-divider.s-helio  { --hl-rgb: 201 119 255; --hl-a: 0.55; }
-.section-divider.s-violet { --hl-rgb: 255 119 228; --hl-a: 0.55; }
-.section-divider.s-red    { --hl-rgb: 255 119 146; --hl-a: 0.55; }
 .section-divider.s-cheese { --hl-rgb: 255 174 119; --hl-a: 0.65; }
-.section-divider.s-yellow { --hl-rgb: 255 255 119; --hl-a: 0.75; }
 .section-divider.s-mint   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
-
-
 
 /* ── CURSOR ── */
 .cursor { position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: transform 0.12s ease, color 0.12s ease; will-change: transform; }
@@ -224,7 +215,7 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
 @media (max-width: 700px) {
   nav { padding: 1rem 1.5rem; }
   .nav-links { gap: 1.2rem; }
-  .page-header, .project-list, .filter-bar { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .page-header, .project-list, .page-index { padding-left: 1.5rem; padding-right: 1.5rem; }
   .project-item { grid-template-columns: 1fr; gap: 0.5rem; }
   .project-meta { flex-direction: row; gap: 1rem; }
 }
@@ -249,84 +240,93 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
   <ul class="nav-links">
     <li><a href="index.html#about">About</a></li>
     <li><a href="index.html#research">Research</a>
-      <div class="nav-sub-links"><a href="graph.html">Graph</a><a href="projects.html">Projects</a><a href="cv.html">CV</a></div>
+      <div class="nav-sub-links">
+        <a href="graph.html">Graph</a>
+        <a href="projects.html" class="active">Projects</a>
+        <a href="cv.html">CV</a>
+      </div>
     </li>
-    <li><a href="extracurriculars.html" class="active">Extracurriculars</a></li>
+    <li><a href="extracurriculars.html">Extracurriculars</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
 </nav>
 
 <div class="content-card">
 <div class="page-header">
-  <p class="page-eyebrow">Extracurriculars</p>
-  <h1 class="page-title">Personal &amp; Side Projects</h1>
-  <p class="page-desc">Creative and technical work made outside the lab — experiments, tools, and things built out of curiosity or compulsion.</p>
+  <p class="page-eyebrow">Research</p>
+  <h1 class="page-title">Projects</h1>
+  <p class="page-desc">Active and past lines of research, plus tools and datasets built along the way. Tagged by cluster — see the <a href="graph.html" style="color:var(--ink-blue);border-bottom:1px solid rgba(26,44,107,0.25);">graph</a> for how they connect.</p>
 </div>
 
 <div class="page-index">
-  <a href="#section-creative" class="s-helio"><span class="hl">Creative</span></a>
+  <a href="#section-ongoing" class="s-slate"><span class="hl">Ongoing</span></a>
   <span class="page-index-sep">·</span>
-  <a href="#section-side-project" class="s-slate"><span class="hl">Side projects</span></a>
+  <a href="#section-past" class="s-cheese"><span class="hl">Past</span></a>
   <span class="page-index-sep">·</span>
-  <a href="#section-writing" class="s-cheese"><span class="hl">Writing</span></a>
+  <a href="#section-tools" class="s-mint"><span class="hl">Tools &amp; Datasets</span></a>
 </div>
 
 <div class="project-list">
 
-<div class="section-divider s-helio" id="section-creative"><span class="hl">Creative</span></div>
+  <!-- ─── ONGOING ───────────────────────────────── -->
+  <div class="section-divider s-slate" id="section-ongoing"><span class="hl">Ongoing</span></div>
 
   <!-- TEMPLATE: copy and fill in for each project -->
-  <div class="project-item reveal" data-type="creative">
+  <div class="project-item reveal c0">
     <div class="project-meta">
-      <span class="project-year">2024</span>
-      <span class="project-type" style="color:var(--h-violet)">Creative</span>
+      <span class="project-year">2025–</span>
+      <span class="project-status">Active</span>
     </div>
     <div class="project-body">
       <div class="project-title">Project Title</div>
-      <p class="project-desc">A brief description of what this project is, why you made it, and what it does or explores. Keep it conversational — this is the personal section of the site.</p>
+      <p class="project-desc">One- or two-sentence description of the question, the approach, and the collaborators or context. Conversational but precise.</p>
       <div class="project-tags">
-        <span class="project-tag">tag</span>
-        <span class="project-tag">tag</span>
+        <span class="project-cluster">Self-Regulation</span>
+        <span class="project-tag">method tag</span>
+        <span class="project-tag">domain tag</span>
       </div>
-      <a href="#" class="project-link">View project →</a>
+      <a href="#" class="project-link">Read more →</a>
     </div>
   </div>
 
-  <!-- ─── TECHNICAL ───────────────────────────────── -->
-  <div class="section-divider s-slate" id="section-side-project"><span class="hl">Side projects</span></div>
+  <!-- ─── PAST ──────────────────────────────────── -->
+  <div class="section-divider s-cheese" id="section-past"><span class="hl">Past</span></div>
 
-  <div class="project-item reveal" data-type="side-project">
+  <div class="project-item reveal c1">
     <div class="project-meta">
-      <span class="project-year">2024</span>
-      <span class="project-type" style="color:var(--h-slate)">Side project</span>
+      <span class="project-year">2020–2023</span>
+      <span class="project-status">Completed</span>
     </div>
     <div class="project-body">
       <div class="project-title">Project Title</div>
-      <p class="project-desc">Description. What problem did it solve? What did you learn? What tools or ideas did you use?</p>
+      <p class="project-desc">What the project investigated, what came out of it (papers, datasets, talks), and where it landed.</p>
       <div class="project-tags">
+        <span class="project-cluster">Predictive Brain</span>
         <span class="project-tag">tag</span>
       </div>
       <a href="#" class="project-link">View →</a>
     </div>
   </div>
 
-  <!-- ─── WRITING ──────────────────────────────────── -->
-  <div class="section-divider s-cheese" id="section-writing"><span class="hl">Writing</span></div>
+  <!-- ─── TOOLS & DATASETS ──────────────────────── -->
+  <div class="section-divider s-mint" id="section-tools"><span class="hl">Tools &amp; Datasets</span></div>
 
-  <div class="project-item reveal" data-type="writing">
+  <div class="project-item reveal c2">
     <div class="project-meta">
-      <span class="project-year">2023</span>
-      <span class="project-type" style="color:var(--h-cheese)">Writing</span>
+      <span class="project-year">2024</span>
+      <span class="project-status">Released</span>
     </div>
     <div class="project-body">
-      <div class="project-title">Piece Title</div>
-      <p class="project-desc">Where it was published or posted, and what it's about.</p>
-      <a href="#" class="project-link">Read →</a>
+      <div class="project-title">Tool / Dataset Name</div>
+      <p class="project-desc">What it is, who it's for, and where to find it.</p>
+      <div class="project-tags">
+        <span class="project-cluster">Generative AI</span>
+        <span class="project-tag">github</span>
+      </div>
+      <a href="#" class="project-link">Repo →</a>
     </div>
   </div>
 
-</div>
-</div>
 </div>
 </div>
 
@@ -336,24 +336,6 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
 </footer>
 
 <script>
-// Scroll-to-section navigation
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    if (filter === 'all') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      const target = document.getElementById('section-' + filter);
-      if (target) {
-        const offset = target.getBoundingClientRect().top + window.scrollY - 100;
-        window.scrollTo({ top: offset, behavior: 'smooth' });
-      }
-    }
-  });
-});
-
 // Scroll reveal
 const obs = new IntersectionObserver(
   entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
@@ -371,7 +353,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     el.addEventListener('mouseleave', () => { cursor.style.transform='translate(-50%,-50%) scale(1)'; cursor.style.color='var(--ink)'; });
   });
 
-// ── LOGO HIGHLIGHT CYCLE ──
+// Logo highlight cycle
 (function() {
   const COLORS = ['#FFFF77','#7777FF','#C977FF','#FF77E4','#FF7792','#FFAE77'];
   let idx = 0, hovered = false, lastSwap = 0;
@@ -393,17 +375,12 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 })();
 })();
 
-// ── GRID SNAP — align structural borders to 16px graph paper grid ──
+// Grid snap — align structural borders to 16px graph paper grid
 (function() {
-  const CELL = 16; // must match CSS background-size minor grid
+  const CELL = 16;
   function snap() {
-    // Elements whose top border should land on a grid line
-    // We nudge padding-top so the border offset from page top = multiple of CELL
-    const targets = [
-      ...document.querySelectorAll('.year-heading, .section-divider, .page-index, .page-header'),
-    ];
+    const targets = [...document.querySelectorAll('.section-divider, .page-index, .page-header')];
     targets.forEach(el => {
-      // Reset any previous nudge
       el.style.paddingTop = '';
       const rect = el.getBoundingClientRect();
       const absTop = rect.top + window.scrollY;
@@ -415,15 +392,13 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
       }
     });
   }
-  // Run after layout settles
   window.addEventListener('load', snap);
   window.addEventListener('resize', snap);
-  // Also run after fonts load (affects layout)
   if (document.fonts) document.fonts.ready.then(snap);
 })();
 
-// ── EULERIAN DOODLES ─────────────────────────────────────────────
-const DOODLES_ENABLED = true; // set to false to disable
+// Eulerian doodles
+const DOODLES_ENABLED = true;
 (function() {
   if (!DOODLES_ENABLED) return;
   const HUES = ['#7777FF','#C977FF','#FF77E4','#FF7792','#FFAE77','#FFFF77'];
@@ -455,7 +430,6 @@ const DOODLES_ENABLED = true; // set to false to disable
     return path.reverse();
   }
 
-  // Create canvas
   const cv = document.createElement('canvas');
   cv.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
   document.body.insertBefore(cv, document.body.firstChild);
@@ -467,8 +441,7 @@ const DOODLES_ENABLED = true; // set to false to disable
   function mkD(i) {
     const gi = (i * 2) % GRAPHS.length;
     const g  = GRAPHS[gi];
-    // Spread positions: vary x and y so they scatter across the page
-    const xFrac = 0.1 + (((i * 0.618) % 1) * 0.8); // golden ratio spacing
+    const xFrac = 0.1 + (((i * 0.618) % 1) * 0.8);
     const yFrac = 0.1 + (i / COUNT) * 0.8;
     return { xFrac, yFrac, g, path: eulerPath(g.n, g.edges),
       pt:0, sT: i*1.7, ph:'draw', fa:1, segs:[], ci:i, gi };

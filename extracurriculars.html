@@ -214,6 +214,62 @@ nav {
 
 
 
+/* ── UNDER CONSTRUCTION (temporary) ───────────────────────────── */
+.under-construction {
+  padding: 4rem 0 6rem;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+.uc-sign {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  margin-bottom: 1.5rem;
+  animation: uc-sway 4.5s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+.uc-sign .uc-bang { animation: uc-blink 1.4s steps(1) infinite; }
+@keyframes uc-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50%      { transform: rotate( 2deg); }
+}
+@keyframes uc-blink {
+  0%, 70%  { opacity: 1; }
+  72%, 90% { opacity: 0.25; }
+}
+.uc-tape {
+  background: repeating-linear-gradient(
+    -45deg,
+    #FFFF77 0 14px,
+    #1a2c6b 14px 28px
+  );
+  padding: 6px;
+  width: clamp(280px, 70%, 520px);
+  margin-bottom: 1.8rem;
+}
+.uc-tape span {
+  display: block;
+  background: var(--paper);
+  padding: 0.7rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.42em;
+  font-weight: 700;
+  color: var(--ink-blue);
+  text-align: center;
+}
+.uc-msg {
+  font-size: 0.65rem;
+  color: var(--ink-dim);
+  max-width: 460px;
+  line-height: 1.9;
+}
+.uc-msg a {
+  color: var(--ink-blue);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(26,44,107,0.25);
+}
+.uc-msg a:hover { border-color: var(--ink-blue); }
+
 /* ── CURSOR ── */
 .cursor { position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: transform 0.12s ease, color 0.12s ease; will-change: transform; }
 
@@ -263,6 +319,8 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
   <p class="page-desc">Creative and technical work made outside the lab — experiments, tools, and things built out of curiosity or compulsion.</p>
 </div>
 
+<!-- Page index (Creative · Side projects · Writing) hidden while page is under construction -->
+<!--
 <div class="page-index">
   <a href="#section-creative" class="s-helio"><span class="hl">Creative</span></a>
   <span class="page-index-sep">·</span>
@@ -270,60 +328,94 @@ footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); 
   <span class="page-index-sep">·</span>
   <a href="#section-writing" class="s-cheese"><span class="hl">Writing</span></a>
 </div>
+-->
 
 <div class="project-list">
 
-<div class="section-divider s-helio" id="section-creative"><span class="hl">Creative</span></div>
-
-  <!-- TEMPLATE: copy and fill in for each project -->
-  <div class="project-item reveal" data-type="creative">
-    <div class="project-meta">
-      <span class="project-year">2024</span>
-      <span class="project-type" style="color:var(--h-violet)">Creative</span>
+  <!-- ╔════════════════════════════════════════════════════╗ -->
+  <!-- ║  Pixel-art "Under Construction" banner. When real  ║ -->
+  <!-- ║  content lands, delete this <div> and uncomment    ║ -->
+  <!-- ║  the templates preserved below.                    ║ -->
+  <!-- ╚════════════════════════════════════════════════════╝ -->
+  <div class="under-construction" role="status" aria-label="Page under construction">
+    <svg class="uc-sign" viewBox="0 0 24 24" width="180" height="180" aria-hidden="true">
+      <g shape-rendering="crispEdges">
+        <rect x="11" y="2"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="10" y="3"  width="4" height="1" fill="#1a2c6b"/>
+        <rect x="9"  y="4"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="13" y="4"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="8"  y="5"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="14" y="5"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="7"  y="6"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="15" y="6"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="6"  y="7"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="16" y="7"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="5"  y="8"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="17" y="8"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="4"  y="9"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="18" y="9"  width="2" height="1" fill="#1a2c6b"/>
+        <rect x="3"  y="10" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="19" y="10" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="2"  y="11" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="20" y="11" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="3"  y="12" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="19" y="12" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="4"  y="13" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="18" y="13" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="5"  y="14" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="17" y="14" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="6"  y="15" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="16" y="15" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="7"  y="16" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="15" y="16" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="8"  y="17" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="14" y="17" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="9"  y="18" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="13" y="18" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="10" y="19" width="4" height="1" fill="#1a2c6b"/>
+        <rect x="11" y="20" width="2" height="1" fill="#1a2c6b"/>
+        <rect x="11" y="4"  width="2" height="1" fill="#FFFF77"/>
+        <rect x="10" y="5"  width="4" height="1" fill="#FFFF77"/>
+        <rect x="9"  y="6"  width="6" height="1" fill="#FFFF77"/>
+        <rect x="8"  y="7"  width="8" height="1" fill="#FFFF77"/>
+        <rect x="7"  y="8"  width="10" height="1" fill="#FFFF77"/>
+        <rect x="6"  y="9"  width="12" height="1" fill="#FFFF77"/>
+        <rect x="5"  y="10" width="14" height="1" fill="#FFFF77"/>
+        <rect x="4"  y="11" width="16" height="1" fill="#FFFF77"/>
+        <rect x="5"  y="12" width="14" height="1" fill="#FFFF77"/>
+        <rect x="6"  y="13" width="12" height="1" fill="#FFFF77"/>
+        <rect x="7"  y="14" width="10" height="1" fill="#FFFF77"/>
+        <rect x="8"  y="15" width="8" height="1" fill="#FFFF77"/>
+        <rect x="9"  y="16" width="6" height="1" fill="#FFFF77"/>
+        <rect x="10" y="17" width="4" height="1" fill="#FFFF77"/>
+        <rect x="11" y="18" width="2" height="1" fill="#FFFF77"/>
+        <rect class="uc-bang" x="11" y="7"  width="2" height="6" fill="#1a2c6b"/>
+        <rect class="uc-bang" x="11" y="14" width="2" height="2" fill="#1a2c6b"/>
+      </g>
+    </svg>
+    <div class="uc-tape" aria-hidden="true">
+      <span>UNDER&nbsp;&nbsp;CONSTRUCTION</span>
     </div>
-    <div class="project-body">
-      <div class="project-title">Project Title</div>
-      <p class="project-desc">A brief description of what this project is, why you made it, and what it does or explores. Keep it conversational — this is the personal section of the site.</p>
-      <div class="project-tags">
-        <span class="project-tag">tag</span>
-        <span class="project-tag">tag</span>
-      </div>
-      <a href="#" class="project-link">View project →</a>
-    </div>
+    <p class="uc-msg">
+      Content for this page is in progress. In the meantime, the
+      <a href="/graph">research graph</a> and <a href="/cv">CV</a> are live,
+      and there's a short <a href="/about-this-site">colophon</a> if you're
+      curious how this site was built.
+    </p>
   </div>
 
-  <!-- ─── TECHNICAL ───────────────────────────────── -->
+  <!-- TEMPLATES (restored when the construction banner is removed):
+
+  <div class="section-divider s-helio" id="section-creative"><span class="hl">Creative</span></div>
+  <div class="project-item reveal" data-type="creative"> … </div>
+
   <div class="section-divider s-slate" id="section-side-project"><span class="hl">Side projects</span></div>
+  <div class="project-item reveal" data-type="side-project"> … </div>
 
-  <div class="project-item reveal" data-type="side-project">
-    <div class="project-meta">
-      <span class="project-year">2024</span>
-      <span class="project-type" style="color:var(--h-slate)">Side project</span>
-    </div>
-    <div class="project-body">
-      <div class="project-title">Project Title</div>
-      <p class="project-desc">Description. What problem did it solve? What did you learn? What tools or ideas did you use?</p>
-      <div class="project-tags">
-        <span class="project-tag">tag</span>
-      </div>
-      <a href="#" class="project-link">View →</a>
-    </div>
-  </div>
-
-  <!-- ─── WRITING ──────────────────────────────────── -->
   <div class="section-divider s-cheese" id="section-writing"><span class="hl">Writing</span></div>
+  <div class="project-item reveal" data-type="writing"> … </div>
 
-  <div class="project-item reveal" data-type="writing">
-    <div class="project-meta">
-      <span class="project-year">2023</span>
-      <span class="project-type" style="color:var(--h-cheese)">Writing</span>
-    </div>
-    <div class="project-body">
-      <div class="project-title">Piece Title</div>
-      <p class="project-desc">Where it was published or posted, and what it's about.</p>
-      <a href="#" class="project-link">Read →</a>
-    </div>
-  </div>
+  -->
 
 </div>
 </div>

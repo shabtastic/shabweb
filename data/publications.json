@@ -207,14 +207,13 @@
     ],
     "year": 2024,
     "venue": "ICML 2024 Workshop on LLMs and Cognition",
-    "url": "http://arxiv.org/abs/2409.16521v1",
+    "url": null,
     "pubType": "conf-workshop",
     "authorPosition": "shared-first",
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ],
-    "arxivId": "2409.16521"
+    ]
   },
   {
     "id": "Wright2024motivation",
@@ -269,15 +268,14 @@
     ],
     "year": 2024,
     "venue": "International Conference on Design Computing and Cognition",
-    "url": "https://doi.org/10.1007/978-3-031-71922-6_16",
+    "url": null,
     "pubType": "conf-full",
     "authorPosition": "last",
     "paperWeight": 0.4,
     "keywords": [
       "selected"
     ],
-    "addendum": "Best Paper Award",
-    "doi": "10.1007/978-3-031-71922-6_16"
+    "addendum": "Best Paper Award"
   },
   {
     "id": "Sinclair2024pausing",
@@ -371,12 +369,11 @@
     ],
     "year": 2023,
     "venue": "Generative AI and HCI (GenAICHI) Workshop at CHI 2023",
-    "url": "http://arxiv.org/abs/2306.01217v1",
+    "url": null,
     "pubType": "conf-workshop",
     "authorPosition": "second",
     "paperWeight": 0.3,
-    "keywords": [],
-    "arxivId": "2306.01217"
+    "keywords": []
   },
   {
     "id": "Filipowicz2023visual",
@@ -551,12 +548,11 @@
     ],
     "year": 2022,
     "venue": "CML4Impact Workshop at NeurIPS 2022",
-    "url": "http://arxiv.org/abs/2109.05104v1",
+    "url": null,
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": [],
-    "arxivId": "2109.05104"
+    "keywords": []
   },
   {
     "id": "Zhang2022conjointnet",
@@ -598,12 +594,11 @@
     ],
     "year": 2022,
     "venue": "Human-centered Intelligent Services Safety and Trustworthiness (HCIS) Workshop at IEEE/CVF CVPRW 2022",
-    "url": "https://doi.org/10.1109/cvprw56347.2022.00480",
+    "url": null,
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": [],
-    "doi": "10.1109/cvprw56347.2022.00480"
+    "keywords": []
   },
   {
     "id": "Hakimi2021pairing",

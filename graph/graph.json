@@ -35,6 +35,19 @@
     ],
     "papers": [
       {
+        "id": "paredes2026unstuck",
+        "title": "Unstuck - Ubiquitous just-in-time interventions to unleadh creativity and sustain wellbeing of creative professionals",
+        "year": 2026,
+        "venue": "Proc. ACM Interact. Mob. Wearable Ubiquitous Technol.",
+        "doi": "10.1038/s41598-024-65144-8",
+        "url": "https://doi.org/10.1038/s41598-024-65144-8",
+        "pubType": "journal",
+        "authorPosition": "second",
+        "paperWeight": 0.6,
+        "nodes_contributed": [],
+        "added": "2026-05-12T09:13:31.735Z"
+      },
+      {
         "id": "Nath2026rewards",
         "title": "Designing Rewards for Rewarding Designs: Demonstrating the Impact of Rewards on the Creative Design Process",
         "year": 2026,
@@ -44,6 +57,19 @@
         "pubType": "preprint",
         "authorPosition": "last",
         "paperWeight": 0.56,
+        "nodes_contributed": [],
+        "added": "2026-05-10T22:33:25.324Z"
+      },
+      {
+        "id": "Nath2026designrewards",
+        "title": "Designing Rewards for Rewarding Designs: Demonstrating the Impact of Rewards on the Creative Design Process",
+        "year": 2026,
+        "venue": "Design Computing and Cognition DCC'26",
+        "arxivId": "2604.26083",
+        "url": "https://arxiv.org/abs/2604.26083",
+        "pubType": "conf-full",
+        "authorPosition": "last",
+        "paperWeight": 0.4,
         "nodes_contributed": [],
         "added": "2026-05-10T22:33:25.324Z"
       },
@@ -114,9 +140,33 @@
         ]
       },
       {
+        "id": "chong2026wowaidesign",
+        "title": "Novel or surprising? Toward generating wowing designs with stable diffusion",
+        "year": 2026,
+        "venue": "Proceedings of the ASME 2026 International Design Engineering Technical Conferences & Computers and Information in Engineering Conference IDETC/CIE 2026",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-12T09:13:31.736Z"
+      },
+      {
+        "id": "zhang2026surpriseaidesign",
+        "title": "\"Wow, now I see it!\" --- Leveraging physiology of surprise to uncover desirable generative designs",
+        "year": 2026,
+        "venue": "Creativity and Cognition C&C '26",
+        "url": null,
+        "pubType": "conf-full",
+        "authorPosition": "middle",
+        "paperWeight": 0.2,
+        "nodes_contributed": [],
+        "added": "2026-05-12T09:13:31.736Z"
+      },
+      {
         "id": "Hakimi2025creativity",
         "title": "Psychologically-inspired generative AI videos for supporting creativity",
-        "venue": "2025 International Conference on Computational Creativity",
+        "venue": "2025 International Conference on Computational Creativity ICCC'25",
         "year": 2025,
         "url": "https://computationalcreativity.net/iccc25/papers/iccc25-hakimi2025psychologically.pdf",
         "nodes_contributed": [

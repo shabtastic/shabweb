@@ -24,9 +24,12 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBS_PATH = path.join(__dirname, 'publications.json');
-import { ROOTS } from './corpus-roots.js';
-
 const HOME = process.env.HOME;
+const ROOTS = [
+  path.join(HOME, 'Downloads/fromSugarSync'),
+  path.join(HOME, 'Downloads/Projects'),
+  path.join(HOME, 'Downloads/Project Archive'),
+];
 
 const TSV = process.argv.includes('--tsv');
 const STRONG_T = 0.75;

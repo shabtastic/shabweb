@@ -406,18 +406,124 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
     </p>
   </div>
 
-  <!-- TEMPLATES (restored when the construction banner is removed):
+  <!-- ─── DRAFT CONTENT (placeholder, 2026-05-16) ───────────────────────
+       Generated as a starting point — review every line before publishing.
 
-  <div class="section-divider s-helio" id="section-creative"><span class="hl">Creative</span></div>
-  <div class="project-item reveal" data-type="creative"> … </div>
+       PREVIEW:  remove the `hidden` attribute on the wrapper below.
+       PUBLISH:  delete the .under-construction div above, AND
+                 remove `hidden` below, AND
+                 uncomment the .page-index block earlier in this file.
+  ──────────────────────────────────────────────────────────────────── -->
+  <div class="page-drafts" hidden>
 
-  <div class="section-divider s-slate" id="section-side-project"><span class="hl">Side projects</span></div>
-  <div class="project-item reveal" data-type="side-project"> … </div>
+    <div class="page-index" style="border-bottom:1px solid var(--blue-G); margin-bottom: 1rem;">
+      <a href="#section-creative" class="s-helio"><span class="hl">Creative</span></a>
+      <span class="page-index-sep">·</span>
+      <a href="#section-side-project" class="s-slate"><span class="hl">Side projects</span></a>
+      <span class="page-index-sep">·</span>
+      <a href="#section-writing" class="s-cheese"><span class="hl">Writing</span></a>
+    </div>
 
-  <div class="section-divider s-cheese" id="section-writing"><span class="hl">Writing</span></div>
-  <div class="project-item reveal" data-type="writing"> … </div>
+    <!-- ── CREATIVE ────────────────────────────────────────────────── -->
+    <div class="section-divider s-helio" id="section-creative"><span class="hl">Creative</span></div>
 
-  -->
+    <div class="project-item visible" data-type="creative">
+      <div class="project-meta">
+        <span class="project-year">2026</span>
+        <span class="project-type" style="color:var(--h-helio);">Generative art</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Eulerian Graph Doodles</div>
+        <p class="project-desc">The animated background traces you might be looking at right now. Each is an Eulerian path through a small planar graph, cycled through the highlighter palette on a slow timer. Built into the site itself.</p>
+        <div class="project-tags">
+          <span class="project-tag">generative art</span>
+          <span class="project-tag">canvas</span>
+          <span class="project-tag">self-coded</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item visible" data-type="creative">
+      <div class="project-meta">
+        <span class="project-year">— </span>
+        <span class="project-type" style="color:var(--h-helio);">Placeholder</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title"><em>[draft slot — drawing, music, recipes, photography…]</em></div>
+        <p class="project-desc">A second creative entry to balance the section. Suggested categories: a long-running drawing practice, a music or sound project, photography, or a recipe / cooking series.</p>
+        <div class="project-tags">
+          <span class="project-tag">tag</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SIDE PROJECTS ───────────────────────────────────────────── -->
+    <div class="section-divider s-slate" id="section-side-project"><span class="hl">Side projects</span></div>
+
+    <div class="project-item visible" data-type="side-project">
+      <div class="project-meta">
+        <span class="project-year">2026</span>
+        <span class="project-type" style="color:var(--h-slate);">Side project</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">shabnamhakimi.com</div>
+        <p class="project-desc">This website. Hand-written HTML and CSS, no framework, no build step. Graph-paper background, a crosshair cursor, and a highlighter palette tied to seven research clusters. The colophon goes into more detail.</p>
+        <div class="project-tags">
+          <span class="project-tag">HTML/CSS</span>
+          <span class="project-tag">static site</span>
+          <span class="project-tag">personal</span>
+        </div>
+        <a href="about-this-site.html" class="project-link">Colophon →</a>
+      </div>
+    </div>
+
+    <div class="project-item visible" data-type="side-project">
+      <div class="project-meta">
+        <span class="project-year">2026–</span>
+        <span class="project-type" style="color:var(--h-slate);">Side project</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title"><em>[draft slot — a parked or in-flight side project]</em></div>
+        <p class="project-desc">A second side-project entry. Candidates from the parked-projects notes: cloud-storage cleanup, the personal research-corpus database, or any of the small data utilities living in <code>data/</code> here.</p>
+        <div class="project-tags">
+          <span class="project-tag">tag</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WRITING ─────────────────────────────────────────────────── -->
+    <div class="section-divider s-cheese" id="section-writing"><span class="hl">Writing</span></div>
+
+    <div class="project-item visible" data-type="writing">
+      <div class="project-meta">
+        <span class="project-year">— </span>
+        <span class="project-type" style="color:var(--h-cheese);">Essay</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title"><em>[draft slot — first piece of writing]</em></div>
+        <p class="project-desc">An essay, a Substack post, a journal entry, or a piece of writing that doesn't fit elsewhere. Replace with title, venue, and a one-paragraph hook.</p>
+        <div class="project-tags">
+          <span class="project-tag">tag</span>
+        </div>
+        <a href="#" class="project-link">Read →</a>
+      </div>
+    </div>
+
+    <div class="project-item visible" data-type="writing">
+      <div class="project-meta">
+        <span class="project-year">— </span>
+        <span class="project-type" style="color:var(--h-cheese);">Note</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title"><em>[draft slot — second piece of writing]</em></div>
+        <p class="project-desc">A shorter note, talk, or interview. Same fill-in pattern as above.</p>
+        <div class="project-tags">
+          <span class="project-tag">tag</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
 </div>
 </div>

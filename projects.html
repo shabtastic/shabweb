@@ -405,32 +405,199 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
     </p>
   </div>
 
-  <!-- TEMPLATES (restored when the construction banner is removed):
+  <!-- ─── DRAFT CONTENT (placeholder, 2026-05-16) ───────────────────────
+       Generated as a starting point — review every line before publishing.
 
-  <div class="section-divider s-slate" id="section-ongoing"><span class="hl">Ongoing</span></div>
-  <div class="project-item reveal c0">
-    <div class="project-meta">
-      <span class="project-year">2025–</span>
-      <span class="project-status">Active</span>
+       PREVIEW:  remove the `hidden` attribute on the wrapper below.
+       PUBLISH:  delete the .under-construction div above, AND
+                 remove `hidden` below, AND
+                 uncomment the .page-index block earlier in this file.
+  ──────────────────────────────────────────────────────────────────── -->
+  <div class="page-drafts" hidden>
+
+    <div class="page-index" style="border-bottom:1px solid var(--blue-G); margin-bottom: 1rem;">
+      <a href="#section-ongoing" class="s-slate"><span class="hl">Ongoing</span></a>
+      <span class="page-index-sep">·</span>
+      <a href="#section-past" class="s-cheese"><span class="hl">Past</span></a>
+      <span class="page-index-sep">·</span>
+      <a href="#section-tools" class="s-mint"><span class="hl">Tools &amp; Datasets</span></a>
     </div>
-    <div class="project-body">
-      <div class="project-title">Project Title</div>
-      <p class="project-desc">One- or two-sentence description.</p>
-      <div class="project-tags">
-        <span class="project-cluster">Self-Regulation</span>
-        <span class="project-tag">tag</span>
+
+    <!-- ── ONGOING ─────────────────────────────────────────────────── -->
+    <div class="section-divider s-slate" id="section-ongoing"><span class="hl">Ongoing</span></div>
+
+    <div class="project-item visible c2">
+      <div class="project-meta">
+        <span class="project-year">2024–</span>
+        <span class="project-status">Active</span>
       </div>
-      <a href="#" class="project-link">Read more →</a>
+      <div class="project-body">
+        <div class="project-title">Generative AI for Design Ideation</div>
+        <p class="project-desc">How can generative models help people break out of creative ruts? Work at TRI on surprise, taste, and physiological signals as steering cues for human–AI co-creation, with a series of CHI / HCI workshop papers from 2022–2026.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Generative AI</span>
+          <span class="project-tag">HCI</span>
+          <span class="project-tag">creativity</span>
+          <span class="project-tag">taste</span>
+        </div>
+      </div>
     </div>
+
+    <div class="project-item visible c3">
+      <div class="project-meta">
+        <span class="project-year">2024–</span>
+        <span class="project-status">Active</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Just-in-Time Creativity Interventions</div>
+        <p class="project-desc">Ubiquitous, in-the-moment prompts that surface alternative framings at the exact moment someone gets stuck. Builds on emotion-regulation research and ambulatory-intervention methods.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Interventions</span>
+          <span class="project-tag">creativity</span>
+          <span class="project-tag">ambulatory</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item visible c6">
+      <div class="project-meta">
+        <span class="project-year">2023–</span>
+        <span class="project-status">Active</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Computational Aesthetics &amp; Preference</div>
+        <p class="project-desc">Probabilistic models of what people find pleasing, surprising, or wow-worthy in generated artifacts. Extends preference and valuation work from neuroeconomics into the design and AI-generation setting.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Consumer &amp; Preference</span>
+          <span class="project-tag">Bayesian</span>
+          <span class="project-tag">aesthetics</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAST ────────────────────────────────────────────────────── -->
+    <div class="section-divider s-cheese" id="section-past"><span class="hl">Past</span></div>
+
+    <div class="project-item visible c4">
+      <div class="project-meta">
+        <span class="project-year">2014–2020</span>
+        <span class="project-status">Completed</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Neuroeconomics of Self-Control</div>
+        <p class="project-desc">fMRI investigations of intertemporal choice, dietary self-control, and how the brain values delayed rewards. Postdoctoral work at Duke with Scott Huettel.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Neuroeconomics</span>
+          <span class="project-tag">fMRI</span>
+          <span class="project-tag">self-control</span>
+          <span class="project-tag">postdoc</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item visible c5">
+      <div class="project-meta">
+        <span class="project-year">2010–2014</span>
+        <span class="project-status">Completed</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Social-Affective Neural Computation</div>
+        <p class="project-desc">How the brain represents trust, social value, and reward in social contexts. Oxytocin, theory-of-mind, fMRI. Predoctoral research at NIMH with Andreas Meyer-Lindenberg.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Social Neuroscience</span>
+          <span class="project-tag">fMRI</span>
+          <span class="project-tag">oxytocin</span>
+          <span class="project-tag">NIH</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item visible c0">
+      <div class="project-meta">
+        <span class="project-year">2009–2010</span>
+        <span class="project-status">Completed</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Emotion Regulation in Social Anxiety</div>
+        <p class="project-desc">Cognitive reappraisal as a treatment mechanism in social anxiety disorder; neural correlates of CBT response. Stanford with Philippe Goldin and James Gross.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Self-Regulation</span>
+          <span class="project-tag">CBT</span>
+          <span class="project-tag">clinical</span>
+          <span class="project-tag">fMRI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item visible c1">
+      <div class="project-meta">
+        <span class="project-year">2012–2018</span>
+        <span class="project-status">Completed</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Predictive Coding &amp; the Bayesian Brain</div>
+        <p class="project-desc">Theoretical and empirical work on how the brain models its own predictions — with applications to expectation, surprise, and attention. <em>[Placeholder: confirm scope/years.]</em></p>
+        <div class="project-tags">
+          <span class="project-cluster">Predictive Brain</span>
+          <span class="project-tag">predictive coding</span>
+          <span class="project-tag">Bayesian</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TOOLS &amp; DATASETS ─────────────────────────────────────── -->
+    <div class="section-divider s-mint" id="section-tools"><span class="hl">Tools &amp; Datasets</span></div>
+
+    <div class="project-item visible c2">
+      <div class="project-meta">
+        <span class="project-year">2026</span>
+        <span class="project-status">Released</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Research Knowledge Graph</div>
+        <p class="project-desc">Force-directed visualization of 50+ publications grouped into seven conceptual clusters, with a marching-squares contour overlay and spreading-activation interaction. The conceptual center of this site.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Generative AI</span>
+          <span class="project-tag">knowledge graph</span>
+          <span class="project-tag">visualization</span>
+        </div>
+        <a href="graph.html" class="project-link">View the graph →</a>
+      </div>
+    </div>
+
+    <div class="project-item visible c2">
+      <div class="project-meta">
+        <span class="project-year">2026</span>
+        <span class="project-status">Maintained</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Concept-Extraction Pipeline</div>
+        <p class="project-desc">A Claude-based CLI tool that ingests a DOI or full-text PDF and emits cluster-tagged concept nodes into the graph. Lightweight, idempotent, and dependency-free beyond the API client.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Generative AI</span>
+          <span class="project-tag">pipeline</span>
+          <span class="project-tag">LLM tooling</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item visible c2">
+      <div class="project-meta">
+        <span class="project-year">2026</span>
+        <span class="project-status">Maintained</span>
+      </div>
+      <div class="project-body">
+        <div class="project-title">CV Bibliography Sync</div>
+        <p class="project-desc">Node script that reads LaTeX <code>.bib</code> files from a private CV repo and emits the JSON powering the CV and graph pages — so the website never falls out of sync with the canonical publication list.</p>
+        <div class="project-tags">
+          <span class="project-cluster">Generative AI</span>
+          <span class="project-tag">pipeline</span>
+          <span class="project-tag">LaTeX</span>
+        </div>
+      </div>
+    </div>
+
   </div>
-
-  <div class="section-divider s-cheese" id="section-past"><span class="hl">Past</span></div>
-  <div class="project-item reveal c1"> … </div>
-
-  <div class="section-divider s-mint" id="section-tools"><span class="hl">Tools &amp; Datasets</span></div>
-  <div class="project-item reveal c2"> … </div>
-
-  -->
 
 </div>
 </div>

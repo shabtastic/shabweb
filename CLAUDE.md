@@ -173,6 +173,9 @@ graph.html has its own full-screen canvas UI.
 6. **Nav active state** — no scroll-spy on index.html; active link doesn't update on scroll
 7. **Concept extraction** — 19 of 45 publications still have no graph nodes (per memory)
 
+## Related repos (corpus lives elsewhere)
+The personal-research corpus pipeline (matches CV publications to local PDFs/DOCs across `~/Downloads/{fromSugarSync,Projects,Project Archive,fromInternet}`) lives in a separate private repo: `~/projects/research-corpus`. It reads `data/publications.json` from here via `$WEBSITE_DATA_DIR` (defaults to `~/projects/website/data`) and writes its own `corpus-catalog.json`. v1 (2026-05-16) ships matching + acquisition labeling; v2+ (policy classification, PDF hosting on cv.html, concept re-extraction into graph.json) is parked. See `docs/spec.md` and `docs/plan.md` in that repo.
+
 ## CV source
 Shabnam has a private local LaTeX CV repo with `.bib` files.
 Some bib entries are tagged `selected` — use these for featured publications.

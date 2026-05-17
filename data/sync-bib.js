@@ -295,6 +295,12 @@ function main() {
     console.log(`  ${file}: ${entries.length} entries`);
 
     for (const { entryType, citeKey, fields } of entries) {
+      // Honor `keywords = {unlisted}` to keep an entry out of publications.json
+      // (and therefore cv.html). Used for things like the thesis that live in
+      // chapters.bib for the corpus pipeline but shouldn't render publicly.
+      const rawKw = (fields.keywords || '').toLowerCase();
+      if (rawKw.split(',').map(s => s.trim()).includes('unlisted')) continue;
+
       const authors = parseAuthors(fields.author);
       let authorPosition = getAuthorPosition(authors);
       if (authorPosition === 'first' && checkEqualContrib(fields)) {

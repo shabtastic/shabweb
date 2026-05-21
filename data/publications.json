@@ -1,7 +1,7 @@
 [
   {
     "id": "paredes2026unstuck",
-    "title": "Unstuck - Ubiquitous just-in-time interventions to unleadh creativity and sustain wellbeing of creative professionals",
+    "title": "Unstuck - Ubiquitous just-in-time interventions to unleash creativity and sustain wellbeing of creative professionals",
     "authors": [
       "Paredes, Pablo E.",
       "Hakimi, Shabnam",
@@ -919,6 +919,22 @@
     "paperWeight": 0.6,
     "keywords": [
       "selected"
+    ]
+  },
+  {
+    "id": "Hakimi2014thesis",
+    "title": "Characterization of the Neural Mechanisms Supporting the Implementation of Cognitive Control in Human Decision Making",
+    "authors": [
+      "Hakimi, Shabnam"
+    ],
+    "year": 2014,
+    "venue": "",
+    "url": null,
+    "pubType": "commentary",
+    "authorPosition": "first",
+    "paperWeight": 0.3,
+    "keywords": [
+      "unlisted"
     ]
   },
   {

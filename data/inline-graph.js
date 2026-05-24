@@ -19,9 +19,14 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const GRAPH_JSON = path.join(ROOT, 'graph', 'graph.json');
+
+// index.html only consumes nodes/edges/layout for the hero contour animation;
+// it never reads meta.papers or meta.clusters. graph.html consumes both
+// (cluster overlay + paper list). Stripping meta from index.html keeps bib
+// metadata out of the landing page source.
 const TARGETS = [
-  path.join(ROOT, 'index.html'),
-  path.join(ROOT, 'graph.html'),
+  { file: path.join(ROOT, 'index.html'),  fields: ['version', 'nodes', 'edges', 'layout'] },
+  { file: path.join(ROOT, 'graph.html'),  fields: null /* full payload */ },
 ];
 const OPEN_TAG  = '<script type="application/json" id="graph-data">';
 const CLOSE_TAG = '</script>';
@@ -39,23 +44,33 @@ function inlineInto(file, payload) {
   return { file, status: 'updated' };
 }
 
+function projectPayload(graph, fields) {
+  if (!fields) return graph;
+  const out = {};
+  for (const k of fields) if (k in graph) out[k] = graph[k];
+  return out;
+}
+
 function main() {
   if (!fs.existsSync(GRAPH_JSON)) {
     console.error(`Missing ${GRAPH_JSON}`);
     process.exit(1);
   }
-  const raw = fs.readFileSync(GRAPH_JSON, 'utf-8').trim();
-  // Defensive: keep any future stray "</script>" inside a JSON string from
-  // ending the inline block early. (Currently no such strings exist.)
-  const safe = raw.replace(/<\/script>/gi, '<\\/script>');
+  const graph = JSON.parse(fs.readFileSync(GRAPH_JSON, 'utf-8'));
 
-  for (const file of TARGETS) {
+  for (const { file, fields } of TARGETS) {
+    const projected = projectPayload(graph, fields);
+    const raw = JSON.stringify(projected, null, 2);
+    // Defensive: keep any future stray "</script>" inside a JSON string from
+    // ending the inline block early. (Currently no such strings exist.)
+    const safe = raw.replace(/<\/script>/gi, '<\\/script>');
     const r = inlineInto(file, safe);
     const name = path.relative(ROOT, r.file);
+    const note = fields ? ` (${fields.join(', ')})` : '';
     if (r.status === 'updated') {
-      console.log(`updated  ${name}`);
+      console.log(`updated  ${name}${note}`);
     } else if (r.status === 'unchanged') {
-      console.log(`ok       ${name} (already in sync)`);
+      console.log(`ok       ${name}${note} (already in sync)`);
     } else {
       console.warn(`skipped  ${name} — ${r.status}`);
     }

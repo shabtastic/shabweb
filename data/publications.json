@@ -64,7 +64,8 @@
     "paperWeight": 0.4,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "design-dm"
   },
   {
     "id": "Klenk2026cats",
@@ -213,7 +214,8 @@
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "design-dm"
   },
   {
     "id": "Chen2025learning",
@@ -366,7 +368,8 @@
     "keywords": [
       "selected"
     ],
-    "addendum": "Best Paper Award"
+    "addendum": "Best Paper Award",
+    "part_of": "design-dm"
   },
   {
     "id": "Sinclair2024pausing",

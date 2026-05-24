@@ -42,7 +42,8 @@
     "paperWeight": 0.56,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "Nath2026designrewards"
   },
   {
     "id": "Nath2026designrewards",
@@ -256,7 +257,8 @@
     "paperWeight": 0.2,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "neurofore-econ"
   },
   {
     "id": "Knutson2024brain",
@@ -279,7 +281,8 @@
     "paperWeight": 0.56,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "neurofore-neuro"
   },
   {
     "id": "Hakimi2024cognitive",
@@ -531,7 +534,8 @@
     "pubType": "journal",
     "authorPosition": "second",
     "paperWeight": 0.6,
-    "keywords": []
+    "keywords": [],
+    "part_of": "juror-dm"
   },
   {
     "id": "Castrellon2022neural",
@@ -558,7 +562,8 @@
     "pubType": "journal",
     "authorPosition": "second",
     "paperWeight": 0.6,
-    "keywords": []
+    "keywords": [],
+    "part_of": "juror-dm"
   },
   {
     "id": "DeCastro2022latent",
@@ -598,7 +603,8 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": []
+    "keywords": [],
+    "part_of": "information-sampling"
   },
   {
     "id": "Filipowicz2022familiarity",
@@ -707,7 +713,8 @@
     "paperWeight": 1,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "covid"
   },
   {
     "id": "Sinclair2021imagining",
@@ -728,7 +735,8 @@
     "paperWeight": 0.4,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "covid"
   },
   {
     "id": "Hakimi2020behavioral",
@@ -900,7 +908,8 @@
     "paperWeight": 0.8,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "imagine-discount"
   },
   {
     "id": "Hakimi2014activity",
@@ -919,7 +928,8 @@
     "paperWeight": 0.6,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "imagine-discount"
   },
   {
     "id": "Hakimi2014thesis",
@@ -977,7 +987,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": []
+    "keywords": [],
+    "part_of": "imaging-genetics"
   },
   {
     "id": "Tost2010acute",

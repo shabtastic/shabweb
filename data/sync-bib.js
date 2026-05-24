@@ -330,6 +330,7 @@ function main() {
         paperWeight: computePaperWeight(refinedType, authorPosition, year),
         keywords: (fields.keywords || '').split(',').map(k => k.trim()).filter(Boolean),
         addendum: fields.addendum ? cleanLatex(fields.addendum) : undefined,
+        part_of: fields.part_of ? cleanLatex(fields.part_of) : undefined,
       };
 
       // Remove undefined fields

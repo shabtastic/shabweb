@@ -21,7 +21,8 @@
     "paperWeight": 0.6,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "creativity-support"
   },
   {
     "id": "Nath2026rewards",
@@ -85,7 +86,8 @@
     "paperWeight": 0.3,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "creativity-support"
   },
   {
     "id": "kim2026personagrambridgingpersonasproduct",
@@ -107,7 +109,8 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": []
+    "keywords": [],
+    "part_of": "generative-design"
   },
   {
     "id": "hong2026deconstructingtastehumancenteredai",
@@ -130,7 +133,8 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": []
+    "keywords": [],
+    "part_of": "generative-design"
   },
   {
     "id": "chong2026wowaidesign",
@@ -151,7 +155,8 @@
     "paperWeight": 0.2,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "generative-design"
   },
   {
     "id": "zhang2026surpriseaidesign",
@@ -173,7 +178,8 @@
     "paperWeight": 0.2,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "generative-design"
   },
   {
     "id": "Hakimi2025creativity",
@@ -194,7 +200,8 @@
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "creativity-psych-guide"
   },
   {
     "id": "Hakimi2025semantic",
@@ -406,7 +413,8 @@
     "pubType": "conf-full",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": []
+    "keywords": [],
+    "part_of": "creativity-support"
   },
   {
     "id": "Hong2024unstuck",
@@ -424,7 +432,8 @@
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": []
+    "keywords": [],
+    "part_of": "creativity-support"
   },
   {
     "id": "Hakimi2023ml",
@@ -469,7 +478,8 @@
     "pubType": "conf-workshop",
     "authorPosition": "second",
     "paperWeight": 0.3,
-    "keywords": []
+    "keywords": [],
+    "part_of": "generative-design"
   },
   {
     "id": "Filipowicz2023visual",
@@ -512,7 +522,8 @@
     "paperWeight": 0.2,
     "keywords": [
       "commentary"
-    ]
+    ],
+    "part_of": "design-dm"
   },
   {
     "id": "Castrellon2022social",

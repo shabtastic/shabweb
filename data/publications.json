@@ -969,7 +969,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": []
+    "keywords": [],
+    "part_of": "neuropeptide-social"
   },
   {
     "id": "Tost2010oxtr",
@@ -1031,7 +1032,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": []
+    "keywords": [],
+    "part_of": "neuropeptide-social"
   },
   {
     "id": "Goldin2009neural",

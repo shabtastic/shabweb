@@ -110,6 +110,7 @@ body {
 #sidebar-header {
   padding: 1.5rem 1.5rem 1rem;
   border-bottom: 1px solid var(--blue-G);
+  flex-shrink: 0;
 }
 #sidebar-header h2 {
   font-size: 0.52rem; letter-spacing: 0.3em; text-transform: uppercase;
@@ -125,6 +126,7 @@ body {
   border-bottom: 1px solid var(--blue-G);
   min-height: 140px;
   transition: background 0.3s;
+  flex-shrink: 0;
 }
 #node-detail .nd-cluster {
   font-size: 0.46rem; letter-spacing: 0.25em; text-transform: uppercase;
@@ -374,7 +376,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       <div class="nd-connections" id="nd-connections"></div>
     </div>
 
-    <div id="topo-legend" style="padding:1rem 1.5rem;border-bottom:1px solid var(--blue-G);">
+    <div id="topo-legend" style="padding:1rem 1.5rem;border-bottom:1px solid var(--blue-G);flex-shrink:0;">
       <div style="font-size:0.46rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-blue);margin-bottom:0.7rem;">Activation intensity</div>
       <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
         <div style="flex:1;height:6px;border-radius:2px;background:linear-gradient(to right,

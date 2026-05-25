@@ -333,7 +333,8 @@
     "authorPosition": "second",
     "paperWeight": 0.42,
     "keywords": [
-      "selected"
+      "selected",
+      "draft"
     ],
     "part_of": "motivation"
   },
@@ -398,7 +399,9 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
+    "keywords": [
+      "draft"
+    ],
     "part_of": "covid-dm"
   },
   {
@@ -832,7 +835,8 @@
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
-      "scicomm"
+      "scicomm",
+      "unpaywall-closed"
     ],
     "addendum": "Authors contributed equally and are listed alphabetically."
   },

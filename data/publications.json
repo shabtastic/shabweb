@@ -246,7 +246,8 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": []
+    "keywords": [],
+    "part_of": "pref-predict"
   },
   {
     "id": "Eum2025aidriven",
@@ -694,7 +695,8 @@
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": []
+    "keywords": [],
+    "part_of": "pref-predict"
   },
   {
     "id": "Gopinath2022hmiway",

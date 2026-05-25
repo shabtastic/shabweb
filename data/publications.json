@@ -354,7 +354,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.4,
-    "keywords": []
+    "keywords": [],
+    "part_of": "driving-dm"
   },
   {
     "id": "Nandy2024semantic",
@@ -502,7 +503,8 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": []
+    "keywords": [],
+    "part_of": "env-dm"
   },
   {
     "id": "Klenk2023anticipatory",
@@ -599,7 +601,8 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": []
+    "keywords": [],
+    "part_of": "driving-dm"
   },
   {
     "id": "Hsiung2022heuristics",
@@ -643,7 +646,8 @@
     "pubType": "conf-full",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": []
+    "keywords": [],
+    "part_of": "env-dm"
   },
   {
     "id": "Harinen2022ml",
@@ -662,7 +666,8 @@
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": []
+    "keywords": [],
+    "part_of": "env-dm"
   },
   {
     "id": "Zhang2022conjointnet",
@@ -708,7 +713,8 @@
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": []
+    "keywords": [],
+    "part_of": "driving-dm"
   },
   {
     "id": "Hakimi2021pairing",

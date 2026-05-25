@@ -306,7 +306,8 @@
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "complexity-dm"
   },
   {
     "id": "Wright2024motivation",
@@ -448,7 +449,8 @@
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ]
+    ],
+    "part_of": "complexity-dm"
   },
   {
     "id": "Hong2023genai",
@@ -835,7 +837,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.32,
-    "keywords": []
+    "keywords": [],
+    "part_of": "asd-social-dm"
   },
   {
     "id": "Hsiung2018curiosity",
@@ -894,7 +897,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.32,
-    "keywords": []
+    "keywords": [],
+    "part_of": "asd-social-dm"
   },
   {
     "id": "Hakimi2015enhanced",

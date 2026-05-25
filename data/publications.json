@@ -396,7 +396,8 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": []
+    "keywords": [],
+    "part_of": "covid-dm"
   },
   {
     "id": "Paredes2024commuter",

@@ -1034,7 +1034,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": []
+    "keywords": [],
+    "part_of": "scz"
   },
   {
     "id": "Zink2010vasopressin",
@@ -1093,7 +1094,8 @@
     "paperWeight": 0.18,
     "keywords": [
       "bookchapter"
-    ]
+    ],
+    "part_of": "scz"
   },
   {
     "id": "Tost2009dopamine",
@@ -1112,6 +1114,7 @@
     "paperWeight": 0.18,
     "keywords": [
       "bookchapter"
-    ]
+    ],
+    "part_of": "scz"
   }
 ]

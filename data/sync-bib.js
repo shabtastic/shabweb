@@ -380,7 +380,12 @@ function main() {
     // Build updated papers list: preserve existing entries (they may have
     // nodesContributed from concept extraction), add new ones
     const updatedPapers = [];
+    let skippedScicomm = 0;
     for (const pub of publications) {
+      // scicomm pieces don't belong in the scientific concept graph —
+      // keep them in publications.json (cv.html still renders them) but
+      // exclude from meta.papers so they don't enter the extraction queue.
+      if (pub.pubType === 'scicomm') { skippedScicomm++; continue; }
       const existing = existingById.get(pub.id)
         || existingByTitle.get(normalizeTitle(pub.title));
       if (existing) {
@@ -436,6 +441,7 @@ function main() {
     const withNodes = updatedPapers.filter(p => p.nodes_contributed && p.nodes_contributed.length > 0).length;
     const withoutNodes = updatedPapers.length - withNodes;
     console.log(`  ${withNodes} with concept nodes, ${withoutNodes} awaiting extraction`);
+    if (skippedScicomm > 0) console.log(`  ${skippedScicomm} scicomm entries excluded from graph`);
   } else {
     console.warn(`Graph file not found: ${GRAPH_JSON} — skipping graph update`);
   }

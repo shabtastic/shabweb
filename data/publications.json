@@ -872,7 +872,8 @@
     "pubType": "conf-full",
     "authorPosition": "middle",
     "paperWeight": 0.16,
-    "keywords": []
+    "keywords": [],
+    "part_of": "incentive-design"
   },
   {
     "id": "Wang2016autism",
@@ -1049,7 +1050,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": []
+    "keywords": [],
+    "part_of": "sad-emoreg"
   },
   {
     "id": "Tost2009mri",

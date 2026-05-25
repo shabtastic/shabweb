@@ -810,7 +810,8 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.4,
-    "keywords": []
+    "keywords": [],
+    "part_of": "methods-imaging"
   },
   {
     "id": "Bachman2020journal",

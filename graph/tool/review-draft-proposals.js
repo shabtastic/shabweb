@@ -84,7 +84,8 @@ async function main() {
           authorPosition:   pub.authorPosition,
           extraction_source: proposal.extraction_source,
         };
-        const { newNodes, newEdges, boostedNodes } = mergeIntoGraph(graph, proposal, meta, proposal.paper_weight);
+        const extractedShape = { nodes: proposal.nodes, edges: proposal.edges, paper: proposal.paper_meta };
+        const { newNodes, newEdges, boostedNodes } = mergeIntoGraph(graph, extractedShape, meta, proposal.paper_weight);
         saveGraph(graph);
         proposal.reviewed = true;
         proposal.decision = 'approved';

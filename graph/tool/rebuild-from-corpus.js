@@ -146,6 +146,8 @@ async function extractConceptsWithRetry(text, graph, paperWeight, model, maxAtte
       throw e;
     }
   }
+  // Unreachable in normal flow, but guards against falling off the loop silently
+  throw new Error(`extractConcepts failed after ${maxAttempts} attempts`);
 }
 
 // ── Per-paper processor ───────────────────────────────────────────────────────
@@ -178,6 +180,11 @@ async function processPaper(pub, graph, opts, passNum) {
 
   const extracted = await extractConceptsWithRetry(text, graph, paperWeight, model);
   c.ok(`  extracted ${extracted.nodes?.length || 0} nodes, ${extracted.edges?.length || 0} edges`);
+
+  if (!extracted.nodes?.length && !extracted.edges?.length) {
+    c.warn(`  Empty extraction — skipping paper record (will be retried on next run)`);
+    return;
+  }
 
   const meta = {
     id:               pub.id,
@@ -272,15 +279,17 @@ async function main() {
     }
   }
 
-  if (!opts.dryRun) {
+  const touchedGraph = passMask.some(p => p !== 3);
+  if (!opts.dryRun && touchedGraph) {
     c.head('\nFinalizing layout…');
     rebuildLayout(graph);
     saveGraph(graph);
     c.ok(`Rebuild complete: ${graph.nodes.length} nodes, ${graph.edges.length} edges, ${graph.meta.papers.length} papers`);
-    if (pass3.length && passMask.includes(3)) {
-      c.warn(`Pass 3 (${pass3.length} drafts) → inspect graph/draft-proposals.json, then run review-draft-proposals.js`);
-    }
-  } else {
+  }
+  if (!opts.dryRun && passMask.includes(3)) {
+    c.warn(`Pass 3 (${pass3.length} drafts) → inspect graph/draft-proposals.json, then run review-draft-proposals.js`);
+  }
+  if (opts.dryRun) {
     c.warn('Dry run — nothing saved.');
   }
 }

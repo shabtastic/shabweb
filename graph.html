@@ -11395,43 +11395,59 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   const graphData   = JSON.parse(document.getElementById('graph-data').textContent);
   const clusterData = JSON.parse(document.getElementById('cluster-data').textContent);
 
-  // Display cap: pick a subset of nodes to render so the graph stays readable
-  // as graph.json grows. Two stages:
-  //   1. Filter by abstraction level (default: constructs + theories — the
-  //      "core ideas" of the research; methods/mechanisms/domains are hidden)
-  //   2. Pick top-N from that pool by weight, bracketed by MIN/MAX_NODES,
-  //      with the kneedle method (Satopää et al., 2011) finding the natural
-  //      break in the weight distribution as the preferred N.
+  // Display selection: constructs + theories only, up to PER_CLUSTER per cluster.
+  // Two-phase greedy: (1) seed with highest-weight node per cluster, then
+  // (2) for each remaining slot, prefer candidates that already share an edge
+  // with any already-selected node — maximising graph connectivity. Fall back
+  // to pure weight if no connected candidate is available.
   const VISIBLE_LEVELS = new Set(['construct', 'theory']);
-  const MIN_NODES = 20;
-  const MAX_NODES = 60;
-
-  function kneeIndex(sortedDesc) {
-    const N = sortedDesc.length;
-    if (N < 3) return N;
-    const max = sortedDesc[0], min = sortedDesc[N - 1];
-    const range = Math.max(1e-9, max - min);
-    // For a sorted-descending curve, the knee is the point farthest BELOW the
-    // diagonal from (0, 1) to (1, 0) in normalized coords — argmax of (1 - x - y).
-    let bestIdx = 0, bestDist = -Infinity;
-    for (let i = 0; i < N; i++) {
-      const x = i / (N - 1);
-      const y = (sortedDesc[i] - min) / range;
-      const dist = 1 - x - y;
-      if (dist > bestDist) { bestDist = dist; bestIdx = i; }
-    }
-    return bestIdx + 1; // number of nodes to keep
-  }
+  const PER_CLUSTER = 10;
 
   const allNodes = graphData.nodes;
-  // Stage 1: level filter. Nodes without a level fall back to 'construct'
-  // (matches classify-levels.js default) so legacy data stays visible.
   const levelFiltered = allNodes.filter(n => VISIBLE_LEVELS.has(n.level || 'construct'));
-  const sortedNodes = levelFiltered.sort((a, b) => (b.weight || 0) - (a.weight || 0));
-  // Stage 2: weight-driven count, bounded.
-  const knee = kneeIndex(sortedNodes.map(n => n.weight || 0));
-  const keepCount = Math.max(MIN_NODES, Math.min(MAX_NODES, knee));
-  const NODES = sortedNodes.slice(0, keepCount);
+
+  // Build adjacency set for fast edge lookup
+  const edgeSet = new Set(graphData.edges.map(e => `${e.a}|${e.b}`));
+  function hasEdgeTo(nid, selectedIds) {
+    for (const sid of selectedIds) {
+      if (edgeSet.has(`${nid}|${sid}`) || edgeSet.has(`${sid}|${nid}`)) return true;
+    }
+    return false;
+  }
+
+  const byCluster = new Map();
+  levelFiltered.forEach(n => {
+    const c = n.cluster ?? -1;
+    if (!byCluster.has(c)) byCluster.set(c, []);
+    byCluster.get(c).push(n);
+  });
+
+  const NODES = [];
+  const globalSelectedIds = new Set();
+
+  byCluster.forEach(clusterNodes => {
+    clusterNodes.sort((a, b) => (b.weight || 0) - (a.weight || 0));
+    const chosen = [];
+    const remaining = clusterNodes.slice();
+
+    // Phase 1: always take the top-weight node
+    if (remaining.length > 0) {
+      chosen.push(remaining.shift());
+      globalSelectedIds.add(chosen[0].id);
+    }
+
+    // Phase 2: greedily prefer candidates connected to any already-selected node
+    while (chosen.length < PER_CLUSTER && remaining.length > 0) {
+      const connIdx = remaining.findIndex(n => hasEdgeTo(n.id, globalSelectedIds));
+      const pick = connIdx >= 0 ? remaining.splice(connIdx, 1)[0] : remaining.shift();
+      chosen.push(pick);
+      globalSelectedIds.add(pick.id);
+    }
+
+    NODES.push(...chosen);
+  });
+
+  NODES.sort((a, b) => (b.weight || 0) - (a.weight || 0));
   const visibleIds = new Set(NODES.map(n => n.id));
   const EDGES = graphData.edges.filter(e => visibleIds.has(e.a) && visibleIds.has(e.b));
   const PAPERS = (graphData.meta && graphData.meta.papers) || [];
@@ -11494,37 +11510,52 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   // SIZE_SCALE grows the world with node count so density stays constant.
   // Calibrated against the original 42-node tuning (BOUNDS=7, cluster spacing 3.5).
   const SIZE_SCALE = Math.sqrt(NODES.length / 42);
-  // Slack factor > 1 gives nodes breathing room so they don't pile at the boundary.
   const BOUNDS = 7.0 * SIZE_SCALE * 1.25;
   const CLUSTER_SPACING = 3.5 * SIZE_SCALE;
-  // Per-pair repulsion shrinks with node count so total per-node repulsion stays
-  // bounded — otherwise every node is pushed against BOUNDS and the contour
-  // renders as a rectangle along the edge.
-  const K_REP = 1.8 / SIZE_SCALE;
+  const K_REP = 1.2 / SIZE_SCALE;
   const K_SPRING = 0.12, DAMPING = 0.82;
-  const npos = NODES.map((n, i) => {
-    const angle = (i / NODES.length) * Math.PI * 2;
-    const r = (2 + Math.random() * 3) * SIZE_SCALE;
-    return { x: Math.cos(angle)*r, y: Math.sin(angle)*r, vx: 0, vy: 0 };
+
+  // Circular cluster positions: C0 at center (largest cluster), C1–C6 in a ring.
+  // Avoids the 4×2 grid's extreme aspect ratio, which caused isolated nodes to
+  // form horizontal lines across the bottom of the canvas.
+  function clusterCenter(ci) {
+    if (ci === 0) return { cx: 0, cy: 0 };
+    const angle = ((ci - 1) / 6) * Math.PI * 2 - Math.PI / 2;
+    return { cx: Math.cos(angle) * CLUSTER_SPACING, cy: Math.sin(angle) * CLUSTER_SPACING };
+  }
+
+  // Seed each node near its cluster center (±½ cluster spacing jitter) so that
+  // nodes with few edges (sparse visible subgraph) don't escape the boundary.
+  const npos = NODES.map(n => {
+    const { cx, cy } = clusterCenter(n.cluster ?? 0);
+    return {
+      x: cx + (Math.random() - 0.5) * CLUSTER_SPACING,
+      y: cy + (Math.random() - 0.5) * CLUSTER_SPACING,
+      vx: 0, vy: 0
+    };
   });
   for (let iter = 0; iter < 400; iter++) {
     const cooling = 1 - iter / 400;
     for (let i = 0; i < NODES.length; i++) {
       let fx = 0, fy = 0;
-      // Repulsion
+      // Repulsion — full between same-cluster nodes (spreading within cluster),
+      // attenuated for cross-cluster pairs so isolated clusters aren't blasted
+      // to the boundary by the combined force from all other nodes.
       for (let j = 0; j < NODES.length; j++) {
         if (i === j) continue;
         const dx = npos[i].x - npos[j].x, dy = npos[i].y - npos[j].y;
         const d2 = dx*dx + dy*dy + 0.01;
-        const f = K_REP / d2;
+        const crossCluster = NODES[j].cluster !== NODES[i].cluster ? 0.25 : 1.0;
+        const f = K_REP / d2 * crossCluster;
         fx += dx * f; fy += dy * f;
       }
-      // Cluster gravity
-      const ci = NODES[i].cluster;
-      const cx = (ci % 4 - 1.5) * CLUSTER_SPACING;
-      const cy = (Math.floor(ci / 4) - 0.5) * CLUSTER_SPACING;
-      fx += (cx - npos[i].x) * 0.04;
-      fy += (cy - npos[i].y) * 0.04;
+      // Cluster gravity — stronger coefficient keeps sparse (low-degree) nodes
+      // from drifting; 0.04 was calibrated for a dense graph where springs did
+      // most of the work. With cluster-balanced selection, many nodes share no
+      // edges so gravity must carry more of the load.
+      const { cx, cy } = clusterCenter(NODES[i].cluster ?? 0);
+      fx += (cx - npos[i].x) * 0.14;
+      fy += (cy - npos[i].y) * 0.14;
       npos[i].vx = (npos[i].vx + fx * 0.12) * DAMPING;
       npos[i].vy = (npos[i].vy + fy * 0.12) * DAMPING;
     }

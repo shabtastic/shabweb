@@ -11395,59 +11395,68 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   const graphData   = JSON.parse(document.getElementById('graph-data').textContent);
   const clusterData = JSON.parse(document.getElementById('cluster-data').textContent);
 
-  // Display selection: constructs + theories only, up to PER_CLUSTER per cluster.
-  // Two-phase greedy: (1) seed with highest-weight node per cluster, then
-  // (2) for each remaining slot, prefer candidates that already share an edge
-  // with any already-selected node — maximising graph connectivity. Fall back
-  // to pure weight if no connected candidate is available.
+  // Display selection: edge-first, cluster-balanced.
+  // Build the visible set by greedily adding the highest-scoring edges and their
+  // endpoints, capped at PER_CLUSTER per research cluster. Every selected node
+  // has at least one visible edge by construction — a hard requirement for the
+  // spreading-activation metaphor to hold. Fallback adds the highest-weight
+  // unconnected node for any cluster that got zero edges.
   const VISIBLE_LEVELS = new Set(['construct', 'theory']);
   const PER_CLUSTER = 10;
 
   const allNodes = graphData.nodes;
   const levelFiltered = allNodes.filter(n => VISIBLE_LEVELS.has(n.level || 'construct'));
 
-  // Build adjacency set for fast edge lookup
-  const edgeSet = new Set(graphData.edges.map(e => `${e.a}|${e.b}`));
-  function hasEdgeTo(nid, selectedIds) {
-    for (const sid of selectedIds) {
-      if (edgeSet.has(`${nid}|${sid}`) || edgeSet.has(`${sid}|${nid}`)) return true;
-    }
-    return false;
+  const nodeById = new Map(levelFiltered.map(n => [n.id, n]));
+  const selByCluster = new Map();
+  const selectedIds = new Set();
+
+  function clusterOf(nid) { return nodeById.get(nid)?.cluster ?? -1; }
+  function atCap(nid) { return (selByCluster.get(clusterOf(nid)) || 0) >= PER_CLUSTER; }
+  function selectNode(nid) {
+    if (selectedIds.has(nid)) return;
+    selectedIds.add(nid);
+    const c = clusterOf(nid);
+    selByCluster.set(c, (selByCluster.get(c) || 0) + 1);
   }
 
+  // Score edges by edge weight × mean endpoint weight so strong edges between
+  // important nodes rank first.
+  const eligibleEdges = graphData.edges
+    .filter(e => nodeById.has(e.a) && nodeById.has(e.b))
+    .map(e => {
+      const wa = nodeById.get(e.a).weight || 0;
+      const wb = nodeById.get(e.b).weight || 0;
+      return { ...e, score: (e.weight || 0.5) * (wa + wb) / 2 };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  for (const edge of eligibleEdges) {
+    const aIn = selectedIds.has(edge.a), bIn = selectedIds.has(edge.b);
+    const aOk = aIn || !atCap(edge.a);
+    const bOk = bIn || !atCap(edge.b);
+    if (!aOk || !bOk) continue;
+    selectNode(edge.a);
+    selectNode(edge.b);
+  }
+
+  // Fallback: any cluster with zero nodes gets its highest-weight node even
+  // if it has no edges in the visible set (better than invisible).
   const byCluster = new Map();
   levelFiltered.forEach(n => {
     const c = n.cluster ?? -1;
     if (!byCluster.has(c)) byCluster.set(c, []);
     byCluster.get(c).push(n);
   });
-
-  const NODES = [];
-  const globalSelectedIds = new Set();
-
-  byCluster.forEach(clusterNodes => {
-    clusterNodes.sort((a, b) => (b.weight || 0) - (a.weight || 0));
-    const chosen = [];
-    const remaining = clusterNodes.slice();
-
-    // Phase 1: always take the top-weight node
-    if (remaining.length > 0) {
-      chosen.push(remaining.shift());
-      globalSelectedIds.add(chosen[0].id);
+  byCluster.forEach((nodes, c) => {
+    if (!selByCluster.get(c)) {
+      nodes.sort((a, b) => (b.weight || 0) - (a.weight || 0));
+      if (nodes[0]) selectNode(nodes[0].id);
     }
-
-    // Phase 2: greedily prefer candidates connected to any already-selected node
-    while (chosen.length < PER_CLUSTER && remaining.length > 0) {
-      const connIdx = remaining.findIndex(n => hasEdgeTo(n.id, globalSelectedIds));
-      const pick = connIdx >= 0 ? remaining.splice(connIdx, 1)[0] : remaining.shift();
-      chosen.push(pick);
-      globalSelectedIds.add(pick.id);
-    }
-
-    NODES.push(...chosen);
   });
 
-  NODES.sort((a, b) => (b.weight || 0) - (a.weight || 0));
+  const NODES = levelFiltered.filter(n => selectedIds.has(n.id))
+    .sort((a, b) => (b.weight || 0) - (a.weight || 0));
   const visibleIds = new Set(NODES.map(n => n.id));
   const EDGES = graphData.edges.filter(e => visibleIds.has(e.a) && visibleIds.has(e.b));
   const PAPERS = (graphData.meta && graphData.meta.papers) || [];

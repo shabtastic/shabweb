@@ -168,6 +168,7 @@ export function mergeIntoGraph(graph, extracted, meta, paperWeight = 1.0) {
     doi:              paper.doi        || meta.doi,
     arxivId:          meta.arxivId,
     url:              meta.url,
+    abstractOnly:     meta.abstractOnly || false,
     pubType:          meta.pubType,
     authorPosition:   meta.authorPosition,
     paperWeight,

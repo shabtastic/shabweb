@@ -21,8 +21,7 @@
     "paperWeight": 0.6,
     "keywords": [
       "selected"
-    ],
-    "part_of": "creativity-support"
+    ]
   },
   {
     "id": "Nath2026rewards",
@@ -43,8 +42,7 @@
     "paperWeight": 0.56,
     "keywords": [
       "selected"
-    ],
-    "part_of": "Nath2026designrewards"
+    ]
   },
   {
     "id": "Nath2026designrewards",
@@ -65,8 +63,7 @@
     "paperWeight": 0.4,
     "keywords": [
       "selected"
-    ],
-    "part_of": "design-dm"
+    ]
   },
   {
     "id": "Klenk2026cats",
@@ -86,8 +83,7 @@
     "paperWeight": 0.3,
     "keywords": [
       "selected"
-    ],
-    "part_of": "creativity-support"
+    ]
   },
   {
     "id": "kim2026personagrambridgingpersonasproduct",
@@ -109,8 +105,7 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
-    "part_of": "generative-design"
+    "keywords": []
   },
   {
     "id": "hong2026deconstructingtastehumancenteredai",
@@ -133,8 +128,7 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
-    "part_of": "generative-design"
+    "keywords": []
   },
   {
     "id": "chong2026wowaidesign",
@@ -155,8 +149,7 @@
     "paperWeight": 0.2,
     "keywords": [
       "selected"
-    ],
-    "part_of": "generative-design"
+    ]
   },
   {
     "id": "zhang2026surpriseaidesign",
@@ -178,8 +171,7 @@
     "paperWeight": 0.2,
     "keywords": [
       "selected"
-    ],
-    "part_of": "generative-design"
+    ]
   },
   {
     "id": "Hakimi2025creativity",
@@ -200,8 +192,7 @@
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ],
-    "part_of": "creativity-psych-guide"
+    ]
   },
   {
     "id": "Hakimi2025semantic",
@@ -221,8 +212,7 @@
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ],
-    "part_of": "design-dm"
+    ]
   },
   {
     "id": "Chen2025learning",
@@ -246,8 +236,7 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
-    "part_of": "pref-predict"
+    "keywords": []
   },
   {
     "id": "Eum2025aidriven",
@@ -267,8 +256,7 @@
     "paperWeight": 0.2,
     "keywords": [
       "selected"
-    ],
-    "part_of": "neurofore-econ"
+    ]
   },
   {
     "id": "Knutson2024brain",
@@ -291,8 +279,7 @@
     "paperWeight": 0.56,
     "keywords": [
       "selected"
-    ],
-    "part_of": "neurofore-neuro"
+    ]
   },
   {
     "id": "Hakimi2024cognitive",
@@ -314,8 +301,7 @@
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ],
-    "part_of": "pref-elicit"
+    ]
   },
   {
     "id": "Wright2024motivation",
@@ -333,10 +319,8 @@
     "authorPosition": "second",
     "paperWeight": 0.42,
     "keywords": [
-      "selected",
-      "draft"
-    ],
-    "part_of": "motivation"
+      "selected"
+    ]
   },
   {
     "id": "Sumner2024personalizing",
@@ -357,8 +341,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.4,
-    "keywords": [],
-    "part_of": "driving-dm"
+    "keywords": []
   },
   {
     "id": "Nandy2024semantic",
@@ -380,8 +363,7 @@
     "keywords": [
       "selected"
     ],
-    "addendum": "Best Paper Award",
-    "part_of": "design-dm"
+    "addendum": "Best Paper Award"
   },
   {
     "id": "Sinclair2024pausing",
@@ -399,10 +381,7 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [
-      "draft"
-    ],
-    "part_of": "covid-dm"
+    "keywords": []
   },
   {
     "id": "Paredes2024commuter",
@@ -420,8 +399,7 @@
     "pubType": "conf-full",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": [],
-    "part_of": "creativity-support"
+    "keywords": []
   },
   {
     "id": "Hong2024unstuck",
@@ -439,8 +417,7 @@
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": [],
-    "part_of": "creativity-support"
+    "keywords": []
   },
   {
     "id": "Hakimi2023ml",
@@ -465,8 +442,7 @@
     "paperWeight": 0.5,
     "keywords": [
       "selected"
-    ],
-    "part_of": "pref-elicit"
+    ]
   },
   {
     "id": "Hong2023genai",
@@ -485,8 +461,7 @@
     "pubType": "conf-workshop",
     "authorPosition": "second",
     "paperWeight": 0.3,
-    "keywords": [],
-    "part_of": "generative-design"
+    "keywords": []
   },
   {
     "id": "Filipowicz2023visual",
@@ -509,8 +484,7 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
-    "part_of": "env-dm"
+    "keywords": []
   },
   {
     "id": "Klenk2023anticipatory",
@@ -530,8 +504,7 @@
     "paperWeight": 0.2,
     "keywords": [
       "commentary"
-    ],
-    "part_of": "design-dm"
+    ]
   },
   {
     "id": "Castrellon2022social",
@@ -558,8 +531,7 @@
     "pubType": "journal",
     "authorPosition": "second",
     "paperWeight": 0.6,
-    "keywords": [],
-    "part_of": "juror-dm"
+    "keywords": []
   },
   {
     "id": "Castrellon2022neural",
@@ -586,8 +558,7 @@
     "pubType": "journal",
     "authorPosition": "second",
     "paperWeight": 0.6,
-    "keywords": [],
-    "part_of": "juror-dm"
+    "keywords": []
   },
   {
     "id": "DeCastro2022latent",
@@ -607,8 +578,7 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
-    "part_of": "driving-dm"
+    "keywords": []
   },
   {
     "id": "Hsiung2022heuristics",
@@ -628,8 +598,7 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
-    "part_of": "information-sampling"
+    "keywords": []
   },
   {
     "id": "Filipowicz2022familiarity",
@@ -652,8 +621,7 @@
     "pubType": "conf-full",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": [],
-    "part_of": "env-dm"
+    "keywords": []
   },
   {
     "id": "Harinen2022ml",
@@ -672,8 +640,7 @@
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": [],
-    "part_of": "env-dm"
+    "keywords": []
   },
   {
     "id": "Zhang2022conjointnet",
@@ -699,8 +666,7 @@
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": [],
-    "part_of": "pref-predict"
+    "keywords": []
   },
   {
     "id": "Gopinath2022hmiway",
@@ -720,8 +686,7 @@
     "pubType": "conf-workshop",
     "authorPosition": "middle",
     "paperWeight": 0.2,
-    "keywords": [],
-    "part_of": "driving-dm"
+    "keywords": []
   },
   {
     "id": "Hakimi2021pairing",
@@ -742,8 +707,7 @@
     "paperWeight": 1,
     "keywords": [
       "selected"
-    ],
-    "part_of": "covid-dm"
+    ]
   },
   {
     "id": "Sinclair2021imagining",
@@ -764,8 +728,7 @@
     "paperWeight": 0.4,
     "keywords": [
       "selected"
-    ],
-    "part_of": "covid-dm"
+    ]
   },
   {
     "id": "Hakimi2020behavioral",
@@ -814,8 +777,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.4,
-    "keywords": [],
-    "part_of": "methods-imaging"
+    "keywords": []
   },
   {
     "id": "Bachman2020journal",
@@ -835,8 +797,7 @@
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
-      "scicomm",
-      "unpaywall-closed"
+      "scicomm"
     ],
     "addendum": "Authors contributed equally and are listed alphabetically."
   },
@@ -863,8 +824,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.32,
-    "keywords": [],
-    "part_of": "asd-social-dm"
+    "keywords": []
   },
   {
     "id": "Hsiung2018curiosity",
@@ -882,8 +842,7 @@
     "paperWeight": 0.24,
     "keywords": [
       "commentary"
-    ],
-    "part_of": "information-sampling"
+    ]
   },
   {
     "id": "Sukumar2017overcoming",
@@ -902,8 +861,7 @@
     "pubType": "conf-full",
     "authorPosition": "middle",
     "paperWeight": 0.16,
-    "keywords": [],
-    "part_of": "incentive-design"
+    "keywords": []
   },
   {
     "id": "Wang2016autism",
@@ -924,8 +882,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.32,
-    "keywords": [],
-    "part_of": "asd-social-dm"
+    "keywords": []
   },
   {
     "id": "Hakimi2015enhanced",
@@ -943,8 +900,7 @@
     "paperWeight": 0.8,
     "keywords": [
       "selected"
-    ],
-    "part_of": "imagine-discount"
+    ]
   },
   {
     "id": "Hakimi2014activity",
@@ -963,23 +919,6 @@
     "paperWeight": 0.6,
     "keywords": [
       "selected"
-    ],
-    "part_of": "imagine-discount"
-  },
-  {
-    "id": "Hakimi2014thesis",
-    "title": "Characterization of the Neural Mechanisms Supporting the Implementation of Cognitive Control in Human Decision Making",
-    "authors": [
-      "Hakimi, Shabnam"
-    ],
-    "year": 2014,
-    "venue": "",
-    "url": null,
-    "pubType": "commentary",
-    "authorPosition": "first",
-    "paperWeight": 0.3,
-    "keywords": [
-      "unlisted"
     ]
   },
   {
@@ -1000,8 +939,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": [],
-    "part_of": "neuropeptide-social"
+    "keywords": []
   },
   {
     "id": "Tost2010oxtr",
@@ -1023,8 +961,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": [],
-    "part_of": "imaging-genetics"
+    "keywords": []
   },
   {
     "id": "Tost2010acute",
@@ -1044,8 +981,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": [],
-    "part_of": "scz"
+    "keywords": []
   },
   {
     "id": "Zink2010vasopressin",
@@ -1064,8 +1000,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": [],
-    "part_of": "neuropeptide-social"
+    "keywords": []
   },
   {
     "id": "Goldin2009neural",
@@ -1084,8 +1019,7 @@
     "pubType": "journal",
     "authorPosition": "middle",
     "paperWeight": 0.24,
-    "keywords": [],
-    "part_of": "sad-emoreg"
+    "keywords": []
   },
   {
     "id": "Tost2009mri",
@@ -1104,8 +1038,7 @@
     "paperWeight": 0.18,
     "keywords": [
       "bookchapter"
-    ],
-    "part_of": "scz"
+    ]
   },
   {
     "id": "Tost2009dopamine",
@@ -1124,7 +1057,6 @@
     "paperWeight": 0.18,
     "keywords": [
       "bookchapter"
-    ],
-    "part_of": "scz"
+    ]
   }
 ]

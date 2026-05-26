@@ -47,63 +47,65 @@ async function main() {
 
   let approved = 0, rejected = 0, deferred = 0;
 
-  for (const proposal of pending) {
-    const existingIds = new Set(graph.nodes.map(n => n.id));
+  try {
+    for (const proposal of pending) {
+      const existingIds = new Set(graph.nodes.map(n => n.id));
 
-    c.head(`\n─── ${proposal.paper_id} ─────────────────────────────────`);
-    c.log(`  Extracted: ${proposal.extracted_at}`);
-    c.log(`  Model: ${proposal.model}   Weight: ${proposal.paper_weight}   Source: ${proposal.extraction_source}`);
+      c.head(`\n─── ${proposal.paper_id} ─────────────────────────────────`);
+      c.log(`  Extracted: ${proposal.extracted_at}`);
+      c.log(`  Model: ${proposal.model}   Weight: ${proposal.paper_weight}   Source: ${proposal.extraction_source}`);
 
-    c.log(`\n  Nodes (${proposal.nodes.length}):`);
-    for (const n of proposal.nodes) {
-      const tag = existingIds.has(n.id) ? '\x1b[33m~\x1b[0m' : '\x1b[32m+\x1b[0m';
-      c.log(`  ${tag} ${n.id.padEnd(30)} cluster:${n.cluster}  weight:${n.weight}  level:${n.level}`);
+      c.log(`\n  Nodes (${proposal.nodes.length}):`);
+      for (const n of proposal.nodes) {
+        const tag = existingIds.has(n.id) ? '\x1b[33m~\x1b[0m' : '\x1b[32m+\x1b[0m';
+        c.log(`  ${tag} ${n.id.padEnd(30)} cluster:${n.cluster}  weight:${n.weight}  level:${n.level}`);
+      }
+
+      c.log(`\n  Edges (${proposal.edges.length}):`);
+      const edgesToShow = proposal.edges.slice(0, 8);
+      edgesToShow.forEach(e => c.log(`    ${e.a} ↔ ${e.b}  (${e.strength})`));
+      if (proposal.edges.length > 8) c.log(`    … and ${proposal.edges.length - 8} more`);
+
+      c.log('');
+      const answer = (await ask('  > [a/r/d] ')).trim().toLowerCase();
+
+      if (answer === 'a') {
+        const pub  = pubIndex[proposal.paper_id] || {};
+        const meta = {
+          id:               proposal.paper_id,
+          title:            pub.title,
+          year:             pub.year,
+          venue:            pub.venue,
+          doi:              pub.doi,
+          arxivId:          pub.arxivId,
+          url:              pub.url,
+          abstractOnly:     proposal.extraction_source === 'title-abstract',
+          pubType:          pub.pubType,
+          authorPosition:   pub.authorPosition,
+          extraction_source: proposal.extraction_source,
+        };
+        const { newNodes, newEdges, boostedNodes } = mergeIntoGraph(graph, proposal, meta, proposal.paper_weight);
+        saveGraph(graph);
+        proposal.reviewed = true;
+        proposal.decision = 'approved';
+        approved++;
+        c.ok(`  Approved — +${newNodes} nodes, +${newEdges} edges, ↑${boostedNodes} boosted`);
+      } else if (answer === 'r') {
+        proposal.reviewed = true;
+        proposal.decision = 'rejected';
+        rejected++;
+        c.warn(`  Rejected — not added to graph`);
+      } else {
+        deferred++;
+        c.dim(`  Deferred — will appear next session`);
+      }
+
+      // Persist proposals file after each decision (safe resumption if interrupted)
+      fs.writeFileSync(PROPOSALS_PATH, JSON.stringify(proposals, null, 2));
     }
-
-    c.log(`\n  Edges (${proposal.edges.length}):`);
-    const edgesToShow = proposal.edges.slice(0, 8);
-    edgesToShow.forEach(e => c.log(`    ${e.a} ↔ ${e.b}  (${e.strength})`));
-    if (proposal.edges.length > 8) c.log(`    … and ${proposal.edges.length - 8} more`);
-
-    c.log('');
-    const answer = (await ask('  > [a/r/d] ')).trim().toLowerCase();
-
-    if (answer === 'a') {
-      const pub  = pubIndex[proposal.paper_id] || {};
-      const meta = {
-        id:               proposal.paper_id,
-        title:            pub.title,
-        year:             pub.year,
-        venue:            pub.venue,
-        doi:              pub.doi,
-        arxivId:          pub.arxivId,
-        url:              pub.url,
-        abstractOnly:     proposal.extraction_source === 'title-abstract',
-        pubType:          pub.pubType,
-        authorPosition:   pub.authorPosition,
-        extraction_source: proposal.extraction_source,
-      };
-      const { newNodes, newEdges, boostedNodes } = mergeIntoGraph(graph, proposal, meta, proposal.paper_weight);
-      saveGraph(graph);
-      proposal.reviewed = true;
-      proposal.decision = 'approved';
-      approved++;
-      c.ok(`  Approved — +${newNodes} nodes, +${newEdges} edges, ↑${boostedNodes} boosted`);
-    } else if (answer === 'r') {
-      proposal.reviewed = true;
-      proposal.decision = 'rejected';
-      rejected++;
-      c.warn(`  Rejected — not added to graph`);
-    } else {
-      deferred++;
-      c.dim(`  Deferred — will appear next session`);
-    }
-
-    // Persist proposals file after each decision (safe resumption if interrupted)
-    fs.writeFileSync(PROPOSALS_PATH, JSON.stringify(proposals, null, 2));
+  } finally {
+    rl.close();
   }
-
-  rl.close();
 
   if (approved > 0) {
     c.head('\nRebuilding layout…');

@@ -225,8 +225,9 @@ async function main() {
   const limit     = opts.limit ? parseInt(opts.limit) : null;
   const passMap   = { 1: pass1, 2: pass2, 3: pass3 };
 
-  // Wipe graph only on a fresh full run (no --start-pass)
-  if (!opts.dryRun && !startPass) {
+  // Wipe graph only on a fresh full run that includes pass 1 or 2 (no --start-pass).
+  // --pass 3 alone only writes to draft-proposals.json, never touches graph.json.
+  if (!opts.dryRun && !startPass && (passMask.includes(1) || passMask.includes(2))) {
     const graph = loadGraph();
     const clusterBackup = graph.meta.clusters;
     graph.nodes         = [];

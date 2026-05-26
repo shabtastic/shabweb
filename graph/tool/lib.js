@@ -61,6 +61,8 @@ export async function extractConcepts(text, graph, paperWeight = 1.0, model = 'c
   const existingIds = graph.nodes.map(n => n.id);
   const clusterGuide = graph.meta.clusters.map(cl => `${cl.id}=${cl.name}`).join(', ');
 
+  c.info(`Sending to Claude for concept extraction (model: ${model}, paperWeight: ${paperWeight})…`);
+
   const response = await client.messages.create({
     model,
     max_tokens: 2000,

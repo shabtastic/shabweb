@@ -18,12 +18,11 @@
 import 'dotenv/config';
 import fs   from 'fs';
 import path from 'path';
-import readline from 'readline';
 import { fileURLToPath } from 'url';
 import { program } from 'commander';
 import Anthropic from '@anthropic-ai/sdk';
 import fetch from 'node-fetch';
-import { c, GRAPH_PATH, loadGraph, saveGraph, computePaperWeight, extractConcepts, mergeIntoGraph, rebuildLayout } from './lib.js';
+import { c, loadGraph, saveGraph, computePaperWeight, extractConcepts, mergeIntoGraph, rebuildLayout } from './lib.js';
 
 const __dirname  = path.dirname(fileURLToPath(import.meta.url));
 const ORCID_ID   = process.env.ORCID_ID || '0000-0003-4122-6041';
@@ -1171,8 +1170,13 @@ If no merges are needed, return {"merges": []}.
           return true;
         });
 
-        // Update nodesContributed in paper records
+        // Update nodes_contributed / nodesContributed in paper records
         graph.meta.papers.forEach(p => {
+          if (p.nodes_contributed?.includes(absorbId)) {
+            p.nodes_contributed = p.nodes_contributed
+              .map(id => id === absorbId ? keep : id)
+              .filter((id, i, arr) => arr.indexOf(id) === i);
+          }
           if (p.nodesContributed?.includes(absorbId)) {
             p.nodesContributed = p.nodesContributed
               .map(id => id === absorbId ? keep : id)

@@ -95,3 +95,193 @@ function loadCorpusUniverse() {
 
   return { pass1, pass2, pass3 };
 }
+
+// ── Draft proposals ───────────────────────────────────────────────────────────
+function writeDraftProposal(paperId, extracted, meta, paperWeight, model) {
+  let proposals = { proposals: [] };
+  if (fs.existsSync(PROPOSALS_PATH)) {
+    try { proposals = JSON.parse(fs.readFileSync(PROPOSALS_PATH, 'utf-8')); }
+    catch { /* start fresh if corrupt */ }
+  }
+
+  // Replace any existing proposal for this paper (idempotent)
+  proposals.proposals = proposals.proposals.filter(p => p.paper_id !== paperId);
+
+  proposals.proposals.push({
+    paper_id:          paperId,
+    extracted_at:      new Date().toISOString(),
+    model,
+    paper_weight:      paperWeight,
+    extraction_source: meta.extraction_source,
+    nodes:             extracted.nodes || [],
+    edges:             extracted.edges || [],
+    paper_meta:        extracted.paper || {},
+    reviewed:          false,
+  });
+
+  fs.writeFileSync(PROPOSALS_PATH, JSON.stringify(proposals, null, 2));
+  c.ok(`  Draft proposal written for ${paperId}`);
+}
+
+// ── Retry logic ───────────────────────────────────────────────────────────────
+async function extractConceptsWithRetry(text, graph, paperWeight, model, maxAttempts = 3) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await extractConcepts(text, graph, paperWeight, model);
+    } catch (e) {
+      const isJsonError = e instanceof SyntaxError || e.message?.includes('JSON');
+      const isApiError  = e.status === 429 || (e.status >= 500 && e.status < 600);
+
+      if (isJsonError && attempt < maxAttempts) {
+        c.warn(`  JSON parse error (attempt ${attempt}/${maxAttempts}) — retrying…`);
+        await new Promise(r => setTimeout(r, 3000));
+        continue;
+      }
+      if (isApiError && attempt < maxAttempts) {
+        const wait = attempt * 15;
+        c.warn(`  API error ${e.status} — backing off ${wait}s (attempt ${attempt}/${maxAttempts})…`);
+        await new Promise(r => setTimeout(r, wait * 1000));
+        continue;
+      }
+      throw e;
+    }
+  }
+}
+
+// ── Per-paper processor ───────────────────────────────────────────────────────
+async function processPaper(pub, graph, opts, passNum) {
+  const shaPath = path.join(VAULT_DIR, 'extracted', `${pub.sha}.txt`);
+
+  let text, extractionSource;
+  if (fs.existsSync(shaPath)) {
+    text = fs.readFileSync(shaPath, 'utf-8');
+    extractionSource = 'full-text';
+    c.info(`  vault/extracted/${pub.sha}.txt — ${text.length} chars`);
+  } else {
+    c.warn(`  vault/extracted/${pub.sha}.txt missing — falling back to title+abstract`);
+    text = [pub.title, pub.abstract].filter(Boolean).join('\n\n');
+    extractionSource = 'title-abstract';
+  }
+
+  // Pass 1 papers and any selected paper always get paperWeight 1.0
+  const paperWeight = (passNum === 1 || pub.isSelected)
+    ? 1.0
+    : computePaperWeight({ pubType: pub.pubType, authorPosition: pub.authorPosition, year: pub.year });
+
+  const model = opts.opus ? 'claude-opus-4-7' : 'claude-sonnet-4-6';
+  c.info(`  weight:${paperWeight}  model:${model}  source:${extractionSource}`);
+
+  if (opts.dryRun) {
+    c.dim('  [dry-run] skipping extraction');
+    return;
+  }
+
+  const extracted = await extractConceptsWithRetry(text, graph, paperWeight, model);
+  c.ok(`  extracted ${extracted.nodes?.length || 0} nodes, ${extracted.edges?.length || 0} edges`);
+
+  const meta = {
+    id:               pub.id,
+    title:            pub.title,
+    year:             pub.year,
+    venue:            pub.venue,
+    doi:              pub.doi,
+    arxivId:          pub.arxivId,
+    url:              pub.url,
+    abstractOnly:     extractionSource === 'title-abstract',
+    pubType:          pub.pubType,
+    authorPosition:   pub.authorPosition,
+    extraction_source: extractionSource,
+  };
+
+  if (passNum === 3) {
+    writeDraftProposal(pub.id, extracted, meta, paperWeight, model);
+  } else {
+    const { newNodes, newEdges, boostedNodes } = mergeIntoGraph(graph, extracted, meta, paperWeight);
+    saveGraph(graph);
+    c.ok(`  +${newNodes} nodes, +${newEdges} edges, ↑${boostedNodes} boosted — total ${graph.nodes.length} nodes`);
+  }
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+async function main() {
+  program.parse();
+  const opts = program.opts();
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    c.err('ANTHROPIC_API_KEY not set. Add it to .env or export it.');
+    process.exit(1);
+  }
+
+  const { pass1, pass2, pass3 } = loadCorpusUniverse();
+  c.head('\nGraph Rebuild from Corpus');
+  c.log(`  Pass 1 (selected, non-draft): ${pass1.length} papers`);
+  c.log(`  Pass 2 (non-selected, non-draft): ${pass2.length} papers`);
+  c.log(`  Pass 3 (draft): ${pass3.length} papers`);
+  c.log(`  Corpus: ${CORPUS_REPO}`);
+  c.log('');
+
+  const startPass = opts.startPass ? parseInt(opts.startPass) : null;
+  const passMask  = opts.pass === 'all' ? [1, 2, 3] : [parseInt(opts.pass)];
+  const limit     = opts.limit ? parseInt(opts.limit) : null;
+  const passMap   = { 1: pass1, 2: pass2, 3: pass3 };
+
+  // Wipe graph only on a fresh full run (no --start-pass)
+  if (!opts.dryRun && !startPass) {
+    const graph = loadGraph();
+    const clusterBackup = graph.meta.clusters;
+    graph.nodes         = [];
+    graph.edges         = [];
+    graph.layout        = [];
+    graph.meta.papers   = [];
+    graph.meta.clusters = clusterBackup;
+    saveGraph(graph);
+    c.ok('Graph wiped — fresh rebuild starting');
+  }
+
+  const graph = loadGraph();
+
+  for (const passNum of passMask) {
+    if (startPass && passNum < startPass) continue;
+
+    const papers    = passMap[passNum];
+    const alreadyDone = new Set(graph.meta.papers.map(p => p.id));
+
+    const toProcess = papers.filter(pub => {
+      if (passNum !== 3 && alreadyDone.has(pub.id)) {
+        c.dim(`  [skip] ${pub.id} — already in graph`);
+        return false;
+      }
+      return true;
+    });
+
+    const batch = limit ? toProcess.slice(0, limit) : toProcess;
+    c.head(`\n── Pass ${passNum} — ${batch.length} papers to process ─────────────────`);
+
+    for (let i = 0; i < batch.length; i++) {
+      const pub = batch[i];
+      c.head(`\n[${i+1}/${batch.length}] ${pub.id}`);
+      c.dim(`  ${pub.title?.slice(0, 80)}`);
+      try {
+        await processPaper(pub, graph, opts, passNum);
+      } catch (e) {
+        c.err(`  FAILED: ${e.message}`);
+        c.err(`  Skipping ${pub.id} — continuing`);
+      }
+      if (i < batch.length - 1) await new Promise(r => setTimeout(r, 2000));
+    }
+  }
+
+  if (!opts.dryRun) {
+    c.head('\nFinalizing layout…');
+    rebuildLayout(graph);
+    saveGraph(graph);
+    c.ok(`Rebuild complete: ${graph.nodes.length} nodes, ${graph.edges.length} edges, ${graph.meta.papers.length} papers`);
+    if (pass3.length && passMask.includes(3)) {
+      c.warn(`Pass 3 (${pass3.length} drafts) → inspect graph/draft-proposals.json, then run review-draft-proposals.js`);
+    }
+  } else {
+    c.warn('Dry run — nothing saved.');
+  }
+}
+
+main().catch(e => { c.err(e.message); process.exit(1); });

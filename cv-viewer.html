@@ -119,10 +119,7 @@ body {
 
 <script>
 (function() {
-  // PDF source: latest GitHub Release asset. PDFs live in releases
-  // (not committed to the branch). The /releases/latest/download/
-  // endpoint resolves to the current latest release without auth.
-  const PDF_URL = 'https://github.com/shabtastic/cv-that-is-awesome/releases/latest/download/shabnam-hakimi-cv.pdf';
+  const PDF_URL = 'https://raw.githubusercontent.com/shabtastic/cv-that-is-awesome/main/cv-full-public.pdf';
 
   const wrap = document.getElementById('pdf-wrap');
   const fallback = document.getElementById('pdf-fallback');

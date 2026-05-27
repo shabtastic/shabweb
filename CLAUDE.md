@@ -13,7 +13,7 @@ cv.html                 — Data-driven CV (selected publications from JSON, edu
 cv-viewer.html          — PDF viewer (fetches CV PDF from CV repo)
 projects.html           — Scientific research projects (Ongoing | Past | Tools & Datasets)
 extracurriculars.html   — Personal & side projects (creative, side projects, writing)
-graph/graph.json        — Graph data: 42 nodes, 100 edges, 7 clusters, papers in meta.papers
+graph/graph.json        — Graph data: 339 nodes, 707 edges, 7 clusters, 48 papers in meta.papers
 graph/tool/index.js     — CLI tool: node graph/tool/index.js add --doi <doi> to add papers to graph.json
 graph/editor.html       — Graph editor (existing, untouched)
 data/sync-bib.js        — Syncs CV bib files → publications.json + graph.json
@@ -167,11 +167,11 @@ graph.html has its own full-screen canvas UI.
 ## Known TODOs (priority order)
 1. **Fill in projects.html and extracurriculars.html** — both are placeholder templates
 2. **Review/edit about copy on index.html** — written from public sources, needs Shabnam's voice
-3. **CV PDF link** — `href="#"` in contact section, needs real file (or point to cv-viewer.html)
-4. **Mobile CSS pass** — untested at ≤768px; graph.html sidebar (320px fixed) overflows on mobile
+3. ~~**CV PDF link**~~ — done. Contact section links to cv-viewer.html.
+4. ~~**Mobile CSS pass**~~ — done. Nav overflow fixed on all pages; cursor reset on mobile; graph.html stacks canvas/sidebar.
 5. ~~**Inline graph sync**~~ — done. `node data/inline-graph.js` re-inlines `graph/graph.json` into both `index.html` and `graph.html`. Run after `node graph/tool/index.js add` or `node data/sync-bib.js`. The `clusterData` block in graph.html is still hard-coded with friendly cluster names (separate from `graphData.meta.clusters`); leave for now unless cluster names change.
-6. **Nav active state** — no scroll-spy on index.html; active link doesn't update on scroll
-7. **Concept extraction** — 19 of 45 publications still have no graph nodes (per memory)
+6. ~~**Nav active state**~~ — done. Passive scroll listener replaces broken IntersectionObserver.
+7. ~~**Concept extraction**~~ — done. 48/49 papers have graph nodes; Bachman2020journal intentionally excluded (scicomm keyword, no research concepts). `rebuild-from-corpus.js` filters `EXCLUDED_KEYWORDS = ['scicomm', 'commentary', 'unlisted']`.
 
 ## Related repos (corpus lives elsewhere)
 The personal-research corpus pipeline (matches CV publications to local PDFs/DOCs across `~/Downloads/{fromSugarSync,Projects,Project Archive,fromInternet}`) lives in a separate private repo: `~/projects/research-corpus`. It reads `data/publications.json` from here via `$WEBSITE_DATA_DIR` (defaults to `~/projects/website/data`) and writes its own `corpus-catalog.json`. v1 (2026-05-16) ships matching + acquisition labeling; v2+ (policy classification, PDF hosting on cv.html, concept re-extraction into graph.json) is parked. See `docs/spec.md` and `docs/plan.md` in that repo.

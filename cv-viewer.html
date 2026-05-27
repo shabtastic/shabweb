@@ -119,7 +119,7 @@ body {
 
 <script>
 (function() {
-  const PDF_URL = 'https://github.com/shabtastic/cv-that-is-awesome/releases/latest/download/cv-full-public.pdf';
+  const PDF_URL = 'cv-full-public.pdf';
 
   const wrap = document.getElementById('pdf-wrap');
   const fallback = document.getElementById('pdf-fallback');
@@ -127,17 +127,13 @@ body {
 
   downloadBtn.href = PDF_URL;
 
-  // GitHub releases send Content-Disposition: attachment, so <embed> triggers
-  // a download instead of rendering inline. Route through Google Docs Viewer.
-  const VIEWER_URL = 'https://docs.google.com/viewer?url=' + encodeURIComponent(PDF_URL) + '&embedded=true';
-
-  const iframe = document.createElement('iframe');
-  iframe.src = VIEWER_URL;
-  iframe.style.cssText = 'width:100%;height:100%;border:none;';
-  iframe.title = 'Shabnam Hakimi — Full CV';
+  const embed = document.createElement('embed');
+  embed.type = 'application/pdf';
+  embed.src = PDF_URL;
+  embed.style.cssText = 'width:100%;height:100%;border:none;';
 
   fallback.remove();
-  wrap.appendChild(iframe);
+  wrap.appendChild(embed);
 
   // Cursor
   const cursor = document.getElementById('cursor');

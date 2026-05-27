@@ -9285,7 +9285,32 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     addNode(bestId);
   }
 
-  const NODES = levelFiltered.filter(n => selectedIds.has(n.id))
+  // Post-BFS: keep only the largest connected component so the spreading-
+  // activation metaphor stays valid (no floating islands).
+  const candidateIds = new Set(selectedIds);
+  const visAdj = new Map([...candidateIds].map(id => [id, []]));
+  graphData.edges.forEach(e => {
+    if (visAdj.has(e.a) && visAdj.has(e.b)) {
+      visAdj.get(e.a).push(e.b);
+      visAdj.get(e.b).push(e.a);
+    }
+  });
+  const visited = new Set();
+  let mainComponent = new Set();
+  candidateIds.forEach(startId => {
+    if (visited.has(startId)) return;
+    const comp = new Set();
+    const q = [startId];
+    while (q.length) {
+      const id = q.pop();
+      if (comp.has(id)) continue;
+      comp.add(id); visited.add(id);
+      (visAdj.get(id) || []).forEach(nb => { if (!comp.has(nb)) q.push(nb); });
+    }
+    if (comp.size > mainComponent.size) mainComponent = comp;
+  });
+
+  const NODES = levelFiltered.filter(n => mainComponent.has(n.id))
     .sort((a, b) => (b.weight || 0) - (a.weight || 0));
   const visibleIds = new Set(NODES.map(n => n.id));
   const EDGES = graphData.edges.filter(e => visibleIds.has(e.a) && visibleIds.has(e.b));

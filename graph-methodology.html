@@ -258,7 +258,7 @@
   <h1>How the graph was built</h1>
   <p class="subtitle">Extraction process · weighting · visualization</p>
 
-  <p>The knowledge graph is a structural representation of the conceptual space across my published work. It is constructed automatically from paper abstracts using a language model, then visualized with a force-directed layout. This page documents the pipeline in full — including the exact prompt sent to the model on each paper.</p>
+  <p>The knowledge graph is a structural representation of the conceptual space across my published work. It is constructed automatically from the full text of each paper using a language model, then visualized with a force-directed layout. This page documents the pipeline in full — including the exact prompt sent to the model on each paper.</p>
 
   <h2>What the graph represents</h2>
 
@@ -280,7 +280,7 @@
 
   <h2>Three-pass extraction</h2>
 
-  <p>The graph is built in three passes over the publication list. Each pass sends the title and abstract of a paper to Claude (claude-sonnet-4-6) and asks it to return a JSON object with nodes and edges. The model is given the full list of existing node IDs and instructed to reuse them rather than creating near-synonyms.</p>
+  <p>The graph is built in three passes over the publication list. Each pass sends the full extracted text of a paper (up to 10,000 characters) to Claude (claude-sonnet-4-6) and asks it to return a JSON object with nodes and edges. The model is given the full list of existing node IDs and instructed to reuse them rather than creating near-synonyms.</p>
 
   <div class="pass-grid">
     <div class="cell head">Pass</div>

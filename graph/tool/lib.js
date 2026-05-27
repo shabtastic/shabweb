@@ -66,9 +66,9 @@ export async function extractConcepts(text, graph, paperWeight = 1.0, model = 'c
   const response = await client.messages.create({
     model,
     max_tokens: 2000,
-    system: `You are a research knowledge-graph builder. Extract key concepts (nodes) and theoretical relationships (edges) from academic paper text.
+    system: `You are a research knowledge-graph builder for a cognitive neuroscientist's published work. Extract concepts that represent durable scientific knowledge — constructs, theories, and mechanisms that appear in the Introduction and Discussion of review articles in this research area.
 
-EXISTING NODE IDs — you MUST reuse these wherever semantically appropriate.
+EXISTING NODE IDs — reuse wherever semantically appropriate.
 Do NOT create a new node if an existing one covers the same concept, even if the wording differs.
 Examples of what NOT to do: adding "risk_perception" when "perceived_risk" exists; adding "belief_updating" when "belief_revision" exists; adding "episodic_simulation" when "episodic_sim" exists.
 When in doubt, REUSE the existing node and add edges to/from it instead.
@@ -91,22 +91,34 @@ Return ONLY valid JSON, no markdown fences:
   "paper": {"title":"...","year":2024,"venue":"...","doi":"..."}
 }
 
-Guidelines:
-- ONLY add nodes for concepts genuinely absent from the existing list above
-- Prefer edges to existing nodes over creating near-duplicate new nodes
-- weight = raw centrality × paperWeight (already factored in above)
-- strength = theoretical coupling tightness
-- 5–15 new nodes maximum; quality over quantity
-- label: lowercase; use \\n to wrap if display text > 12 chars
-- id: snake_case, max 3 words, must be unique and not a synonym of any existing id
-- level: abstraction level — exactly one of:
-    "theory"     (frameworks/computational models — e.g. predictive processing)
-    "construct"  (mid-level psych/cognitive concepts — DEFAULT for ambiguous cases)
-    "method"     (research methods/instruments — e.g. fMRI, driving simulator)
-    "mechanism"  (brain regions/neurochemicals — e.g. amygdala, vasopressin)
-    "domain"     (application areas/populations — e.g. adolescent development)
-  Prefer "construct" when in doubt; only use mechanism/method when clearly biological/methodological.`,
-    messages: [{ role: 'user', content: text.slice(0, 10000) }],
+EXTRACTION RULE: Extract what the study contributes, not how it was designed.
+
+A node belongs in the graph only if it has independent scientific standing — it would appear in a review article's Introduction or Discussion written by a different lab, in a field ontology, or as a useful search term for learning about this research area.
+
+Study artifacts — stimuli, IVs, DV operationalizations, domain context descriptors, study-specific task names — should almost never become nodes. For each one, first ask: is there a more general version with independent scientific standing? If yes, extract that instead. Skip only when no meaningful generalization exists.
+
+Lifting examples (specific → general):
+- Defendant race used as IV → decision_bias (specific IV → construct it operationalizes)
+- Neurosynth decoding used in analysis → neural_decoding (specific tool → general method)
+- Design outcome differentiability (DV) → creative_divergence (DV label → established construct)
+- Large infrequent purchase (domain framing) → choice_prediction (context → scientific contribution)
+- OXTR genotype (specific variant) → imaging_genetics (variable → research approach)
+
+Skip examples (no generalizable concept exists):
+- Powertrain features shown to participants → skip (pure stimulus choice)
+- Mock juror task → skip (extract legal_decision_making as the construct instead)
+
+For methods: extract if the technique has cross-lab standing and is central to the paper's scientific argument (fMRI, conjoint analysis, drift-diffusion modeling, neural decoding). Skip tools that are incidental to the analysis.
+
+LEVEL — assign exactly one:
+"theory"     Frameworks/models spanning multiple findings. e.g. predictive processing, drift-diffusion model
+"construct"  Scientific concepts generalizing across labs and studies. e.g. temporal discounting, cognitive flexibility, imaging genetics. NOT study-specific variables.
+"method"     Cross-study instruments and analysis techniques. e.g. fMRI, conjoint analysis, eye tracking. NOT study-specific tasks.
+"mechanism"  Biological substrates: brain regions, circuits, neurochemicals, genetic variants. e.g. amygdala, dopamine, oxytocin system
+"domain"     Application areas or populations. e.g. adolescent development, consumer choice
+
+QUANTITY: 5–12 new nodes maximum; prefer fewer, more central nodes. weight = raw centrality × paperWeight. strength = theoretical coupling tightness. label: lowercase, use \\n if > 12 chars. id: snake_case, max 3 words, unique.`,
+    messages: [{ role: 'user', content: text.slice(0, 10000) + '\n\nRespond with the JSON object only. Do not add any text before or after it.' }],
   });
 
   const raw   = response.content.map(b => b.text || '').join('');

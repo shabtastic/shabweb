@@ -61,29 +61,6 @@
         ]
       },
       {
-        "id": "Nath2026rewards",
-        "title": "Designing Rewards for Rewarding Designs: Demonstrating the Impact of Rewards on the Creative Design Process",
-        "year": 2026,
-        "venue": "Preprint",
-        "arxivId": "2604.26083",
-        "url": "https://arxiv.org/abs/2604.26083",
-        "abstractOnly": false,
-        "pubType": "preprint",
-        "authorPosition": "last",
-        "paperWeight": 0.56,
-        "extraction_source": "full-text",
-        "added": "2026-05-27T04:10:39.031Z",
-        "nodes_contributed": [
-          "mdp_design",
-          "reward_shaping",
-          "design_decision",
-          "goal_alignment",
-          "reward_hacking",
-          "creative_agency",
-          "feedback_utility"
-        ]
-      },
-      {
         "id": "Nath2026designrewards",
         "title": "Designing Rewards for Rewarding Designs: Demonstrating the Impact of Rewards on the Creative Design Process",
         "year": 2026,

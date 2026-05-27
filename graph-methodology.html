@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph methodology — Shabnam Hakimi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper:    #f5f2ec;
+      --ink:      #111118;
+      --ink-blue: #1a2c6b;
+      --ink-dim:  rgba(17,17,24,0.45);
+      --ink-faint:rgba(17,17,24,0.15);
+      --blue-g:   rgba(80,140,200,0.20);
+      --blue-G:   rgba(80,140,200,0.42);
+      --sans: 'DM Sans', sans-serif;
+      --mono: 'Space Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--paper);
+      background-image:
+        linear-gradient(var(--blue-G) 1px, transparent 1px),
+        linear-gradient(90deg, var(--blue-G) 1px, transparent 1px),
+        linear-gradient(var(--blue-g) 1px, transparent 1px),
+        linear-gradient(90deg, var(--blue-g) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+      background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+      font-family: var(--mono);
+      color: var(--ink);
+      min-height: 100vh;
+      cursor: none;
+    }
+
+    a, button { cursor: none; }
+
+    /* ── Custom cursor ─────────────────────────────── */
+    #cursor {
+      position: fixed; top: 0; left: 0; pointer-events: none;
+      z-index: 9999; transform: translate(-50%,-50%);
+      font-family: var(--mono); font-weight: 700; font-size: 1.1rem;
+      color: var(--ink); transition: color 0.15s, transform 0.15s;
+      user-select: none;
+    }
+    #cursor.hover { color: var(--ink-blue); transform: translate(-50%,-50%) scale(1.9); }
+
+    /* ── Back link ─────────────────────────────────── */
+    .back-bar {
+      position: sticky; top: 0; z-index: 100;
+      padding: 0.9rem 2rem;
+      background: rgba(245,242,236,0.88);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--blue-G);
+      display: flex; align-items: center; gap: 1.5rem;
+      font-size: 0.62rem; color: var(--ink-dim);
+    }
+    .back-bar a {
+      color: var(--ink-blue); text-decoration: none;
+      font-family: var(--mono); font-size: 0.62rem;
+    }
+    .back-bar a:hover { text-decoration: underline; }
+    .back-bar .sep { opacity: 0.4; }
+
+    /* ── Content card ──────────────────────────────── */
+    .card {
+      max-width: 780px;
+      margin: 3rem auto 6rem;
+      padding: 0 2rem;
+    }
+
+    /* ── Typography ────────────────────────────────── */
+    h1 {
+      font-family: var(--sans);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 500;
+      color: var(--ink-blue);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      font-size: 0.6rem;
+      color: var(--ink-dim);
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-blue);
+      margin: 2.8rem 0 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--blue-G);
+    }
+
+    p {
+      font-size: 0.72rem;
+      line-height: 1.85;
+      color: var(--ink);
+      margin-bottom: 0.9rem;
+    }
+
+    p.dim {
+      color: var(--ink-dim);
+    }
+
+    /* ── Three-pass table ──────────────────────────── */
+    .pass-grid {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--blue-G);
+      margin: 1.2rem 0 1.8rem;
+      font-size: 0.62rem;
+    }
+    .pass-grid .cell {
+      padding: 0.55rem 0.8rem;
+      border-bottom: 1px solid var(--blue-g);
+      border-right: 1px solid var(--blue-g);
+      line-height: 1.6;
+    }
+    .pass-grid .cell:nth-child(3n) { border-right: none; }
+    .pass-grid .cell.head {
+      font-weight: 700; color: var(--ink-blue);
+      background: rgba(80,140,200,0.06);
+      font-size: 0.55rem; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .pass-grid .cell.label { font-weight: 700; color: var(--ink); white-space: nowrap; }
+    .pass-grid .cell:last-child, .pass-grid .cell:nth-last-child(2),
+    .pass-grid .cell:nth-last-child(3) { border-bottom: none; }
+
+    /* ── Weight table ──────────────────────────────── */
+    .weight-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.6rem;
+      margin: 0.8rem 0 1.4rem;
+    }
+    .weight-table th {
+      text-align: left; font-weight: 700;
+      color: var(--ink-blue); font-size: 0.55rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.35rem 0.7rem;
+      border-bottom: 1px solid var(--blue-G);
+      background: rgba(80,140,200,0.06);
+    }
+    .weight-table td {
+      padding: 0.4rem 0.7rem;
+      border-bottom: 1px solid var(--blue-g);
+      color: var(--ink); line-height: 1.5;
+    }
+    .weight-table td:first-child { font-family: var(--mono); color: var(--ink-blue); }
+    .weight-table tr:last-child td { border-bottom: none; }
+
+    /* ── Prompt block ──────────────────────────────── */
+    .prompt-wrapper {
+      margin: 1.2rem 0 2rem;
+      border: 1px solid var(--blue-G);
+      background: rgba(245,242,236,0.6);
+    }
+    .prompt-label {
+      font-size: 0.52rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      padding: 0.45rem 0.9rem;
+      border-bottom: 1px solid var(--blue-G);
+      font-weight: 700;
+      background: rgba(80,140,200,0.05);
+    }
+    pre.prompt {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      line-height: 1.75;
+      color: var(--ink);
+      padding: 1.1rem 0.9rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+    }
+
+    /* ── BFS visualization ─────────────────────────── */
+    .bfs-diagram {
+      margin: 1rem 0 1.6rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--blue-G);
+      font-size: 0.6rem;
+      line-height: 1.8;
+      color: var(--ink-dim);
+    }
+    .bfs-diagram strong { color: var(--ink-blue); font-size: 0.6rem; }
+    .bfs-step {
+      display: flex; gap: 0.8rem; margin-bottom: 0.4rem;
+      align-items: flex-start;
+    }
+    .bfs-n {
+      flex-shrink: 0; width: 1.2rem; height: 1.2rem;
+      border-radius: 50%; background: var(--ink-blue);
+      color: white; font-size: 0.45rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 0.1rem;
+    }
+
+    /* ── Cluster pills ─────────────────────────────── */
+    .cluster-row {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin: 0.8rem 0 1.4rem;
+    }
+    .cpill {
+      font-size: 0.52rem; padding: 0.2rem 0.55rem;
+      border-radius: 2px; font-family: var(--mono);
+      font-weight: 700; letter-spacing: 0.04em;
+    }
+    .cpill.c0 { background: rgba(119,119,255,0.15); color: #4444cc; }
+    .cpill.c1 { background: rgba(201,119,255,0.15); color: #8844bb; }
+    .cpill.c2 { background: rgba(255,119,228,0.15); color: #cc44aa; }
+    .cpill.c3 { background: rgba(255,119,146,0.15); color: #cc4455; }
+    .cpill.c4 { background: rgba(255,255,119,0.3);  color: #7a6000; }
+    .cpill.c5 { background: rgba(255,174,119,0.2);  color: #cc6611; }
+    .cpill.c6 { background: rgba(119,255,228,0.2);  color: #228866; }
+
+    /* ── Footer note ───────────────────────────────── */
+    .footer-note {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--blue-G);
+      font-size: 0.58rem;
+      color: var(--ink-dim);
+      line-height: 1.7;
+    }
+    .footer-note a { color: var(--ink-blue); text-decoration: none; }
+    .footer-note a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div id="cursor">+</div>
+
+<nav class="back-bar">
+  <a href="graph.html">← graph</a>
+  <span class="sep">·</span>
+  <span>methodology</span>
+</nav>
+
+<main class="card">
+
+  <h1>How the graph was built</h1>
+  <p class="subtitle">Extraction process · weighting · visualization</p>
+
+  <p>The knowledge graph is a structural representation of the conceptual space across my published work. It is constructed automatically from paper abstracts using a language model, then visualized with a force-directed layout. This page documents the pipeline in full — including the exact prompt sent to the model on each paper.</p>
+
+  <h2>What the graph represents</h2>
+
+  <p>Each <strong>node</strong> is a scientific construct, theory, method, mechanism, or domain that has independent standing in the research literature — the kind of term that would appear in the Introduction or Discussion section of a review article written by a different lab, in a field ontology, or as a search term someone might use to learn about this area of research.</p>
+
+  <p>Each <strong>edge</strong> encodes the theoretical coupling between two concepts as judged by the model. Edge strength reflects how tightly the two concepts are logically or empirically entangled in the published literature, not just whether they co-occur in a single paper.</p>
+
+  <p>Nodes are clustered into seven research areas by the model at extraction time:</p>
+
+  <div class="cluster-row">
+    <span class="cpill c0">0 · Self-regulation</span>
+    <span class="cpill c1">1 · Predictive brain</span>
+    <span class="cpill c2">2 · Generative AI</span>
+    <span class="cpill c3">3 · Interventions</span>
+    <span class="cpill c4">4 · Neuroeconomics</span>
+    <span class="cpill c5">5 · Social neuroscience</span>
+    <span class="cpill c6">6 · Consumer &amp; preference</span>
+  </div>
+
+  <h2>Three-pass extraction</h2>
+
+  <p>The graph is built in three passes over the publication list. Each pass sends the title and abstract of a paper to Claude (claude-sonnet-4-6) and asks it to return a JSON object with nodes and edges. The model is given the full list of existing node IDs and instructed to reuse them rather than creating near-synonyms.</p>
+
+  <div class="pass-grid">
+    <div class="cell head">Pass</div>
+    <div class="cell head">Papers</div>
+    <div class="cell head">Role</div>
+
+    <div class="cell label">1 · Anchors</div>
+    <div class="cell">Selected publications (high-weight: journal articles, first-author, recent)</div>
+    <div class="cell">Establishes the core vocabulary of the graph — nodes extracted here define the ID space all later passes must reuse</div>
+
+    <div class="cell label">2 · Fill</div>
+    <div class="cell">Remaining publications in the corpus</div>
+    <div class="cell">Adds nodes not yet represented; boosts weights of existing nodes that recur across papers</div>
+
+    <div class="cell label">3 · Drafts</div>
+    <div class="cell">Preprints and unpublished manuscripts</div>
+    <div class="cell">Written to a separate review file; manually approved before merging into the public graph</div>
+  </div>
+
+  <p class="dim">Draft proposals are never automatically added to the public graph. They go to a gitignored file and are reviewed before any merge.</p>
+
+  <h2>Paper weighting</h2>
+
+  <p>Each paper is assigned a weight (0–1) before extraction. This weight is sent to the model and is used to scale the raw node weight the model assigns. The final node weight is <code style="font-size:0.65em">raw_score × paper_weight</code>, clamped to [0.1, 1.0]. A central construct in a lower-weight paper ends up with a lower node weight than the same construct in a high-weight anchor paper.</p>
+
+  <table class="weight-table">
+    <thead>
+      <tr>
+        <th>Factor</th>
+        <th>Values</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Publication type</td>
+        <td>Journal 1.0 · Conf-full 0.85 · Preprint 0.70 · Conf-workshop 0.65 · Other 0.40 · Science comm 0.30</td>
+      </tr>
+      <tr>
+        <td>Author position</td>
+        <td>First / Shared-first 1.0 · Last 0.8 · Second 0.6 · Middle 0.4</td>
+      </tr>
+      <tr>
+        <td>Recency</td>
+        <td>≥ 2020: 1.0 · 2015–2019: 0.8 · &lt; 2015: 0.6</td>
+      </tr>
+      <tr>
+        <td>Final weight</td>
+        <td>pubType × authorPosition × recency (rounded to 2 dp)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>The extraction prompt</h2>
+
+  <p>Below is the exact system prompt sent to the model for each paper. The <code style="font-size:0.65em">{existingIds}</code> and <code style="font-size:0.65em">{clusterGuide}</code> placeholders are filled at runtime with the current node ID list and cluster name map respectively.</p>
+
+  <div class="prompt-wrapper">
+    <div class="prompt-label">system prompt · claude-sonnet-4-6</div>
+    <pre class="prompt">You are a research knowledge-graph builder for a cognitive neuroscientist's published work. Extract concepts that represent durable scientific knowledge — constructs, theories, and mechanisms that appear in the Introduction and Discussion of review articles in this research area.
+
+EXISTING NODE IDs — reuse wherever semantically appropriate.
+Do NOT create a new node if an existing one covers the same concept, even if the wording differs.
+Examples of what NOT to do: adding "risk_perception" when "perceived_risk" exists; adding "belief_updating" when "belief_revision" exists; adding "episodic_simulation" when "episodic_sim" exists.
+When in doubt, REUSE the existing node and add edges to/from it instead.
+
+{existingIds}
+
+Cluster guide: {clusterGuide}
+Use cluster 0 as default for anything that doesn't fit neatly.
+
+PAPER WEIGHT: {paperWeight} (scale 0–1, reflecting publication type, author position, and recency)
+This paper's importance to the researcher's intellectual identity is {high|moderate|lower}.
+Scale your raw node weight scores accordingly — a weight of 1.0 in a paperWeight=0.5 paper
+should translate to a node weight of ~0.5 in the final graph.
+So: final_node_weight = your_raw_score × {paperWeight} (clamped to 0.1–1.0).
+
+Return ONLY valid JSON, no markdown fences:
+{
+  "nodes": [{"id":"snake_case_max_3_words","label":"display\nlabel","weight":0.0-1.0,"cluster":0-6,"level":"construct"}],
+  "edges": [{"a":"node_id","b":"node_id","strength":0.0-1.0}],
+  "paper": {"title":"...","year":2024,"venue":"...","doi":"..."}
+}
+
+EXTRACTION RULE: Extract what the study contributes, not how it was designed.
+
+A node belongs in the graph only if it has independent scientific standing — it would appear in a review article's Introduction or Discussion written by a different lab, in a field ontology, or as a useful search term for learning about this research area.
+
+Study artifacts — stimuli, IVs, DV operationalizations, domain context descriptors, study-specific task names — should almost never become nodes. For each one, first ask: is there a more general version with independent scientific standing? If yes, extract that instead. Skip only when no meaningful generalization exists.
+
+Lifting examples (specific → general):
+- Defendant race used as IV → decision_bias (specific IV → construct it operationalizes)
+- Neurosynth decoding used in analysis → neural_decoding (specific tool → general method)
+- Design outcome differentiability (DV) → creative_divergence (DV label → established construct)
+- Large infrequent purchase (domain framing) → choice_prediction (context → scientific contribution)
+- OXTR genotype (specific variant) → imaging_genetics (variable → research approach)
+
+Skip examples (no generalizable concept exists):
+- Powertrain features shown to participants → skip (pure stimulus choice)
+- Mock juror task → skip (extract legal_decision_making as the construct instead)
+
+For methods: extract if the technique has cross-lab standing and is central to the paper's scientific argument (fMRI, conjoint analysis, drift-diffusion modeling, neural decoding). Skip tools that are incidental to the analysis.
+
+LEVEL — assign exactly one:
+"theory"     Frameworks/models spanning multiple findings. e.g. predictive processing, drift-diffusion model
+"construct"  Scientific concepts generalizing across labs and studies. e.g. temporal discounting, cognitive flexibility, imaging genetics. NOT study-specific variables.
+"method"     Cross-study instruments and analysis techniques. e.g. fMRI, conjoint analysis, eye tracking. NOT study-specific tasks.
+"mechanism"  Biological substrates: brain regions, circuits, neurochemicals, genetic variants. e.g. amygdala, dopamine, oxytocin system
+"domain"     Application areas or populations. e.g. adolescent development, consumer choice
+
+QUANTITY: 5–12 new nodes maximum; prefer fewer, more central nodes. weight = raw centrality × paperWeight. strength = theoretical coupling tightness. label: lowercase, use \n if > 12 chars. id: snake_case, max 3 words, unique.</pre>
+  </div>
+
+  <h2>Visualization algorithm</h2>
+
+  <p>The graph uses a force-directed layout computed offline (400 iterations, cluster gravity seeds) and stored in <code style="font-size:0.65em">graph.json</code>. On page load, a subset of nodes is selected for display using a multi-seed BFS:</p>
+
+  <div class="bfs-diagram">
+    <div class="bfs-step">
+      <div class="bfs-n">1</div>
+      <div><strong>Filter by level.</strong> Only <code>construct</code> and <code>theory</code> nodes are eligible. Methods, mechanisms, and domains are hidden by default — they clutter the semantic view without adding conceptual structure.</div>
+    </div>
+    <div class="bfs-step">
+      <div class="bfs-n">2</div>
+      <div><strong>Seed one node per cluster.</strong> The highest-weight eligible node from each of the 7 clusters is selected as a seed. This guarantees every research area appears in the view even when clusters are weakly connected to each other.</div>
+    </div>
+    <div class="bfs-step">
+      <div class="bfs-n">3</div>
+      <div><strong>BFS expansion.</strong> From each seed, the graph is expanded greedily: at each step, the highest-weight neighbor not yet in the selection is added. Expansion continues until a hard cap of 12 nodes is reached (configurable via <code>HARD_CAP</code>).</div>
+    </div>
+    <div class="bfs-step">
+      <div class="bfs-n">4</div>
+      <div><strong>Largest-component filter.</strong> Multi-seed BFS can produce disconnected islands. A final pass keeps only the largest connected component of the selected set, eliminating floating node pairs.</div>
+    </div>
+    <div class="bfs-step">
+      <div class="bfs-n">5</div>
+      <div><strong>Spreading activation.</strong> Clicking a node activates it; activation decays and spreads along edges (Collins &amp; Loftus 1975 model, decay=0.22, spread=0.22). The topographic contour overlay renders the same activation field as a landscape — same mathematics as a gradient descent loss surface.</div>
+    </div>
+  </div>
+
+  <h2>Limitations &amp; future work</h2>
+
+  <p>The current pipeline uses an LLM for the full extraction task: deciding what matters in a paper (a statistical judgment) and naming it at the right abstraction level (a semantic judgment). These are genuinely separate problems. The prompt engineering above is essentially teaching the model to do the second task reliably. A more principled future architecture would use classic methods (TF-IDF, KeyBERT) for candidate generation — fast, cheap, no hallucination — and narrow the LLM's role to lifting candidates to the right abstraction level and assigning cluster.</p>
+
+  <p class="dim">The graph is rebuilt from scratch periodically as the publication list grows. Node IDs are stable across rebuilds (new IDs reuse the existing vocabulary); weights and edges are recomputed each time.</p>
+
+  <div class="footer-note">
+    Built with <a href="https://www.anthropic.com">Claude</a> (Anthropic) · <a href="graph.html">← back to graph</a>
+  </div>
+
+</main>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+</script>
+
+</body>
+</html>

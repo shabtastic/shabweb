@@ -9222,14 +9222,13 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   const graphData   = JSON.parse(document.getElementById('graph-data').textContent);
   const clusterData = JSON.parse(document.getElementById('cluster-data').textContent);
 
-  // Display selection: BFS expansion from the globally highest-weight node.
-  // Expands along actual edges so every selected node is reachable from every
-  // other — single connected component guaranteed. HARD_CAP per cluster prevents
-  // any one research area from dominating; a soft fill penalty within that cap
-  // prefers underrepresented clusters at each step. Clusters whose concepts
-  // share no edges with the main component are honestly absent from the graph.
+  // Display selection: multi-seed BFS — one seed per cluster (highest-weight
+  // eligible node in each), then joint expansion along edges. Guarantees every
+  // cluster with eligible nodes enters the graph; HARD_CAP per cluster prevents
+  // any one area from dominating; soft fill penalty prefers underrepresented
+  // clusters at each expansion step.
   const VISIBLE_LEVELS = new Set(['construct', 'theory']);
-  const HARD_CAP = 9; // max nodes per cluster; 7 × 9 = 63 ceiling
+  const HARD_CAP = 12; // max nodes per cluster; 7 × 12 = 84 ceiling
 
   const allNodes = graphData.nodes;
   const levelFiltered = allNodes.filter(n => VISIBLE_LEVELS.has(n.level || 'construct'));
@@ -9262,9 +9261,13 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     });
   }
 
-  // Seed: globally highest-weight eligible node
-  const seed = levelFiltered.slice().sort((a, b) => (b.weight || 0) - (a.weight || 0))[0];
-  addNode(seed.id);
+  // Seeds: highest-weight eligible node from each cluster
+  for (let ci = 0; ci < numClusters; ci++) {
+    const candidates = levelFiltered.filter(n => n.cluster === ci);
+    if (candidates.length === 0) continue;
+    const seed = candidates.reduce((a, b) => (b.weight || 0) > (a.weight || 0) ? b : a);
+    addNode(seed.id);
+  }
 
   while (frontier.size > 0) {
     let bestId = null, bestScore = -Infinity;

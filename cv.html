@@ -424,7 +424,7 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
 
         // Link
         const linkText = pub.doi ? 'DOI →' : (pub.arxivId ? 'arXiv →' : (pub.url ? 'Link →' : ''));
-        const linkUrl = pub.url || (pub.doi ? 'https://doi.org/' + pub.doi : '');
+        const linkUrl = pub.url || (pub.doi ? 'https://doi.org/' + pub.doi : '') || (pub.arxivId ? 'https://arxiv.org/abs/' + pub.arxivId : '');
 
         entry.innerHTML =
           '<div class="pub-main">' +

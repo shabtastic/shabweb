@@ -410,7 +410,7 @@ function main() {
           venue: pub.venue,
           doi: pub.doi,
           arxivId: pub.arxivId,
-          url: pub.url || existing.url,
+          url: pub.url !== undefined ? pub.url : existing.url,
           pubType: pub.pubType,
           authorPosition: pub.authorPosition,
           paperWeight: pub.paperWeight,

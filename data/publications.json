@@ -44,6 +44,7 @@
     "keywords": [
       "selected"
     ],
+    "addendum": "Best Paper Award (Honorable Mention)",
     "part_of": "design-dm"
   },
   {
@@ -138,7 +139,7 @@
   },
   {
     "id": "zhang2026surpriseaidesign",
-    "title": "\"Wow, now I see it!\" --- Leveraging physiology of surprise to uncover desirable generative designs",
+    "title": "Wow, Now I See It! --- Leveraging the Physiology of Surprise to Help Designers Uncover Desirable Generative Designs",
     "authors": [
       "Zhang, Larry",
       "Chong, Leah",
@@ -150,7 +151,8 @@
     ],
     "year": 2026,
     "venue": "Creativity and Cognition C&C '26",
-    "url": null,
+    "doi": "10.1145/3803784.3807551",
+    "url": "https://doi.org/10.1145/3803784.3807551",
     "pubType": "conf-full",
     "authorPosition": "middle",
     "paperWeight": 0.2,

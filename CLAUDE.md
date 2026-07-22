@@ -37,6 +37,8 @@ data/publications.json  — Derived from CV bib files
 --h-violet: #FF77E4   /* violet web */
 --h-red:    #FF7792   /* ultra red */
 --h-cheese: #FFAE77   /* mac & cheese */
+--h-mint:   #77FFE4   /* mint */
+--h-lime:   #AAFF77   /* lime green */
 
 /* Fonts */
 --sans: 'DM Sans', sans-serif        /* headings, titles, hero name */
@@ -141,6 +143,7 @@ full paper-to-cluster mapping and the rationale behind each boundary.
 | 4 | Preference Elicitation & Prediction | `#FFFF77` laser lemon (display as `#9a7c00`) |
 | 5 | Social, Cognitive, & Affective Neuroscience | `#FFAE77` mac & cheese |
 | 6 | Consumer Psychology & Market Forecasting | `#77FFE4` mint |
+| 7 | Agent State Inference | `#AAFF77` lime green |
 
 ## Extracurriculars page structure
 Three sections: Creative, Side projects, Writing. Static anchor index at top (no filtering JS).

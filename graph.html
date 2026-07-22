@@ -451,6 +451,14 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
           <div class="cluster-count" id="cluster-count-6"></div>
         </div>
       </div>
+      <div class="cluster-item" data-cluster="7" onclick="focusCluster(7)">
+        <div class="cluster-swatch" style="background:#AAFF77"></div>
+        <div class="cluster-body">
+          <div class="cluster-name">Agent State Inference</div>
+          <div class="cluster-desc">Inferring a person's internal state — attention, workload, cognitive factors — from behavior, and simulating agent preferences to support human-AI teaming in shared tasks like driving.</div>
+          <div class="cluster-count" id="cluster-count-7"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -9202,7 +9210,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
 }
 </script>
 <script type="application/json" id="cluster-data">
-[{"id": 0, "name": "Motivated Learning, Decision Making, & Self Regulation", "short": "Self-Regulation", "desc": "How motivation, reward, and self-control shape learning and choice \u2014 temporal discounting, satisficing heuristics, and the mechanisms underlying flexible goal pursuit.", "color": "#7777FF", "hex_r": 119, "hex_g": 119, "hex_b": 255}, {"id": 1, "name": "Creativity & Design", "short": "Creativity & Design", "desc": "The cognitive and behavioral processes behind creative work \u2014 design fixation, idea incubation, semantic exploration, and how creative professionals get unstuck.", "color": "#C977FF", "hex_r": 201, "hex_g": 119, "hex_b": 255}, {"id": 2, "name": "Psychology-Guided Generative AI", "short": "Generative AI", "desc": "Using psychological and neuroscientific theory to shape generative AI systems \u2014 from prompt engineering grounded in design cognition to physiology-informed image generation.", "color": "#FF77E4", "hex_r": 255, "hex_g": 119, "hex_b": 228}, {"id": 3, "name": "Intervention Science & Applied Behavior Change", "short": "Interventions", "desc": "Designing, testing, and personalizing behavior-change interventions \u2014 from pandemic risk communication to just-in-time creativity prompts.", "color": "#FF7792", "hex_r": 255, "hex_g": 119, "hex_b": 146}, {"id": 4, "name": "Preference Elicitation & Prediction", "short": "Preference Elicitation", "desc": "Methods for eliciting and modeling individual preference from behavior, language, and physiology \u2014 including how driver and decision-maker traits can be inferred under uncertainty.", "color": "#FFFF77", "hex_r": 255, "hex_g": 255, "hex_b": 119}, {"id": 5, "name": "Social, Cognitive, & Affective Neuroscience", "short": "Social Neuroscience", "desc": "How social context and emotion modulate cognition \u2014 including social learning, moral judgment, empathy, and bias in consequential decisions.", "color": "#FFAE77", "hex_r": 255, "hex_g": 174, "hex_b": 119}, {"id": 6, "name": "Consumer Psychology & Market Forecasting", "short": "Consumer & Preference", "desc": "Neural and behavioral signals that forecast market-level demand and product adoption \u2014 from brain activity predicting vehicle sales to familiarity effects on technology uptake.", "color": "#77FFE4", "hex_r": 119, "hex_g": 255, "hex_b": 228}]
+[{"id": 0, "name": "Motivated Learning, Decision Making, & Self Regulation", "short": "Self-Regulation", "desc": "How motivation, reward, and self-control shape learning and choice \u2014 temporal discounting, satisficing heuristics, and the mechanisms underlying flexible goal pursuit.", "color": "#7777FF", "hex_r": 119, "hex_g": 119, "hex_b": 255}, {"id": 1, "name": "Creativity & Design", "short": "Creativity & Design", "desc": "The cognitive and behavioral processes behind creative work \u2014 design fixation, idea incubation, semantic exploration, and how creative professionals get unstuck.", "color": "#C977FF", "hex_r": 201, "hex_g": 119, "hex_b": 255}, {"id": 2, "name": "Psychology-Guided Generative AI", "short": "Generative AI", "desc": "Using psychological and neuroscientific theory to shape generative AI systems \u2014 from prompt engineering grounded in design cognition to physiology-informed image generation.", "color": "#FF77E4", "hex_r": 255, "hex_g": 119, "hex_b": 228}, {"id": 3, "name": "Intervention Science & Applied Behavior Change", "short": "Interventions", "desc": "Designing, testing, and personalizing behavior-change interventions \u2014 from pandemic risk communication to just-in-time creativity prompts.", "color": "#FF7792", "hex_r": 255, "hex_g": 119, "hex_b": 146}, {"id": 4, "name": "Preference Elicitation & Prediction", "short": "Preference Elicitation", "desc": "Methods for eliciting and modeling individual preference from behavior, language, and physiology \u2014 including how driver and decision-maker traits can be inferred under uncertainty.", "color": "#FFFF77", "hex_r": 255, "hex_g": 255, "hex_b": 119}, {"id": 5, "name": "Social, Cognitive, & Affective Neuroscience", "short": "Social Neuroscience", "desc": "How social context and emotion modulate cognition \u2014 including social learning, moral judgment, empathy, and bias in consequential decisions.", "color": "#FFAE77", "hex_r": 255, "hex_g": 174, "hex_b": 119}, {"id": 6, "name": "Consumer Psychology & Market Forecasting", "short": "Consumer & Preference", "desc": "Neural and behavioral signals that forecast market-level demand and product adoption \u2014 from brain activity predicting vehicle sales to familiarity effects on technology uptake.", "color": "#77FFE4", "hex_r": 119, "hex_g": 255, "hex_b": 228}, {"id": 7, "name": "Agent State Inference", "short": "Agent State Inference", "desc": "Inferring a person's internal state \u2014 attention, workload, cognitive factors \u2014 from behavior, and simulating agent preferences to support human-AI teaming in shared tasks like driving.", "color": "#AAFF77", "hex_r": 170, "hex_g": 255, "hex_b": 119}]
 </script>
 
 <script>
@@ -9232,7 +9240,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     }
   });
 
-  const numClusters = graphData.meta?.clusters?.length || 7;
+  const numClusters = graphData.meta?.clusters?.length || 8;
   const TARGET_PER_CLUSTER = HARD_CAP / 2; // soft-penalty target = half the hard cap
   const selByCluster = new Array(numClusters + 1).fill(0);
   const selectedIds = new Set();
@@ -9339,8 +9347,8 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   });
 
   // Cluster node counts
-  const clusterCounts = new Array(7).fill(0);
-  NODES.forEach(n => { if (n.cluster < 7) clusterCounts[n.cluster]++; });
+  const clusterCounts = new Array(clusterData.length).fill(0);
+  NODES.forEach(n => { if (n.cluster < clusterData.length) clusterCounts[n.cluster]++; });
   clusterData.forEach(c => {
     const el = document.getElementById(`cluster-count-${c.id}`);
     if (el) el.textContent = `${clusterCounts[c.id]} concept${clusterCounts[c.id]!==1?'s':''}`;

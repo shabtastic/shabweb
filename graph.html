@@ -9225,7 +9225,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   // any one area from dominating; soft fill penalty prefers underrepresented
   // clusters at each expansion step.
   const VISIBLE_LEVELS = new Set(['construct', 'theory']);
-  const HARD_CAP = 12; // max nodes per cluster; 7 × 12 = 84 ceiling
+  const HARD_CAP = 12; // max nodes per cluster; 8 × 12 = 96 ceiling
 
   const allNodes = graphData.nodes;
   const levelFiltered = allNodes.filter(n => VISIBLE_LEVELS.has(n.level || 'construct'));

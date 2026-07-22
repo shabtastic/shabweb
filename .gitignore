@@ -57,3 +57,6 @@ logs/
 
 # Draft proposal buffer — private; reviewed manually before merging into graph.json
 graph/draft-proposals.json
+
+# Local worktrees
+.worktrees/

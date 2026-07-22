@@ -1806,21 +1806,21 @@
       "id": "reward_shaping",
       "label": "reward\nshaping",
       "weight": 0.85,
-      "cluster": 3,
+      "cluster": 1,
       "level": "construct"
     },
     {
       "id": "design_decision",
       "label": "design decision\nmaking",
       "weight": 0.8,
-      "cluster": 0,
+      "cluster": 1,
       "level": "construct"
     },
     {
       "id": "goal_alignment",
       "label": "goal\nalignment",
       "weight": 0.75,
-      "cluster": 0,
+      "cluster": 1,
       "level": "construct"
     },
     {
@@ -1834,14 +1834,14 @@
       "id": "creative_agency",
       "label": "creative\nagency",
       "weight": 0.65,
-      "cluster": 0,
+      "cluster": 1,
       "level": "construct"
     },
     {
       "id": "feedback_utility",
       "label": "feedback\nutility perception",
       "weight": 0.7,
-      "cluster": 0,
+      "cluster": 1,
       "level": "construct"
     },
     {

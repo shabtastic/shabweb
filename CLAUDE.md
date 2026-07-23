@@ -129,15 +129,18 @@ Each node: `{id, label, weight, cluster, level, nodes_contributed?}`.
 Cluster color for yellow (c4) uses `#9a7c00` (dark amber) for legibility on light bg.
 
 ## Research clusters (graph.html + cv.html + projects.html)
+Renamed 2026-07-22 to match the site's research themes; see
+`docs/superpowers/specs/2026-07-22-graph-cluster-rename-design.md` for the
+full paper-to-cluster mapping and the rationale behind each boundary.
 | # | Name | Color |
 |---|---|---|
-| 0 | Self-regulation | `#7777FF` slate blue |
-| 1 | Predictive brain | `#C977FF` heliotrope |
-| 2 | Generative AI | `#FF77E4` violet web |
-| 3 | Interventions | `#FF7792` ultra red |
-| 4 | Neuroeconomics | `#FFFF77` laser lemon (display as `#9a7c00`) |
-| 5 | Social neuroscience | `#FFAE77` mac & cheese |
-| 6 | Consumer & preference | `#77FFE4` mint |
+| 0 | Motivated Learning, Decision Making, & Self Regulation | `#7777FF` slate blue |
+| 1 | Creativity & Design | `#C977FF` heliotrope |
+| 2 | Psychology-Guided Generative AI | `#FF77E4` violet web |
+| 3 | Intervention Science & Applied Behavior Change | `#FF7792` ultra red |
+| 4 | Preference Elicitation & Prediction | `#FFFF77` laser lemon (display as `#9a7c00`) |
+| 5 | Social, Cognitive, & Affective Neuroscience | `#FFAE77` mac & cheese |
+| 6 | Consumer Psychology & Market Forecasting | `#77FFE4` mint |
 
 ## Extracurriculars page structure
 Three sections: Creative, Side projects, Writing. Static anchor index at top (no filtering JS).

@@ -15,7 +15,7 @@ a, button { cursor: none; }
   --paper-2:   #edeae1;
   --ink:       #111118;
   --ink-blue:  #1a2c6b;
-  --ink-dim:   rgba(17,17,24,0.45);
+  --ink-dim:   rgba(17,17,24,0.55);
   --ink-faint: rgba(17,17,24,0.15);
   --blue-g:    rgba(80,140,200,0.20);
   --blue-G:    rgba(80,140,200,0.42);
@@ -105,13 +105,13 @@ nav {
   font-family: var(--sans); font-size: clamp(2rem,5vw,3.5rem); font-weight: 300;
   color: var(--ink); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 0.6rem;
 }
-.page-meta { font-size: 0.55rem; color: var(--ink-dim); line-height: 1.8; }
+.page-meta { font-size: 0.7rem; color: var(--ink-dim); line-height: 1.8; }
 .page-meta a { color: var(--ink-blue); text-decoration: none; }
 .page-meta a:hover { text-decoration: underline; }
 
 /* ── SECTION DIVIDER ── */
 .cv-section-heading {
-  font-size: 0.48rem; letter-spacing: 0.35em; text-transform: uppercase;
+  font-size: 0.78rem; letter-spacing: 0.35em; text-transform: uppercase;
   color: var(--ink-blue); padding: 16px 0 8px;
   margin-top: 48px;
   border-top: 1.5px solid var(--ink-blue);
@@ -148,20 +148,21 @@ nav {
 }
 .cv-entry.visible { opacity: 1; transform: translateY(0); }
 .cv-entry-year {
-  font-size: 0.5rem; letter-spacing: 0.12em; color: var(--ink-dim);
-  padding-top: 0.15rem;
+  font-size: 0.7rem; letter-spacing: 0.12em; color: var(--ink-dim);
+  line-height: 1.3;
 }
 .cv-entry-title {
   font-family: var(--sans); font-size: 0.88rem; font-weight: 400;
   color: var(--ink); line-height: 1.3; margin-bottom: 0.2rem;
 }
-.cv-entry-sub { font-size: 0.55rem; color: var(--ink-dim); line-height: 1.6; }
+.cv-entry-sub { font-size: 0.7rem; color: var(--ink-dim); line-height: 1.6; }
 
 /* ── PUBLICATION ENTRIES ── */
 .pub-list { padding: 0 2.5rem 4rem; max-width: 900px; }
+.pub-footnote { font-size: 0.65rem; color: var(--ink-dim); margin-top: 1.5rem; }
 .pub-year-heading {
   font-family: var(--mono);
-  font-size: 0.55rem; letter-spacing: 0.22em;
+  font-size: 0.7rem; letter-spacing: 0.22em;
   color: var(--ink);
   padding: 0.8rem 0 0.4rem;
   margin-top: 1.2rem;
@@ -191,40 +192,44 @@ nav {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .pub-entry.visible { opacity: 1; transform: translateY(0); }
+.pub-main, .pub-aside {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  row-gap: 0.35rem;
+}
+.pub-main { grid-column: 1; }
+.pub-aside { grid-column: 2; text-align: right; white-space: nowrap; }
 .pub-title {
   font-family: var(--sans); font-size: 0.88rem; font-weight: 400;
-  color: var(--ink); line-height: 1.35; margin-bottom: 0.3rem;
+  color: var(--ink); line-height: 1.35; grid-row: 1;
 }
 .pub-title a {
   color: inherit; text-decoration: none;
   border-bottom: 1px solid transparent; transition: border-color 0.2s;
 }
 .pub-title a:hover { border-color: var(--ink-dim); }
-.pub-authors { font-size: 0.55rem; color: var(--ink-dim); margin-bottom: 0.15rem; line-height: 1.6; }
+.pub-authors { font-size: 0.7rem; color: var(--ink-dim); line-height: 1.6; grid-row: 2; }
 .pub-authors strong { color: var(--ink); font-weight: 400; }
-.pub-venue { font-size: 0.52rem; color: var(--ink-dim); }
+.pub-venue { font-size: 0.7rem; color: var(--ink-dim); grid-row: 3; align-self: end; }
 .pub-venue em { font-style: normal; color: var(--ink-blue); }
-.pub-aside {
-  display: flex; flex-direction: column;
-  align-items: flex-end; gap: 0.35rem; padding-top: 0.1rem;
-  white-space: nowrap;
-}
-.pub-year { font-size: 0.5rem; letter-spacing: 0.12em; color: var(--ink-dim); }
+.pub-venue em.venue-journal { font-style: italic; }
+.pub-year { font-size: 0.7rem; letter-spacing: 0.12em; color: var(--ink-dim); grid-row: 1; align-self: start; }
 .pub-type {
-  font-size: 0.42rem; letter-spacing: 0.1em; text-transform: uppercase;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
   border: 1px solid var(--ink-faint); padding: 0.12rem 0.4rem;
-  color: var(--ink-dim);
+  color: var(--ink-dim); grid-row: 2; justify-self: end; align-self: start;
 }
 .pub-link {
-  font-size: 0.44rem; letter-spacing: 0.15em; text-transform: uppercase;
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
   color: var(--ink-blue); text-decoration: none;
   border-bottom: 1px solid rgba(26,44,107,0.25); padding-bottom: 0.05rem;
   transition: border-color 0.2s;
 }
 .pub-link:hover { border-color: var(--ink-blue); }
+.pub-link-row { grid-row: 4; }
 .pub-addendum {
-  font-size: 0.44rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--h-red); margin-top: 0.1rem;
+  font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--h-red); grid-row: 3; align-self: end; justify-self: end;
 }
 
 /* ── FULL CV LINK ── */
@@ -388,25 +393,43 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
         const entry = document.createElement('div');
         entry.className = 'pub-entry reveal';
 
-        // Format authors — bold Hakimi
-        const authors = pub.authors.map(a => {
-          if (/hakimi/i.test(a)) return '<strong>Hakimi, S.</strong>';
+        // Format authors — bold Hakimi, keep each "Last, F." together on one line,
+        // join with commas and an ampersand + Oxford comma before the last author.
+        // Co-first authors (per coFirstLastNames) get a trailing asterisk.
+        const coFirst = pub.coFirstLastNames || [];
+        const isCoFirst = last => coFirst.some(n => n.toLowerCase() === last.toLowerCase());
+        const authorNames = pub.authors.map(a => {
+          if (/hakimi/i.test(a)) {
+            const star = isCoFirst('Hakimi') ? '<sup>*</sup>' : '';
+            return star + '<strong>Hakimi, S.</strong>';
+          }
           const parts = a.split(',');
+          let last, initials;
           if (parts.length === 2) {
-            const last = parts[0].trim();
+            last = parts[0].trim();
             const first = parts[1].trim();
-            const initials = first.split(/\s+/).map(w => w[0] + '.').join(' ');
-            return last + ', ' + initials;
+            initials = first.split(/\s+/).map(w => w[0] + '.').join(' ');
+          } else {
+            // Already "First Last" format
+            const words = a.trim().split(/\s+/);
+            if (words.length >= 2) {
+              last = words[words.length - 1];
+              initials = words.slice(0, -1).map(w => w[0] + '.').join(' ');
+            }
           }
-          // Already "First Last" format
-          const words = a.trim().split(/\s+/);
-          if (words.length >= 2) {
-            const last = words[words.length - 1];
-            const initials = words.slice(0, -1).map(w => w[0] + '.').join(' ');
-            return last + ', ' + initials;
-          }
-          return a;
-        }).join(', ');
+          if (last === undefined) return a;
+          const star = isCoFirst(last) ? '<sup>*</sup>' : '';
+          return star + last + ', ' + initials;
+        }).map(name => '<span style="white-space:nowrap">' + name + '</span>');
+
+        let authors;
+        if (authorNames.length === 1) {
+          authors = authorNames[0];
+        } else if (authorNames.length === 2) {
+          authors = authorNames[0] + ' &amp; ' + authorNames[1];
+        } else {
+          authors = authorNames.slice(0, -1).join(', ') + ', &amp; ' + authorNames[authorNames.length - 1];
+        }
 
         // Format venue
         const venue = pub.venue || '';
@@ -433,17 +456,25 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
               (linkUrl ? '<a href="' + linkUrl + '" target="_blank" rel="noopener">' + pub.title + '</a>' : pub.title) +
             '</div>' +
             '<div class="pub-authors">' + authors + '</div>' +
-            '<div class="pub-venue"><em>' + venue + '</em></div>' +
+            (venue.trim().toLowerCase() === typeLabel.toLowerCase() ? '' :
+              '<div class="pub-venue"><em' + (pub.pubType === 'journal' ? ' class="venue-journal"' : '') + '>' + venue + '</em></div>') +
+            (linkUrl && linkText ? '<div class="pub-link-row"><a href="' + linkUrl + '" class="pub-link" target="_blank" rel="noopener">' + linkText + '</a></div>' : '') +
           '</div>' +
           '<div class="pub-aside">' +
             '<span class="pub-year">' + pub.year + '</span>' +
             '<span class="pub-type">' + typeLabel + '</span>' +
-            (linkUrl && linkText ? '<a href="' + linkUrl + '" class="pub-link" target="_blank" rel="noopener">' + linkText + '</a>' : '') +
             (pub.addendum ? '<span class="pub-addendum">' + pub.addendum + '</span>' : '') +
           '</div>';
 
         list.appendChild(entry);
       });
+
+      if (selected.some(p => p.coFirstLastNames && p.coFirstLastNames.length)) {
+        const footnote = document.createElement('p');
+        footnote.className = 'pub-footnote';
+        footnote.textContent = '* Authors contributed equally.';
+        list.appendChild(footnote);
+      }
 
       // Reveal animation
       const obs = new IntersectionObserver(

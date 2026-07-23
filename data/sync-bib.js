@@ -95,13 +95,15 @@ function parseBibFile(filePath) {
 
 function parseFields(body) {
   const fields = {};
+  // Strip BibTeX % comments before parsing (commented-out fields must not be parsed)
+  const stripped = body.split('\n').filter(line => !/^\s*%/.test(line)).join('\n');
   // Match field = {value} or field = value
   const fieldRegex = /(\w+)\s*=\s*/g;
   let m;
 
-  while ((m = fieldRegex.exec(body)) !== null) {
+  while ((m = fieldRegex.exec(stripped)) !== null) {
     const key = m[1].toLowerCase();
-    const afterEquals = body.substring(m.index + m[0].length).trimStart();
+    const afterEquals = stripped.substring(m.index + m[0].length).trimStart();
 
     let value;
     if (afterEquals[0] === '{') {
@@ -301,7 +303,7 @@ function main() {
       const rawKw = (fields.keywords || '').toLowerCase();
       if (rawKw.split(',').map(s => s.trim()).includes('unlisted')) continue;
 
-      const authors = parseAuthors(fields.author);
+      let authors = parseAuthors(fields.author);
       let authorPosition = getAuthorPosition(authors);
       if (authorPosition === 'first' && checkEqualContrib(fields)) {
         authorPosition = 'shared-first';
@@ -309,6 +311,14 @@ function main() {
       // Also check if second/third author is equal contrib
       if (authorPosition !== 'first' && checkEqualContrib(fields)) {
         authorPosition = 'shared-first';
+      }
+      // For shared-first papers where Hakimi isn't listed first in the author field,
+      // move her to index 0 for display — the usera field orders her first on the LaTeX CV.
+      if (authorPosition === 'shared-first') {
+        const hakimiIdx = authors.findIndex(a => /hakimi/i.test(a));
+        if (hakimiIdx > 0) {
+          authors = [authors[hakimiIdx], ...authors.slice(0, hakimiIdx), ...authors.slice(hakimiIdx + 1)];
+        }
       }
 
       const year = parseInt(fields.year, 10) || 0;

@@ -229,6 +229,7 @@
     .cpill.c4 { background: rgba(255,255,119,0.3);  color: #7a6000; }
     .cpill.c5 { background: rgba(255,174,119,0.2);  color: #cc6611; }
     .cpill.c6 { background: rgba(119,255,228,0.2);  color: #228866; }
+    .cpill.c7 { background: rgba(170,255,119,0.25); color: #4d7a1a; }
 
     /* ── Footer note ───────────────────────────────── */
     .footer-note {
@@ -266,16 +267,17 @@
 
   <p>Each <strong>edge</strong> encodes the theoretical coupling between two concepts as judged by the model. Edge strength reflects how tightly the two concepts are logically or empirically entangled in the published literature, not just whether they co-occur in a single paper.</p>
 
-  <p>Nodes are clustered into seven research areas by the model at extraction time:</p>
+  <p>Nodes are clustered into eight research areas by the model at extraction time:</p>
 
   <div class="cluster-row">
     <span class="cpill c0">0 · Self-regulation</span>
-    <span class="cpill c1">1 · Predictive brain</span>
+    <span class="cpill c1">1 · Creativity &amp; design</span>
     <span class="cpill c2">2 · Generative AI</span>
     <span class="cpill c3">3 · Interventions</span>
-    <span class="cpill c4">4 · Neuroeconomics</span>
+    <span class="cpill c4">4 · Preference elicitation</span>
     <span class="cpill c5">5 · Social neuroscience</span>
     <span class="cpill c6">6 · Consumer &amp; preference</span>
+    <span class="cpill c7">7 · Agent state inference</span>
   </div>
 
   <h2>Three-pass extraction</h2>
@@ -359,7 +361,7 @@ So: final_node_weight = your_raw_score × {paperWeight} (clamped to 0.1–1.0).
 
 Return ONLY valid JSON, no markdown fences:
 {
-  "nodes": [{"id":"snake_case_max_3_words","label":"display\nlabel","weight":0.0-1.0,"cluster":0-6,"level":"construct"}],
+  "nodes": [{"id":"snake_case_max_3_words","label":"display\nlabel","weight":0.0-1.0,"cluster":0-7,"level":"construct"}],
   "edges": [{"a":"node_id","b":"node_id","strength":0.0-1.0}],
   "paper": {"title":"...","year":2024,"venue":"...","doi":"..."}
 }
@@ -404,7 +406,7 @@ QUANTITY: 5–12 new nodes maximum; prefer fewer, more central nodes. weight = r
     </div>
     <div class="bfs-step">
       <div class="bfs-n">2</div>
-      <div><strong>Seed one node per cluster.</strong> The highest-weight eligible node from each of the 7 clusters is selected as a seed. This guarantees every research area appears in the view even when clusters are weakly connected to each other.</div>
+      <div><strong>Seed one node per cluster.</strong> The highest-weight eligible node from each of the 8 clusters is selected as a seed. This guarantees every research area appears in the view even when clusters are weakly connected to each other.</div>
     </div>
     <div class="bfs-step">
       <div class="bfs-n">3</div>

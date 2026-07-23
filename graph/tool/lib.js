@@ -60,6 +60,7 @@ export async function extractConcepts(text, graph, paperWeight = 1.0, model = 'c
   const client      = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const existingIds = graph.nodes.map(n => n.id);
   const clusterGuide = graph.meta.clusters.map(cl => `${cl.id}=${cl.name}`).join(', ');
+  const maxClusterId = Math.max(...graph.meta.clusters.map(cl => cl.id));
 
   c.info(`Sending to Claude for concept extraction (model: ${model}, paperWeight: ${paperWeight})…`);
 
@@ -86,7 +87,7 @@ So: final_node_weight = your_raw_score × ${paperWeight} (clamped to 0.1–1.0).
 
 Return ONLY valid JSON, no markdown fences:
 {
-  "nodes": [{"id":"snake_case_max_3_words","label":"display\\nlabel","weight":0.0-1.0,"cluster":0-6,"level":"construct"}],
+  "nodes": [{"id":"snake_case_max_3_words","label":"display\\nlabel","weight":0.0-1.0,"cluster":0-${maxClusterId},"level":"construct"}],
   "edges": [{"a":"node_id","b":"node_id","strength":0.0-1.0}],
   "paper": {"title":"...","year":2024,"venue":"...","doi":"..."}
 }

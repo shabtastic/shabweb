@@ -34,7 +34,7 @@
       "Hakimi, Shabnam"
     ],
     "year": 2026,
-    "venue": "Design Computing and Cognition DCC'26",
+    "venue": "Design Computing and Cognition (DCC'26)",
     "arxivId": "2604.26083",
     "url": "https://arxiv.org/abs/2604.26083",
     "pubType": "conf-full",
@@ -126,7 +126,7 @@
       "Paredes, Pablo E."
     ],
     "year": 2026,
-    "venue": "Proceedings of the ASME 2026 International Design Engineering Technical Conferences & Computers and Information in Engineering Conference IDETC/CIE 2026",
+    "venue": "Proceedings of the ASME 2026 International Design Engineering Technical Conferences & Computers and Information in Engineering Conference (IDETC/CIE 2026)",
     "url": null,
     "pubType": "conf-full",
     "authorPosition": "middle",
@@ -149,7 +149,7 @@
       "Paredes, Pablo E."
     ],
     "year": 2026,
-    "venue": "Creativity and Cognition C&C '26",
+    "venue": "Creativity and Cognition (C&C '26)",
     "doi": "10.1145/3803784.3807551",
     "url": "https://doi.org/10.1145/3803784.3807551",
     "pubType": "conf-full",
@@ -172,7 +172,7 @@
       "Klenk, M."
     ],
     "year": 2025,
-    "venue": "2025 International Conference on Computational Creativity ICCC'25",
+    "venue": "2025 International Conference on Computational Creativity (ICCC'25)",
     "url": null,
     "pubType": "conf-full",
     "authorPosition": "first",
@@ -201,7 +201,11 @@
     "keywords": [
       "selected"
     ],
-    "part_of": "design-dm"
+    "part_of": "design-dm",
+    "coFirstLastNames": [
+      "Hakimi",
+      "Nandy"
+    ]
   },
   {
     "id": "Chen2025learning",
@@ -294,7 +298,11 @@
     "keywords": [
       "selected"
     ],
-    "part_of": "pref-elicit"
+    "part_of": "pref-elicit",
+    "coFirstLastNames": [
+      "Hakimi",
+      "Van"
+    ]
   },
   {
     "id": "Wright2024motivation",
@@ -722,7 +730,11 @@
     "keywords": [
       "selected"
     ],
-    "part_of": "covid-dm"
+    "part_of": "covid-dm",
+    "coFirstLastNames": [
+      "Hakimi",
+      "Sinclair"
+    ]
   },
   {
     "id": "Sinclair2021imagining",
@@ -766,7 +778,11 @@
     "pubType": "journal",
     "authorPosition": "shared-first",
     "paperWeight": 1,
-    "keywords": []
+    "keywords": [],
+    "coFirstLastNames": [
+      "Hakimi",
+      "Wong"
+    ]
   },
   {
     "id": "Botvinik2020variability",
@@ -923,7 +939,11 @@
     "keywords": [
       "selected"
     ],
-    "part_of": "imagine-discount"
+    "part_of": "imagine-discount",
+    "coFirstLastNames": [
+      "Hakimi",
+      "Hare"
+    ]
   },
   {
     "id": "Hakimi2014activity",
@@ -943,7 +963,11 @@
     "keywords": [
       "selected"
     ],
-    "part_of": "imagine-discount"
+    "part_of": "imagine-discount",
+    "coFirstLastNames": [
+      "Hakimi",
+      "Hare"
+    ]
   },
   {
     "id": "Zink2011vasopressin",

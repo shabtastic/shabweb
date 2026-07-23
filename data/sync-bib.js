@@ -160,6 +160,24 @@ function checkEqualContrib(fields) {
   return false;
 }
 
+// Extract the last names of authors marked \cvfnmark{equalcontrib} in the
+// usera field (LaTeX CV's custom author-list formatting), e.g.
+//   \cvbibname{Hakimi,~S}\cvfnmark{equalcontrib}, Sinclair, AH\cvfnmark{equalcontrib}, ...
+// Each equalcontrib marker sits right after the name it applies to — walk
+// backwards from each marker to the nearest preceding "LastName" token.
+function getCoFirstLastNames(fields) {
+  if (!fields.usera) return [];
+  const names = [];
+  const markerRe = /\\cvfnmark\{equalcontrib\}/g;
+  let m;
+  while ((m = markerRe.exec(fields.usera)) !== null) {
+    const before = fields.usera.slice(0, m.index);
+    const nameMatch = before.match(/([A-Za-z][A-Za-z'\-]*)\s*,~?\s*[A-Z.]{1,4}\s*\}?\s*(?:\\cvfnmark\{[a-z]+\})*$/);
+    if (nameMatch) names.push(nameMatch[1]);
+  }
+  return [...new Set(names)];
+}
+
 function formatAuthorsForDisplay(authors) {
   return authors.map(a => {
     // "Last, First" → "Last, F." for display, but bold Hakimi
@@ -341,6 +359,7 @@ function main() {
         keywords: (fields.keywords || '').split(',').map(k => k.trim()).filter(Boolean),
         addendum: fields.addendum ? cleanLatex(fields.addendum) : undefined,
         part_of: fields.part_of ? cleanLatex(fields.part_of) : undefined,
+        coFirstLastNames: authorPosition === 'shared-first' ? getCoFirstLastNames(fields) : undefined,
       };
 
       // Remove undefined fields

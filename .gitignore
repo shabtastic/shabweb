@@ -60,3 +60,6 @@ graph/draft-proposals.json
 
 # Local worktrees
 .worktrees/
+
+# Browser automation debug artifacts
+.playwright-mcp/

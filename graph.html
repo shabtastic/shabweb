@@ -13,7 +13,7 @@
   --paper:    #f5f2ec;
   --ink:      #111118;
   --ink-blue: #1a2c6b;
-  --ink-dim:  rgba(17,17,24,0.45);
+  --ink-dim:  rgba(17,17,24,0.55);
   --ink-faint:rgba(17,17,24,0.12);
   --blue-g:   rgba(80,140,200,0.18);
   --blue-G:   rgba(80,140,200,0.40);
@@ -71,16 +71,16 @@ body {
   transition: color 0.2s, border-color 0.2s;
 }
 #nav-mini #back:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
-#nav-mini .sib-label { font-size: 0.42rem; color: var(--ink-dim); letter-spacing: 0.18em; }
+#nav-mini .sib-label { font-size: 0.68rem; color: var(--ink-dim); letter-spacing: 0.18em; }
 #nav-mini .sib-links { display: flex; gap: 0.7rem; }
 #nav-mini .sib-links a {
-  font-size: 0.44rem; color: var(--ink-dim); text-decoration: none;
+  font-size: 0.68rem; color: var(--ink-dim); text-decoration: none;
   letter-spacing: 0.18em;
   transition: color 0.2s;
 }
 #nav-mini .sib-links a:hover { color: var(--ink-blue); }
 #nav-mini .sib-links a.active { color: var(--ink-blue); }
-#nav-mini .sib-sep { color: var(--ink-dim); font-size: 0.4rem; }
+#nav-mini .sib-sep { color: var(--ink-dim); font-size: 0.68rem; }
 
 /* ── TITLE BLOCK ── */
 #title-block {
@@ -91,7 +91,7 @@ body {
   color: var(--ink); letter-spacing: -0.01em; margin-bottom: 0.25rem;
 }
 #title-block p {
-  font-size: 0.5rem; letter-spacing: 0.2em; color: var(--ink-dim);
+  font-size: 0.7rem; letter-spacing: 0.2em; color: var(--ink-dim);
   text-transform: uppercase;
 }
 
@@ -117,7 +117,7 @@ body {
   color: var(--ink-blue); margin-bottom: 0.4rem;
 }
 #sidebar-header p {
-  font-size: 0.58rem; color: var(--ink-dim); line-height: 1.7;
+  font-size: 0.7rem; color: var(--ink-dim); line-height: 1.7;
 }
 
 /* ── NODE DETAIL ── */
@@ -137,11 +137,11 @@ body {
   color: var(--ink); margin-bottom: 0.5rem; line-height: 1.2;
 }
 #node-detail .nd-weight {
-  font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-dim);
+  font-size: 0.7rem; letter-spacing: 0.18em; color: var(--ink-dim);
   margin-bottom: 0.8rem;
 }
 #node-detail .nd-connections {
-  font-size: 0.55rem; color: var(--ink-dim); line-height: 1.7;
+  font-size: 0.7rem; color: var(--ink-dim); line-height: 1.7;
 }
 #node-detail .nd-connections span {
   display: inline-block; background: rgba(26,44,107,0.07);
@@ -171,7 +171,7 @@ body {
   margin-bottom: 0.25rem; font-weight: 400;
 }
 .cluster-desc {
-  font-size: 0.5rem; color: var(--ink-dim); line-height: 1.65;
+  font-size: 0.7rem; color: var(--ink-dim); line-height: 1.65;
 }
 .cluster-count {
   font-size: 0.44rem; letter-spacing: 0.15em; color: var(--ink-faint);
@@ -184,7 +184,7 @@ body {
   display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem;
 }
 .hud-phase {
-  font-size: 0.46rem; letter-spacing: 0.3em; text-transform: uppercase;
+  font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
   color: var(--ink-dim);
 }
 .hud-bar { width: 48px; height: 1px; background: var(--ink-faint); position: relative; }
@@ -211,7 +211,7 @@ body {
 #cluster-overlay.open { display: block; }
 .overlay-close {
   position: fixed; top: 1.5rem; right: 1.8rem;
-  font-family: var(--mono); font-size: 0.52rem;
+  font-family: var(--mono); font-size: 0.68rem;
   letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--ink-dim); background: none; border: none;
   cursor: pointer; padding: 0.4rem 0.8rem;
@@ -249,7 +249,7 @@ body {
 }
 a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
 .overlay-paper-venue {
-  font-size: 0.55rem; color: var(--ink-dim); margin-bottom: 0.4rem;
+  font-size: 0.7rem; color: var(--ink-dim); margin-bottom: 0.4rem;
 }
 .overlay-paper-nodes {
   display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem;
@@ -377,7 +377,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     </div>
 
     <div id="topo-legend" style="padding:1rem 1.5rem;border-bottom:1px solid var(--blue-G);flex-shrink:0;">
-      <div style="font-size:0.46rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-blue);margin-bottom:0.7rem;">Activation intensity</div>
+      <div style="font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink-blue);margin-bottom:0.7rem;">Activation intensity</div>
       <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
         <div style="flex:1;height:6px;border-radius:2px;background:linear-gradient(to right,
           rgba(26,44,107,0.08),
@@ -538,7 +538,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
         "id": "Nath2026designrewards",
         "title": "Designing Rewards for Rewarding Designs: Demonstrating the Impact of Rewards on the Creative Design Process",
         "year": 2026,
-        "venue": "Design Computing and Cognition DCC'26",
+        "venue": "Design Computing and Cognition (DCC'26)",
         "arxivId": "2604.26083",
         "url": "https://arxiv.org/abs/2604.26083",
         "abstractOnly": false,
@@ -631,7 +631,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
         "id": "chong2026wowaidesign",
         "title": "Novel or surprising? Toward generating wowing designs with stable diffusion",
         "year": 2026,
-        "venue": "Proceedings of the ASME 2026 International Design Engineering Technical Conferences & Computers and Information in Engineering Conference IDETC/CIE 2026",
+        "venue": "Proceedings of the ASME 2026 International Design Engineering Technical Conferences & Computers and Information in Engineering Conference (IDETC/CIE 2026)",
         "url": null,
         "abstractOnly": false,
         "pubType": "conf-full",
@@ -655,31 +655,31 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
         "id": "zhang2026surpriseaidesign",
         "title": "Wow, Now I See It! --- Leveraging the Physiology of Surprise to Help Designers Uncover Desirable Generative Designs",
         "year": 2026,
-        "venue": "Creativity and Cognition C&C '26",
+        "venue": "Creativity and Cognition (C&C '26)",
+        "doi": "10.1145/3803784.3807551",
         "url": "https://doi.org/10.1145/3803784.3807551",
         "abstractOnly": false,
         "pubType": "conf-full",
         "authorPosition": "middle",
         "paperWeight": 0.2,
-        "extraction_source": "full-text",
-        "added": "2026-05-27T04:11:23.848Z",
+        "extraction_source": "title-abstract",
+        "added": "2026-07-23T15:52:23.746Z",
         "nodes_contributed": [
           "pupillometry",
           "physiological_surprise",
-          "arousal_response",
           "design_desirability",
-          "design_feasibility",
-          "hedonic_pragmatic",
           "tacit_feedback",
-          "design_triage"
-        ],
-        "doi": "10.1145/3803784.3807551"
+          "design_triage",
+          "hedonic_pragmatic",
+          "arousal_response",
+          "design_feasibility"
+        ]
       },
       {
         "id": "Hakimi2025creativity",
         "title": "Psychologically-inspired generative AI videos for supporting creativity",
         "year": 2025,
-        "venue": "2025 International Conference on Computational Creativity ICCC'25",
+        "venue": "2025 International Conference on Computational Creativity (ICCC'25)",
         "url": null,
         "abstractOnly": false,
         "pubType": "conf-full",
@@ -1025,11 +1025,21 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
         "venue": "AI Magazine",
         "doi": "10.1002/aaai.12101",
         "url": "https://doi.org/10.1002/aaai.12101",
+        "abstractOnly": false,
         "pubType": "commentary",
         "authorPosition": "middle",
         "paperWeight": 0.2,
-        "nodes_contributed": [],
-        "added": "2026-05-27T05:08:58.624Z"
+        "extraction_source": "title-abstract",
+        "added": "2026-07-23T15:30:25.373Z",
+        "nodes_contributed": [
+          "anticipatory_thinking",
+          "computational_design",
+          "scenario_generation",
+          "configuration_design",
+          "design_resilience",
+          "conceptual_design",
+          "future_simulation"
+        ]
       },
       {
         "id": "Castrellon2022social",
@@ -1337,11 +1347,20 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
         "year": 2018,
         "venue": "IEEE CIS Newsletter on Cognitive and Developmental Systems",
         "url": null,
+        "abstractOnly": false,
         "pubType": "commentary",
         "authorPosition": "second",
         "paperWeight": 0.24,
-        "nodes_contributed": [],
-        "added": "2026-05-27T05:08:58.630Z"
+        "extraction_source": "title-abstract",
+        "added": "2026-07-23T15:31:18.078Z",
+        "nodes_contributed": [
+          "curiosity_taxonomy",
+          "information_gap",
+          "exploratory_behavior",
+          "motivational_state",
+          "uncertainty_reduction",
+          "knowledge_acquisition"
+        ]
       },
       {
         "id": "Sukumar2017overcoming",
@@ -3972,6 +3991,97 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       "weight": 0.65,
       "cluster": 0,
       "level": "method"
+    },
+    {
+      "id": "anticipatory_thinking",
+      "label": "anticipatory\nthinking",
+      "weight": 0.2,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "computational_design",
+      "label": "computational\ndesign",
+      "weight": 0.18,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "scenario_generation",
+      "label": "scenario\ngeneration",
+      "weight": 0.16,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "configuration_design",
+      "label": "configuration\ndesign",
+      "weight": 0.14,
+      "cluster": 1,
+      "level": "method"
+    },
+    {
+      "id": "design_resilience",
+      "label": "design\nresilience",
+      "weight": 0.14,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "conceptual_design",
+      "label": "conceptual\ndesign",
+      "weight": 0.14,
+      "cluster": 1,
+      "level": "construct"
+    },
+    {
+      "id": "future_simulation",
+      "label": "future\nsimulation",
+      "weight": 0.12,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "curiosity_taxonomy",
+      "label": "curiosity\ntaxonomy",
+      "weight": 0.22,
+      "cluster": 0,
+      "level": "theory"
+    },
+    {
+      "id": "information_gap",
+      "label": "information\ngap",
+      "weight": 0.24,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "exploratory_behavior",
+      "label": "exploratory\nbehavior",
+      "weight": 0.2,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "motivational_state",
+      "label": "motivational\nstate",
+      "weight": 0.22,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "uncertainty_reduction",
+      "label": "uncertainty\nreduction",
+      "weight": 0.18,
+      "cluster": 0,
+      "level": "construct"
+    },
+    {
+      "id": "knowledge_acquisition",
+      "label": "knowledge\nacquisition",
+      "weight": 0.16,
+      "cluster": 0,
+      "level": "construct"
     }
   ],
   "edges": [
@@ -5168,7 +5278,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "pupillometry",
       "b": "physiological_surprise",
-      "strength": 0.95
+      "strength": 0.92
     },
     {
       "a": "physiological_surprise",
@@ -5178,7 +5288,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "physiological_surprise",
       "b": "arousal_response",
-      "strength": 0.9
+      "strength": 0.86
     },
     {
       "a": "physiological_surprise",
@@ -5188,7 +5298,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "physiological_surprise",
       "b": "expectation_violation",
-      "strength": 0.9
+      "strength": 0.84
     },
     {
       "a": "arousal_response",
@@ -5198,17 +5308,17 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "design_desirability",
       "b": "hedonic_pragmatic",
-      "strength": 0.85
+      "strength": 0.81
     },
     {
       "a": "design_desirability",
       "b": "surprise_valence",
-      "strength": 0.8
+      "strength": 0.77
     },
     {
       "a": "design_desirability",
       "b": "design_feasibility",
-      "strength": 0.75
+      "strength": 0.72
     },
     {
       "a": "design_desirability",
@@ -5218,12 +5328,12 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "tacit_feedback",
       "b": "pupillometry",
-      "strength": 0.85
+      "strength": 0.82
     },
     {
       "a": "tacit_feedback",
       "b": "design_triage",
-      "strength": 0.9
+      "strength": 0.87
     },
     {
       "a": "design_triage",
@@ -5233,7 +5343,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "design_triage",
       "b": "generative_design",
-      "strength": 0.8
+      "strength": 0.75
     },
     {
       "a": "physiological_surprise",
@@ -5243,7 +5353,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "a": "hedonic_pragmatic",
       "b": "design_feasibility",
-      "strength": 0.7
+      "strength": 0.69
     },
     {
       "a": "pupillometry",
@@ -7509,6 +7619,116 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       "a": "motivation_beliefs",
       "b": "reward_dependence",
       "strength": 0.5
+    },
+    {
+      "a": "anticipatory_thinking",
+      "b": "computational_design",
+      "strength": 0.8
+    },
+    {
+      "a": "anticipatory_thinking",
+      "b": "scenario_generation",
+      "strength": 0.75
+    },
+    {
+      "a": "anticipatory_thinking",
+      "b": "future_simulation",
+      "strength": 0.7
+    },
+    {
+      "a": "computational_design",
+      "b": "configuration_design",
+      "strength": 0.7
+    },
+    {
+      "a": "computational_design",
+      "b": "design_resilience",
+      "strength": 0.65
+    },
+    {
+      "a": "computational_design",
+      "b": "conceptual_design",
+      "strength": 0.65
+    },
+    {
+      "a": "scenario_generation",
+      "b": "design_exploration",
+      "strength": 0.6
+    },
+    {
+      "a": "anticipatory_thinking",
+      "b": "episodic_prospection",
+      "strength": 0.55
+    },
+    {
+      "a": "future_simulation",
+      "b": "episodic_prospection",
+      "strength": 0.6
+    },
+    {
+      "a": "computational_design",
+      "b": "design_space",
+      "strength": 0.5
+    },
+    {
+      "a": "conceptual_design",
+      "b": "concept_generation",
+      "strength": 0.55
+    },
+    {
+      "a": "curiosity_taxonomy",
+      "b": "information_gap",
+      "strength": 0.85
+    },
+    {
+      "a": "information_gap",
+      "b": "exploratory_behavior",
+      "strength": 0.75
+    },
+    {
+      "a": "motivational_state",
+      "b": "curiosity_taxonomy",
+      "strength": 0.8
+    },
+    {
+      "a": "motivational_state",
+      "b": "information_seeking",
+      "strength": 0.7
+    },
+    {
+      "a": "uncertainty_reduction",
+      "b": "information_gap",
+      "strength": 0.75
+    },
+    {
+      "a": "exploratory_behavior",
+      "b": "knowledge_acquisition",
+      "strength": 0.7
+    },
+    {
+      "a": "curiosity_taxonomy",
+      "b": "intrinsic_motivation",
+      "strength": 0.65
+    },
+    {
+      "a": "prediction_error",
+      "b": "information_gap",
+      "strength": 0.6
+    },
+    {
+      "a": "uncertainty_processing",
+      "b": "uncertainty_reduction",
+      "strength": 0.75
+    },
+    {
+      "a": "design_triage",
+      "b": "design_desirability",
+      "strength": 0.7
+    },
+    {
+      "a": "pupillometry",
+      "b": "arousal_response",
+      "strength": 0.7
     }
   ],
   "layout": [
@@ -7534,33 +7754,33 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "text_to_image",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "generative_design",
-      "x": 6.5,
-      "y": -0.8830317879996734
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "creative_divergence",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "concept_generation",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "emotional_response",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "neuroforecasting",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "nucleus_accumbens",
@@ -7570,7 +7790,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "random_utility_model",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "variational_autoencoder",
@@ -7585,17 +7805,17 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "visual_demand_features",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "shared_utility",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "conjoint_analysis",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "latent_space_traversal",
@@ -7604,43 +7824,43 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "affective_response",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "temporal_discounting",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "dlpfc",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "vmPFC",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "effective_connectivity",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "self_control",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "intertemporal_choice",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "subjective_value",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "delay_gratification",
@@ -7650,41 +7870,41 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "individual_differences",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "value_modulation",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "reward_imagination",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "episodic_prospection",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "discount_rate",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
-      "id": "future_reward_rep",
       "x": 6.5,
       "y": 6.5
     },
     {
+      "id": "episodic_prospection",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "discount_rate",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "future_reward_rep",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
       "id": "neural_prediction",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "risk_estimation",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
@@ -7694,57 +7914,57 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "health_behavior",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "gist_representation",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "salience_encoding",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "belief_change",
-      "x": -0.3573008037187328,
-      "y": -5.706158363807296
-    },
-    {
-      "id": "intervention_design",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "cognitive_complexity",
-      "x": 6.5,
-      "y": -6.5
-    },
-    {
-      "id": "preference_elicitation",
       "x": 6.5,
       "y": 6.5
     },
     {
-      "id": "mental_representation",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "feature_generation",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "constructed_preference",
+      "id": "gist_representation",
       "x": 6.5,
       "y": -6.5
     },
     {
-      "id": "levels_of_processing",
+      "id": "salience_encoding",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "belief_change",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "intervention_design",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "cognitive_complexity",
       "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "preference_elicitation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "mental_representation",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "feature_generation",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "constructed_preference",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "levels_of_processing",
+      "x": 6.5,
       "y": 6.5
     },
     {
@@ -7755,37 +7975,37 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "rank_ordered_choice",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "idiosyncratic_features",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "concreteness",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "llm_simulation",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "choice_prediction",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "language_elicitation",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "perceptual_processing",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "human_llm_alignment",
@@ -7794,17 +8014,17 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "psychological_flexibility",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "creative_state",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "creative_mindset",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
@@ -7814,53 +8034,53 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "awe_induction",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "event_segmentation",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "predictive_processing",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "creativity_support",
       "x": -6.5,
-      "y": -6.5
+      "y": -6.493777991302199
     },
     {
       "id": "video_intervention",
-      "x": 6.5,
-      "y": 6.5
-    },
-    {
-      "id": "cognitive_flexibility",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
+      "id": "cognitive_flexibility",
+      "x": -6.5,
+      "y": -6.494879319470908
+    },
+    {
       "id": "sequential_design",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "imageability",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "semantic_neighbors",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "design_space",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "state_transition",
@@ -7869,7 +8089,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "action_trajectory",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
@@ -7880,22 +8100,22 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "semantic_prompt",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "aesthetic_function",
-      "x": 6.5,
-      "y": -6.5
+      "x": -6.5,
+      "y": 6.5
     },
     {
       "id": "creative_activity_trace",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "longitudinal_creativity",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "artifact_evolution",
@@ -7904,28 +8124,28 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "physiological_sensing",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "creative_wellbeing",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "design_information",
-      "x": 6.5,
-      "y": -6.5
+      "x": -6.5,
+      "y": 6.5
     },
     {
       "id": "temporal_resolution",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "semantic_richness",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "product_semantics",
@@ -7934,7 +8154,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "multimodal_design",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
@@ -7945,22 +8165,22 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "semantic_similarity",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "markov_design",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "design_feedback",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "reward_design",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "design_fixation",
@@ -7975,12 +8195,12 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "intrinsic_reward",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "parametric_design",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "design_diversity",
@@ -7995,22 +8215,22 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "mdp_design",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "reward_shaping",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "design_decision",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "goal_alignment",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "reward_hacking",
@@ -8020,96 +8240,96 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "creative_agency",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "feedback_utility",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "creative_stuckness",
-      "x": 6.5,
-      "y": 6.5
-    },
-    {
-      "id": "jit_intervention",
       "x": -6.5,
       "y": -6.5
     },
     {
+      "id": "jit_intervention",
+      "x": 6.498664598899866,
+      "y": -6.5
+    },
+    {
       "id": "self_regulation",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.493801211173196
     },
     {
       "id": "receptivity",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "creative_self_efficacy",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "contextual_bandit",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "ubiquitous_sensing",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "autonomy_preservation",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "micro_intervention",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "embodied_cognition",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "socioemotional_selectivity",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "age_related_risk",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "personalized_simulation",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "risk_literacy",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "memory_aging",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "misinformation_susceptibility",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "pupillometry",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
@@ -8119,7 +8339,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "arousal_response",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
@@ -8130,7 +8350,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "design_feasibility",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "hedonic_pragmatic",
@@ -8139,73 +8359,73 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "tacit_feedback",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "design_triage",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "analytic_flexibility",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "multiverse_analysis",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "neuroimaging_reproducibility",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "many_analysts",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "pipeline_variability",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "meta_analytic_consensus",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "researcher_degrees_freedom",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "narrative_decision",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "evidence_accumulation",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "legal_decision_making",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "neural_decoding",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "utility_narrative_integration",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "uncertainty_processing",
@@ -8215,37 +8435,37 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "relational_reasoning",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "hierarchical_modeling",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "juror_bias",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "social_cognition",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "decision_bias",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "mentalizing",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "in_group_bias",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "fmri_decoding",
@@ -8255,22 +8475,22 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "tpj",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "dmpfc",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "representation_learning",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "individual_embedding",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "psychometric_measure",
@@ -8279,43 +8499,43 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "behavioral_prediction",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "personalization",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "latent_driver_rep",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "human_machine_teaming",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "driver_assistance",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "inverse_rl",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "policy_personalization",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "distracted_driving",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "familiarity_effect",
@@ -8324,28 +8544,28 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "bev_adoption",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "belief_uncertainty",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "perceived_barriers",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "mere_exposure",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "attitude_change",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "technology_adoption",
@@ -8354,78 +8574,78 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "confirmation_bias",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "data_visualization",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "correlation_perception",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "outlier_influence",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "prior_belief_bias",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "graph_literacy",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "misinformation_spread",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "social_anxiety",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
-      "id": "emotion_reactivity",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
-      "id": "cognitive_reappraisal",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "amygdala",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
-      "id": "limbic_cortical",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
-      "id": "threat_specificity",
       "x": 6.5,
       "y": 6.5
     },
     {
-      "id": "prefrontal_regulation",
+      "id": "social_anxiety",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "emotion_reactivity",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "cognitive_reappraisal",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "amygdala",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "limbic_cortical",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "threat_specificity",
       "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "prefrontal_regulation",
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "emotion_regulation",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "shared_autonomy",
@@ -8434,18 +8654,18 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "alert_fatigue",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "bounded_rationality",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "behavioral_economics",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "adolescent_development",
@@ -8459,48 +8679,48 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "social_influence_choice",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "health_behavior_change",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "rational_choice",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "developmental_intervention",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "backfire_effect",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "heterogeneous_treatment",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "climate_communication",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "targeted_advertising",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "causal_ml",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "message_framing",
@@ -8509,7 +8729,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "prompt_engineering",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
@@ -8519,18 +8739,18 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "fidelity_progression",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
       "id": "common_ground",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "creative_block",
-      "x": 6.5,
-      "y": -6.5
+      "x": -6.5,
+      "y": 6.5
     },
     {
       "id": "functional_fixedness",
@@ -8544,8 +8764,8 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "professional_creativity",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "aesthetic_perception",
@@ -8565,12 +8785,12 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "visual_feature_extraction",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "semantic_attribute",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "human_centered_design",
@@ -8580,27 +8800,27 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "multimodal_aesthetic",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "satisficing",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "aspiration_threshold",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "sequential_sampling",
-      "x": 6.5,
-      "y": -6.5
+      "x": -6.5,
+      "y": 6.5
     },
     {
       "id": "stopping_policy",
-      "x": 6.5,
-      "y": -6.5
+      "x": -6.5,
+      "y": 6.5
     },
     {
       "id": "sampling_cost",
@@ -8609,28 +8829,28 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "optimal_stopping",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "value_based_stopping",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "accuracy_speed_tradeoff",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "persona_design",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "ai_persona_gen",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "design_speculation",
@@ -8639,18 +8859,18 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "user_need_inference",
-      "x": 6.5,
-      "y": 6.5
-    },
-    {
-      "id": "feature_extraction",
       "x": -6.5,
       "y": -6.5
     },
     {
+      "id": "feature_extraction",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
       "id": "census_grounding",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "ideation_workflow",
@@ -8659,12 +8879,12 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "autism_reward",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "reward_prediction_error",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
@@ -8679,17 +8899,17 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "social_motivation",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "cognitive_rigidity",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "reward_learning",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
@@ -8700,146 +8920,146 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "insula",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "intolerance_uncertainty",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "idea_incubation",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "creative_insight",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "mindless_task",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "in_car_interaction",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "voice_interface",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "context_aware_sensing",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "prize_linked_savings",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "willpower_fluctuation",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "goal_persistence",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "incentive_optimization",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "effort_cost",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "impulsivity",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "inhibitory_control",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "risky_driving",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "cognitive_inference",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "hmi_personalization",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
-      "id": "recurrent_nn",
       "x": 6.5,
       "y": -6.5
     },
     {
-      "id": "sensation_seeking",
-      "x": 6.5,
+      "id": "recurrent_nn",
+      "x": -6.5,
       "y": 6.5
     },
     {
-      "id": "imaging_genetics",
+      "id": "sensation_seeking",
       "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "imaging_genetics",
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "dopamine_hypothesis",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "schizophrenia_risk",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "comt_gene",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "prefrontal_dopamine",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "working_memory_pfc",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "intermediate_phenotype",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "antipsychotic_mechanism",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "genetic_susceptibility",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
@@ -8849,13 +9069,13 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "gray_matter_volume",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "voxel_based_morphometry",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "white_matter_integrity",
@@ -8865,22 +9085,22 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "neuroplasticity",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "dopamine_neurotransmission",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "endophenotype",
-      "x": 6.5,
+      "x": -6.5,
       "y": 6.5
     },
     {
       "id": "frontal_lobe_efficiency",
       "x": -6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "d2_receptor_blockade",
@@ -8890,7 +9110,7 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "striatal_plasticity",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "extrapyramidal_symptoms",
@@ -8900,11 +9120,11 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     {
       "id": "structural_covariance",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "pharmaco_neuroimaging",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
@@ -8914,28 +9134,28 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "oxytocin_system",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "oxtr_genotype",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "hypothalamus",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "prosocial_behavior",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "reward_dependence",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "autism_spectrum",
@@ -8944,63 +9164,63 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "sex_differences",
-      "x": 6.5,
-      "y": -6.5
+      "x": -6.5,
+      "y": 6.5
     },
     {
       "id": "social_attention",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "face_gaze",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "naturalistic_behavior",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "social_engagement",
-      "x": 6.5,
-      "y": 6.5
-    },
-    {
-      "id": "repetitive_behavior",
       "x": -6.5,
       "y": -6.5
     },
     {
+      "id": "repetitive_behavior",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
       "id": "visual_perspective",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "deep_conjoint",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "nonlinear_preference",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "part_worth",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "attribute_interaction",
-      "x": 6.5,
-      "y": 6.5
+      "x": -6.5,
+      "y": -6.5
     },
     {
       "id": "discrete_choice",
       "x": 6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "implicit_feature",
@@ -9014,57 +9234,57 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "vasopressin_system",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "subgenual_cingulate",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "supragenual_cingulate",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "mpfc_amygdala",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "fear_extinction",
       "x": 6.5,
-      "y": -6.5
+      "y": 6.5
     },
     {
       "id": "v1a_receptor",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "intranasal_peptide",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "social_fear",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "social_recognition",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "tpj_activity",
       "x": -6.5,
-      "y": 6.5
+      "y": -6.5
     },
     {
       "id": "vasopressin_social",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
@@ -9074,22 +9294,22 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "familiarity_processing",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "aim_framework",
       "x": 6.5,
       "y": 6.5
     },
     {
-      "id": "aim_framework",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
       "id": "market_demand_forecast",
-      "x": -6.5,
-      "y": 6.5
+      "x": 6.5,
+      "y": -6.5
     },
     {
       "id": "gain_anticipation",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
@@ -9099,67 +9319,67 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "anterior_insula",
-      "x": -6.5,
+      "x": 6.5,
       "y": 6.5
     },
     {
       "id": "purchase_intention",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
-      "id": "backcasting",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "value_integration",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "negativity_bias",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "mood_congruent_memory",
-      "x": -6.5,
-      "y": 6.5
-    },
-    {
-      "id": "information_seeking",
       "x": 6.5,
       "y": -6.5
     },
     {
-      "id": "reflective_intervention",
-      "x": -6.5,
+      "id": "backcasting",
+      "x": 6.5,
       "y": -6.5
     },
     {
-      "id": "valence_memory_bias",
-      "x": -6.5,
-      "y": -6.5
-    },
-    {
-      "id": "doom_scrolling",
-      "x": -6.5,
+      "id": "value_integration",
+      "x": 6.5,
       "y": 6.5
     },
     {
-      "id": "media_mental_health",
-      "x": -6.5,
+      "id": "negativity_bias",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "mood_congruent_memory",
+      "x": 6.5,
       "y": -6.5
+    },
+    {
+      "id": "information_seeking",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "reflective_intervention",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "valence_memory_bias",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "doom_scrolling",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "media_mental_health",
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "arousal_memory",
-      "x": -6.5,
-      "y": -6.5
+      "x": 6.5,
+      "y": 6.5
     },
     {
       "id": "motivation_beliefs",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
@@ -9179,12 +9399,12 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "self_regulated_learning",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "intrinsic_motivation",
-      "x": -6.5,
+      "x": 6.5,
       "y": -6.5
     },
     {
@@ -9199,13 +9419,78 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     },
     {
       "id": "regulation_flexibility",
-      "x": 6.5,
+      "x": -6.5,
       "y": -6.5
     },
     {
       "id": "psychometric_tool",
       "x": -6.5,
       "y": -6.5
+    },
+    {
+      "id": "anticipatory_thinking",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "computational_design",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "scenario_generation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "configuration_design",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "design_resilience",
+      "x": -6.5,
+      "y": 6.5
+    },
+    {
+      "id": "conceptual_design",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "future_simulation",
+      "x": -6.5,
+      "y": -6.5
+    },
+    {
+      "id": "curiosity_taxonomy",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "information_gap",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "exploratory_behavior",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "motivational_state",
+      "x": 6.5,
+      "y": -6.5
+    },
+    {
+      "id": "uncertainty_reduction",
+      "x": 6.5,
+      "y": 6.5
+    },
+    {
+      "id": "knowledge_acquisition",
+      "x": 6.5,
+      "y": 6.5
     }
   ]
 }
@@ -9559,23 +9844,23 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       .map(e => ({ label: NODES[e.idx].label.replace('\n',' ').toLowerCase(), w: e.strength||0.5 }));
     const papersForNode = nodePapers[node.id] || [];
 
-    let html = '<div style="margin-bottom:0.4rem;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)">Connected concepts</div>';
+    let html = '<div style="margin-bottom:0.4rem;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)">Connected concepts</div>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.2rem;">'
       + connected.map(l =>
-          `<span style="font-size:0.5rem;padding:0.15rem 0.45rem;border:1px solid rgba(26,44,107,0.2);color:var(--ink-blue);opacity:${(0.55 + l.w * 0.45).toFixed(2)};">${l.label}</span>`
+          `<span style="font-size:0.65rem;padding:0.15rem 0.45rem;border:1px solid rgba(26,44,107,0.2);color:var(--ink-blue);opacity:${(0.55 + l.w * 0.45).toFixed(2)};">${l.label}</span>`
         ).join('')
       + '</div>';
 
     if (papersForNode.length) {
-      html += '<div style="margin-top:0.8rem;margin-bottom:0.35rem;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)">Related publications</div>';
+      html += '<div style="margin-top:0.8rem;margin-bottom:0.35rem;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)">Related publications</div>';
       papersForNode.forEach(p => {
         const link = p.url || (p.doi ? `https://doi.org/${p.doi}` : null);
         const year = p.year ? `${p.year} · ` : '';
         const venue = p.venue || '';
         if (link) {
-          html += `<div style="margin-bottom:0.45rem;"><a href="${link}" target="_blank" rel="noopener" style="font-size:0.54rem;color:var(--ink-blue);text-decoration:none;border-bottom:1px solid rgba(26,44,107,0.25);line-height:1.6;">${p.title}</a><div style="font-size:0.46rem;color:var(--ink-dim);margin-top:0.1rem;">${year}${venue}</div></div>`;
+          html += `<div style="margin-bottom:0.45rem;"><a href="${link}" target="_blank" rel="noopener" style="font-size:0.7rem;color:var(--ink-blue);text-decoration:none;border-bottom:1px solid rgba(26,44,107,0.25);line-height:1.6;">${p.title}</a><div style="font-size:0.7rem;color:var(--ink-dim);margin-top:0.1rem;">${year}${venue}</div></div>`;
         } else {
-          html += `<div style="margin-bottom:0.45rem;font-size:0.54rem;color:var(--ink-dim);line-height:1.6;">${p.title}<div style="font-size:0.46rem;margin-top:0.1rem;">${year}${venue}</div></div>`;
+          html += `<div style="margin-bottom:0.45rem;font-size:0.7rem;color:var(--ink-dim);line-height:1.6;">${p.title}<div style="font-size:0.7rem;margin-top:0.1rem;">${year}${venue}</div></div>`;
         }
       });
     }

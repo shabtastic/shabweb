@@ -25,7 +25,7 @@ data/publications.json  — Derived from CV bib files
 --paper:    #f5f2ec    /* warm off-white, graph paper background */
 --ink:      #111118    /* near-black body text */
 --ink-blue: #1a2c6b    /* deep blue accent, pen/marker feel */
---ink-dim:  rgba(17,17,24,0.45)
+--ink-dim:  rgba(17,17,24,0.55)   /* darkened 2026-07-23 for legibility */
 --ink-faint:rgba(17,17,24,0.15)
 --blue-g:   rgba(80,140,200,0.20)   /* minor grid lines */
 --blue-G:   rgba(80,140,200,0.42)   /* major grid lines */

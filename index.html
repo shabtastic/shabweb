@@ -269,6 +269,7 @@ section { padding: 7rem 2.5rem; }
 }
 .work-title a:hover { border-color: var(--ink-dim); }
 .work-sub { font-size: 0.7rem; color: var(--ink-dim); margin-top: 0.25rem; }
+.work-venue { font-size: 0.68rem; color: var(--ink-dim); opacity: 0.8; margin-top: 0.2rem; }
 .work-type {
   font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
   border: 1px solid var(--ink-faint); padding: 0.12rem 0.4rem;
@@ -8973,7 +8974,7 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
         const venue = pub.venue || '';
         const venueHtml = venue.trim().toLowerCase() === typeLabel.toLowerCase()
           ? ''
-          : (' · ' + (pub.pubType === 'journal' ? '<em>' + venue + '</em>' : venue));
+          : ('<div class="work-venue">' + (pub.pubType === 'journal' ? '<em>' + venue + '</em>' : venue) + '</div>');
         const linkUrl = pub.url || (pub.doi ? 'https://doi.org/' + pub.doi : '') || (pub.arxivId ? 'https://arxiv.org/abs/' + pub.arxivId : '');
 
         const item = document.createElement('div');
@@ -8982,7 +8983,7 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
           '<span class="work-year">' + pub.year + '</span>' +
           '<div><div class="work-title">' +
             (linkUrl ? '<a href="' + linkUrl + '" target="_blank" rel="noopener">' + pub.title + '</a>' : pub.title) +
-          '</div><div class="work-sub">' + authors + venueHtml + '</div></div>' +
+          '</div><div class="work-sub">' + authors + '</div>' + venueHtml + '</div>' +
           '<span class="work-type">' + typeLabel + '</span>';
         list.appendChild(item);
       });

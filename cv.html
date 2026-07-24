@@ -51,7 +51,7 @@ body {
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.2rem 2.5rem;
+  padding: 1.6rem 2.5rem 2.1rem;
   display: flex; justify-content: space-between; align-items: center;
   background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--blue-G);
@@ -59,15 +59,15 @@ nav {
 .nav-logo {
   display: inline-block; position: relative;
   font-family: var(--mono); font-weight: 700;
-  font-size: 0.62rem; letter-spacing: 0.25em;
+  font-size: 0.9rem; letter-spacing: 0.25em;
   color: var(--ink); text-decoration: none; line-height: 1;
 }
 .nav-logo-hl { position: absolute; left: -3px; right: -3px; top: 28%; height: 40%; opacity: 0.78; transition: background-color 1.2s ease; pointer-events: none; }
 .nav-logo-text { position: relative; z-index: 1; }
 .nav-links { display: flex; gap: 2rem; list-style: none; align-items: flex-start; }
-.nav-links li { position: relative; }
+.nav-links li { position: relative; padding-bottom: 0.6rem; margin-bottom: -0.6rem; }
 .nav-links > li > a {
-  font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+  font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
   color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
 }
 .nav-links > li > a:hover, .nav-links > li > a.active { color: var(--ink); }
@@ -75,15 +75,14 @@ nav {
   display: flex; gap: 1rem;
   position: absolute; top: 100%; left: 0;
   padding-top: 0; max-height: 0; overflow: hidden; opacity: 0;
-  pointer-events: none;
   transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
   background: rgba(244,241,235,0.95); white-space: nowrap;
 }
 .nav-links li:hover .nav-sub-links {
-  max-height: 2rem; opacity: 1; pointer-events: auto; padding-top: 0.3rem;
+  max-height: 3rem; opacity: 1; padding-top: 0.4rem; padding-bottom: 0.4rem;
 }
 .nav-sub-links a {
-  font-size: 0.44rem; letter-spacing: 0.14em; text-transform: uppercase;
+  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
 }
 .nav-sub-links a:hover { color: var(--ink); }
@@ -96,11 +95,23 @@ nav {
   max-width: 900px;
 }
 .page-eyebrow {
-  font-size: 0.52rem; letter-spacing: 0.38em; text-transform: uppercase;
+  font-size: 0.72rem; letter-spacing: 0.38em; text-transform: uppercase;
   color: var(--ink-blue); margin-bottom: 0.8rem;
   display: flex; align-items: center; gap: 1rem;
 }
 .page-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: currentColor; }
+.page-eyebrow > .hl {
+  display: inline-block;
+  padding: 0 6px;
+  margin-left: -6px;
+  background-image: linear-gradient(
+    transparent 30%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 30%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 85%,
+    transparent 85%
+  );
+}
+.page-eyebrow.s-red { --hl-rgb: 255 119 146; --hl-a: 0.55; }
 .page-title {
   font-family: var(--sans); font-size: clamp(2rem,5vw,3.5rem); font-weight: 300;
   color: var(--ink); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 0.6rem;
@@ -159,7 +170,7 @@ nav {
 
 /* ── PUBLICATION ENTRIES ── */
 .pub-list { padding: 0 2.5rem 4rem; max-width: 900px; }
-.pub-footnote { font-size: 0.65rem; color: var(--ink-dim); margin-top: 1.5rem; }
+.pub-footnote { font-size: 0.68rem; color: var(--ink-dim); margin-top: 1.5rem; }
 .pub-year-heading {
   font-family: var(--mono);
   font-size: 0.7rem; letter-spacing: 0.22em;
@@ -194,7 +205,7 @@ nav {
 .pub-entry.visible { opacity: 1; transform: translateY(0); }
 .pub-main, .pub-aside {
   display: grid;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto;
   row-gap: 0.35rem;
 }
 .pub-main { grid-column: 1; }
@@ -219,23 +230,15 @@ nav {
   border: 1px solid var(--ink-faint); padding: 0.12rem 0.4rem;
   color: var(--ink-dim); grid-row: 2; justify-self: end; align-self: start;
 }
-.pub-link {
-  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--ink-blue); text-decoration: none;
-  border-bottom: 1px solid rgba(26,44,107,0.25); padding-bottom: 0.05rem;
-  transition: border-color 0.2s;
-}
-.pub-link:hover { border-color: var(--ink-blue); }
-.pub-link-row { grid-row: 4; }
 .pub-addendum {
-  font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--h-red); grid-row: 3; align-self: end; justify-self: end;
 }
 
 /* ── FULL CV LINK ── */
 .full-cv-link {
   display: inline-flex; align-items: center; gap: 0.6rem;
-  font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--ink-blue); text-decoration: none;
   border: 1px solid rgba(26,44,107,0.25); padding: 0.6rem 1.2rem;
   margin-top: 2rem; transition: background 0.2s, border-color 0.2s;
@@ -295,7 +298,7 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
 </nav>
 
 <div class="page-header">
-  <p class="page-eyebrow">Research</p>
+  <p class="page-eyebrow s-red"><span class="hl">Research</span></p>
   <h1 class="page-title">Curriculum Vitae</h1>
   <p class="page-meta">
     <a href="cv-viewer.html">View full CV (PDF) →</a>
@@ -447,7 +450,6 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
         const typeLabel = typeLabels[pub.pubType] || pub.pubType;
 
         // Link
-        const linkText = pub.doi ? 'DOI →' : (pub.arxivId ? 'arXiv →' : (pub.url ? 'Link →' : ''));
         const linkUrl = pub.url || (pub.doi ? 'https://doi.org/' + pub.doi : '') || (pub.arxivId ? 'https://arxiv.org/abs/' + pub.arxivId : '');
 
         entry.innerHTML =
@@ -458,7 +460,6 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
             '<div class="pub-authors">' + authors + '</div>' +
             (venue.trim().toLowerCase() === typeLabel.toLowerCase() ? '' :
               '<div class="pub-venue"><em' + (pub.pubType === 'journal' ? ' class="venue-journal"' : '') + '>' + venue + '</em></div>') +
-            (linkUrl && linkText ? '<div class="pub-link-row"><a href="' + linkUrl + '" class="pub-link" target="_blank" rel="noopener">' + linkText + '</a></div>' : '') +
           '</div>' +
           '<div class="pub-aside">' +
             '<span class="pub-year">' + pub.year + '</span>' +

@@ -71,18 +71,12 @@ body {
   will-change: transform;
 }
 
-/* ── HUD ── */
-@keyframes hud-pulse {
-  0%, 100% { opacity: 0.2; }
-  50%       { opacity: 0.7; }
-}
-
 nav, section, footer { position: relative; z-index: 10; }
 
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.2rem 2.5rem;
+  padding: 1.6rem 2.5rem 2.1rem;
   display: flex; justify-content: space-between; align-items: center;
   background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--blue-G);
@@ -90,15 +84,15 @@ nav {
 .nav-logo {
   display: inline-block; position: relative;
   font-family: var(--mono); font-weight: 700;
-  font-size: 0.62rem; letter-spacing: 0.25em;
+  font-size: 0.9rem; letter-spacing: 0.25em;
   color: var(--ink); text-decoration: none; line-height: 1;
 }
 .nav-logo-hl { position: absolute; left: -3px; right: -3px; top: 28%; height: 40%; opacity: 0.78; transition: background-color 1.2s ease; pointer-events: none; }
 .nav-logo-text { position: relative; z-index: 1; }
 .nav-links { display: flex; gap: 2rem; list-style: none; align-items: flex-start; }
-.nav-links li { position: relative; }
+.nav-links li { position: relative; padding-bottom: 0.6rem; margin-bottom: -0.6rem; }
 .nav-links > li > a {
-  font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+  font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
   color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
 }
 .nav-links > li > a:hover, .nav-links > li > a.active { color: var(--ink); }
@@ -107,14 +101,13 @@ nav {
   position: absolute; top: 100%; left: 0;
   padding-top: 0;
   max-height: 0; overflow: hidden; opacity: 0;
-  pointer-events: none;
   transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
   background: rgba(244,241,235,0.95);
   white-space: nowrap;
 }
 .nav-links li:hover .nav-sub-links {
-  max-height: 2rem; opacity: 1;
-  pointer-events: auto; padding-top: 0.3rem;
+  max-height: 3rem; opacity: 1;
+  padding-top: 0.4rem; padding-bottom: 0.4rem;
 }
 .nav-sub-links a {
   font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
@@ -122,14 +115,6 @@ nav {
 }
 .nav-sub-links a:hover { color: var(--ink); }
 .nav-sub-links a.active { color: var(--ink-blue); }
-.nav-logo {
-  font-family: var(--mono); font-size: 0.62rem;
-  letter-spacing: 0.25em; color: var(--ink);
-  text-transform: uppercase; text-decoration: none;
-  font-weight: 700;
-}
-.nav-sub a:hover { color: var(--ink-blue); }
-
 /* ── HERO ── */
 #hero {
   min-height: 100vh;
@@ -147,7 +132,7 @@ nav {
   transform: translateY(-50%); font-family: var(--mono);
 }
 .hero-eyebrow {
-  font-family: var(--mono); font-size: 0.58rem;
+  font-family: var(--mono); font-size: 0.72rem;
   letter-spacing: 0.35em; text-transform: uppercase;
   color: var(--ink-blue); margin-bottom: 1rem;
   opacity: 0; animation: fadeUp 0.9s ease 0.3s forwards;
@@ -167,57 +152,34 @@ nav {
   padding: 0 0.05em;
 }
 .hero-tagline {
-  font-family: var(--mono); font-size: 0.65rem;
-  color: var(--ink-dim); max-width: 440px;
+  font-family: var(--mono); font-size: 0.8rem;
+  color: var(--ink-dim); max-width: 480px;
   margin-bottom: 2.5rem; line-height: 1.9;
   opacity: 0; animation: fadeUp 1s ease 0.8s forwards;
 }
 .hero-cta {
-  display: flex; align-items: center; gap: 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
   opacity: 0; animation: fadeUp 1s ease 1s forwards;
 }
 .btn-primary {
-  font-family: var(--mono); font-size: 0.58rem;
+  font-family: var(--mono); font-size: 0.72rem;
   letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--paper); background: var(--ink-blue);
   padding: 0.75rem 1.6rem; text-decoration: none;
   transition: background 0.25s;
 }
 .btn-primary:hover { background: var(--h-slate); }
+.hero-cta-or {
+  font-family: var(--mono); font-size: 0.68rem;
+  color: var(--ink-dim);
+}
 .btn-ghost {
-  font-family: var(--mono); font-size: 0.58rem;
+  font-family: var(--mono); font-size: 0.72rem;
   letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--ink-dim); text-decoration: none; transition: color 0.2s;
 }
 .btn-ghost::after { content: ' ↓'; }
 .btn-ghost:hover { color: var(--ink); }
-
-/* ── LINK TO FULL GRAPH ── */
-.hero-graph-wrap {
-  display: flex; align-items: center; gap: 1.2rem;
-  opacity: 0; animation: fadeUp 1s ease 1.3s forwards;
-  margin-top: 1.2rem;
-}
-.hero-graph-link {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  font-family: var(--mono); font-size: 0.48rem;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--ink-blue); text-decoration: none;
-  border: 1px solid rgba(26,44,107,0.22);
-  padding: 0.35rem 0.65rem;
-  transition: background 0.2s, border-color 0.2s;
-}
-.hero-graph-link::before { content: '↗'; font-size: 0.6rem; }
-.hero-graph-link:hover {
-  background: rgba(26,44,107,0.05);
-  border-color: rgba(26,44,107,0.45);
-}
-.hero-graph-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--ink-blue);
-  animation: hud-pulse 3s ease-in-out infinite;
-  flex-shrink: 0;
-}
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -233,7 +195,7 @@ section { padding: 7rem 2.5rem; }
 }
 
 .section-label {
-  font-family: var(--mono); font-size: 0.52rem;
+  font-family: var(--mono); font-size: 0.72rem;
   letter-spacing: 0.38em; text-transform: uppercase;
   color: var(--ink-blue); margin-bottom: 0.6rem;
   display: flex; align-items: center; gap: 1rem;
@@ -261,7 +223,7 @@ section { padding: 7rem 2.5rem; }
 .section-label.s-mint   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
 
 #about { background: rgba(244,241,235,0.97); border-top: 1px solid var(--blue-G); }
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; max-width: 1100px; }
+.about-grid { display: grid; grid-template-columns: 1fr; max-width: 700px; }
 .about-text h2 {
   font-family: var(--sans); font-size: clamp(2.2rem,4.5vw,4rem); font-weight: 300;
   line-height: 1.05; margin-bottom: 2rem; color: var(--ink);
@@ -278,17 +240,6 @@ section { padding: 7rem 2.5rem; }
 .about-text p { font-size: 0.7rem; color: var(--ink-dim); margin-bottom: 1.2rem; line-height: 1.95; }
 .about-text ol.about-questions { font-size: 0.7rem; color: var(--ink-dim); line-height: 1.95; margin: 0 0 1.2rem 1.2rem; }
 .about-text ol.about-questions li { margin-bottom: 0.4rem; }
-.about-aside h3 {
-  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--ink-dim); margin-bottom: 1.2rem;
-}
-.interest-list { list-style: none; border-top: 1px solid var(--blue-G); }
-.interest-list li {
-  padding: 0.75rem 0; border-bottom: 1px solid rgba(100,160,210,0.15);
-  font-size: 0.65rem; color: var(--ink-dim);
-  display: flex; align-items: center; gap: 1rem;
-}
-.interest-list li::before { content: '+'; color: var(--ink-blue); font-weight: 700; }
 
 #research { background: var(--paper); border-top: 1px solid var(--blue-G); }
 .research-grid { display: grid; grid-template-columns: repeat(2,1fr); max-width: 1100px; }
@@ -298,10 +249,10 @@ section { padding: 7rem 2.5rem; }
   transition: background 0.2s;
 }
 .research-item:hover { background: rgba(100,160,210,0.04); }
-.research-num { font-size: 0.48rem; letter-spacing: 0.2em; color: var(--ink-faint); padding-top: 0.25em; white-space: nowrap; }
+.research-num { font-size: 0.68rem; letter-spacing: 0.2em; color: var(--ink-dim); padding-top: 0.25em; white-space: nowrap; }
 .research-content h3 { font-family: var(--sans); font-size: 1.05rem; font-weight: 400; color: var(--ink); margin-bottom: 0.5rem; }
-.research-content p { font-size: 0.62rem; color: var(--ink-dim); line-height: 1.85; }
-.research-tag { display: inline-block; font-size: 0.44rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-blue); border: 1px solid rgba(26,44,107,0.2); padding: 0.15rem 0.45rem; margin-top: 0.7rem; margin-right: 0.3rem; }
+.research-content p { font-size: 0.7rem; color: var(--ink-dim); line-height: 1.85; }
+.research-tag { display: inline-block; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-blue); border: 1px solid rgba(26,44,107,0.2); padding: 0.15rem 0.45rem; margin-top: 0.7rem; margin-right: 0.3rem; }
 
 #work { background: var(--paper-2); border-top: 1px solid var(--blue-G); }
 .work-list { max-width: 780px; }
@@ -310,18 +261,26 @@ section { padding: 7rem 2.5rem; }
   gap: 2rem; padding: 1.6rem 0;
   border-bottom: 1px solid var(--blue-G); align-items: baseline;
 }
-.work-year { font-size: 0.5rem; letter-spacing: 0.15em; color: var(--ink-faint); }
+.work-year { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--ink-dim); }
 .work-title { font-family: var(--sans); font-size: 0.95rem; font-weight: 400; color: var(--ink); }
+.work-title a {
+  color: inherit; text-decoration: none;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+}
+.work-title a:hover { border-color: var(--ink-dim); }
 .work-sub { font-size: 0.7rem; color: var(--ink-dim); margin-top: 0.25rem; }
-.work-type { font-size: 0.44rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
-
-#cv { background: var(--paper); border-top: 1px solid var(--blue-G); }
-.cv-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; max-width: 1100px; }
-.cv-block-label { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 1.5rem; }
-.cv-entry { display: grid; grid-template-columns: 90px 1fr; gap: 1rem; margin-bottom: 1.3rem; align-items: baseline; }
-.cv-entry-year { font-size: 0.5rem; color: var(--ink-faint); padding-top: 0.1rem; }
-.cv-entry-title { font-size: 0.72rem; color: var(--ink); margin-bottom: 0.15rem; }
-.cv-entry-sub { font-size: 0.7rem; color: var(--ink-dim); }
+.work-type {
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--ink-faint); padding: 0.12rem 0.4rem;
+  color: var(--ink-dim);
+}
+.work-more {
+  display: inline-block; margin-top: 1.4rem; font-size: 0.7rem;
+  letter-spacing: 0.1em; color: var(--ink-blue); text-decoration: none;
+  border-bottom: 1px solid rgba(26,44,107,0.25); padding-bottom: 0.05rem;
+  transition: border-color 0.2s;
+}
+.work-more:hover { border-color: var(--ink-blue); }
 
 #contact { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; background: var(--paper); border-top: 1px solid var(--blue-G); }
 .contact-big {
@@ -342,8 +301,8 @@ footer {
   display: flex; justify-content: space-between; align-items: center;
   border-top: 1px solid var(--blue-G);
 }
-footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); }
-footer a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+footer p { font-size: 0.68rem; letter-spacing: 0.18em; color: var(--ink-dim); }
+footer a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
 footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
 
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
@@ -354,7 +313,6 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
   .nav-links { gap: 1.2rem; }
   section { padding: 5rem 1.5rem; }
   #hero { padding: 0 1.5rem 4rem; }
-  .about-grid, .cv-layout { grid-template-columns: 1fr; gap: 3rem; }
   .research-grid { grid-template-columns: 1fr; }
   .work-item { grid-template-columns: 60px 1fr; }
   .work-type { display: none; }
@@ -393,9 +351,6 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
 .admin-node-tag.new { border-color:rgba(0,137,107,0.5); color:var(--viridian); }
 .admin-divider { border:none; border-top:1px solid var(--blue-G); }
 .admin-hint { font-size:0.5rem; letter-spacing:0.12em; color:var(--ink-dim); }
-
-/* Nav: exactly 48px tall */
-nav { padding: 16px 2.5rem !important; }
 
 /* Page headers: top padding clears nav + lands on grid */
 .page-header { padding- }
@@ -445,10 +400,10 @@ nav { padding: 16px 2.5rem !important; }
   <h1 class="hero-name"><span class="hero-highlight">Shabnam Hakimi</span></h1>
   <p class="hero-tagline">Building neuroscience into human-centered AI systems for creativity and innovation.</p>
   <div class="hero-cta">
-    <a href="#work" class="btn-primary">View Work</a>
-    <a href="#about" class="btn-ghost">Learn more</a>
+    <a href="graph.html" class="btn-primary">Research Knowledge Graph</a>
+    <span class="hero-cta-or">or</span>
+    <a href="#work" class="btn-ghost">browse the work directly</a>
   </div>
-  <div class="hero-graph-wrap"><a href="graph.html" class="hero-graph-link">Research knowledge graph →</a><div class="hero-graph-dot"></div></div>
 
 </section>
 
@@ -464,17 +419,6 @@ nav { padding: 16px 2.5rem !important; }
         <li>Can novel preference elicitation methods be used to improve consumer preference prediction and forecasting, especially for innovative products?</li>
         <li>Can neuroscience be used to guide generative AI and develop more personalizable, effective interventions to support psychological flexibility and creative decision making?</li>
       </ol>
-    </div>
-    <div class="about-aside reveal">
-      <h3>Research areas</h3>
-      <ul class="interest-list">
-        <li>Motivated learning &amp; decision-making</li>
-        <li>Behavior change &amp; self-regulation</li>
-        <li>Preference elicitation &amp; prediction</li>
-        <li>Creativity &amp; generative AI</li>
-        <li>Computational cognitive neuroscience</li>
-        <li>Human-centered AI design</li>
-      </ul>
     </div>
   </div>
 </section>
@@ -518,53 +462,10 @@ nav { padding: 16px 2.5rem !important; }
 </section>
 
 <section id="work">
-  <p class="section-label s-slate"><span class="hl">Selected Work</span></p>
-  <div class="work-list">
-    <div class="work-item reveal">
-      <span class="work-year">2024</span>
-      <div><div class="work-title">Personalizing Driver Safety Interfaces via Cognitive Factors Inference</div><div class="work-sub">Sumner, Hakimi et al. · Scientific Reports · A data-driven approach to infer impulsivity and inhibitory control from driving behavior to personalize safety interventions.</div></div>
-      <span class="work-type">Paper</span>
-    </div>
-    <div class="work-item reveal">
-      <span class="work-year">2024</span>
-      <div><div class="work-title">Creative Commuter: Designing Moments for Idea Generation During the Commute</div><div class="work-sub">Paredes, Hong, Hakimi, Klenk · CHI · Using context-aware AI to scaffold creative incubation during everyday transitions.</div></div>
-      <span class="work-type">Conference</span>
-    </div>
-    <div class="work-item reveal">
-      <span class="work-year">2023</span>
-      <div><div class="work-title">Anticipatory Thinking in Design</div><div class="work-sub">Klenk, Hong, Hakimi · AI Magazine · How anticipatory cognition frameworks can be integrated into AI-assisted design processes.</div></div>
-      <span class="work-type">Paper</span>
-    </div>
-    <div class="work-item reveal">
-      <span class="work-year">2022</span>
-      <div><div class="work-title">Social Cognitive Processes Explain Bias in Juror Decisions</div><div class="work-sub">Castrellon, Hakimi et al. · Using neuroimaging to decompose the cognitive mechanisms underlying consequential social decisions.</div></div>
-      <span class="work-type">Paper</span>
-    </div>
-  </div>
+  <p class="section-label s-slate"><span class="hl">Recent Publications</span></p>
+  <div class="work-list" id="work-list"></div>
 </section>
 
-<section id="cv">
-  <p class="section-label s-helio"><span class="hl">CV</span></p>
-  <div class="cv-layout">
-    <div class="reveal">
-      <div class="cv-block-label">Education &amp; Training</div>
-      <div class="cv-entry"><span class="cv-entry-year">2008–14</span><div><div class="cv-entry-title">PhD, Computation &amp; Neural Systems</div><div class="cv-entry-sub">California Institute of Technology</div></div></div>
-      <div class="cv-entry"><span class="cv-entry-year">2002–06</span><div><div class="cv-entry-title">BA, Psychology</div><div class="cv-entry-sub">Stanford University</div></div></div>
-      <div class="cv-block-label" style="margin-top:2rem">Positions</div>
-      <div class="cv-entry"><span class="cv-entry-year">2021–</span><div><div class="cv-entry-title">Senior Research Scientist</div><div class="cv-entry-sub">Toyota Research Institute, Human-Centered AI</div></div></div>
-      <div class="cv-entry"><span class="cv-entry-year">2016–21</span><div><div class="cv-entry-title">Postdoctoral Researcher</div><div class="cv-entry-sub">Duke University, Center for Cognitive Neuroscience</div></div></div>
-      <div class="cv-entry"><span class="cv-entry-year">2013–15</span><div><div class="cv-entry-title">Director, Behavioral Labs</div><div class="cv-entry-sub">Welltok</div></div></div>
-    </div>
-    <div class="reveal">
-      <div class="cv-block-label">Selected Publications</div>
-      <div class="cv-entry"><span class="cv-entry-year">2024</span><div><div class="cv-entry-title">Personalizing driver safety interfaces via driver cognitive factors inference</div><div class="cv-entry-sub">Sumner, Hakimi et al. · Scientific Reports</div></div></div>
-      <div class="cv-entry"><span class="cv-entry-year">2024</span><div><div class="cv-entry-title">Creative Commuter: Towards Designing Moments for Idea Generation</div><div class="cv-entry-sub">Paredes, Hong, Hakimi, Klenk · CHI</div></div></div>
-      <div class="cv-entry"><span class="cv-entry-year">2023</span><div><div class="cv-entry-title">Anticipatory thinking in design</div><div class="cv-entry-sub">Klenk, Hong, Hakimi · AI Magazine</div></div></div>
-      <div class="cv-entry"><span class="cv-entry-year">2022</span><div><div class="cv-entry-title">Social cognitive processes explain bias in juror decisions</div><div class="cv-entry-sub">Castrellon, Hakimi et al.</div></div></div>
-      <div class="cv-entry"><span class="cv-entry-year">—</span><div><div class="cv-entry-title" style="color:var(--ink-blue)"><a href="https://scholar.google.com/citations?user=KVRrn40AAAAJ" style="color:inherit;border-bottom:1px solid currentColor;text-decoration:none">29 publications · ~3,400 citations →</a></div><div class="cv-entry-sub">Google Scholar</div></div></div>
-    </div>
-  </div>
-</section>
 
 <section id="contact">
   <p class="section-label s-violet"><span class="hl">Contact</span></p>
@@ -8911,7 +8812,7 @@ nav { padding: 16px 2.5rem !important; }
       const segs=marchSquares(field,threshold);
       if(!segs.length) continue;
 
-      const alpha=(0.12+(lv/N_LEVELS)*0.22).toFixed(3);
+      const alpha=(0.22+(lv/N_LEVELS)*0.30).toFixed(3);
       const col=KELLY[lv]+alpha+')';
 
       fCtx.beginPath();
@@ -8989,6 +8890,94 @@ nav { padding: 16px 2.5rem !important; }
     { threshold: 0.1 }
   );
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// ── RECENT PUBLICATIONS (fetched from publications.json, N most recent) ──
+(function () {
+  const N = 5;
+  fetch('data/publications.json')
+    .then(r => r.json())
+    .then(pubs => {
+      const recent = pubs.slice().sort((a, b) => b.year - a.year || b.paperWeight - a.paperWeight).slice(0, N);
+      const list = document.getElementById('work-list');
+      const typeLabels = {
+        'journal': 'Journal', 'conf-full': 'Conference', 'conf-workshop': 'Workshop',
+        'preprint': 'Preprint', 'commentary': 'Commentary', 'book-chapter': 'Chapter', 'scicomm': 'Sci-comm',
+      };
+
+      const coFirst = pub => (pub.coFirstLastNames || []);
+      const isCoFirst = (pub, last) => coFirst(pub).some(n => n.toLowerCase() === last.toLowerCase());
+
+      recent.forEach(pub => {
+        const authorNames = pub.authors.map(a => {
+          if (/hakimi/i.test(a)) {
+            const star = isCoFirst(pub, 'Hakimi') ? '<sup>*</sup>' : '';
+            return star + '<strong>Hakimi, S.</strong>';
+          }
+          const parts = a.split(',');
+          let last, initials;
+          if (parts.length === 2) {
+            last = parts[0].trim();
+            const first = parts[1].trim();
+            initials = first.split(/\s+/).map(w => w[0] + '.').join(' ');
+          } else {
+            const words = a.trim().split(/\s+/);
+            if (words.length >= 2) {
+              last = words[words.length - 1];
+              initials = words.slice(0, -1).map(w => w[0] + '.').join(' ');
+            }
+          }
+          if (last === undefined) return a;
+          const star = isCoFirst(pub, last) ? '<sup>*</sup>' : '';
+          return star + last + ', ' + initials;
+        }).map(name => '<span style="white-space:nowrap">' + name + '</span>');
+
+        let authors;
+        if (authorNames.length === 1) authors = authorNames[0];
+        else if (authorNames.length === 2) authors = authorNames[0] + ' &amp; ' + authorNames[1];
+        else authors = authorNames.slice(0, -1).join(', ') + ', &amp; ' + authorNames[authorNames.length - 1];
+
+        const typeLabel = typeLabels[pub.pubType] || pub.pubType;
+        const venue = pub.venue || '';
+        const venueHtml = venue.trim().toLowerCase() === typeLabel.toLowerCase()
+          ? ''
+          : (' · ' + (pub.pubType === 'journal' ? '<em>' + venue + '</em>' : venue));
+        const linkUrl = pub.url || (pub.doi ? 'https://doi.org/' + pub.doi : '') || (pub.arxivId ? 'https://arxiv.org/abs/' + pub.arxivId : '');
+
+        const item = document.createElement('div');
+        item.className = 'work-item reveal';
+        item.innerHTML =
+          '<span class="work-year">' + pub.year + '</span>' +
+          '<div><div class="work-title">' +
+            (linkUrl ? '<a href="' + linkUrl + '" target="_blank" rel="noopener">' + pub.title + '</a>' : pub.title) +
+          '</div><div class="work-sub">' + authors + venueHtml + '</div></div>' +
+          '<span class="work-type">' + typeLabel + '</span>';
+        list.appendChild(item);
+      });
+
+      const more = document.createElement('a');
+      more.href = 'cv.html';
+      more.className = 'work-more';
+      more.textContent = 'View all publications →';
+      list.parentElement.appendChild(more);
+
+      const obs = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
+        { threshold: 0.1 }
+      );
+      list.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+      // Injecting this list shifts every section below it — if the page
+      // already navigated to an anchor (e.g. #contact) before the fetch
+      // resolved, that anchor is now in the wrong place. Re-land on it.
+      if (location.hash) {
+        const target = document.querySelector(location.hash);
+        if (target) target.scrollIntoView();
+      }
+    })
+    .catch(err => {
+      console.error('Failed to load recent work:', err);
+    });
 })();
 
 // ── ADMIN PANEL ──────────────────────────────────────────────────────────────
@@ -9304,13 +9293,12 @@ Rules:
 // ── NAV SCROLL-SPY ───────────────────────────────────────────────
 // Highlight the nav link for the section whose top has most recently
 // crossed 25% from the top of the viewport. Works in both scroll
-// directions. #work and #cv map to Research.
+// directions. #work maps to Research.
 (function() {
   const SECTION_TO_NAV = {
     about:    'a[href="#about"]',
     research: 'a[href="#research"]',
     work:     'a[href="#research"]',
-    cv:       'a[href="#research"]',
     contact:  'a[href="#contact"]',
   };
   const sections = Object.keys(SECTION_TO_NAV)

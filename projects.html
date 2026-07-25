@@ -128,7 +128,7 @@ nav {
 /* ── INDEX ── */
 .page-index {
   padding: 16px 2.5rem;
-  display: flex; gap: 2rem; align-items: center;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 2.5rem;
   border-bottom: 1px solid var(--blue-G);
 }
 .page-index a {
@@ -152,6 +152,11 @@ nav {
 .page-index a.s-slate  { --hl-rgb: 119 119 255; --hl-a: 0.65; }
 .page-index a.s-cheese { --hl-rgb: 255 174 119; --hl-a: 0.65; }
 .page-index a.s-mint   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
+.page-index a.s-red    { --hl-rgb: 255 119 146; --hl-a: 0.65; }
+.page-index a.s-helio  { --hl-rgb: 201 119 255; --hl-a: 0.65; }
+.page-index a.s-violet { --hl-rgb: 255 119 228; --hl-a: 0.65; }
+.page-index a.s-amber  { --hl-rgb: 255 255 119; --hl-a: 0.65; }
+.page-index a.s-lime   { --hl-rgb: 170 255 119; --hl-a: 0.65; }
 .page-index-sep { color: var(--ink-dim); font-size: 0.68rem; }
 
 /* ── PROJECT LIST ── */
@@ -193,8 +198,25 @@ nav {
 .project-link { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-blue); text-decoration: none; border-bottom: 1px solid rgba(26,44,107,0.25); padding-bottom: 0.1rem; display: inline-block; margin-top: 0.3rem; transition: border-color 0.2s; }
 .project-link:hover { border-color: var(--ink-blue); }
 
+/* ── CLUSTER SECTION (representative-papers list) ── */
+.cluster-desc-text { font-size: 0.72rem; color: var(--ink-dim); line-height: 1.9; max-width: 640px; margin: 1.2rem 0 2.2rem; }
+.cluster-desc-text em { font-style: italic; color: var(--ink); }
+.rep-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-blue); margin-bottom: 0.6rem; }
+.rep-paper { padding: 1rem 0; border-top: 1px solid var(--blue-g); }
+.rep-paper:first-of-type { border-top: none; padding-top: 0; }
+.rep-title { font-family: var(--sans); font-size: 0.88rem; font-weight: 400; color: var(--ink); line-height: 1.35; margin-bottom: 0.3rem; }
+.rep-meta { font-size: 0.7rem; color: var(--ink-dim); }
+.rep-meta em { font-style: normal; color: var(--ink-blue); }
+.rep-meta em.venue-journal { font-style: italic; }
+.section-body[hidden] { display: none; }
+.section-body { padding-bottom: 1rem; }
+.section-arrow { display: inline-block; transition: transform 0.2s; flex-shrink: 0; font-size: 0.9rem; }
+.section-divider[aria-expanded="true"] .section-arrow { transform: rotate(180deg); }
+
 /* ── SECTION DIVIDER ── */
 .section-divider {
+  width: 100%;
+  background: none; border: none; font-family: var(--mono);
   padding: 16px 0 8px;
   margin-top: 48px;
   font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase;
@@ -202,6 +224,7 @@ nav {
   border-top: 1.5px solid var(--ink-blue);
   scroll-margin-top: 96px;
   text-align: left;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
 .section-divider > .hl {
   display: inline-block;
@@ -217,6 +240,11 @@ nav {
 .section-divider.s-slate  { --hl-rgb: 119 119 255; --hl-a: 0.65; }
 .section-divider.s-cheese { --hl-rgb: 255 174 119; --hl-a: 0.65; }
 .section-divider.s-mint   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
+.section-divider.s-red    { --hl-rgb: 255 119 146; --hl-a: 0.65; }
+.section-divider.s-helio  { --hl-rgb: 201 119 255; --hl-a: 0.65; }
+.section-divider.s-violet { --hl-rgb: 255 119 228; --hl-a: 0.65; }
+.section-divider.s-amber  { --hl-rgb: 255 255 119; --hl-a: 0.65; }
+.section-divider.s-lime   { --hl-rgb: 170 255 119; --hl-a: 0.65; }
 
 /* ── UNDER CONSTRUCTION (temporary) ───────────────────────────── */
 .under-construction {
@@ -281,14 +309,15 @@ nav {
 
 /* ── FOOTER ── */
 footer { background: var(--paper-2); padding: 1.5rem 2.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--blue-G); position: relative; z-index: 10; }
-footer p { font-size: 0.48rem; letter-spacing: 0.18em; color: var(--ink-faint); }
-footer a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+footer p { font-size: 0.68rem; letter-spacing: 0.18em; color: var(--ink-dim); }
+footer a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
 footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
 
 @media (max-width: 700px) {
   nav { padding: 1rem 1.5rem; }
   .nav-links { gap: 1.2rem; }
   .page-header, .project-list, .page-index { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .page-index { grid-template-columns: 1fr; }
   .project-item { grid-template-columns: 1fr; gap: 0.5rem; }
   .project-meta { flex-direction: row; gap: 1rem; }
   body, a, button { cursor: auto; }
@@ -323,294 +352,194 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
 <div class="page-header">
   <p class="page-eyebrow s-red"><span class="hl">Research</span></p>
   <h1 class="page-title">Projects</h1>
-  <p class="page-desc">Active and past lines of research, plus tools and datasets built along the way. Tagged by cluster — see the <a href="graph.html" style="color:var(--ink-blue);border-bottom:1px solid rgba(26,44,107,0.25);">graph</a> for how they connect.</p>
+  <p class="page-desc">My research program, clustered by topic and visualized by <a href="graph.html" style="color:var(--ink-blue);border-bottom:1px solid rgba(26,44,107,0.25);">graph</a>.</p>
 </div>
 
-<!-- Page index (Ongoing · Past · Tools) hidden while page is under construction -->
-<!--
 <div class="page-index">
-  <a href="#section-ongoing" class="s-slate"><span class="hl">Ongoing</span></a>
-  <span class="page-index-sep">·</span>
-  <a href="#section-past" class="s-cheese"><span class="hl">Past</span></a>
-  <span class="page-index-sep">·</span>
-  <a href="#section-tools" class="s-mint"><span class="hl">Tools &amp; Datasets</span></a>
+  <a href="#section-motivation" class="s-slate"><span class="hl">Motivated Learning, Decision Making, &amp; Self Regulation</span></a>
+  <a href="#section-intervention" class="s-red"><span class="hl">Intervention Science &amp; Applied Behavior Change</span></a>
+  <a href="#section-creativity" class="s-helio"><span class="hl">Creativity &amp; Design</span></a>
+  <a href="#section-genai" class="s-violet"><span class="hl">Psychology-Guided Generative AI</span></a>
+  <a href="#section-preference" class="s-amber"><span class="hl">Preference Elicitation &amp; Prediction</span></a>
+  <a href="#section-agent-state" class="s-lime"><span class="hl">Agent State Inference</span></a>
+  <a href="#section-consumer" class="s-mint"><span class="hl">Consumer Psychology &amp; Market Forecasting</span></a>
+  <a href="#section-social" class="s-cheese"><span class="hl">Social, Cognitive, &amp; Affective Neuroscience</span></a>
 </div>
--->
 
 <div class="project-list">
 
-  <!-- ╔════════════════════════════════════════════════════╗ -->
-  <!-- ║  Pixel-art "Under Construction" banner. When real  ║ -->
-  <!-- ║  content lands, delete this <div> and uncomment    ║ -->
-  <!-- ║  the templates preserved below.                    ║ -->
-  <!-- ╚════════════════════════════════════════════════════╝ -->
-  <div class="under-construction" role="status" aria-label="Page under construction">
-    <svg class="uc-sign" viewBox="0 0 24 24" width="180" height="180" aria-hidden="true">
-      <!-- Pixel-art caution diamond: yellow interior, ink-blue border,
-           exclamation mark. Gentle sway + blinking bang. -->
-      <g shape-rendering="crispEdges">
-        <rect x="11" y="2"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="10" y="3"  width="4" height="1" fill="#1a2c6b"/>
-        <rect x="9"  y="4"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="13" y="4"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="8"  y="5"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="14" y="5"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="7"  y="6"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="15" y="6"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="6"  y="7"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="16" y="7"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="5"  y="8"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="17" y="8"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="4"  y="9"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="18" y="9"  width="2" height="1" fill="#1a2c6b"/>
-        <rect x="3"  y="10" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="19" y="10" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="2"  y="11" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="20" y="11" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="3"  y="12" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="19" y="12" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="4"  y="13" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="18" y="13" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="5"  y="14" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="17" y="14" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="6"  y="15" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="16" y="15" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="7"  y="16" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="15" y="16" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="8"  y="17" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="14" y="17" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="9"  y="18" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="13" y="18" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="10" y="19" width="4" height="1" fill="#1a2c6b"/>
-        <rect x="11" y="20" width="2" height="1" fill="#1a2c6b"/>
-        <rect x="11" y="4"  width="2" height="1" fill="#FFFF77"/>
-        <rect x="10" y="5"  width="4" height="1" fill="#FFFF77"/>
-        <rect x="9"  y="6"  width="6" height="1" fill="#FFFF77"/>
-        <rect x="8"  y="7"  width="8" height="1" fill="#FFFF77"/>
-        <rect x="7"  y="8"  width="10" height="1" fill="#FFFF77"/>
-        <rect x="6"  y="9"  width="12" height="1" fill="#FFFF77"/>
-        <rect x="5"  y="10" width="14" height="1" fill="#FFFF77"/>
-        <rect x="4"  y="11" width="16" height="1" fill="#FFFF77"/>
-        <rect x="5"  y="12" width="14" height="1" fill="#FFFF77"/>
-        <rect x="6"  y="13" width="12" height="1" fill="#FFFF77"/>
-        <rect x="7"  y="14" width="10" height="1" fill="#FFFF77"/>
-        <rect x="8"  y="15" width="8" height="1" fill="#FFFF77"/>
-        <rect x="9"  y="16" width="6" height="1" fill="#FFFF77"/>
-        <rect x="10" y="17" width="4" height="1" fill="#FFFF77"/>
-        <rect x="11" y="18" width="2" height="1" fill="#FFFF77"/>
-        <rect class="uc-bang" x="11" y="7"  width="2" height="6" fill="#1a2c6b"/>
-        <rect class="uc-bang" x="11" y="14" width="2" height="2" fill="#1a2c6b"/>
-      </g>
-    </svg>
-    <div class="uc-tape" aria-hidden="true">
-      <span>UNDER&nbsp;&nbsp;CONSTRUCTION</span>
-    </div>
-    <p class="uc-msg">
-      Content for this page is in progress. In the meantime, the
-      <a href="/graph">research graph</a> and <a href="/cv">CV</a> are live,
-      and there's a short <a href="/about-this-site">colophon</a> if you're
-      curious how this site was built.
-    </p>
+  <!-- ── MOTIVATED LEARNING, DECISION MAKING, & SELF REGULATION ──────── -->
+  <button class="section-divider s-slate" id="section-motivation" aria-expanded="false" aria-controls="body-motivation"><span class="hl">Motivated Learning, Decision Making, &amp; Self Regulation</span><span class="section-arrow">▾</span></button>
+  <div class="section-body" id="body-motivation" hidden>
+  <p class="cluster-desc-text">My research program is grounded in the science of motivation, and my work investigates how motivation — from biological substrate to psychological experience — modulates learning and decision making. I am interested in how motivation can be regulated to support psychological flexibility and goal-directed behavior. This includes its volitional regulation, which can be learned with real-time fMRI neurofeedback from dopaminergic circuits.</p>
+  <p class="rep-label">Representative papers</p>
+  <div class="rep-paper">
+    <div class="rep-title">Psychological flexibility as a measurable computational substrate for predicting successful self regulation and behavior change</div>
+    <div class="rep-meta">Hakimi, in preparation</div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Temporal structure of learning to regulate ventral tegmental area using real-time neurofeedback</div>
+    <div class="rep-meta">Hakimi et al., 2018 — <em>Conference on Computational Cognitive Neuroscience</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Enhanced neural responses to imagined primary rewards predict reduced monetary temporal discounting</div>
+    <div class="rep-meta">Hakimi &amp; Hare, 2015 — <em class="venue-journal">Journal of Neuroscience</em></div>
+  </div>
   </div>
 
-  <!-- ─── DRAFT CONTENT (placeholder, 2026-05-16) ───────────────────────
-       Generated as a starting point — review every line before publishing.
+  <!-- ── INTERVENTION SCIENCE & APPLIED BEHAVIOR CHANGE ───────────────── -->
+  <button class="section-divider s-red" id="section-intervention" aria-expanded="false" aria-controls="body-intervention"><span class="hl">Intervention Science &amp; Applied Behavior Change</span><span class="section-arrow">▾</span></button>
+  <div class="section-body" id="body-intervention" hidden>
+  <p class="cluster-desc-text">Sustainable behavior change continues to be an elusive goal for many. I synthesize insights from multiple disciplines to develop new interventions that are not only more effective, but also more likely to work at for the right person, at the right time — at scale. This work spans multiple domains, including health, economic, and environmental decision making. This work is in dialogue with my work in applied settings, including the clinic and the workforce.</p>
+  <p class="rep-label">Representative papers</p>
+  <div class="rep-paper">
+    <div class="rep-title">Unstuck: Ubiquitous just-in-time interventions to unleash creativity and sustain wellbeing of creative professionals</div>
+    <div class="rep-meta">Paredes, Hakimi et al., 2026 — <em>IMWUT</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Machine learning reveals how personalized climate communication can both succeed and backfire</div>
+    <div class="rep-meta">Harinen et al., 2022 — <em>NeurIPS Workshop</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Pairing facts with imagined consequences improves pandemic-related risk perception</div>
+    <div class="rep-meta">Hakimi &amp; Sinclair et al., 2021 — <em class="venue-journal">PNAS</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Applying behavioral economics to improve adolescent and young adult health</div>
+    <div class="rep-meta">Hakimi &amp; Wong et al., 2020 — <em class="venue-journal">Journal of Adolescent Health</em></div>
+  </div>
+  </div>
 
-       PREVIEW:  remove the `hidden` attribute on the wrapper below.
-       PUBLISH:  delete the .under-construction div above, AND
-                 remove `hidden` below, AND
-                 uncomment the .page-index block earlier in this file.
-  ──────────────────────────────────────────────────────────────────── -->
-  <div class="page-drafts" hidden>
+  <!-- ── CREATIVITY & DESIGN ───────────────────────────────────────────── -->
+  <button class="section-divider s-helio" id="section-creativity" aria-expanded="false" aria-controls="body-creativity"><span class="hl">Creativity &amp; Design</span><span class="section-arrow">▾</span></button>
+  <div class="section-body" id="body-creativity" hidden>
+  <p class="cluster-desc-text">Creativity can feel like a nebulous process whereby an idea magically becomes a artifact. Demystifying the creative process with computational modeling can provide mechanistic insight has implications for both human creativity and human-AI co-creation. Precise models can also inform development of technologies that preserve and promote creative wellbeing over time.</p>
+  <p class="rep-label">Representative papers</p>
+  <div class="rep-paper">
+    <div class="rep-title">The Moments-to-Meaning Framework: Designing technology for creative wellbeing across temporal scales</div>
+    <div class="rep-meta">Hakimi &amp; Kimani et al., in preparation</div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Designing rewards for rewarding designs: Demonstrating the impact of rewards on the creative design process</div>
+    <div class="rep-meta">Nath et al., 2026 — <em>DCC</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Reassessing the value of creative activity traces for understanding and supporting creative work</div>
+    <div class="rep-meta">Klenk et al., 2026 — <em>CHI Workshop</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Semantic properties of abstract prompts shape sequential decision making in design</div>
+    <div class="rep-meta">Hakimi &amp; Nandy et al., 2025 — <em>RLDM</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Semantic Properties of Word Prompts Shape Design Outcomes</div>
+    <div class="rep-meta">Nandy et al., 2024 — <em>DCC</em></div>
+  </div>
+  </div>
 
-    <div class="page-index" style="border-bottom:1px solid var(--blue-G); margin-bottom: 1rem;">
-      <a href="#section-ongoing" class="s-slate"><span class="hl">Ongoing</span></a>
-      <span class="page-index-sep">·</span>
-      <a href="#section-past" class="s-cheese"><span class="hl">Past</span></a>
-      <span class="page-index-sep">·</span>
-      <a href="#section-tools" class="s-mint"><span class="hl">Tools &amp; Datasets</span></a>
-    </div>
+  <!-- ── PSYCHOLOGY-GUIDED GENERATIVE AI ──────────────────────────────── -->
+  <button class="section-divider s-violet" id="section-genai" aria-expanded="false" aria-controls="body-genai"><span class="hl">Psychology-Guided Generative AI</span><span class="section-arrow">▾</span></button>
+  <div class="section-body" id="body-genai" hidden>
+  <p class="cluster-desc-text">One possible path to better human-AI alignment is generative AI systems with more structurally similar generative processes to humans, especially in time. This work applies multidisciplinary knowledge to the development of new systems that have the potential to be more useful to their human users.</p>
+  <p class="rep-label">Representative papers</p>
+  <div class="rep-paper">
+    <div class="rep-title">Novel or surprising? Toward generating wowing designs with stable diffusion</div>
+    <div class="rep-meta">Chong et al., 2026 — <em>IDETC/CIE</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Psychologically-inspired generative AI videos for supporting creativity</div>
+    <div class="rep-meta">Hakimi et al., 2025 — <em>ICCC</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Generative AI for product esign: Getting the right design and the design right</div>
+    <div class="rep-meta">Hong et al., 2023 — <em>CHI Workshop</em></div>
+  </div>
+  </div>
 
-    <!-- ── ONGOING ─────────────────────────────────────────────────── -->
-    <div class="section-divider s-slate" id="section-ongoing"><span class="hl">Ongoing</span></div>
+  <!-- ── PREFERENCE ELICITATION & PREDICTION ──────────────────────────── -->
+  <button class="section-divider s-amber" id="section-preference" aria-expanded="false" aria-controls="body-preference"><span class="hl">Preference Elicitation &amp; Prediction</span><span class="section-arrow">▾</span></button>
+  <div class="section-body" id="body-preference" hidden>
+  <p class="cluster-desc-text">Why do people sometimes say one thing but do another? What do they <em>really</em> want? This work aims to improving measures of preference using psychology, physiology, and behavior, leveraging a combination of diverse sensors across time to better resolve individual preferences. These diverse, multimodal signals become inputs to new computational models that employ both machine learning and AI to improve the sensitivity and specificity of preference estimation and prediction. I aim for elicitation and modeling approaches that can both generalize and scale, thus providing foundational tools that support multiple lines of both basic and applied research.</p>
+  <p class="rep-label">Representative papers</p>
+  <div class="rep-paper">
+    <div class="rep-title">Machine learning-based measure of cognitive complexity explains variance in rank-ordered preference</div>
+    <div class="rep-meta">Hakimi et al., 2024 — <em>CogSci</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Understanding the cognitive complexity in language elicited by product images</div>
+    <div class="rep-meta">Hakimi &amp; Chen et al., 2024 — <em>ICML Workshop</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">ConjointNet: Enhancing conjoint analysis for preference prediction with representation learning</div>
+    <div class="rep-meta">Zhang et al., 2022 — <em>IJCAI Workshop</em></div>
+  </div>
+  </div>
 
-    <div class="project-item visible c2">
-      <div class="project-meta">
-        <span class="project-year">2024–</span>
-        <span class="project-status">Active</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Generative AI for Design Ideation</div>
-        <p class="project-desc">How can generative models help people break out of creative ruts? Work at TRI on surprise, taste, and physiological signals as steering cues for human–AI co-creation, with a series of CHI / HCI workshop papers from 2022–2026.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Generative AI</span>
-          <span class="project-tag">HCI</span>
-          <span class="project-tag">creativity</span>
-          <span class="project-tag">taste</span>
-        </div>
-      </div>
-    </div>
+  <!-- ── AGENT STATE INFERENCE ─────────────────────────────────────────── -->
+  <button class="section-divider s-lime" id="section-agent-state" aria-expanded="false" aria-controls="body-agent-state"><span class="hl">Agent State Inference</span><span class="section-arrow">▾</span></button>
+  <div class="section-body" id="body-agent-state" hidden>
+  <p class="cluster-desc-text">Providing people support in the moment demands precise models of their internal state, including factors such as attention, motivation, and cognitive load. By inferring a person's state directly from behavior, future states and preferences can be simulated to improve human-AI teaming in shared tasks, such as driving.</p>
+  <p class="rep-label">Representative papers</p>
+  <div class="rep-paper">
+    <div class="rep-title">Personalizing driver safety interfaces via driver cognitive factors inference</div>
+    <div class="rep-meta">Sumner &amp; DeCastro et al., 2024 — <em class="venue-journal">Scientific Reports</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">HMIway-env: A framework for simulating behaviors and preferences to support human-AI teaming in driving</div>
+    <div class="rep-meta">Gopinath &amp; DeCastro et al., 2022 — <em>IEEE/CVF CVPRW</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Learning latent traits for simulated cooperative driving tasks</div>
+    <div class="rep-meta">DeCastro &amp; Gopinath et al., 2022</div>
+  </div>
+  </div>
 
-    <div class="project-item visible c3">
-      <div class="project-meta">
-        <span class="project-year">2024–</span>
-        <span class="project-status">Active</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Just-in-Time Creativity Interventions</div>
-        <p class="project-desc">Ubiquitous, in-the-moment prompts that surface alternative framings at the exact moment someone gets stuck. Builds on emotion-regulation research and ambulatory-intervention methods.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Interventions</span>
-          <span class="project-tag">creativity</span>
-          <span class="project-tag">ambulatory</span>
-        </div>
-      </div>
-    </div>
+  <!-- ── CONSUMER PSYCHOLOGY & MARKET FORECASTING ─────────────────────── -->
+  <button class="section-divider s-mint" id="section-consumer" aria-expanded="false" aria-controls="body-consumer"><span class="hl">Consumer Psychology &amp; Market Forecasting</span><span class="section-arrow">▾</span></button>
+  <div class="section-body" id="body-consumer" hidden>
+  <p class="cluster-desc-text">Consumer demand is shaped by a variety of factors that are poorly captured by current data and modeling techniques. This work focuses on measuring the right things at the right time during the consumer journey in order to improve predictive models. Physiology — neural responses, in particular — can offer unique predictive power for forecasting. Combining neurophysiology with econometrics and machine learning affords new models that both increase forecast accuracy and reduce uncertainty.</p>
+  <p class="rep-label">Representative papers</p>
+  <div class="rep-paper">
+    <div class="rep-title">Psychophysiological personas improve agentic prediction of consumer choice</div>
+    <div class="rep-meta">Hakimi et al., in preparation</div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Brain activity forecasts changing market demand for innovative vehicles</div>
+    <div class="rep-meta">Knutson et al., in preparation</div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">AI-driven interpretable visual features for demand neuroforecasting</div>
+    <div class="rep-meta">Eum et al., in preparation</div>
+  </div>
+  </div>
 
-    <div class="project-item visible c4">
-      <div class="project-meta">
-        <span class="project-year">2023–</span>
-        <span class="project-status">Active</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Computational Aesthetics &amp; Preference</div>
-        <p class="project-desc">Probabilistic models of what people find pleasing, surprising, or wow-worthy in generated artifacts. Extends preference and valuation work from neuroeconomics into the design and AI-generation setting.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Preference Elicitation</span>
-          <span class="project-tag">Bayesian</span>
-          <span class="project-tag">aesthetics</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── PAST ────────────────────────────────────────────────────── -->
-    <div class="section-divider s-cheese" id="section-past"><span class="hl">Past</span></div>
-
-    <div class="project-item visible c0">
-      <div class="project-meta">
-        <span class="project-year">2014–2020</span>
-        <span class="project-status">Completed</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Neuroeconomics of Self-Control</div>
-        <p class="project-desc">fMRI investigations of intertemporal choice, dietary self-control, and how the brain values delayed rewards. Postdoctoral work at Duke with Scott Huettel.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Self-Regulation</span>
-          <span class="project-tag">fMRI</span>
-          <span class="project-tag">self-control</span>
-          <span class="project-tag">postdoc</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-item visible c5">
-      <div class="project-meta">
-        <span class="project-year">2010–2014</span>
-        <span class="project-status">Completed</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Social-Affective Neural Computation</div>
-        <p class="project-desc">How the brain represents trust, social value, and reward in social contexts. Oxytocin, theory-of-mind, fMRI. Predoctoral research at NIMH with Andreas Meyer-Lindenberg.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Social Neuroscience</span>
-          <span class="project-tag">fMRI</span>
-          <span class="project-tag">oxytocin</span>
-          <span class="project-tag">NIH</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-item visible c5">
-      <div class="project-meta">
-        <span class="project-year">2009–2010</span>
-        <span class="project-status">Completed</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Emotion Regulation in Social Anxiety</div>
-        <p class="project-desc">Cognitive reappraisal as a treatment mechanism in social anxiety disorder; neural correlates of CBT response. Stanford with Philippe Goldin and James Gross.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Social Neuroscience</span>
-          <span class="project-tag">CBT</span>
-          <span class="project-tag">clinical</span>
-          <span class="project-tag">fMRI</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-item visible c0">
-      <div class="project-meta">
-        <span class="project-year">2012–2018</span>
-        <span class="project-status">Completed</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Predictive Coding &amp; the Bayesian Brain</div>
-        <p class="project-desc">Theoretical and empirical work on how the brain models its own predictions — with applications to expectation, surprise, and attention. <em>[Placeholder: confirm scope/years.]</em></p>
-        <div class="project-tags">
-          <span class="project-cluster">Self-Regulation</span>
-          <span class="project-tag">predictive coding</span>
-          <span class="project-tag">Bayesian</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── TOOLS &amp; DATASETS ─────────────────────────────────────── -->
-    <div class="section-divider s-mint" id="section-tools"><span class="hl">Tools &amp; Datasets</span></div>
-
-    <div class="project-item visible c2">
-      <div class="project-meta">
-        <span class="project-year">2026</span>
-        <span class="project-status">Released</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Research Knowledge Graph</div>
-        <p class="project-desc">Force-directed visualization of 50+ publications grouped into eight conceptual clusters, with a marching-squares contour overlay and spreading-activation interaction. The conceptual center of this site.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Generative AI</span>
-          <span class="project-tag">knowledge graph</span>
-          <span class="project-tag">visualization</span>
-        </div>
-        <a href="graph.html" class="project-link">View the graph →</a>
-      </div>
-    </div>
-
-    <div class="project-item visible c2">
-      <div class="project-meta">
-        <span class="project-year">2026</span>
-        <span class="project-status">Maintained</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">Concept-Extraction Pipeline</div>
-        <p class="project-desc">A Claude-based CLI tool that ingests a DOI or full-text PDF and emits cluster-tagged concept nodes into the graph. Lightweight, idempotent, and dependency-free beyond the API client.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Generative AI</span>
-          <span class="project-tag">pipeline</span>
-          <span class="project-tag">LLM tooling</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-item visible c2">
-      <div class="project-meta">
-        <span class="project-year">2026</span>
-        <span class="project-status">Maintained</span>
-      </div>
-      <div class="project-body">
-        <div class="project-title">CV Bibliography Sync</div>
-        <p class="project-desc">Node script that reads LaTeX <code>.bib</code> files from a private CV repo and emits the JSON powering the CV and graph pages — so the website never falls out of sync with the canonical publication list.</p>
-        <div class="project-tags">
-          <span class="project-cluster">Generative AI</span>
-          <span class="project-tag">pipeline</span>
-          <span class="project-tag">LaTeX</span>
-        </div>
-      </div>
-    </div>
-
+  <!-- ── SOCIAL, COGNITIVE, & AFFECTIVE NEUROSCIENCE ──────────────────── -->
+  <button class="section-divider s-cheese" id="section-social" aria-expanded="false" aria-controls="body-social"><span class="hl">Social, Cognitive, &amp; Affective Neuroscience</span><span class="section-arrow">▾</span></button>
+  <div class="section-body" id="body-social" hidden>
+  <p class="cluster-desc-text">How does the brain represent complex phenomena such as social decisions? Across domains, this research uses the neural substrates of such phenomena along with diverse complementary signals (e.g., genomics, pharmacology) to better predict individual outcomes.</p>
+  <p class="rep-label">Representative papers</p>
+  <div class="rep-paper">
+    <div class="rep-title">Neural support for contributions of utility and narrative processing of evidence in juror decision making</div>
+    <div class="rep-meta">Castrellon et al., 2022 — <em class="venue-journal">Journal of Neuroscience</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Revealing the world of autism through the lens of a camera</div>
+    <div class="rep-meta">Wang et al., 2016 — <em class="venue-journal">Current Biology</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Vasopressin modulates social recognition-related activity in the left temporoparietal junction in humans</div>
+    <div class="rep-meta">Zink et al., 2011 — <em class="venue-journal">Translational Psychiatry</em></div>
+  </div>
+  <div class="rep-paper">
+    <div class="rep-title">Common alleles in OXTR impact prosocial temperament and human hypothalamic-limbic structure and function</div>
+    <div class="rep-meta">Tost, Hakimi et al., 2010 — <em class="venue-journal">PNAS</em></div>
+  </div>
   </div>
 
 </div>
 
 <footer>
-  <p>Shabnam Hakimi, Ph.D. — Toyota Research Institute</p>
+  <p>Shabnam Hakimi, Ph.D. — Researcher & Synthesist</p>
   <p><a href="about-this-site.html">Colophon</a> &nbsp;·&nbsp; MMXXVI</p>
 </footer>
 
@@ -621,6 +550,29 @@ const obs = new IntersectionObserver(
   { threshold: 0.08 }
 );
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Cluster section collapse toggle
+document.querySelectorAll('.section-divider').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const body = document.getElementById(btn.getAttribute('aria-controls'));
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    if (expanded) body.setAttribute('hidden', ''); else body.removeAttribute('hidden');
+  });
+});
+
+// Expand + scroll to the target section when arriving via an anchor link
+function expandSectionFromHash() {
+  const id = location.hash.slice(1);
+  if (!id) return;
+  const btn = document.getElementById(id);
+  if (!btn || !btn.classList.contains('section-divider')) return;
+  const body = document.getElementById(btn.getAttribute('aria-controls'));
+  btn.setAttribute('aria-expanded', 'true');
+  body.removeAttribute('hidden');
+  btn.scrollIntoView();
+}
+window.addEventListener('hashchange', expandSectionFromHash);
 
 // Cursor
 (function() {

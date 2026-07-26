@@ -171,8 +171,8 @@ cv.html, projects.html, and extracurriculars.html have a semi-transparent conten
 graph.html has its own full-screen canvas UI.
 
 ## Known TODOs (priority order)
-1. **Fill in projects.html and extracurriculars.html** — both are placeholder templates
-2. **Review/edit about copy on index.html** — written from public sources, needs Shabnam's voice
+1. **Fill in extracurriculars.html** — still a placeholder template. projects.html was rebuilt with real content 2026-07-24. Blocked on Shabnam filling 4 content blanks in site-content.md.
+2. ~~**Review/edit about copy on index.html**~~ — done. Shabnam rewrote the About section copy (2026-07-26) in her own voice.
 3. ~~**CV PDF link**~~ — done. Contact section links to cv-viewer.html.
 4. ~~**Mobile CSS pass**~~ — done. Nav overflow fixed on all pages; cursor reset on mobile; graph.html stacks canvas/sidebar.
 5. ~~**Inline graph sync**~~ — done. `node data/inline-graph.js` re-inlines `graph/graph.json` into both `index.html` and `graph.html`. Run after `node graph/tool/index.js add` or `node data/sync-bib.js`. The `clusterData` block in graph.html is still hard-coded with friendly cluster names (separate from `graphData.meta.clusters`); leave for now unless cluster names change.

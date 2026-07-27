@@ -8973,7 +8973,9 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
   fetch('data/publications.json')
     .then(r => r.json())
     .then(pubs => {
-      const recent = pubs.slice().sort((a, b) => b.year - a.year || b.paperWeight - a.paperWeight).slice(0, N);
+      const PRESENTATION_TYPES = ['talk', 'poster', 'symposium', 'invited-talk'];
+      const recent = pubs.filter(p => !PRESENTATION_TYPES.includes(p.pubType))
+        .sort((a, b) => b.year - a.year || b.paperWeight - a.paperWeight).slice(0, N);
       const list = document.getElementById('work-list');
       const typeLabels = {
         'journal': 'Journal', 'conf-full': 'Conference', 'conf-workshop': 'Workshop',

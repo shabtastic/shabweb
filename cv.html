@@ -407,6 +407,12 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
 </div>
 <div class="pub-list" id="pub-list"></div>
 
+<!-- ── Selected Conference Presentations (populated from publications.json) ── -->
+<div class="cv-content">
+  <div class="cv-section-heading s-mint"><span class="hl">Selected Conference Presentations</span></div>
+</div>
+<div class="pub-list" id="pub-list-presentations"></div>
+
 <div class="cv-content" style="padding-top:0;">
   <a href="cv-viewer.html" class="full-cv-link">View full CV →</a>
 </div>
@@ -422,104 +428,122 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
   fetch('data/publications.json')
     .then(r => r.json())
     .then(pubs => {
+      const PRESENTATION_TYPES = ['talk', 'poster', 'symposium', 'invited-talk'];
+      const typeLabels = {
+        'journal': 'Journal',
+        'conf-full': 'Conference',
+        'conf-workshop': 'Workshop',
+        'preprint': 'Preprint',
+        'commentary': 'Commentary',
+        'book-chapter': 'Chapter',
+        'scicomm': 'Sci-comm',
+        'talk': 'Talk',
+        'poster': 'Poster',
+        'symposium': 'Symposium',
+        'invited-talk': 'Invited Talk',
+      };
+
+      function renderPubList(list, pubs) {
+        let currentYear = null;
+
+        pubs.forEach(pub => {
+          // Year heading
+          if (pub.year !== currentYear) {
+            currentYear = pub.year;
+            const heading = document.createElement('div');
+            heading.className = 'pub-year-heading';
+            heading.innerHTML = '<span class="hl">' + currentYear + '</span>';
+            list.appendChild(heading);
+          }
+
+          const entry = document.createElement('div');
+          entry.className = 'pub-entry reveal';
+
+          // Format authors — bold Hakimi, keep each "Last, F." together on one line,
+          // join with commas and an ampersand + Oxford comma before the last author.
+          // Co-first authors (per coFirstLastNames) get a trailing asterisk.
+          const coFirst = pub.coFirstLastNames || [];
+          const isCoFirst = last => coFirst.some(n => n.toLowerCase() === last.toLowerCase());
+          const authorNames = pub.authors.map(a => {
+            if (/hakimi/i.test(a)) {
+              const star = isCoFirst('Hakimi') ? '<sup>*</sup>' : '';
+              return star + '<strong>Hakimi, S.</strong>';
+            }
+            const parts = a.split(',');
+            let last, initials;
+            if (parts.length === 2) {
+              last = parts[0].trim();
+              const first = parts[1].trim();
+              initials = first.split(/\s+/).map(w => w[0] + '.').join(' ');
+            } else {
+              // Already "First Last" format
+              const words = a.trim().split(/\s+/);
+              if (words.length >= 2) {
+                last = words[words.length - 1];
+                initials = words.slice(0, -1).map(w => w[0] + '.').join(' ');
+              }
+            }
+            if (last === undefined) return a;
+            const star = isCoFirst(last) ? '<sup>*</sup>' : '';
+            return star + last + ', ' + initials;
+          }).map(name => '<span style="white-space:nowrap">' + name + '</span>');
+
+          let authors;
+          if (authorNames.length === 1) {
+            authors = authorNames[0];
+          } else if (authorNames.length === 2) {
+            authors = authorNames[0] + ' &amp; ' + authorNames[1];
+          } else {
+            authors = authorNames.slice(0, -1).join(', ') + ', &amp; ' + authorNames[authorNames.length - 1];
+          }
+
+          // Format venue
+          const venue = pub.venue || '';
+          const typeLabel = typeLabels[pub.pubType] || pub.pubType;
+
+          // Link
+          const linkUrl = pub.url || (pub.doi ? 'https://doi.org/' + pub.doi : '') || (pub.arxivId ? 'https://arxiv.org/abs/' + pub.arxivId : '');
+
+          entry.innerHTML =
+            '<div class="pub-main">' +
+              '<div class="pub-title">' +
+                (linkUrl ? '<a href="' + linkUrl + '" target="_blank" rel="noopener">' + pub.title + '</a>' : pub.title) +
+              '</div>' +
+              '<div class="pub-authors">' + authors + '</div>' +
+              (venue.trim().toLowerCase() === typeLabel.toLowerCase() ? '' :
+                '<div class="pub-venue"><em' + (pub.pubType === 'journal' ? ' class="venue-journal"' : '') + '>' + venue + '</em></div>') +
+            '</div>' +
+            '<div class="pub-aside">' +
+              '<span class="pub-year">' + pub.year + '</span>' +
+              '<span class="pub-type">' + typeLabel + '</span>' +
+              (pub.addendum ? '<span class="pub-addendum">' + pub.addendum + '</span>' : '') +
+            '</div>';
+
+          list.appendChild(entry);
+        });
+
+        if (pubs.some(p => p.coFirstLastNames && p.coFirstLastNames.length)) {
+          const footnote = document.createElement('p');
+          footnote.className = 'pub-footnote';
+          footnote.textContent = '* Authors contributed equally.';
+          list.appendChild(footnote);
+        }
+      }
+
       const selected = pubs.filter(p => p.keywords && p.keywords.includes('selected'));
       selected.sort((a, b) => b.year - a.year || b.paperWeight - a.paperWeight);
 
-      const list = document.getElementById('pub-list');
-      let currentYear = null;
+      const papers = selected.filter(p => !PRESENTATION_TYPES.includes(p.pubType));
+      const presentations = selected.filter(p => PRESENTATION_TYPES.includes(p.pubType));
 
-      selected.forEach(pub => {
-        // Year heading
-        if (pub.year !== currentYear) {
-          currentYear = pub.year;
-          const heading = document.createElement('div');
-          heading.className = 'pub-year-heading';
-          heading.innerHTML = '<span class="hl">' + currentYear + '</span>';
-          list.appendChild(heading);
-        }
+      renderPubList(document.getElementById('pub-list'), papers);
 
-        const entry = document.createElement('div');
-        entry.className = 'pub-entry reveal';
-
-        // Format authors — bold Hakimi, keep each "Last, F." together on one line,
-        // join with commas and an ampersand + Oxford comma before the last author.
-        // Co-first authors (per coFirstLastNames) get a trailing asterisk.
-        const coFirst = pub.coFirstLastNames || [];
-        const isCoFirst = last => coFirst.some(n => n.toLowerCase() === last.toLowerCase());
-        const authorNames = pub.authors.map(a => {
-          if (/hakimi/i.test(a)) {
-            const star = isCoFirst('Hakimi') ? '<sup>*</sup>' : '';
-            return star + '<strong>Hakimi, S.</strong>';
-          }
-          const parts = a.split(',');
-          let last, initials;
-          if (parts.length === 2) {
-            last = parts[0].trim();
-            const first = parts[1].trim();
-            initials = first.split(/\s+/).map(w => w[0] + '.').join(' ');
-          } else {
-            // Already "First Last" format
-            const words = a.trim().split(/\s+/);
-            if (words.length >= 2) {
-              last = words[words.length - 1];
-              initials = words.slice(0, -1).map(w => w[0] + '.').join(' ');
-            }
-          }
-          if (last === undefined) return a;
-          const star = isCoFirst(last) ? '<sup>*</sup>' : '';
-          return star + last + ', ' + initials;
-        }).map(name => '<span style="white-space:nowrap">' + name + '</span>');
-
-        let authors;
-        if (authorNames.length === 1) {
-          authors = authorNames[0];
-        } else if (authorNames.length === 2) {
-          authors = authorNames[0] + ' &amp; ' + authorNames[1];
-        } else {
-          authors = authorNames.slice(0, -1).join(', ') + ', &amp; ' + authorNames[authorNames.length - 1];
-        }
-
-        // Format venue
-        const venue = pub.venue || '';
-
-        // Type label
-        const typeLabels = {
-          'journal': 'Journal',
-          'conf-full': 'Conference',
-          'conf-workshop': 'Workshop',
-          'preprint': 'Preprint',
-          'commentary': 'Commentary',
-          'book-chapter': 'Chapter',
-          'scicomm': 'Sci-comm',
-        };
-        const typeLabel = typeLabels[pub.pubType] || pub.pubType;
-
-        // Link
-        const linkUrl = pub.url || (pub.doi ? 'https://doi.org/' + pub.doi : '') || (pub.arxivId ? 'https://arxiv.org/abs/' + pub.arxivId : '');
-
-        entry.innerHTML =
-          '<div class="pub-main">' +
-            '<div class="pub-title">' +
-              (linkUrl ? '<a href="' + linkUrl + '" target="_blank" rel="noopener">' + pub.title + '</a>' : pub.title) +
-            '</div>' +
-            '<div class="pub-authors">' + authors + '</div>' +
-            (venue.trim().toLowerCase() === typeLabel.toLowerCase() ? '' :
-              '<div class="pub-venue"><em' + (pub.pubType === 'journal' ? ' class="venue-journal"' : '') + '>' + venue + '</em></div>') +
-          '</div>' +
-          '<div class="pub-aside">' +
-            '<span class="pub-year">' + pub.year + '</span>' +
-            '<span class="pub-type">' + typeLabel + '</span>' +
-            (pub.addendum ? '<span class="pub-addendum">' + pub.addendum + '</span>' : '') +
-          '</div>';
-
-        list.appendChild(entry);
-      });
-
-      if (selected.some(p => p.coFirstLastNames && p.coFirstLastNames.length)) {
-        const footnote = document.createElement('p');
-        footnote.className = 'pub-footnote';
-        footnote.textContent = '* Authors contributed equally.';
-        list.appendChild(footnote);
+      const presoSection = document.getElementById('pub-list-presentations');
+      if (presentations.length) {
+        renderPubList(presoSection, presentations);
+      } else {
+        presoSection.previousElementSibling.style.display = 'none';
+        presoSection.style.display = 'none';
       }
 
       // Reveal animation

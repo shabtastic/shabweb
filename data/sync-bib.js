@@ -31,6 +31,7 @@ const BIB_SOURCES = [
   { file: 'refs/preprints.bib',      pubType: 'preprint' },
   { file: 'refs/chapters.bib',       pubType: 'chapter' },
   { file: 'refs/scicomm.bib',        pubType: 'scicomm' },
+  { file: 'refs/presentations.bib',  pubType: 'presentation' },
 ];
 
 // ── LaTeX cleanup ───────────────────────────────────────────────────────────
@@ -258,10 +259,16 @@ function getBestUrl(fields) {
 
 // ── Venue extraction ────────────────────────────────────────────────────────
 
-function getVenue(fields, entryType) {
+function getVenue(fields, entryType, defaultPubType) {
   if (entryType === 'article') return fields.journal || '';
   if (entryType === 'inproceedings') return fields.booktitle || '';
   if (entryType === 'incollection') return fields.booktitle || '';
+  // presentations.bib also uses @unpublished, but its venue/location lives
+  // in `note` (e.g. "Society for Neuroeconomics, Philadelphia, PA"), not a
+  // "Preprint" label.
+  if (entryType === 'unpublished' && defaultPubType === 'presentation') {
+    return fields.note || '';
+  }
   if (entryType === 'unpublished') return 'Preprint';
   if (entryType === 'misc') return fields.journal || '';
   return '';
@@ -282,6 +289,14 @@ function refinePubType(defaultType, fields, entryType) {
     if (kw.includes('commentary')) return 'commentary';
     if (kw.includes('bookchapter') || entryType === 'incollection') return 'book-chapter';
     return 'commentary';
+  }
+  // Presentations: use the `type` field (Talk | Poster | Symposium | Invited Talk)
+  if (defaultType === 'presentation') {
+    const t = (fields.type || '').toLowerCase().trim();
+    if (t === 'poster') return 'poster';
+    if (t === 'symposium') return 'symposium';
+    if (t === 'invited talk') return 'invited-talk';
+    return 'talk';
   }
   return defaultType;
 }
@@ -349,7 +364,7 @@ function main() {
         title: cleanLatex(fields.title),
         authors: formatAuthorsForDisplay(authors),
         year,
-        venue: cleanLatex(getVenue(fields, entryType)),
+        venue: cleanLatex(getVenue(fields, entryType, pubType)),
         doi: doi && !doi.startsWith('10.48550/arXiv.') ? doi : undefined,
         arxivId: arxivId || undefined,
         url: getBestUrl(fields),
@@ -409,12 +424,13 @@ function main() {
     // Build updated papers list: preserve existing entries (they may have
     // nodesContributed from concept extraction), add new ones
     const updatedPapers = [];
-    let skippedScicomm = 0;
+    let skippedNonGraph = 0;
     for (const pub of publications) {
-      // scicomm pieces don't belong in the scientific concept graph —
-      // keep them in publications.json (cv.html still renders them) but
-      // exclude from meta.papers so they don't enter the extraction queue.
-      if (pub.pubType === 'scicomm') { skippedScicomm++; continue; }
+      // scicomm/presentation pieces don't belong in the scientific concept
+      // graph — keep them in publications.json (cv.html still renders them)
+      // but exclude from meta.papers so they don't enter the extraction
+      // queue. Talks/posters are redundant with the paper they present.
+      if (pub.pubType === 'scicomm' || ['talk', 'poster', 'symposium', 'invited-talk'].includes(pub.pubType)) { skippedNonGraph++; continue; }
       const existing = existingById.get(pub.id)
         || existingByTitle.get(normalizeTitle(pub.title));
       if (existing) {
@@ -470,7 +486,7 @@ function main() {
     const withNodes = updatedPapers.filter(p => p.nodes_contributed && p.nodes_contributed.length > 0).length;
     const withoutNodes = updatedPapers.length - withNodes;
     console.log(`  ${withNodes} with concept nodes, ${withoutNodes} awaiting extraction`);
-    if (skippedScicomm > 0) console.log(`  ${skippedScicomm} scicomm entries excluded from graph`);
+    if (skippedNonGraph > 0) console.log(`  ${skippedNonGraph} scicomm/presentation entries excluded from graph`);
   } else {
     console.warn(`Graph file not found: ${GRAPH_JSON} — skipping graph update`);
   }

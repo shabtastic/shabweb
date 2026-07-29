@@ -26,6 +26,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CANDIDATES_PATH = path.join(__dirname, '..', 'candidates.json');
 const PUBS_PATH = path.join(__dirname, '..', '..', 'data', 'publications.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'lift-output.json');
+const SUMMARY_PATH = path.join(__dirname, '..', 'lift-run-summary.json');
 
 const TOP_CANDIDATES_PER_PAPER = 15;
 
@@ -251,6 +252,9 @@ async function main() {
     catch { c.warn('lift-output.json unreadable, starting fresh — prior results discarded'); }
   }
 
+  const allWeights = [];
+  const allStrengths = [];
+
   for (let i = 0; i < paperIds.length; i++) {
     const id = paperIds[i];
     const pub = pubIndex[id];
@@ -286,6 +290,13 @@ async function main() {
       }
       lifted.paperWeight = paperWeight;
 
+      for (const e of lifted.edges || []) {
+        e.strength = Math.round(Math.max(0.1, Math.min(1.0, e.strength)) * 100) / 100;
+      }
+
+      (lifted.nodes || []).forEach(n => allWeights.push(n.weight));
+      (lifted.edges || []).forEach(e => allStrengths.push(e.strength));
+
       const newCount = (lifted.nodes || []).filter(n => !existingIds.has(n.id)).length;
       const reuseCount = (lifted.nodes || []).length - newCount;
       c.ok(`  ${lifted.nodes?.length || 0} nodes (${newCount} new, ${reuseCount} reuse), ${lifted.edges?.length || 0} edges`);
@@ -301,6 +312,22 @@ async function main() {
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(results, null, 2));
   c.log(`\nWrote ${OUTPUT_PATH}`);
+
+  function stats(arr) {
+    if (!arr.length) return null;
+    const sorted = [...arr].sort((a, b) => a - b);
+    const mean = arr.reduce((a, b) => a + b, 0) / arr.length;
+    return {
+      count: arr.length,
+      min: sorted[0],
+      max: sorted[sorted.length - 1],
+      mean: Math.round(mean * 1000) / 1000,
+      median: sorted[Math.floor(sorted.length / 2)],
+    };
+  }
+  const summary = { node_weight: stats(allWeights), edge_strength: stats(allStrengths) };
+  fs.writeFileSync(SUMMARY_PATH, JSON.stringify(summary, null, 2));
+  c.log(`Wrote ${SUMMARY_PATH} — weight/strength distribution for spot-checking outliers`);
   c.warn('Nothing merged into graph.json — inspect lift-output.json, then run the review step.');
 }
 

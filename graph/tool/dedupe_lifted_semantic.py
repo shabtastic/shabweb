@@ -5,12 +5,24 @@ catching semantic duplicates that lift_concepts.js's literal source-candidate-
 overlap check (dedupeSiblingNodes in lift_concepts.js) can't see — two new
 nodes from the same paper describing the same concept via disjoint phrasing
 (e.g. "reward magnitude" vs "payoff size") share zero source candidates but
-should still merge.
+should still be merged.
+
+Two-tier merging strategy:
+  - AUTO_MERGE_THRESHOLD (default 0.75): very-confident semantic duplicates are
+    automatically merged using union-find.
+  - REVIEW_THRESHOLD (default 0.45): pairs scoring in [review_threshold, auto_threshold)
+    are NOT auto-merged, but flagged for human review in graph/lift-semantic-flagged.json.
+  - Below 0.45: ignored entirely.
+
+This two-tier approach balances precision (avoiding false merges at high threshold) with
+recall (catching true duplicates like "reward magnitude" vs "payoff size" that may score
+moderately high, not at the ceiling). The review tier provides visibility into borderline
+cases for downstream human judgment.
 
 Run AFTER lift_concepts.js, before promote_lift_output.js.
 
 Usage:
-    python3 dedupe_lifted_semantic.py [--threshold 0.8]
+    python3 dedupe_lifted_semantic.py [--auto-threshold 0.75] [--review-threshold 0.45]
 """
 import json
 import os
@@ -23,6 +35,7 @@ import numpy as np
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LIFT_OUTPUT_PATH = os.path.join(SCRIPT_DIR, '..', 'lift-output.json')
+FLAGGED_PATH = os.path.join(SCRIPT_DIR, '..', 'lift-semantic-flagged.json')
 
 
 def clean_label(label):
@@ -35,11 +48,11 @@ def merge_pair(keep, dupe):
     keep['source_candidates'] = list(keep_srcs | dupe_srcs)
 
 
-def dedupe_paper(paper_result, model, threshold):
+def dedupe_paper(paper_result, model, auto_threshold, review_threshold):
     nodes = paper_result.get('nodes') or []
     new_nodes = [n for n in nodes if not n.get('reuse_existing') or n.get('reuse_existing') == 'null']
     if len(new_nodes) < 2:
-        return 0
+        return 0, []
 
     labels = [clean_label(n['label']) for n in new_nodes]
     embs = model.encode(labels, show_progress_bar=False)
@@ -47,7 +60,7 @@ def dedupe_paper(paper_result, model, threshold):
     embs_normed = embs / (norms + 1e-9)
     sims = embs_normed @ embs_normed.T
 
-    # Union-find over pairs above threshold (same merge strategy as the JS
+    # Union-find over pairs above auto_threshold (same merge strategy as the JS
     # literal-overlap version: bigger source_candidates list wins).
     parent = {n['id']: n['id'] for n in new_nodes}
 
@@ -63,10 +76,30 @@ def dedupe_paper(paper_result, model, threshold):
 
     n = len(new_nodes)
     merge_count = 0
+    flagged_pairs = []
+
+    # First pass: auto-merge at high threshold
     for i in range(n):
         for j in range(i + 1, n):
-            if sims[i, j] >= threshold:
+            if sims[i, j] >= auto_threshold:
                 union(new_nodes[i]['id'], new_nodes[j]['id'])
+
+    # Second pass: collect review-tier pairs
+    for i in range(n):
+        for j in range(i + 1, n):
+            score = sims[i, j]
+            # Only flag pairs that didn't already get auto-merged
+            if review_threshold <= score < auto_threshold:
+                # Check if they're in the same union-find group
+                if find(new_nodes[i]['id']) != find(new_nodes[j]['id']):
+                    flagged_pairs.append({
+                        'paper_id': paper_result.get('paper_id', 'unknown'),
+                        'node_a': new_nodes[i]['id'],
+                        'node_b': new_nodes[j]['id'],
+                        'label_a': new_nodes[i]['label'],
+                        'label_b': new_nodes[j]['label'],
+                        'similarity': float(score)
+                    })
 
     groups = {}
     for node in new_nodes:
@@ -95,34 +128,50 @@ def dedupe_paper(paper_result, model, threshold):
         e['b'] = id_remap.get(e['b'], e['b'])
     paper_result['edges'] = [e for e in (paper_result.get('edges') or []) if e['a'] != e['b']]
 
-    return merge_count
+    return merge_count, flagged_pairs
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--threshold', type=float, default=0.8)
+    parser.add_argument('--auto-threshold', type=float, default=0.75,
+                        help='Threshold for automatic merging (default 0.75)')
+    parser.add_argument('--review-threshold', type=float, default=0.45,
+                        help='Threshold for flagging pairs for human review (default 0.45)')
     args = parser.parse_args()
 
     with open(LIFT_OUTPUT_PATH) as f:
         results = json.load(f)
 
     print('Loading embedding model…', file=sys.stderr)
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+    model = SentenceTransformer('all-mpnet-base-v2')
 
     total_merges = 0
+    all_flagged = []
+
     for paper_id, paper_result in results.items():
         if 'error' in paper_result:
             continue
-        merges = dedupe_paper(paper_result, model, args.threshold)
+        # Inject paper_id into paper_result for flagged pair tracking
+        paper_result['paper_id'] = paper_id
+        merges, flagged = dedupe_paper(paper_result, model, args.auto_threshold, args.review_threshold)
         total_merges += merges
+        all_flagged.extend(flagged)
         if merges:
             print(f'  {paper_id} — {merges} semantic merge(s)', file=sys.stderr)
+        if flagged:
+            print(f'  {paper_id} — {len(flagged)} pair(s) flagged for review', file=sys.stderr)
 
     with open(LIFT_OUTPUT_PATH, 'w') as f:
         json.dump(results, f, indent=2)
 
+    # Write flagged pairs for human review
+    with open(FLAGGED_PATH, 'w') as f:
+        json.dump(all_flagged, f, indent=2)
+
     print(f'\n{total_merges} total semantic sibling merges across all papers.', file=sys.stderr)
+    print(f'{len(all_flagged)} pair(s) flagged for human review.', file=sys.stderr)
     print(f'Updated {LIFT_OUTPUT_PATH}', file=sys.stderr)
+    print(f'Wrote {FLAGGED_PATH}', file=sys.stderr)
 
 
 if __name__ == '__main__':

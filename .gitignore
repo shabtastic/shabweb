@@ -61,6 +61,7 @@ graph/candidates.json
 graph/lift-output.json
 graph/lift-audit.json
 graph/lift-run-summary.json
+graph/lift-semantic-flagged.json
 
 # Local worktrees
 .worktrees/

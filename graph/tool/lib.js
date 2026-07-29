@@ -7,6 +7,68 @@ import Anthropic from '@anthropic-ai/sdk';
 const __dirname  = path.dirname(fileURLToPath(import.meta.url));
 export const GRAPH_PATH = path.join(__dirname, '..', 'graph.json');
 
+// ── Corpus paths ──────────────────────────────────────────────────────────────
+export const CORPUS_REPO  = process.env.CORPUS_REPO || path.join(process.env.HOME, 'projects/research-corpus');
+export const VAULT_DIR    = path.join(CORPUS_REPO, 'vault');
+export const CATALOG_PATH = path.join(CORPUS_REPO, 'corpus-catalog.json');
+export const PUBS_PATH    = path.join(__dirname, '..', '..', 'data', 'publications.json');
+
+const EXCLUDED_KEYWORDS = ['scicomm', 'commentary', 'unlisted'];
+const PRESENTATION_TYPES = ['talk', 'poster', 'symposium', 'invited-talk'];
+
+/**
+ * Build the three-pass paper universe from publications.json + corpus-catalog.json.
+ * Returns { pass1, pass2, pass3 } sorted deterministically by pub_key.
+ *
+ * Pass 1: keywords includes "selected", next_action === "have_local"
+ * Pass 2: no "selected" keyword,       next_action === "have_local"
+ * Pass 3: next_action === "have_draft"  (regardless of selected)
+ */
+export function loadCorpusUniverse() {
+  if (!fs.existsSync(PUBS_PATH))    throw new Error(`publications.json not found: ${PUBS_PATH}`);
+  if (!fs.existsSync(CATALOG_PATH)) throw new Error(`corpus-catalog.json not found: ${CATALOG_PATH}`);
+
+  const publications   = JSON.parse(fs.readFileSync(PUBS_PATH, 'utf-8'));
+  const catalog        = JSON.parse(fs.readFileSync(CATALOG_PATH, 'utf-8'));
+  const catalogEntries = catalog.entries;
+
+  const pass1 = [], pass2 = [], pass3 = [];
+
+  for (const pub of publications) {
+    const kw = pub.keywords || [];
+
+    if (EXCLUDED_KEYWORDS.some(k => kw.includes(k))) continue;
+    if (PRESENTATION_TYPES.includes(pub.pubType)) continue;
+
+    const entry = catalogEntries[pub.id];
+    if (!entry) continue;
+
+    const nextAction = entry.acquisition?.next_action;
+    if (!['have_local', 'have_draft'].includes(nextAction)) continue;
+
+    const sha = entry.final_output?.sha;
+    if (!sha) continue;
+
+    const isDraft    = nextAction === 'have_draft';
+    const isSelected = kw.includes('selected');
+
+    const paper = { ...pub, sha, isDraft, isSelected };
+
+    if (isDraft) {
+      pass3.push(paper);
+    } else if (isSelected) {
+      pass1.push(paper);
+    } else {
+      pass2.push(paper);
+    }
+  }
+
+  const byId = (a, b) => a.id.localeCompare(b.id);
+  pass1.sort(byId); pass2.sort(byId); pass3.sort(byId);
+
+  return { pass1, pass2, pass3 };
+}
+
 // ── Console helpers ───────────────────────────────────────────────────────────
 export const c = {
   info:  s => process.stdout.write(`\x1b[36m→\x1b[0m  ${s}\n`),

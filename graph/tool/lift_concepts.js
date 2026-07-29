@@ -27,7 +27,7 @@
 import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
 import { c, loadGraph, computePaperWeight } from './lib.js';
 
@@ -358,4 +358,4 @@ async function main() {
   c.warn('Nothing merged into graph.json — run dedupe_lifted_semantic.py next, then the review step.');
 }
 
-main();
+if (import.meta.url === pathToFileURL(process.argv[1]).href) main();

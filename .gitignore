@@ -15,6 +15,10 @@ pnpm-debug.log*
 .yarn/build-state.yml
 .pnpm-store/
 
+# ── Python ────────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+
 # ── Working files (tool inputs, not source of truth) ──────────────────────
 graph/tool/sources/*.pdf
 graph/tool/sources/*.docx

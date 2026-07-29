@@ -4,7 +4,8 @@
  * in lift_concepts.js and lib.js. No test framework (matches this
  * project's zero-dependency convention) — run directly:
  *   node lift_concepts.test.js
- * Prints PASS/FAIL per case, exits 1 on any failure.
+ * Prints a checkmark or cross per case (with a message on failure), exits
+ * 1 on any failure.
  *
  * Deliberately does NOT test liftPaper() or main() — both require a real
  * Anthropic API call and are covered by this pipeline's existing smoke-run

@@ -44,7 +44,7 @@ scratch.
 For each candidate, or group of clearly-related candidates (e.g. "reward rate", "reward-rate",
 "reward rate ratio" are variants of one construct — merge them), decide:
 
-1. REUSE — only when similarity to nearest_existing is at least ~0.65 AND it's genuinely the
+1. REUSE — only when similarity to nearest_existing is at least ~0.6 AND it's genuinely the
    same underlying construct, not just topically adjacent. Two things "about the same population"
    or "about the same broad topic" (e.g. both mention autism, both mention reward) are NOT
    automatically the same concept — check what nearest_existing's own label actually claims
@@ -240,7 +240,16 @@ async function main() {
 
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const model = 'claude-sonnet-4-6';
-  const results = {};
+
+  // Load existing output so incremental --papers batches accumulate instead
+  // of clobbering prior runs' results — downstream steps (widening test
+  // coverage, promote_lift_output.js) depend on this file being cumulative
+  // across multiple invocations, not a snapshot of only the latest one.
+  let results = {};
+  if (fs.existsSync(OUTPUT_PATH)) {
+    try { results = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf-8')); }
+    catch { /* start fresh if corrupt */ }
+  }
 
   for (let i = 0; i < paperIds.length; i++) {
     const id = paperIds[i];

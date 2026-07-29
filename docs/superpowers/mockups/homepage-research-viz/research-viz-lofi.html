@@ -1,0 +1,346 @@
+<style>
+  .rv-wrap { --paper:#f5f2ec; --ink:#111118; --blue:#1a2c6b;
+    --h-yellow:#FFFF77; --h-slate:#7777FF; --h-helio:#C977FF; --h-violet:#FF77E4;
+    --h-red:#FF7792; --h-orange:#FFAE77; --h-mint:#77FFE4; --h-lime:#AAFF77;
+    font-family:'Space Mono', monospace; }
+  .rv-wrap h2 { font-family:'DM Sans', sans-serif; }
+  .rv-mockup-title { font-family:'DM Sans', sans-serif; font-weight:700;
+    font-size:1.02rem; margin:0 0 .15rem; color:var(--blue); }
+  .rv-mockup-desc { font-size:.82rem; line-height:1.45; margin:0;
+    opacity:.82; max-width:64ch; }
+  .rv-wrap .mockup-body { background:#f5f2ec; padding:0; }
+  .rv-wrap .option { margin-bottom:1.15rem; }
+  .rv-wrap svg { display:block; width:100%; height:auto; }
+  .rv-cap { font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;
+    opacity:.6; margin:.55rem 0 .05rem; }
+  /* SVG helper text sizing baked inline; these just keep fallbacks tidy */
+  .rv-svgtext { font-family:'Space Mono', monospace; }
+</style>
+
+<div class="rv-wrap">
+  <h2>Homepage research visual — which direction?</h2>
+  <p class="subtitle">Three lo-fi takes on how to picture your research program on the homepage. Click the one that resonates (or the closest), then tell me in the terminal what to push further — you can also mix elements across them.</p>
+
+  <!-- ================= OPTION A ================= -->
+  <div class="option" data-choice="A" onclick="toggleSelect(this)">
+    <span class="letter">A</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">A · Illustration of the phenomenon</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 420" role="img" aria-label="Sketch of raw signals over nested timescales converging into an inferred latent state">
+            <defs>
+              <pattern id="gridA" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gridAmaj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arrA" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+            </defs>
+            <rect width="900" height="420" fill="#f5f2ec"/>
+            <rect width="900" height="420" fill="url(#gridA)"/>
+            <rect width="900" height="420" fill="url(#gridAmaj)"/>
+
+            <!-- time axis -->
+            <line x1="60" y1="360" x2="850" y2="360" stroke="#111118" stroke-width="1.6" marker-end="url(#arrA)"/>
+            <text x="60" y="392" class="rv-svgtext" font-size="11" fill="#111118">time  →</text>
+
+            <!-- nested timescale brackets -->
+            <g stroke="#1a2c6b" stroke-width="1.3" fill="none">
+              <path d="M70 372 v10 h120 v-10"/>
+              <path d="M200 372 v14 h200 v-14"/>
+              <path d="M410 372 v18 h200 v-18"/>
+              <path d="M620 372 v22 h210 v-22"/>
+            </g>
+            <text x="130" y="398" text-anchor="middle" class="rv-svgtext" font-size="10" fill="#1a2c6b">ms</text>
+            <text x="300" y="402" text-anchor="middle" class="rv-svgtext" font-size="10" fill="#1a2c6b">moments</text>
+            <text x="510" y="406" text-anchor="middle" class="rv-svgtext" font-size="10" fill="#1a2c6b">days</text>
+            <text x="725" y="410" text-anchor="middle" class="rv-svgtext" font-size="10" fill="#1a2c6b">years</text>
+
+            <!-- raw signal traces (wiggly, highlighter colors) -->
+            <!-- physiology -->
+            <path d="M70 90 q10 -18 20 0 t20 2 t18 -14 t22 12 t20 -6 t18 8 t22 -10 t20 6 t18 -4 t22 10 t20 -8 t18 6 t22 -2 t20 8 t18 -12 t22 6 t20 -4 t18 8 t22 -6"
+                  fill="none" stroke="#FF7792" stroke-width="2" opacity="0.9"/>
+            <text x="70" y="78" class="rv-svgtext" font-size="10.5" fill="#111118">physiology (HR · EDA · pupil)</text>
+
+            <!-- behavior -->
+            <path d="M70 150 h24 v-14 h30 v20 h26 v-10 h30 v14 h28 v-18 h34 v12 h30 v-8 h28 v16 h30 v-12 h34 v10 h30 v-14 h30 v18 h34 v-10 h30 v8 h40 v-6"
+                  fill="none" stroke="#FFAE77" stroke-width="2" opacity="0.95"/>
+            <text x="70" y="138" class="rv-svgtext" font-size="10.5" fill="#111118">behavior (actions · gaze · timing)</text>
+
+            <!-- self-report / elicitation -->
+            <g stroke="#7777FF" stroke-width="2" opacity="0.9">
+              <line x1="95" y1="215" x2="95" y2="188"/>
+              <line x1="175" y1="215" x2="175" y2="200"/>
+              <line x1="255" y1="215" x2="255" y2="182"/>
+              <line x1="360" y1="215" x2="360" y2="196"/>
+              <line x1="470" y1="215" x2="470" y2="185"/>
+              <line x1="580" y1="215" x2="580" y2="205"/>
+            </g>
+            <g fill="#7777FF" opacity="0.9">
+              <circle cx="95" cy="186" r="3"/><circle cx="175" cy="198" r="3"/>
+              <circle cx="255" cy="180" r="3"/><circle cx="360" cy="194" r="3"/>
+              <circle cx="470" cy="183" r="3"/><circle cx="580" cy="203" r="3"/>
+            </g>
+            <text x="70" y="230" class="rv-svgtext" font-size="10.5" fill="#111118">self-report / elicitation (sparse probes)</text>
+
+            <!-- converging feed lines -->
+            <g stroke="rgba(17,17,24,0.35)" stroke-width="1" stroke-dasharray="3 4" fill="none">
+              <path d="M600 96 C 660 150, 640 250, 600 300"/>
+              <path d="M600 150 C 655 190, 645 260, 600 300"/>
+              <path d="M600 200 C 650 230, 645 270, 600 300"/>
+            </g>
+            <text x="612" y="250" class="rv-svgtext" font-size="9.5" fill="rgba(17,17,24,0.55)" transform="rotate(6 612 250)">triangulate</text>
+
+            <!-- inferred latent state trajectory: dashed -> solid -->
+            <path d="M120 305 q60 -20 120 -6 t120 4"
+                  fill="none" stroke="#1a2c6b" stroke-width="3" stroke-dasharray="5 5" opacity="0.85"/>
+            <path d="M360 303 q80 6 150 -18 t190 -30"
+                  fill="none" stroke="#1a2c6b" stroke-width="3.4"/>
+            <text x="120" y="330" class="rv-svgtext" font-size="10.5" fill="#1a2c6b">inferred latent psychological state →</text>
+
+            <!-- intervention arrow poking the state -->
+            <line x1="470" y1="255" x2="470" y2="290" stroke="#AAFF77" stroke-width="3" marker-end="url(#arrA)"/>
+
+            <!-- pinned annotation labels (highlighter swipe behind) -->
+            <g>
+              <rect x="300" y="60" width="150" height="15" rx="2" fill="#7777FF" opacity="0.45" transform="rotate(-1.5 300 60)"/>
+              <text x="305" y="72" class="rv-svgtext" font-size="10.5" fill="#111118" transform="rotate(-1.5 305 72)">preference elicitation</text>
+            </g>
+            <g>
+              <rect x="600" y="278" width="176" height="15" rx="2" fill="#AAFF77" opacity="0.55" transform="rotate(1 600 278)"/>
+              <text x="605" y="290" class="rv-svgtext" font-size="10.5" fill="#111118" transform="rotate(1 605 290)">agent state inference</text>
+            </g>
+            <g>
+              <rect x="392" y="238" width="120" height="15" rx="2" fill="#AAFF77" opacity="0.5" transform="rotate(-1 392 238)"/>
+              <text x="397" y="250" class="rv-svgtext" font-size="10.5" fill="#111118" transform="rotate(-1 397 250)">behavior change</text>
+            </g>
+            <g>
+              <rect x="70" y="288" width="150" height="14" rx="2" fill="#FFFF77" opacity="0.7" transform="rotate(-1 70 288)"/>
+              <text x="75" y="299" class="rv-svgtext" font-size="10" fill="#111118" transform="rotate(-1 75 299)">creative decision making</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="rv-cap">what it communicates</div>
+      <p class="rv-mockup-title">Illustration of the phenomenon</p>
+      <p class="rv-mockup-desc">A sketch of the science itself: noisy raw signals over nested timescales feeding into one inferred latent-state line (dashed where uncertain, solid where inferred). Research areas are pinned exactly where they act. Character: vivid, honest, immediately conveys the "hidden state over time" problem — leads with the phenomenon, not the org chart.</p>
+    </div>
+  </div>
+
+  <!-- ================= OPTION B ================= -->
+  <div class="option" data-choice="B" onclick="toggleSelect(this)">
+    <span class="letter">B</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">B · Diagram of the program logic</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 420" role="img" aria-label="Concept map from methods into latent states out to applications">
+            <defs>
+              <pattern id="gridB" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gridBmaj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arrB" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+            </defs>
+            <rect width="900" height="420" fill="#f5f2ec"/>
+            <rect width="900" height="420" fill="url(#gridB)"/>
+            <rect width="900" height="420" fill="url(#gridBmaj)"/>
+
+            <!-- column labels -->
+            <text x="150" y="34" text-anchor="middle" class="rv-svgtext" font-size="10" fill="rgba(17,17,24,0.55)">METHODS →</text>
+            <text x="450" y="34" text-anchor="middle" class="rv-svgtext" font-size="10" fill="rgba(17,17,24,0.55)">WHAT WE INFER</text>
+            <text x="762" y="34" text-anchor="middle" class="rv-svgtext" font-size="10" fill="rgba(17,17,24,0.55)">→ APPLICATIONS</text>
+
+            <!-- method nodes (left) -->
+            <g>
+              <rect x="55" y="70" width="190" height="46" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4" transform="rotate(-0.8 55 70)"/>
+              <rect x="60" y="86" width="150" height="12" fill="#7777FF" opacity="0.4"/>
+              <text x="150" y="90" text-anchor="middle" class="rv-svgtext" font-size="10.5" fill="#111118">novel elicitation</text>
+              <text x="150" y="105" text-anchor="middle" class="rv-svgtext" font-size="9" fill="rgba(17,17,24,0.55)">get people to reveal state</text>
+            </g>
+            <g>
+              <rect x="55" y="185" width="190" height="46" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4" transform="rotate(0.6 55 185)"/>
+              <rect x="60" y="201" width="150" height="12" fill="#FFAE77" opacity="0.45"/>
+              <text x="150" y="205" text-anchor="middle" class="rv-svgtext" font-size="10.5" fill="#111118">multi-signal triangulation</text>
+              <text x="150" y="220" text-anchor="middle" class="rv-svgtext" font-size="9" fill="rgba(17,17,24,0.55)">fuse many sensors</text>
+            </g>
+            <g>
+              <rect x="55" y="300" width="190" height="46" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4" transform="rotate(-0.5 55 300)"/>
+              <rect x="60" y="316" width="150" height="12" fill="#C977FF" opacity="0.4"/>
+              <text x="150" y="320" text-anchor="middle" class="rv-svgtext" font-size="10.5" fill="#111118">computational models</text>
+              <text x="150" y="335" text-anchor="middle" class="rv-svgtext" font-size="9" fill="rgba(17,17,24,0.55)">understand + predict</text>
+            </g>
+
+            <!-- central node -->
+            <ellipse cx="450" cy="208" rx="118" ry="72" fill="#f5f2ec" stroke="#1a2c6b" stroke-width="2.2"/>
+            <ellipse cx="450" cy="208" rx="106" ry="62" fill="none" stroke="#1a2c6b" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.6"/>
+            <text x="450" y="198" text-anchor="middle" class="rv-svgtext" font-size="11.5" fill="#1a2c6b" font-weight="700">latent psychological</text>
+            <text x="450" y="214" text-anchor="middle" class="rv-svgtext" font-size="11.5" fill="#1a2c6b" font-weight="700">states</text>
+            <text x="450" y="232" text-anchor="middle" class="rv-svgtext" font-size="9.5" fill="rgba(17,17,24,0.6)">over time &amp; in context</text>
+
+            <!-- feeding arrows in -->
+            <g stroke="#1a2c6b" stroke-width="1.5" fill="none">
+              <path d="M247 94 C 320 120, 320 160, 344 178" marker-end="url(#arrB)"/>
+              <path d="M247 208 L 330 208" marker-end="url(#arrB)"/>
+              <path d="M247 322 C 320 296, 320 256, 344 238" marker-end="url(#arrB)"/>
+            </g>
+
+            <!-- application nodes (right) -->
+            <g stroke="#1a2c6b" stroke-width="1.5" fill="none">
+              <path d="M568 178 C 640 150, 650 120, 690 108" marker-end="url(#arrB)"/>
+              <path d="M568 208 L 690 208" marker-end="url(#arrB)"/>
+              <path d="M568 238 C 640 266, 650 296, 690 308" marker-end="url(#arrB)"/>
+            </g>
+            <g>
+              <rect x="692" y="88" width="160" height="38" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4"/>
+              <rect x="697" y="100" width="120" height="11" fill="#FFFF77" opacity="0.7"/>
+              <text x="772" y="112" text-anchor="middle" class="rv-svgtext" font-size="10.5" fill="#111118">creative decision making</text>
+            </g>
+            <g>
+              <rect x="692" y="189" width="160" height="38" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4"/>
+              <rect x="697" y="201" width="120" height="11" fill="#77FFE4" opacity="0.6"/>
+              <text x="772" y="213" text-anchor="middle" class="rv-svgtext" font-size="10.5" fill="#111118">self-regulation</text>
+            </g>
+            <g>
+              <rect x="692" y="290" width="160" height="38" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4"/>
+              <rect x="697" y="302" width="120" height="11" fill="#AAFF77" opacity="0.6"/>
+              <text x="772" y="314" text-anchor="middle" class="rv-svgtext" font-size="10.5" fill="#111118">behavior change</text>
+            </g>
+
+            <!-- satellite research-area labels around center -->
+            <g class="rv-svgtext" font-size="8.6" fill="rgba(17,17,24,0.7)">
+              <text x="358" y="118">· motivated learning</text>
+              <text x="366" y="300">· preference elicitation</text>
+              <text x="332" y="150">· agent state inference</text>
+              <text x="352" y="286">· social/affective neuro</text>
+              <text x="470" y="118">· psychology-guided genAI</text>
+              <text x="470" y="300">· consumer psychology</text>
+              <text x="384" y="132">· creativity &amp; design</text>
+              <text x="404" y="292">· intervention science</text>
+            </g>
+            <text x="450" y="400" text-anchor="middle" class="rv-svgtext" font-size="9" fill="rgba(17,17,24,0.5)">8 research areas cluster around the center where they contribute</text>
+          </svg>
+        </div>
+      </div>
+      <div class="rv-cap">what it communicates</div>
+      <p class="rv-mockup-title">Diagram of the program logic</p>
+      <p class="rv-mockup-desc">A concept map: three methods feed a central "latent states over time & in context" node, which flows out to three application areas, with the 8 named areas orbiting where they belong. Character: legible and complete — reads as a research statement at a glance, but more org-chart than phenomenon.</p>
+    </div>
+  </div>
+
+  <!-- ================= OPTION C ================= -->
+  <div class="option" data-choice="C" onclick="toggleSelect(this)">
+    <span class="letter">C</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">C · Hybrid, phenomenon-led</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 420" role="img" aria-label="Phenomenon sketch annotated with the program structure: elicitation, triangulation, models, applications">
+            <defs>
+              <pattern id="gridC" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gridCmaj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arrC" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+            </defs>
+            <rect width="900" height="420" fill="#f5f2ec"/>
+            <rect width="900" height="420" fill="url(#gridC)"/>
+            <rect width="900" height="420" fill="url(#gridCmaj)"/>
+
+            <!-- big program-stage brackets across the top -->
+            <g stroke="#1a2c6b" stroke-width="1.3" fill="none">
+              <path d="M60 60 v-10 h230 v10"/>
+              <path d="M300 60 v-10 h150 v10"/>
+              <path d="M460 60 v-10 h150 v10"/>
+              <path d="M620 60 v-10 h230 v10"/>
+            </g>
+            <text x="175" y="44" text-anchor="middle" class="rv-svgtext" font-size="11" fill="#1a2c6b" font-weight="700">elicitation</text>
+            <text x="375" y="44" text-anchor="middle" class="rv-svgtext" font-size="11" fill="#1a2c6b" font-weight="700">triangulation</text>
+            <text x="535" y="44" text-anchor="middle" class="rv-svgtext" font-size="11" fill="#1a2c6b" font-weight="700">computational models</text>
+            <text x="735" y="44" text-anchor="middle" class="rv-svgtext" font-size="11" fill="#1a2c6b" font-weight="700">applications</text>
+
+            <!-- raw signal traces -->
+            <path d="M70 118 q10 -16 20 0 t20 2 t18 -12 t22 10 t20 -6 t18 8 t22 -10 t20 6 t18 -4 t22 10 t20 -8 t18 6"
+                  fill="none" stroke="#FF7792" stroke-width="2" opacity="0.9"/>
+            <text x="70" y="106" class="rv-svgtext" font-size="10" fill="#111118">physiology</text>
+
+            <path d="M70 172 h22 v-12 h26 v18 h24 v-10 h28 v12 h26 v-16 h30 v10 h26 v-8 h30 v14 h28 v-10"
+                  fill="none" stroke="#FFAE77" stroke-width="2" opacity="0.95"/>
+            <text x="70" y="160" class="rv-svgtext" font-size="10" fill="#111118">behavior</text>
+
+            <g stroke="#7777FF" stroke-width="2" opacity="0.9">
+              <line x1="95" y1="228" x2="95" y2="204"/>
+              <line x1="165" y1="228" x2="165" y2="214"/>
+              <line x1="235" y1="228" x2="235" y2="200"/>
+            </g>
+            <g fill="#7777FF"><circle cx="95" cy="202" r="3"/><circle cx="165" cy="212" r="3"/><circle cx="235" cy="198" r="3"/></g>
+            <text x="70" y="244" class="rv-svgtext" font-size="10" fill="#111118">self-report probes</text>
+
+            <!-- converge zone (triangulation) -->
+            <g stroke="rgba(17,17,24,0.35)" stroke-width="1" stroke-dasharray="3 4" fill="none">
+              <path d="M290 120 C 350 170, 340 250, 300 300"/>
+              <path d="M290 172 C 345 200, 340 260, 300 300"/>
+              <path d="M290 214 C 345 240, 340 270, 300 300"/>
+            </g>
+            <ellipse cx="375" cy="205" rx="70" ry="120" fill="#FFAE77" opacity="0.10"/>
+
+            <!-- models step marker -->
+            <rect x="460" y="80" width="150" height="250" fill="#C977FF" opacity="0.07"/>
+            <circle cx="535" cy="300" r="16" fill="#f5f2ec" stroke="#1a2c6b" stroke-width="1.6"/>
+            <text x="535" y="304" text-anchor="middle" class="rv-svgtext" font-size="10" fill="#1a2c6b">f( )</text>
+
+            <!-- inferred latent state: dashed -> solid -->
+            <path d="M120 312 q70 -16 150 -6"
+                  fill="none" stroke="#1a2c6b" stroke-width="3" stroke-dasharray="5 5" opacity="0.85"/>
+            <path d="M270 306 q90 -2 160 -4 t200 -34"
+                  fill="none" stroke="#1a2c6b" stroke-width="3.4"/>
+            <text x="120" y="336" class="rv-svgtext" font-size="10.5" fill="#1a2c6b">inferred latent psychological state →</text>
+
+            <!-- time axis + nested brackets -->
+            <line x1="60" y1="360" x2="850" y2="360" stroke="#111118" stroke-width="1.4" marker-end="url(#arrC)"/>
+            <g stroke="#1a2c6b" stroke-width="1.1" fill="none">
+              <path d="M70 370 v8 h110 v-8"/>
+              <path d="M190 370 v12 h180 v-12"/>
+              <path d="M380 370 v16 h200 v-16"/>
+              <path d="M590 370 v20 h240 v-20"/>
+            </g>
+            <text x="125" y="386" text-anchor="middle" class="rv-svgtext" font-size="9.5" fill="#1a2c6b">ms</text>
+            <text x="280" y="390" text-anchor="middle" class="rv-svgtext" font-size="9.5" fill="#1a2c6b">moments</text>
+            <text x="480" y="394" text-anchor="middle" class="rv-svgtext" font-size="9.5" fill="#1a2c6b">days</text>
+            <text x="710" y="398" text-anchor="middle" class="rv-svgtext" font-size="9.5" fill="#1a2c6b">years</text>
+
+            <!-- applications annotation at downstream end -->
+            <g>
+              <rect x="628" y="150" width="212" height="16" rx="2" fill="#FFFF77" opacity="0.7" transform="rotate(-1 628 150)"/>
+              <text x="634" y="163" class="rv-svgtext" font-size="10.5" fill="#111118" transform="rotate(-1 634 163)">creative decision making</text>
+            </g>
+            <g>
+              <rect x="628" y="176" width="212" height="16" rx="2" fill="#77FFE4" opacity="0.6" transform="rotate(0.5 628 176)"/>
+              <text x="634" y="189" class="rv-svgtext" font-size="10.5" fill="#111118" transform="rotate(0.5 634 189)">self-regulation</text>
+            </g>
+            <g>
+              <rect x="628" y="202" width="212" height="16" rx="2" fill="#AAFF77" opacity="0.6" transform="rotate(-0.5 628 202)"/>
+              <text x="634" y="215" class="rv-svgtext" font-size="10.5" fill="#111118" transform="rotate(-0.5 634 215)">behavior change</text>
+            </g>
+            <text x="734" y="248" text-anchor="middle" class="rv-svgtext" font-size="9" fill="rgba(17,17,24,0.55)">what the inferred state feeds</text>
+          </svg>
+        </div>
+      </div>
+      <div class="rv-cap">what it communicates</div>
+      <p class="rv-mockup-title">Hybrid, phenomenon-led</p>
+      <p class="rv-mockup-desc">Option A's illustration as the base, but annotated with the program's structure — elicitation over the sources, triangulation where they converge, computational models at the inference step, and applications at the downstream end. Character: keeps the vivid phenomenon while making the method logic legible; the 8 area names move to a caption or hover instead of crowding the figure.</p>
+    </div>
+  </div>
+</div>

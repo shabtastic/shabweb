@@ -1,0 +1,112 @@
+<style>
+  .rv4-wrap { --paper:#f5f2ec; --ink:#111118; --blue:#1a2c6b;
+    font-family:'Space Mono', monospace; }
+  .rv4-wrap h2 { font-family:'DM Sans', sans-serif; }
+  .rv4-wrap .mockup-body { background:#f5f2ec; padding:0; }
+  .rv4-wrap svg { display:block; width:100%; height:auto; }
+  .rv4-svgtext { font-family:'Space Mono', monospace; }
+  .rv4-note { font-size:.8rem; line-height:1.5; margin:.7rem 0 0; opacity:.8; max-width:66ch; }
+</style>
+
+<div class="rv4-wrap">
+  <h2>v4 — base drawing: nested timescales, no taxonomy yet</h2>
+  <p class="subtitle">Just the base illustration now — plain-language labels only, research areas stripped out so we can get the drawing itself right first. The timescales are drawn as true containment: seconds sit inside minutes inside hours inside days inside years. Jot any free-form notes in the terminal.</p>
+
+  <div class="mockup">
+    <div class="mockup-header">the phenomenon — signals over one nested timeline</div>
+    <div class="mockup-body">
+      <svg viewBox="0 0 900 500" role="img" aria-label="Body, behavior, and asking signals across one shared timeline, combining into an inferred line of unseen inner states, over nested timescales from seconds contained within years">
+        <defs>
+          <pattern id="gv4" width="16" height="16" patternUnits="userSpaceOnUse">
+            <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+          </pattern>
+          <pattern id="gv4maj" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+          </pattern>
+          <marker id="arv4i" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6" fill="none" stroke="#FF7792" stroke-width="1.6"/>
+          </marker>
+        </defs>
+        <rect width="900" height="500" fill="#f5f2ec"/>
+        <rect width="900" height="500" fill="url(#gv4)"/>
+        <rect width="900" height="500" fill="url(#gv4maj)"/>
+
+        <!-- ===== BODY signals: dense continuous fast wiggle, full width ===== -->
+        <path d="M70 112 q10 -12 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"
+              fill="none" stroke="#FF7792" stroke-width="1.4" opacity="0.55"/>
+        <text x="70" y="98" class="rv4-svgtext" font-size="11" fill="#111118">what the body signals</text>
+
+        <!-- ===== BEHAVIOR: medium-rate trace, full width ===== -->
+        <path d="M70 172 q20 -15 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"
+              fill="none" stroke="#FFAE77" stroke-width="1.8" opacity="0.65"/>
+        <text x="70" y="152" class="rv4-svgtext" font-size="11" fill="#111118">what people do</text>
+
+        <!-- ===== ASKING: sparse discrete marks scattered across the whole axis ===== -->
+        <g stroke="#7777FF" stroke-width="1.8" opacity="0.8">
+          <line x1="150" y1="218" x2="150" y2="234"/>
+          <line x1="252" y1="218" x2="252" y2="234"/>
+          <line x1="372" y1="218" x2="372" y2="234"/>
+          <line x1="486" y1="218" x2="486" y2="234"/>
+          <line x1="628" y1="218" x2="628" y2="234"/>
+          <line x1="784" y1="218" x2="784" y2="234"/>
+        </g>
+        <g class="rv4-svgtext" font-size="12" fill="#7777FF" text-anchor="middle">
+          <text x="150" y="212">?</text><text x="252" y="212">?</text><text x="372" y="212">?</text>
+          <text x="486" y="212">?</text><text x="628" y="212">?</text><text x="784" y="212">?</text>
+        </g>
+        <text x="70" y="230" class="rv4-svgtext" font-size="11" fill="#111118">what people say</text>
+        <text x="300" y="250" class="rv4-svgtext" font-size="9" fill="rgba(17,17,24,0.6)">we ask in the moment — and across years</text>
+
+        <!-- ===== integration: faint drops into the latent line ===== -->
+        <g stroke="rgba(17,17,24,0.25)" stroke-width="1" stroke-dasharray="3 4" fill="none">
+          <path d="M250 116 C 272 210, 262 290, 305 338"/>
+          <path d="M486 172 C 506 240, 486 310, 512 340"/>
+          <path d="M640 218 C 662 270, 652 320, 645 342"/>
+        </g>
+        <text x="330" y="286" class="rv4-svgtext" font-size="9.5" fill="rgba(17,17,24,0.6)" transform="rotate(6 330 286)">many signals, combined</text>
+
+        <!-- model node -->
+        <g stroke="#1a2c6b" stroke-width="1.5" fill="none"><circle cx="512" cy="316" r="14"/></g>
+        <g fill="#1a2c6b"><circle cx="505" cy="316" r="2"/><circle cx="512" cy="310" r="2"/><circle cx="519" cy="316" r="2"/><circle cx="512" cy="322" r="2"/></g>
+        <text x="534" y="312" class="rv4-svgtext" font-size="9.5" fill="rgba(17,17,24,0.7)">models that infer them</text>
+
+        <!-- latent-state line: dashed -> solid, integrates everything -->
+        <path d="M110 348 q100 -10 200 -8" fill="none" stroke="#1a2c6b" stroke-width="3.2" stroke-dasharray="5 5" opacity="0.85"/>
+        <path d="M310 340 q140 -6 240 -16 t240 -26" fill="none" stroke="#1a2c6b" stroke-width="3.6"/>
+        <text x="120" y="372" class="rv4-svgtext" font-size="11" fill="#1a2c6b">the inner states we can&#39;t directly see →</text>
+
+        <!-- intervention arrow poking the state -->
+        <line x1="608" y1="282" x2="608" y2="320" stroke="#FF7792" stroke-width="3" marker-end="url(#arv4i)"/>
+        <text x="614" y="300" class="rv4-svgtext" font-size="9.5" fill="rgba(17,17,24,0.7)">a nudge</text>
+
+        <!-- downstream summary -->
+        <text x="556" y="366" class="rv4-svgtext" font-size="9.5" fill="rgba(17,17,24,0.7)">supporting creativity · self-control · lasting change</text>
+
+        <!-- ===== NESTED (containment) TIMESCALES: all anchored at same left origin ===== -->
+        <!-- seconds innermost (shortest + shallowest), years outermost (full width + deepest) -->
+        <g fill="none" stroke="#1a2c6b" stroke-width="1.3">
+          <!-- years : outermost -->
+          <path d="M60 402 v76 h780 v-76"/>
+          <!-- days -->
+          <path d="M60 402 v62 h640 v-62"/>
+          <!-- hours -->
+          <path d="M60 402 v48 h480 v-48"/>
+          <!-- minutes -->
+          <path d="M60 402 v34 h330 v-34"/>
+          <!-- seconds : innermost -->
+          <path d="M60 402 v20 h190 v-20"/>
+        </g>
+        <g class="rv4-svgtext" font-size="10" fill="#1a2c6b" text-anchor="end">
+          <text x="244" y="418">seconds</text>
+          <text x="384" y="432">minutes</text>
+          <text x="474" y="446">hours</text>
+          <text x="634" y="460">days</text>
+          <text x="834" y="474">years</text>
+        </g>
+        <text x="60" y="494" class="rv4-svgtext" font-size="8.5" fill="rgba(17,17,24,0.55)">nested timescales — seconds within minutes within hours within days within years; every signal spans the whole timeline at its own rhythm</text>
+      </svg>
+    </div>
+  </div>
+
+  <p class="rv4-note">Base drawing only. Three everyday signals — body, behavior, asking — run across one shared timeline, each at its own rhythm, and combine into a single inferred line of the inner states we can't directly see; a nudge can poke that state. The timescale brackets now nest by containment. Once the drawing feels right, we layer the 8 research areas back on in their cluster colors.</p>
+</div>

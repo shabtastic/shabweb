@@ -1,0 +1,342 @@
+<style>
+  .rv2-wrap { --paper:#f5f2ec; --ink:#111118; --blue:#1a2c6b;
+    --c0:#7777FF; --c1:#C977FF; --c2:#FF77E4; --c3:#FF7792;
+    --c4:#9a7c00; --c4hl:#FFFF77; --c5:#FFAE77; --c6:#77FFE4; --c7:#AAFF77;
+    font-family:'Space Mono', monospace; }
+  .rv2-wrap h2 { font-family:'DM Sans', sans-serif; }
+  .rv2-mockup-title { font-family:'DM Sans', sans-serif; font-weight:700;
+    font-size:1.02rem; margin:0 0 .15rem; color:var(--blue); }
+  .rv2-mockup-desc { font-size:.82rem; line-height:1.45; margin:0;
+    opacity:.82; max-width:66ch; }
+  .rv2-wrap .mockup-body { background:#f5f2ec; padding:0; }
+  .rv2-wrap .option { margin-bottom:1.15rem; }
+  .rv2-wrap svg { display:block; width:100%; height:auto; }
+  .rv2-cap { font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;
+    opacity:.6; margin:.55rem 0 .05rem; }
+  .rv2-legend { display:flex; flex-wrap:wrap; gap:.35rem .8rem;
+    font-size:.7rem; margin:.5rem 0 0; opacity:.85; }
+  .rv2-legend span { display:inline-flex; align-items:center; gap:.3rem; }
+  .rv2-legend i { width:12px; height:12px; border-radius:2px; display:inline-block; }
+  .rv2-svgtext { font-family:'Space Mono', monospace; }
+</style>
+
+<div class="rv2-wrap">
+  <h2>v2 — all 8 areas in their cluster colors</h2>
+  <p class="subtitle">Both directions now carry the full 8-area taxonomy in the same cluster colors used on graph.html, projects.html, and cv.html — so the homepage visual reads as one system with the rest of the site. Click the direction you want and tell me in the terminal what to refine.</p>
+
+  <div class="rv2-legend">
+    <span><i style="background:#7777FF"></i>0 Motivated Learning / Self-Reg</span>
+    <span><i style="background:#C977FF"></i>1 Creativity &amp; Design</span>
+    <span><i style="background:#FF77E4"></i>2 Psych-Guided GenAI</span>
+    <span><i style="background:#FF7792"></i>3 Intervention Science</span>
+    <span><i style="background:#9a7c00"></i>4 Preference Elicitation</span>
+    <span><i style="background:#FFAE77"></i>5 Social/Cognitive/Affective Neuro</span>
+    <span><i style="background:#77FFE4"></i>6 Consumer Psych / Forecasting</span>
+    <span><i style="background:#AAFF77"></i>7 Agent State Inference</span>
+  </div>
+
+  <!-- ================= OPTION A2 ================= -->
+  <div class="option" data-choice="A2" onclick="toggleSelect(this)">
+    <span class="letter">A</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">A2 · Annotated phenomenon — all 8 areas pinned</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 460" role="img" aria-label="Sketch of signals over nested timescales converging into a latent state, with all eight research areas pinned in cluster colors">
+            <defs>
+              <pattern id="gA2" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gA2maj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arA2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+              <marker id="arA2i" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#FF7792" stroke-width="1.6"/>
+              </marker>
+            </defs>
+            <rect width="900" height="460" fill="#f5f2ec"/>
+            <rect width="900" height="460" fill="url(#gA2)"/>
+            <rect width="900" height="460" fill="url(#gA2maj)"/>
+
+            <!-- faint program-structure brackets across the top -->
+            <g stroke="rgba(26,44,107,0.45)" stroke-width="1" fill="none">
+              <path d="M60 40 v-8 h230 v8"/>
+              <path d="M300 40 v-8 h150 v8"/>
+              <path d="M460 40 v-8 h150 v8"/>
+              <path d="M620 40 v-8 h230 v8"/>
+            </g>
+            <g class="rv2-svgtext" font-size="9.5" fill="rgba(26,44,107,0.6)" text-anchor="middle">
+              <text x="175" y="26">elicitation</text>
+              <text x="375" y="26">triangulation</text>
+              <text x="535" y="26">computational models</text>
+              <text x="735" y="26">applications</text>
+            </g>
+
+            <!-- ===== signal traces ===== -->
+            <!-- physiology -->
+            <path d="M70 108 q10 -16 20 0 t20 2 t18 -12 t22 10 t20 -6 t18 8 t22 -10 t20 6 t18 -4 t22 10 t20 -8 t18 6 t22 -2 t20 8 t18 -12"
+                  fill="none" stroke="#FF7792" stroke-width="1.6" opacity="0.5"/>
+            <text x="70" y="98" class="rv2-svgtext" font-size="10" fill="#111118">physiology (HR · EDA · pupil)</text>
+
+            <!-- behavior -->
+            <path d="M70 162 h22 v-12 h26 v18 h24 v-10 h28 v12 h26 v-16 h30 v10 h26 v-8 h30 v14 h28 v-10 h30 v12 h30 v-16"
+                  fill="none" stroke="#FFAE77" stroke-width="1.6" opacity="0.55"/>
+            <text x="70" y="152" class="rv2-svgtext" font-size="10" fill="#111118">behavior (actions · gaze)</text>
+
+            <!-- self-report probes -->
+            <g stroke="#7777FF" stroke-width="1.8" opacity="0.55">
+              <line x1="95" y1="222" x2="95" y2="198"/>
+              <line x1="175" y1="222" x2="175" y2="208"/>
+              <line x1="255" y1="222" x2="255" y2="194"/>
+            </g>
+            <g fill="#7777FF" opacity="0.7"><circle cx="95" cy="196" r="3"/><circle cx="175" cy="206" r="3"/><circle cx="255" cy="192" r="3"/></g>
+            <text x="70" y="238" class="rv2-svgtext" font-size="10" fill="#111118">self-report probes (elicitation)</text>
+
+            <!-- converge / triangulation -->
+            <ellipse cx="378" cy="180" rx="60" ry="110" fill="#FFAE77" opacity="0.08"/>
+            <g stroke="rgba(17,17,24,0.30)" stroke-width="1" stroke-dasharray="3 4" fill="none">
+              <path d="M300 112 C 360 170, 350 250, 310 300"/>
+              <path d="M300 158 C 355 200, 350 260, 310 300"/>
+              <path d="M300 210 C 355 240, 350 270, 310 300"/>
+            </g>
+            <text x="330" y="255" class="rv2-svgtext" font-size="9" fill="rgba(17,17,24,0.55)" transform="rotate(7 330 255)">triangulate</text>
+
+            <!-- model / f() stage -->
+            <rect x="470" y="70" width="150" height="240" fill="#FF77E4" opacity="0.06"/>
+            <circle cx="545" cy="298" r="15" fill="#f5f2ec" stroke="#1a2c6b" stroke-width="1.6"/>
+            <text x="545" y="302" text-anchor="middle" class="rv2-svgtext" font-size="10" fill="#1a2c6b">f( )</text>
+
+            <!-- latent state trajectory dashed -> solid -->
+            <path d="M120 312 q70 -16 150 -6"
+                  fill="none" stroke="#1a2c6b" stroke-width="3" stroke-dasharray="5 5" opacity="0.85"/>
+            <path d="M270 306 q90 -2 160 -6 t200 -40"
+                  fill="none" stroke="#1a2c6b" stroke-width="3.4"/>
+            <text x="120" y="334" class="rv2-svgtext" font-size="10.5" fill="#1a2c6b">inferred latent psychological state →</text>
+
+            <!-- intervention arrow poking the state -->
+            <line x1="470" y1="258" x2="470" y2="296" stroke="#FF7792" stroke-width="3" marker-end="url(#arA2i)"/>
+
+            <!-- time axis + nested timescales -->
+            <line x1="60" y1="360" x2="850" y2="360" stroke="#111118" stroke-width="1.4" marker-end="url(#arA2)"/>
+            <g stroke="#1a2c6b" stroke-width="1.1" fill="none">
+              <path d="M70 370 v8 h110 v-8"/>
+              <path d="M190 370 v12 h180 v-12"/>
+              <path d="M380 370 v16 h200 v-16"/>
+              <path d="M590 370 v20 h240 v-20"/>
+            </g>
+            <g class="rv2-svgtext" font-size="9.5" fill="#1a2c6b" text-anchor="middle">
+              <text x="125" y="386">ms</text>
+              <text x="280" y="390">moments</text>
+              <text x="480" y="394">days</text>
+              <text x="710" y="398">years</text>
+            </g>
+
+            <!-- ================= 8 PINNED CLUSTER LABELS ================= -->
+            <!-- helper: colored underline swipe + text -->
+
+            <!-- 4 Preference Elicitation (dark amber, yellow swipe) near probes -->
+            <g>
+              <rect x="66" y="248" width="150" height="14" rx="2" fill="#FFFF77" opacity="0.75"/>
+              <text x="72" y="259" class="rv2-svgtext" font-size="10" fill="#9a7c00" font-weight="700">preference elicitation</text>
+            </g>
+
+            <!-- 5 Social/Cognitive/Affective Neuro (orange) near physiology -->
+            <g>
+              <line x1="300" y1="90" x2="452" y2="90" stroke="#FFAE77" stroke-width="6" opacity="0.85"/>
+              <text x="300" y="86" class="rv2-svgtext" font-size="10" fill="#111118">social / cognitive / affective neuro</text>
+            </g>
+
+            <!-- 2 Psychology-Guided GenAI (violet) at model stage -->
+            <g>
+              <line x1="478" y1="126" x2="612" y2="126" stroke="#FF77E4" stroke-width="6" opacity="0.85"/>
+              <text x="478" y="122" class="rv2-svgtext" font-size="10" fill="#111118">psychology-guided genAI</text>
+            </g>
+
+            <!-- 7 Agent State Inference (lime) at inference step of trajectory -->
+            <g>
+              <line x1="300" y1="330" x2="424" y2="330" stroke="#AAFF77" stroke-width="6" opacity="0.9"/>
+              <text x="300" y="326" class="rv2-svgtext" font-size="10" fill="#111118">agent state inference</text>
+            </g>
+
+            <!-- 0 Motivated Learning / Self-Reg (slate) near latent states -->
+            <g>
+              <line x1="150" y1="298" x2="292" y2="298" stroke="#7777FF" stroke-width="6" opacity="0.85"/>
+              <text x="150" y="294" class="rv2-svgtext" font-size="10" fill="#111118">motivated learning · self-regulation</text>
+            </g>
+
+            <!-- 3 Intervention Science & Behavior Change (red) on intervention arrow -->
+            <g>
+              <rect x="392" y="238" width="150" height="14" rx="2" fill="#FF7792" opacity="0.55"/>
+              <text x="398" y="249" class="rv2-svgtext" font-size="10" fill="#111118">intervention science</text>
+            </g>
+
+            <!-- 6 Consumer Psych / Forecasting (mint) at downstream forecast end -->
+            <g>
+              <line x1="628" y1="180" x2="812" y2="180" stroke="#77FFE4" stroke-width="6" opacity="0.9"/>
+              <text x="628" y="176" class="rv2-svgtext" font-size="10" fill="#111118">consumer psychology &amp; forecasting</text>
+            </g>
+
+            <!-- 1 Creativity & Design (heliotrope) at application end -->
+            <g>
+              <line x1="628" y1="212" x2="762" y2="212" stroke="#C977FF" stroke-width="6" opacity="0.85"/>
+              <text x="628" y="208" class="rv2-svgtext" font-size="10" fill="#111118">creativity &amp; design</text>
+            </g>
+
+            <text x="735" y="248" text-anchor="middle" class="rv2-svgtext" font-size="8.5" fill="rgba(17,17,24,0.5)">downstream: predict · forecast · apply</text>
+          </svg>
+        </div>
+      </div>
+      <div class="rv2-cap">what it communicates</div>
+      <p class="rv2-mockup-title">Annotated phenomenon</p>
+      <p class="rv2-mockup-desc">The phenomenon sketch — noisy signals over nested timescales converging into an inferred latent-state line — with all 8 research areas pinned in their exact cluster colors, each sitting where it acts in the pipeline. Faint elicitation / triangulation / models / applications brackets ride above so the colored labels stay the foreground layer. Character: vivid and phenomenon-first, but now fully wired to the site taxonomy.</p>
+    </div>
+  </div>
+
+  <!-- ================= OPTION B2 ================= -->
+  <div class="option" data-choice="B2" onclick="toggleSelect(this)">
+    <span class="letter">B</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">B2 · Program-logic diagram — colored satellites</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 460" role="img" aria-label="Concept map from methods to latent states to applications with eight cluster-colored satellite labels">
+            <defs>
+              <pattern id="gB2" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gB2maj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arB2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+            </defs>
+            <rect width="900" height="460" fill="#f5f2ec"/>
+            <rect width="900" height="460" fill="url(#gB2)"/>
+            <rect width="900" height="460" fill="url(#gB2maj)"/>
+
+            <!-- column labels -->
+            <g class="rv2-svgtext" font-size="10" fill="rgba(17,17,24,0.55)" text-anchor="middle">
+              <text x="150" y="34">METHODS →</text>
+              <text x="450" y="34">WHAT WE INFER</text>
+              <text x="762" y="34">→ APPLICATIONS</text>
+            </g>
+
+            <!-- method nodes -->
+            <g>
+              <rect x="55" y="90" width="190" height="42" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4" transform="rotate(-0.8 55 90)"/>
+              <text x="150" y="116" text-anchor="middle" class="rv2-svgtext" font-size="10.5" fill="#111118">novel elicitation</text>
+            </g>
+            <g>
+              <rect x="55" y="200" width="190" height="42" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4" transform="rotate(0.6 55 200)"/>
+              <text x="150" y="226" text-anchor="middle" class="rv2-svgtext" font-size="10.5" fill="#111118">multi-signal triangulation</text>
+            </g>
+            <g>
+              <rect x="55" y="310" width="190" height="42" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4" transform="rotate(-0.5 55 310)"/>
+              <text x="150" y="336" text-anchor="middle" class="rv2-svgtext" font-size="10.5" fill="#111118">computational models</text>
+            </g>
+
+            <!-- central node -->
+            <ellipse cx="450" cy="222" rx="120" ry="76" fill="#f5f2ec" stroke="#1a2c6b" stroke-width="2.2"/>
+            <ellipse cx="450" cy="222" rx="108" ry="66" fill="none" stroke="#1a2c6b" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.6"/>
+            <text x="450" y="212" text-anchor="middle" class="rv2-svgtext" font-size="11.5" fill="#1a2c6b" font-weight="700">latent psychological</text>
+            <text x="450" y="228" text-anchor="middle" class="rv2-svgtext" font-size="11.5" fill="#1a2c6b" font-weight="700">states</text>
+            <text x="450" y="246" text-anchor="middle" class="rv2-svgtext" font-size="9.5" fill="rgba(17,17,24,0.6)">over time &amp; in context</text>
+
+            <!-- arrows in -->
+            <g stroke="#1a2c6b" stroke-width="1.5" fill="none">
+              <path d="M247 112 C 320 140, 320 176, 340 192" marker-end="url(#arB2)"/>
+              <path d="M247 221 L 328 222" marker-end="url(#arB2)"/>
+              <path d="M247 330 C 320 300, 320 268, 340 252" marker-end="url(#arB2)"/>
+            </g>
+
+            <!-- arrows out -->
+            <g stroke="#1a2c6b" stroke-width="1.5" fill="none">
+              <path d="M570 192 C 640 160, 650 130, 690 118" marker-end="url(#arB2)"/>
+              <path d="M570 222 L 690 222" marker-end="url(#arB2)"/>
+              <path d="M570 252 C 640 284, 650 314, 690 326" marker-end="url(#arB2)"/>
+            </g>
+
+            <!-- application nodes -->
+            <g>
+              <rect x="692" y="98" width="164" height="38" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4"/>
+              <text x="774" y="122" text-anchor="middle" class="rv2-svgtext" font-size="10.5" fill="#111118">creative decision making</text>
+            </g>
+            <g>
+              <rect x="692" y="203" width="164" height="38" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4"/>
+              <text x="774" y="227" text-anchor="middle" class="rv2-svgtext" font-size="10.5" fill="#111118">self-regulation</text>
+            </g>
+            <g>
+              <rect x="692" y="308" width="164" height="38" rx="6" fill="#f5f2ec" stroke="#111118" stroke-width="1.4"/>
+              <text x="774" y="332" text-anchor="middle" class="rv2-svgtext" font-size="10.5" fill="#111118">behavior change</text>
+            </g>
+
+            <!-- ============ 8 CLUSTER-COLORED SATELLITE LABELS ============ -->
+            <!-- attached to methods / center / applications where they belong -->
+
+            <!-- 4 Preference Elicitation -> novel elicitation (dark amber, yellow swipe) -->
+            <g>
+              <line x1="250" y1="150" x2="262" y2="140" stroke="#9a7c00" stroke-width="1"/>
+              <rect x="262" y="132" width="148" height="14" rx="2" fill="#FFFF77" opacity="0.75"/>
+              <text x="268" y="143" class="rv2-svgtext" font-size="9.5" fill="#9a7c00" font-weight="700">preference elicitation</text>
+            </g>
+
+            <!-- 5 Social/Cog/Affective Neuro -> triangulation (orange) -->
+            <g>
+              <line x1="250" y1="240" x2="262" y2="248" stroke="#FFAE77" stroke-width="1"/>
+              <line x1="262" y1="252" x2="418" y2="252" stroke="#FFAE77" stroke-width="6" opacity="0.85"/>
+              <text x="262" y="248" class="rv2-svgtext" font-size="9.5" fill="#111118">social / cognitive / affective neuro</text>
+            </g>
+
+            <!-- 2 Psychology-Guided GenAI -> computational models (violet) -->
+            <g>
+              <line x1="250" y1="332" x2="262" y2="344" stroke="#FF77E4" stroke-width="1"/>
+              <line x1="262" y1="348" x2="396" y2="348" stroke="#FF77E4" stroke-width="6" opacity="0.85"/>
+              <text x="262" y="344" class="rv2-svgtext" font-size="9.5" fill="#111118">psychology-guided genAI</text>
+            </g>
+
+            <!-- 0 Motivated Learning / Self-Reg -> center (slate) -->
+            <g>
+              <line x1="388" y1="288" x2="410" y2="300" stroke="#7777FF" stroke-width="6" opacity="0.85"/>
+              <text x="332" y="316" class="rv2-svgtext" font-size="9.5" fill="#111118">motivated learning · self-regulation</text>
+            </g>
+
+            <!-- 7 Agent State Inference -> center (lime) -->
+            <g>
+              <line x1="452" y1="298" x2="452" y2="322" stroke="#AAFF77" stroke-width="6" opacity="0.9"/>
+              <text x="452" y="338" text-anchor="middle" class="rv2-svgtext" font-size="9.5" fill="#111118">agent state inference</text>
+            </g>
+
+            <!-- 1 Creativity & Design -> creative decision making (heliotrope) -->
+            <g>
+              <line x1="692" y1="150" x2="756" y2="150" stroke="#C977FF" stroke-width="6" opacity="0.85"/>
+              <text x="692" y="146" class="rv2-svgtext" font-size="9.5" fill="#111118">creativity &amp; design</text>
+            </g>
+
+            <!-- 3 Intervention Science -> behavior change (red) -->
+            <g>
+              <line x1="692" y1="360" x2="792" y2="360" stroke="#FF7792" stroke-width="6" opacity="0.7"/>
+              <text x="692" y="356" class="rv2-svgtext" font-size="9.5" fill="#111118">intervention science</text>
+            </g>
+
+            <!-- 6 Consumer Psych / Forecasting -> applications out (mint) -->
+            <g>
+              <line x1="600" y1="270" x2="620" y2="284" stroke="#77FFE4" stroke-width="1"/>
+              <line x1="620" y1="288" x2="668" y2="288" stroke="#77FFE4" stroke-width="6" opacity="0.9"/>
+              <text x="500" y="392" class="rv2-svgtext" font-size="9.5" fill="#111118">consumer psychology &amp; market forecasting →</text>
+              <line x1="500" y1="384" x2="856" y2="384" stroke="#77FFE4" stroke-width="6" opacity="0.5"/>
+            </g>
+
+            <text x="450" y="430" text-anchor="middle" class="rv2-svgtext" font-size="8.5" fill="rgba(17,17,24,0.5)">all 8 areas ride in their site cluster colors — same taxonomy as graph.html / projects.html / cv.html</text>
+          </svg>
+        </div>
+      </div>
+      <div class="rv2-cap">what it communicates</div>
+      <p class="rv2-mockup-title">Program-logic diagram, colored</p>
+      <p class="rv2-mockup-desc">The concept map — three methods into the central "latent states over time & in context" node, out to three applications — with all 8 areas as cluster-colored satellite labels attached to the method, center, or application node where each contributes. Character: legible and complete, reads as a full research statement, and its colors line up one-to-one with the rest of the site.</p>
+    </div>
+  </div>
+</div>

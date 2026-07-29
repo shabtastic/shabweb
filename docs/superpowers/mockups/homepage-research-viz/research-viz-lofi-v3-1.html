@@ -1,0 +1,284 @@
+<style>
+  .rv31-wrap { --paper:#f5f2ec; --ink:#111118; --blue:#1a2c6b;
+    --c0:#7777FF; --c1:#C977FF; --c2:#FF77E4; --c3:#FF7792;
+    --c4:#9a7c00; --c4hl:#FFFF77; --c5:#FFAE77; --c6:#77FFE4; --c7:#AAFF77;
+    font-family:'Space Mono', monospace; }
+  .rv31-wrap h2 { font-family:'DM Sans', sans-serif; }
+  .rv31-mockup-title { font-family:'DM Sans', sans-serif; font-weight:700;
+    font-size:1.02rem; margin:0 0 .15rem; color:var(--blue); }
+  .rv31-mockup-desc { font-size:.82rem; line-height:1.45; margin:0;
+    opacity:.82; max-width:66ch; }
+  .rv31-wrap .mockup-body { background:#f5f2ec; padding:0; }
+  .rv31-wrap .option { margin-bottom:1.15rem; }
+  .rv31-wrap svg { display:block; width:100%; height:auto; }
+  .rv31-cap { font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;
+    opacity:.6; margin:.55rem 0 .05rem; }
+  .rv31-legend { display:flex; flex-wrap:wrap; gap:.35rem .8rem;
+    font-size:.7rem; margin:.5rem 0 0; opacity:.85; }
+  .rv31-legend span { display:inline-flex; align-items:center; gap:.3rem; }
+  .rv31-legend i { width:12px; height:12px; border-radius:2px; display:inline-block; }
+  .rv31-svgtext { font-family:'Space Mono', monospace; }
+</style>
+
+<div class="rv31-wrap">
+  <h2>v3.1 — signals with their own rhythms across the whole timeline</h2>
+  <p class="subtitle">Fix applied: each signal now has its own rhythm spanning the shared timeline instead of living at one speed. Body signals run as a dense continuous wiggle; what people do is a medium trace; and asking is sparse, discrete marks scattered from minutes to years — we ask in the moment AND once in a great while. Same drawing shown twice, differing only in wording tone. The 8 area names keep their exact names and cluster colors; everything else is plain language. Click the tone you prefer.</p>
+
+  <div class="rv31-legend">
+    <span><i style="background:#7777FF"></i>Motivated Learning, Decision Making, &amp; Self Regulation</span>
+    <span><i style="background:#C977FF"></i>Creativity &amp; Design</span>
+    <span><i style="background:#FF77E4"></i>Psychology-Guided Generative AI</span>
+    <span><i style="background:#FF7792"></i>Intervention Science &amp; Applied Behavior Change</span>
+    <span><i style="background:#9a7c00"></i>Preference Elicitation &amp; Prediction</span>
+    <span><i style="background:#FFAE77"></i>Social, Cognitive, &amp; Affective Neuroscience</span>
+    <span><i style="background:#77FFE4"></i>Consumer Psychology &amp; Market Forecasting</span>
+    <span><i style="background:#AAFF77"></i>Agent State Inference</span>
+  </div>
+
+  <!-- ==================== VARIANT 1 : DESCRIPTIVE PLAIN ==================== -->
+  <div class="option" data-choice="V1" onclick="toggleSelect(this)">
+    <span class="letter">1</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">Variant 1 · descriptive plain</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 500" role="img" aria-label="Body, behavior, and asking signals each with their own rhythm across one timeline, combining into a picture of unseen inner states, with eight research areas pinned in cluster colors">
+            <defs>
+              <pattern id="gW1" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gW1maj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arW1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+              <marker id="arW1i" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#FF7792" stroke-width="1.6"/>
+              </marker>
+            </defs>
+            <rect width="900" height="500" fill="#f5f2ec"/>
+            <rect width="900" height="500" fill="url(#gW1)"/>
+            <rect width="900" height="500" fill="url(#gW1maj)"/>
+
+            <!-- ===== BODY signals: dense continuous fast wiggle, full width ===== -->
+            <path d="M70 112 q10 -12 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"
+                  fill="none" stroke="#FF7792" stroke-width="1.4" opacity="0.5"/>
+            <text x="70" y="74" class="rv31-svgtext" font-size="9" fill="#111118">Social, Cognitive, &amp; Affective Neuroscience</text>
+            <line x1="70" y1="78" x2="290" y2="78" stroke="#FFAE77" stroke-width="6" opacity="0.85"/>
+            <text x="70" y="98" class="rv31-svgtext" font-size="10" fill="#111118">what the body signals</text>
+
+            <!-- ===== BEHAVIOR: medium-rate trace, full width ===== -->
+            <path d="M70 168 q20 -15 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"
+                  fill="none" stroke="#FFAE77" stroke-width="1.6" opacity="0.6"/>
+            <text x="70" y="150" class="rv31-svgtext" font-size="10" fill="#111118">what people do</text>
+
+            <!-- ===== ASKING: sparse DISCRETE marks scattered across the whole axis ===== -->
+            <g stroke="#7777FF" stroke-width="1.6" opacity="0.75">
+              <line x1="150" y1="210" x2="150" y2="224"/>
+              <line x1="248" y1="210" x2="248" y2="224"/>
+              <line x1="360" y1="210" x2="360" y2="224"/>
+              <line x1="470" y1="210" x2="470" y2="224"/>
+              <line x1="610" y1="210" x2="610" y2="224"/>
+              <line x1="770" y1="210" x2="770" y2="224"/>
+            </g>
+            <g class="rv31-svgtext" font-size="11" fill="#7777FF" text-anchor="middle">
+              <text x="150" y="206">?</text><text x="248" y="206">?</text><text x="360" y="206">?</text>
+              <text x="470" y="206">?</text><text x="610" y="206">?</text><text x="770" y="206">?</text>
+            </g>
+            <text x="70" y="220" class="rv31-svgtext" font-size="10" fill="#111118">what people say</text>
+            <text x="70" y="200" class="rv31-svgtext" font-size="9" fill="#9a7c00" font-weight="700">Preference Elicitation &amp; Prediction</text>
+            <line x1="70" y1="188" x2="70" y2="188"/>
+            <rect x="66" y="190" width="192" height="1.5" fill="#FFFF77" opacity="0"/>
+            <text x="290" y="238" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">we ask in the moment — and across years</text>
+
+            <!-- ===== integration: faint drops into the latent line ===== -->
+            <g stroke="rgba(17,17,24,0.25)" stroke-width="1" stroke-dasharray="3 4" fill="none">
+              <path d="M250 116 C 270 200, 260 280, 300 328"/>
+              <path d="M470 168 C 490 230, 470 300, 500 330"/>
+              <path d="M640 210 C 660 260, 650 310, 640 332"/>
+            </g>
+            <text x="330" y="272" class="rv31-svgtext" font-size="9" fill="rgba(17,17,24,0.6)" transform="rotate(6 330 272)">many signals, combined</text>
+
+            <!-- model node -->
+            <g stroke="#1a2c6b" stroke-width="1.4" fill="none"><circle cx="500" cy="306" r="13"/></g>
+            <g fill="#1a2c6b"><circle cx="494" cy="306" r="2"/><circle cx="500" cy="301" r="2"/><circle cx="506" cy="306" r="2"/><circle cx="500" cy="311" r="2"/></g>
+            <text x="452" y="284" class="rv31-svgtext" font-size="9" fill="#111118">Psychology-Guided Generative AI</text>
+            <line x1="452" y1="288" x2="620" y2="288" stroke="#FF77E4" stroke-width="6" opacity="0.85"/>
+            <text x="524" y="322" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">models that infer them</text>
+
+            <!-- latent-state line: dashed -> solid, integrates everything -->
+            <path d="M110 338 q100 -10 200 -8" fill="none" stroke="#1a2c6b" stroke-width="3" stroke-dasharray="5 5" opacity="0.85"/>
+            <path d="M310 330 q140 -6 240 -16 t240 -24" fill="none" stroke="#1a2c6b" stroke-width="3.4"/>
+            <text x="120" y="360" class="rv31-svgtext" font-size="10.5" fill="#1a2c6b">the inner states we can&#39;t directly see →</text>
+
+            <!-- intervention arrow poking the state -->
+            <line x1="600" y1="272" x2="600" y2="310" stroke="#FF7792" stroke-width="3" marker-end="url(#arW1i)"/>
+            <text x="606" y="290" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">a nudge</text>
+
+            <!-- area pins in integration/downstream zone -->
+            <!-- 7 Agent State Inference (lime) at the inference step -->
+            <text x="330" y="298" class="rv31-svgtext" font-size="9" fill="#111118">Agent State Inference</text>
+            <line x1="330" y1="302" x2="446" y2="302" stroke="#AAFF77" stroke-width="6" opacity="0.9"/>
+            <!-- 0 Motivated Learning... (slate) at the latent states -->
+            <text x="120" y="318" class="rv31-svgtext" font-size="9" fill="#111118">Motivated Learning, Decision Making, &amp; Self Regulation</text>
+            <line x1="120" y1="322" x2="406" y2="322" stroke="#7777FF" stroke-width="6" opacity="0.55"/>
+            <!-- 3 Intervention Science... (red) on the nudge -->
+            <text x="548" y="260" class="rv31-svgtext" font-size="9" fill="#111118">Intervention Science &amp; Applied Behavior Change</text>
+            <line x1="548" y1="264" x2="796" y2="264" stroke="#FF7792" stroke-width="6" opacity="0.5"/>
+            <line x1="600" y1="266" x2="600" y2="272" stroke="#FF7792" stroke-width="1" opacity="0.6"/>
+            <!-- 6 Consumer Psychology & Market Forecasting (mint) at long-horizon downstream -->
+            <text x="614" y="302" class="rv31-svgtext" font-size="9" fill="#111118">Consumer Psychology &amp; Market Forecasting</text>
+            <line x1="614" y1="306" x2="830" y2="306" stroke="#77FFE4" stroke-width="6" opacity="0.9"/>
+            <!-- 1 Creativity & Design (heliotrope) at the application end -->
+            <text x="628" y="334" class="rv31-svgtext" font-size="9" fill="#111118">Creativity &amp; Design</text>
+            <line x1="628" y1="338" x2="725" y2="338" stroke="#C977FF" stroke-width="6" opacity="0.85"/>
+
+            <text x="556" y="366" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">supporting creativity · self-control · lasting change</text>
+
+            <!-- time axis + nested timescale brackets: seconds -> years -->
+            <line x1="60" y1="410" x2="850" y2="410" stroke="#111118" stroke-width="1.4" marker-end="url(#arW1)"/>
+            <g stroke="#1a2c6b" stroke-width="1.1" fill="none">
+              <path d="M70 420 v6 h84 v-6"/>
+              <path d="M164 420 v10 h130 v-10"/>
+              <path d="M304 420 v14 h160 v-14"/>
+              <path d="M474 420 v18 h160 v-18"/>
+              <path d="M644 420 v22 h186 v-22"/>
+            </g>
+            <g class="rv31-svgtext" font-size="9.5" fill="#1a2c6b" text-anchor="middle">
+              <text x="112" y="434">seconds</text>
+              <text x="229" y="438">minutes</text>
+              <text x="384" y="442">hours</text>
+              <text x="554" y="446">days</text>
+              <text x="737" y="450">years</text>
+            </g>
+            <text x="60" y="474" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.55)">one shared timeline — every signal spans it at its own rhythm</text>
+          </svg>
+        </div>
+      </div>
+      <div class="rv31-cap">label tone</div>
+      <p class="rv31-mockup-title">Descriptive plain</p>
+      <p class="rv31-mockup-desc">Neutral, explanatory wording — "what the body signals / what people do / what people say," combining into "the inner states we can't directly see," downstream "supporting creativity, self-control, lasting change." Asking sits as sparse question-marks from minutes to years, so it clearly is not a fast signal.</p>
+    </div>
+  </div>
+
+  <!-- ==================== VARIANT 2 : EVOCATIVE PLAIN ==================== -->
+  <div class="option" data-choice="V2" onclick="toggleSelect(this)">
+    <span class="letter">2</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">Variant 2 · evocative plain</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 500" role="img" aria-label="Body, behavior, and asking signals each with their own rhythm across one timeline, combining into a picture of how someone is really doing, with eight research areas pinned in cluster colors">
+            <defs>
+              <pattern id="gW2" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gW2maj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arW2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+              <marker id="arW2i" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#FF7792" stroke-width="1.6"/>
+              </marker>
+            </defs>
+            <rect width="900" height="500" fill="#f5f2ec"/>
+            <rect width="900" height="500" fill="url(#gW2)"/>
+            <rect width="900" height="500" fill="url(#gW2maj)"/>
+
+            <!-- BODY dense wiggle -->
+            <path d="M70 112 q10 -12 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"
+                  fill="none" stroke="#FF7792" stroke-width="1.4" opacity="0.5"/>
+            <text x="70" y="74" class="rv31-svgtext" font-size="9" fill="#111118">Social, Cognitive, &amp; Affective Neuroscience</text>
+            <line x1="70" y1="78" x2="290" y2="78" stroke="#FFAE77" stroke-width="6" opacity="0.85"/>
+            <text x="70" y="98" class="rv31-svgtext" font-size="10" fill="#111118">listening to the body</text>
+
+            <!-- BEHAVIOR medium trace -->
+            <path d="M70 168 q20 -15 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"
+                  fill="none" stroke="#FFAE77" stroke-width="1.6" opacity="0.6"/>
+            <text x="70" y="150" class="rv31-svgtext" font-size="10" fill="#111118">watching what we do</text>
+
+            <!-- ASKING sparse discrete marks -->
+            <g stroke="#7777FF" stroke-width="1.6" opacity="0.75">
+              <line x1="150" y1="210" x2="150" y2="224"/>
+              <line x1="248" y1="210" x2="248" y2="224"/>
+              <line x1="360" y1="210" x2="360" y2="224"/>
+              <line x1="470" y1="210" x2="470" y2="224"/>
+              <line x1="610" y1="210" x2="610" y2="224"/>
+              <line x1="770" y1="210" x2="770" y2="224"/>
+            </g>
+            <g class="rv31-svgtext" font-size="11" fill="#7777FF" text-anchor="middle">
+              <text x="150" y="206">?</text><text x="248" y="206">?</text><text x="360" y="206">?</text>
+              <text x="470" y="206">?</text><text x="610" y="206">?</text><text x="770" y="206">?</text>
+            </g>
+            <text x="70" y="220" class="rv31-svgtext" font-size="10" fill="#111118">asking in new ways</text>
+            <text x="70" y="200" class="rv31-svgtext" font-size="9" fill="#9a7c00" font-weight="700">Preference Elicitation &amp; Prediction</text>
+            <text x="290" y="238" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">sometimes in the moment, sometimes once a year</text>
+
+            <!-- integration drops -->
+            <g stroke="rgba(17,17,24,0.25)" stroke-width="1" stroke-dasharray="3 4" fill="none">
+              <path d="M250 116 C 270 200, 260 280, 300 328"/>
+              <path d="M470 168 C 490 230, 470 300, 500 330"/>
+              <path d="M640 210 C 660 260, 650 310, 640 332"/>
+            </g>
+            <text x="330" y="272" class="rv31-svgtext" font-size="9" fill="rgba(17,17,24,0.6)" transform="rotate(6 330 272)">bringing it together</text>
+
+            <!-- model node -->
+            <g stroke="#1a2c6b" stroke-width="1.4" fill="none"><circle cx="500" cy="306" r="13"/></g>
+            <g fill="#1a2c6b"><circle cx="494" cy="306" r="2"/><circle cx="500" cy="301" r="2"/><circle cx="506" cy="306" r="2"/><circle cx="500" cy="311" r="2"/></g>
+            <text x="452" y="284" class="rv31-svgtext" font-size="9" fill="#111118">Psychology-Guided Generative AI</text>
+            <line x1="452" y1="288" x2="620" y2="288" stroke="#FF77E4" stroke-width="6" opacity="0.85"/>
+            <text x="524" y="322" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">making sense of it</text>
+
+            <!-- latent line -->
+            <path d="M110 338 q100 -10 200 -8" fill="none" stroke="#1a2c6b" stroke-width="3" stroke-dasharray="5 5" opacity="0.85"/>
+            <path d="M310 330 q140 -6 240 -16 t240 -24" fill="none" stroke="#1a2c6b" stroke-width="3.4"/>
+            <text x="120" y="360" class="rv31-svgtext" font-size="10.5" fill="#1a2c6b">how someone is really doing, moment to moment →</text>
+
+            <!-- intervention arrow -->
+            <line x1="600" y1="272" x2="600" y2="310" stroke="#FF7792" stroke-width="3" marker-end="url(#arW2i)"/>
+            <text x="606" y="290" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">a gentle nudge</text>
+
+            <!-- area pins -->
+            <text x="330" y="298" class="rv31-svgtext" font-size="9" fill="#111118">Agent State Inference</text>
+            <line x1="330" y1="302" x2="446" y2="302" stroke="#AAFF77" stroke-width="6" opacity="0.9"/>
+            <text x="120" y="318" class="rv31-svgtext" font-size="9" fill="#111118">Motivated Learning, Decision Making, &amp; Self Regulation</text>
+            <line x1="120" y1="322" x2="406" y2="322" stroke="#7777FF" stroke-width="6" opacity="0.55"/>
+            <text x="548" y="260" class="rv31-svgtext" font-size="9" fill="#111118">Intervention Science &amp; Applied Behavior Change</text>
+            <line x1="548" y1="264" x2="796" y2="264" stroke="#FF7792" stroke-width="6" opacity="0.5"/>
+            <line x1="600" y1="266" x2="600" y2="272" stroke="#FF7792" stroke-width="1" opacity="0.6"/>
+            <text x="614" y="302" class="rv31-svgtext" font-size="9" fill="#111118">Consumer Psychology &amp; Market Forecasting</text>
+            <line x1="614" y1="306" x2="830" y2="306" stroke="#77FFE4" stroke-width="6" opacity="0.9"/>
+            <text x="628" y="334" class="rv31-svgtext" font-size="9" fill="#111118">Creativity &amp; Design</text>
+            <line x1="628" y1="338" x2="725" y2="338" stroke="#C977FF" stroke-width="6" opacity="0.85"/>
+
+            <text x="576" y="366" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">helping people create, stay on track, and change</text>
+
+            <!-- time axis + nested brackets -->
+            <line x1="60" y1="410" x2="850" y2="410" stroke="#111118" stroke-width="1.4" marker-end="url(#arW2)"/>
+            <g stroke="#1a2c6b" stroke-width="1.1" fill="none">
+              <path d="M70 420 v6 h84 v-6"/>
+              <path d="M164 420 v10 h130 v-10"/>
+              <path d="M304 420 v14 h160 v-14"/>
+              <path d="M474 420 v18 h160 v-18"/>
+              <path d="M644 420 v22 h186 v-22"/>
+            </g>
+            <g class="rv31-svgtext" font-size="9.5" fill="#1a2c6b" text-anchor="middle">
+              <text x="112" y="434">seconds</text>
+              <text x="229" y="438">minutes</text>
+              <text x="384" y="442">hours</text>
+              <text x="554" y="446">days</text>
+              <text x="737" y="450">years</text>
+            </g>
+            <text x="60" y="474" class="rv31-svgtext" font-size="8.5" fill="rgba(17,17,24,0.55)">one shared timeline — every signal spans it at its own rhythm</text>
+          </svg>
+        </div>
+      </div>
+      <div class="rv31-cap">label tone</div>
+      <p class="rv31-mockup-title">Evocative plain</p>
+      <p class="rv31-mockup-desc">Warmer, more human phrasing — "listening to the body / watching what we do / asking in new ways," coming together into "how someone is really doing, moment to moment," in service of "helping people create, stay on track, and change." The asking marks are captioned "sometimes in the moment, sometimes once a year."</p>
+    </div>
+  </div>
+</div>

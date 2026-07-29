@@ -20,7 +20,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
-import { c, loadGraph } from './lib.js';
+import { c, loadGraph, computePaperWeight } from './lib.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CANDIDATES_PATH = path.join(__dirname, '..', 'candidates.json');
@@ -278,6 +278,13 @@ async function main() {
         if (idRemap.has(e.a)) e.a = idRemap.get(e.a);
         if (idRemap.has(e.b)) e.b = idRemap.get(e.b);
       }
+
+      const isSelected = (pub.keywords || []).includes('selected');
+      const paperWeight = isSelected ? 1.0 : computePaperWeight(pub);
+      for (const n of lifted.nodes || []) {
+        n.weight = Math.round(Math.max(0.1, Math.min(1.0, n.weight * paperWeight)) * 100) / 100;
+      }
+      lifted.paperWeight = paperWeight;
 
       const newCount = (lifted.nodes || []).filter(n => !existingIds.has(n.id)).length;
       const reuseCount = (lifted.nodes || []).length - newCount;

@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - No test framework in this toolchain (matches `research-corpus`'s own convention — "no test framework, verification via smoke-runs with expected output"). Every task's "test" is: run the script, inspect the printed/JSON output against a stated expectation.
-- Nothing in this plan writes to `graph/graph.json` directly except Task 8's `promote_lift_output.js`, and even that only stages proposals into `graph/draft-proposals.json` — the actual merge still requires a human running the existing `review-draft-proposals.js` and approving per-paper. `graph/graph.json` is git-tracked, so a bad approved merge is still recoverable via `git diff`/`git checkout` before that's committed.
+- Nothing in this plan writes to `graph/graph.json` directly except Task 9's `promote_lift_output.js`, and even that only stages proposals into `graph/draft-proposals.json` — the actual merge still requires a human running the existing `review-draft-proposals.js` and approving per-paper. `graph/graph.json` is git-tracked, so a bad approved merge is still recoverable via `git diff`/`git checkout` before that's committed.
 - `graph/candidates.json`, `graph/lift-output.json`, `graph/lift-audit.json`, and `graph/lift-run-summary.json` are generated working files, same category as the already-gitignored `graph/draft-proposals.json` — Task 1 Step 3 adds them to `.gitignore` to match (as of this plan's authoring, only `graph/draft-proposals.json` is actually listed there — the other three are currently untracked-but-not-ignored, which is low-risk since every commit step in this plan uses `git add <specific file>`, never `git add -A`, but should still be fixed for consistency).
 - Every new/modified script keeps the existing `c.log`/`c.warn`/`c.ok`/`c.err` console-helper convention from `graph/tool/lib.js` — don't introduce a second logging style.
 
@@ -21,7 +21,7 @@
 
 ### Task 1: Make `lift_concepts.js` results additive across runs
 
-**Problem (found in adversarial review, CRITICAL):** `main()` always starts from `const results = {}` and unconditionally overwrites `graph/lift-output.json` on every run. Task 7 (widening test coverage) runs the pipeline in incremental `--papers` batches — an 8-paper batch, then a 14-paper batch — expecting the file to accumulate to 22 papers. As originally written, the second run would wipe the first 8 papers' results, since nothing reads the existing file before writing. This silently breaks Task 7 Step 2 (reviews "the full 22-paper audit" that won't exist), Task 7 Step 3 (references "Step 1's full 22-paper batch" when Step 1 was never a 22-paper command), and Task 8 Step 2 (expects 22 promoted proposals, would see at most 14).
+**Problem (found in adversarial review, CRITICAL):** `main()` always starts from `const results = {}` and unconditionally overwrites `graph/lift-output.json` on every run. Task 7 (widening test coverage) runs the pipeline in incremental `--papers` batches — an 8-paper batch, then a 14-paper batch — expecting the file to accumulate to 22 papers. As originally written, the second run would wipe the first 8 papers' results, since nothing reads the existing file before writing. This silently breaks Task 7 Step 2 (reviews "the full 22-paper audit" that won't exist), Task 7 Step 3 (references "Step 1's full 22-paper batch" when Step 1 was never a 22-paper command), and Task 9 Step 2 (expects 22 promoted proposals, would see at most 14).
 
 **Files:**
 - Modify: `graph/tool/lift_concepts.js`
@@ -116,7 +116,7 @@ git commit -m "graph: make lift_concepts.js output additive across runs, fix pro
 
 **Interfaces:**
 - Consumes: `computePaperWeight(meta)` — exported from `graph/tool/lib.js:94`, takes `{pubType, authorPosition, year}`, returns a number (not reliably bounded to 0.1–1.0 — a middle-author, pre-2015, `scicomm`-typed paper computes below 0.1; this task's own clamp re-bounds the result regardless, so the exact unclamped range doesn't matter downstream).
-- Produces: every paper's entry in `graph/lift-output.json` gains a top-level `paperWeight` number field (read by Task 8's `promote_lift_output.js`).
+- Produces: every paper's entry in `graph/lift-output.json` gains a top-level `paperWeight` number field (read by Task 9's `promote_lift_output.js`).
 
 - [ ] **Step 1: Fix the `'science-comm'` / `'scicomm'` key mismatch in `lib.js`**
 
@@ -314,7 +314,7 @@ git commit -m "graph: clamp edge-strength values and emit a distribution summary
 
 ### Task 4: Semantic (embedding-based) sibling-node dedup
 
-**Post-execution note:** the design below (single `all-MiniLM-L6-v2` threshold) is what was originally planned, but real calibration during execution found the motivating disjoint-vocabulary case ("reward magnitude" vs "payoff size") scored only 0.361 — indistinguishable from a genuine non-duplicate pair (0.339) — meaning no single threshold could work. With the human partner's approval, this was redesigned mid-task to a **two-tier system**: `all-mpnet-base-v2` (a larger, more capable embedding model) with an `--auto-threshold` (0.75, confident automatic merges) and a separate `--review-threshold` (0.45, flags moderate-confidence pairs to `graph/lift-semantic-flagged.json` for human review during Task 8 rather than either wrongly auto-merging or silently missing them). The steps below are kept as originally written for the historical record; the shipped script's actual CLI is `dedupe_lifted_semantic.py [--auto-threshold 0.75] [--review-threshold 0.45]`, not the single `--threshold` shown below.
+**Post-execution note:** the design below (single `all-MiniLM-L6-v2` threshold) is what was originally planned, but real calibration during execution found the motivating disjoint-vocabulary case ("reward magnitude" vs "payoff size") scored only 0.361 — indistinguishable from a genuine non-duplicate pair (0.339) — meaning no single threshold could work. With the human partner's approval, this was redesigned mid-task to a **two-tier system**: `all-mpnet-base-v2` (a larger, more capable embedding model) with an `--auto-threshold` (0.75, confident automatic merges) and a separate `--review-threshold` (0.45, flags moderate-confidence pairs to `graph/lift-semantic-flagged.json` for human review during Task 9 rather than either wrongly auto-merging or silently missing them). The steps below are kept as originally written for the historical record; the shipped script's actual CLI is `dedupe_lifted_semantic.py [--auto-threshold 0.75] [--review-threshold 0.45]`, not the single `--threshold` shown below.
 
 **Problem:** `dedupeSiblingNodes()` in `lift_concepts.js:125` only merges new nodes that share a *literal* source-candidate phrase. It would miss two nodes describing the same concept via disjoint phrasing (e.g. one sourced from "reward magnitude", another from "payoff size" — zero string overlap, same underlying idea).
 
@@ -884,7 +884,112 @@ If thresholds were confirmed unchanged, no commit needed for this step — the a
 
 ---
 
-### Task 8: Build the promote-to-review integration step
+### Task 8: Add an antonym/negation guard to semantic dedup
+
+**Problem (found during Task 7's widened testing, human-approved as a new task):** `dedupe_lifted_semantic.py`'s auto-merge (Task 4) collapsed two genuinely opposite experimental conditions into one node for `Nath2026designrewards` — `goal_aligned_reward`'s `source_candidates` include both "goal-aligned reward feedback" and "participant-specific goal-agnostic reward", losing the "agnostic" condition entirely under an "aligned" label. Verified this is NOT a threshold-tuning problem: `'goal-aligned reward' vs 'goal-agnostic reward signal'` scores 0.721 with `all-mpnet-base-v2`, but a textbook antonym pair — `'high anxiety' vs 'low anxiety'` — scores 0.851, *higher* than the found bug. Any `AUTO_MERGE_THRESHOLD` low enough to exclude 0.721 would also need to exclude 0.851, at which point almost nothing auto-merges; any threshold that allows genuine near-identical paraphrases through will also let antonym pairs through, since antonyms sharing a stem are often lexically closer (share more words) than true synonyms phrased differently. This is a structural limitation of embedding similarity, not a calibration gap — it needs a dedicated check, not a different number.
+
+**Files:**
+- Modify: `graph/tool/dedupe_lifted_semantic.py`
+
+**Interfaces:**
+- Consumes: nothing new.
+- Produces: same output shape as before (`graph/lift-output.json` nodes/edges, `graph/lift-semantic-flagged.json` flagged pairs) — antonym-pair candidates that would have auto-merged now land in the review-flag tier instead, regardless of their similarity score.
+
+- [ ] **Step 1: Add the antonym-pair detector**
+
+In `graph/tool/dedupe_lifted_semantic.py`, near the top of the file after the existing imports and path constants, add:
+
+```python
+# Embedding similarity cannot distinguish "same phrase, opposite polarity"
+# from "same phrase, true paraphrase" — antonym pairs sharing a stem often
+# score HIGHER than genuine synonyms phrased differently (verified: 'high
+# anxiety' vs 'low anxiety' = 0.851, higher than the real bug this guards
+# against, 'goal-aligned reward' vs 'goal-agnostic reward signal' = 0.721).
+# No threshold value can separate these cases; this is a dedicated check.
+ANTONYM_PAIRS = {
+    frozenset(p) for p in [
+        ('aligned', 'agnostic'), ('high', 'low'), ('increased', 'decreased'),
+        ('increase', 'decrease'), ('more', 'less'), ('positive', 'negative'),
+        ('with', 'without'), ('present', 'absent'), ('before', 'after'),
+        ('early', 'late'), ('same', 'different'), ('consistent', 'inconsistent'),
+        ('gain', 'loss'), ('active', 'passive'), ('excitatory', 'inhibitory'),
+        ('internal', 'external'), ('explicit', 'implicit'), ('short', 'long'),
+        ('congruent', 'incongruent'), ('expected', 'unexpected'),
+    ]
+}
+
+
+def is_antonym_pair(label_a, label_b):
+    """True if the two labels differ by exactly one word each, and that
+    pair of differing words is a known antonym/polarity pair — regardless
+    of how similar the labels otherwise are."""
+    words_a = set(re.findall(r'[a-z]+', label_a.lower()))
+    words_b = set(re.findall(r'[a-z]+', label_b.lower()))
+    diff_a = words_a - words_b
+    diff_b = words_b - words_a
+    if len(diff_a) == 1 and len(diff_b) == 1:
+        pair = frozenset([diff_a.pop(), diff_b.pop()])
+        return pair in ANTONYM_PAIRS
+    return False
+```
+
+- [ ] **Step 2: Wire the guard into the auto-merge decision**
+
+In `graph/tool/dedupe_lifted_semantic.py`'s `dedupe_paper()` function, find the loop that decides auto-merge vs review-flag (the exact code depends on Task 4's shipped implementation — look for where `sims[i, j] >= auto_threshold` or equivalent is checked before calling `union()`). Wrap that condition so an antonym-pair match forces the pair into the review tier instead of auto-merging, even if the similarity score clears `auto_threshold`. Concretely, the auto-merge condition should become something like:
+
+```python
+if sims[i, j] >= auto_threshold and not is_antonym_pair(labels[i], labels[j]):
+    union(new_nodes[i]['id'], new_nodes[j]['id'])
+elif sims[i, j] >= review_threshold:
+    # existing flagged_pairs logic — antonym-blocked high-similarity pairs
+    # fall through to here since they failed the auto-merge condition above
+    ...
+```
+
+Adapt this to match the actual control flow already in the file (it may be structured as separate loops rather than an if/elif — the important behavioral requirement is: an antonym-pair match must never auto-merge, and should still reach the review-flag tier if its score also clears `review_threshold`, so a human sees it rather than it silently vanishing).
+
+- [ ] **Step 3: Verify the guard against the found bug and against a true near-duplicate**
+
+```bash
+cd graph/tool
+python3 -c "
+from dedupe_lifted_semantic import is_antonym_pair
+print('goal-aligned vs goal-agnostic:', is_antonym_pair('Goal-Aligned Reward', 'Goal-Agnostic Reward'))
+print('high vs low anxiety:', is_antonym_pair('High Anxiety', 'Low Anxiety'))
+print('true near-dup (should be False):', is_antonym_pair('Reward Magnitude', 'Reward Size'))
+print('unrelated (should be False):', is_antonym_pair('Amygdala Activity', 'Hippocampal Volume'))
+"
+```
+
+Expected: first two print `True`, last two print `False`.
+
+- [ ] **Step 4: Fix the already-corrupted node from Task 7's run**
+
+The `goal_aligned_reward` node in the current `graph/lift-output.json` already has the bad merge baked in from before this guard existed — re-running the dedup script alone won't undo it, since the un-merged original nodes no longer exist in the file. Regenerate that paper's nodes fresh, then re-run dedup with the guard in place:
+
+```bash
+cd graph/tool
+node lift_concepts.js --papers Nath2026designrewards
+python3 dedupe_lifted_semantic.py
+node -e "
+const out = require('../lift-output.json');
+const n = out['Nath2026designrewards'];
+console.log(JSON.stringify(n.nodes.filter(x => x.id.includes('goal')), null, 2));
+"
+```
+
+Expected: the "aligned" and "agnostic" reward concepts now appear as separate nodes (or one is in `graph/lift-semantic-flagged.json` for review rather than silently merged) — not one node whose `source_candidates` contains both "aligned" and "agnostic" phrasings.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add graph/tool/dedupe_lifted_semantic.py
+git commit -m "graph: add antonym/negation guard to semantic dedup, blocking auto-merge of opposite-polarity phrase pairs regardless of similarity score"
+```
+
+---
+
+### Task 9: Build the promote-to-review integration step
 
 **Problem:** Everything so far stops at `graph/lift-output.json`. There's no built path from validated lift output into `graph/graph.json` — the actual merge step doesn't exist yet.
 
@@ -1010,4 +1115,4 @@ git commit -m "graph: add promote_lift_output.js, wiring the v4 pipeline into th
 
 ## Post-plan state
 
-After all 8 tasks: the pipeline accumulates results correctly across incremental runs instead of silently clobbering prior work, has publication-importance-scaled weights that actually match how the existing graph was built (including a fixed pre-existing `scicomm` weighting bug), clamped and distribution-checked weight/strength values, two independent layers of sibling-node dedup (literal + semantic), reduced (documented, not eliminated) non-determinism, a persistent audit trail with real similarity/confidence values for every automated correction, threshold values re-examined against a genuinely-cumulative 22-paper (52%) stratified sample instead of 1-2 examples, and a working, tested path from `lift-output.json` into `graph.json` via the existing human-reviewed approval flow. The remaining 20 papers not covered by the 22-paper sample still need to run through the same pipeline before a full-corpus merge — that's normal remaining pipeline usage at that point, not a gap in this hardening plan.
+After all 9 tasks: the pipeline accumulates results correctly across incremental runs instead of silently clobbering prior work, has publication-importance-scaled weights that actually match how the existing graph was built (including a fixed pre-existing `scicomm` weighting bug), clamped and distribution-checked weight/strength values, two independent layers of sibling-node dedup (literal + semantic) guarded against antonym/polarity collisions that no similarity threshold alone can catch, reduced (documented, not eliminated) non-determinism, a persistent audit trail with real similarity/confidence values for every automated correction in `lift_concepts.js` (though not yet covering `dedupe_lifted_semantic.py`'s own auto-merges — a known gap Task 8 partially closes by blocking the one failure mode found, not by making that script's merges fully auditable), threshold values re-examined against a genuinely-cumulative 22-paper (52%) stratified sample instead of 1-2 examples, and a working, tested path from `lift-output.json` into `graph.json` via the existing human-reviewed approval flow. The remaining 20 papers not covered by the 22-paper sample still need to run through the same pipeline before a full-corpus merge — that's normal remaining pipeline usage at that point, not a gap in this hardening plan.

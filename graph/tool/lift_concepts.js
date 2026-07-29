@@ -94,7 +94,7 @@ Return ONLY valid JSON, no markdown fences:
   "edges": [{"a": "node_id", "b": "node_id", "strength": 0.0-1.0}]
 }`;
 
-function buildUserPrompt(pub, candidates) {
+export function buildUserPrompt(pub, candidates) {
   const trimmed = candidates.slice(0, TOP_CANDIDATES_PER_PAPER).map(x => ({
     phrase: x.phrase,
     freq: x.freq,
@@ -134,7 +134,7 @@ async function liftPaper(client, pub, candidates, model) {
 // embeddings — nodes sharing a source phrase within the same paper are
 // describing the same underlying finding, not distinct concepts. Union-find
 // over overlap, keep the node with the most source candidates per group.
-function dedupeSiblingNodes(lifted, audit, paperId) {
+export function dedupeSiblingNodes(lifted, audit, paperId) {
   const nodes = lifted.nodes || [];
   const newNodes = nodes.filter(n => !n.reuse_existing || n.reuse_existing === 'null');
   if (newNodes.length < 2) return lifted;
@@ -194,7 +194,7 @@ const CLUSTER_TRUST_THRESHOLD = 0.5;
 // Castrellon2022social's "crime-type bias" got moved OFF a correct
 // higher-confidence (0.5-0.75) prediction onto an unrelated cluster. Only
 // let paper-context override low-confidence classical predictions.
-function validateCluster(lifted, candidatesByPhrase, audit, paperId) {
+export function validateCluster(lifted, candidatesByPhrase, audit, paperId) {
   for (const n of lifted.nodes || []) {
     const preds = (n.source_candidates || [])
       .map(p => candidatesByPhrase.get(p)?.predicted_cluster)
@@ -216,7 +216,7 @@ function validateCluster(lifted, candidatesByPhrase, audit, paperId) {
 // can still override on topical pattern-matching (seen in practice: merging
 // distinct constructs that just share a surface topic); this is a hard
 // check instead of another sentence of persuasion.
-function validateReuse(lifted, candidatesByPhrase, audit, paperId) {
+export function validateReuse(lifted, candidatesByPhrase, audit, paperId) {
   for (const n of lifted.nodes || []) {
     if (!n.reuse_existing || n.reuse_existing === 'null') continue;
     const matchingSims = (n.source_candidates || [])

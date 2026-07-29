@@ -248,7 +248,7 @@ async function main() {
   let results = {};
   if (fs.existsSync(OUTPUT_PATH)) {
     try { results = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf-8')); }
-    catch { /* start fresh if corrupt */ }
+    catch { c.warn('lift-output.json unreadable, starting fresh — prior results discarded'); }
   }
 
   for (let i = 0; i < paperIds.length; i++) {

@@ -11,6 +11,15 @@
  * automatically; review the output, then a separate step wires it into
  * draft-proposals.json for review-draft-proposals.js).
  *
+ * Non-determinism: temperature is set to 0, which substantially reduces but
+ * does not eliminate run-to-run variance (the API doesn't guarantee bitwise
+ * determinism even at temperature 0). validateReuse/validateCluster/
+ * dedupeSiblingNodes make WRONG outputs self-correcting, but don't guarantee
+ * the same paper produces byte-identical output on a re-run. If exact
+ * reproducibility becomes a requirement, the next step would be running each
+ * paper N times and taking a majority vote on cluster/reuse decisions — not
+ * implemented here as of 2026-07-28.
+ *
  * Usage:
  *   node lift_concepts.js [--limit N] [--papers id1,id2,...]
  */
@@ -108,6 +117,7 @@ async function liftPaper(client, pub, candidates, model) {
   const response = await client.messages.create({
     model,
     max_tokens: 1500,
+    temperature: 0,
     system: SYSTEM_PROMPT,
     messages: [{ role: 'user', content: buildUserPrompt(pub, candidates) }],
   });

@@ -56,12 +56,25 @@ ANTONYM_PAIRS = {
 }
 
 
+def _normalize_word(w):
+    # Light singularization — strip a trailing 's' for words long enough
+    # that this won't mangle genuinely-short words (e.g. keep 'bias' as
+    # 'bias', not 'bia'). Good enough for the antonym-pair vocabulary here;
+    # not a real stemmer. Without this, an incidental plural/qualifier
+    # mismatch (e.g. "Aligned Rewards" vs "Agnostic Reward") adds a second
+    # differing word and defeats the "exactly one word differs" check below,
+    # letting a genuine antonym pair through undetected.
+    if len(w) > 4 and w.endswith('s') and not w.endswith('ss'):
+        return w[:-1]
+    return w
+
+
 def is_antonym_pair(label_a, label_b):
-    """True if the two labels differ by exactly one word each, and that
-    pair of differing words is a known antonym/polarity pair — regardless
-    of how similar the labels otherwise are."""
-    words_a = set(re.findall(r'[a-z]+', label_a.lower()))
-    words_b = set(re.findall(r'[a-z]+', label_b.lower()))
+    """True if the two labels differ by exactly one word each (after light
+    normalization), and that pair of differing words is a known antonym/
+    polarity pair — regardless of how similar the labels otherwise are."""
+    words_a = {_normalize_word(w) for w in re.findall(r'[a-z]+', label_a.lower())}
+    words_b = {_normalize_word(w) for w in re.findall(r'[a-z]+', label_b.lower())}
     diff_a = words_a - words_b
     diff_b = words_b - words_a
     if len(diff_a) == 1 and len(diff_b) == 1:
@@ -184,6 +197,10 @@ def main():
     parser.add_argument('--review-threshold', type=float, default=0.45,
                         help='Threshold for flagging pairs for human review (default 0.45)')
     args = parser.parse_args()
+    assert args.review_threshold < args.auto_threshold, (
+        'review_threshold must be less than auto_threshold, or antonym pairs '
+        'in the gap could silently vanish'
+    )
 
     with open(LIFT_OUTPUT_PATH) as f:
         results = json.load(f)

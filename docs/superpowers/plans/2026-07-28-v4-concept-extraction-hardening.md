@@ -314,6 +314,8 @@ git commit -m "graph: clamp edge-strength values and emit a distribution summary
 
 ### Task 4: Semantic (embedding-based) sibling-node dedup
 
+**Post-execution note:** the design below (single `all-MiniLM-L6-v2` threshold) is what was originally planned, but real calibration during execution found the motivating disjoint-vocabulary case ("reward magnitude" vs "payoff size") scored only 0.361 — indistinguishable from a genuine non-duplicate pair (0.339) — meaning no single threshold could work. With the human partner's approval, this was redesigned mid-task to a **two-tier system**: `all-mpnet-base-v2` (a larger, more capable embedding model) with an `--auto-threshold` (0.75, confident automatic merges) and a separate `--review-threshold` (0.45, flags moderate-confidence pairs to `graph/lift-semantic-flagged.json` for human review during Task 8 rather than either wrongly auto-merging or silently missing them). The steps below are kept as originally written for the historical record; the shipped script's actual CLI is `dedupe_lifted_semantic.py [--auto-threshold 0.75] [--review-threshold 0.45]`, not the single `--threshold` shown below.
+
 **Problem:** `dedupeSiblingNodes()` in `lift_concepts.js:125` only merges new nodes that share a *literal* source-candidate phrase. It would miss two nodes describing the same concept via disjoint phrasing (e.g. one sourced from "reward magnitude", another from "payoff size" — zero string overlap, same underlying idea).
 
 **Files:**
@@ -817,8 +819,10 @@ git commit -m "graph: persist validation corrections to lift-audit.json with rea
 ```bash
 cd graph/tool
 node lift_concepts.js --papers paredes2026unstuck,Nath2026designrewards,Hakimi2025creativity,Hakimi2024cognitive,Sumner2024personalizing,Hsiung2022heuristics,Hakimi2021pairing,Hakimi2020behavioral,Botvinik2020variability,Hakimi2014activity,Zink2010vasopressin,Tost2009mri,Goldin2009neural,Castrellon2022neural
-python3 dedupe_lifted_semantic.py --threshold 0.8
+python3 dedupe_lifted_semantic.py
 ```
+
+(Post-Task-4 note: `dedupe_lifted_semantic.py` no longer takes a single `--threshold` flag — Task 4 went through a human-approved mid-flight redesign to a two-tier `--auto-threshold`/`--review-threshold` design using `all-mpnet-base-v2` after the original single-threshold approach was found not to work for disjoint-vocabulary duplicates. Running with no flags uses the validated defaults (0.75/0.45).)
 
 Because Task 1 made `lift_concepts.js`'s output additive, this command (only the 14 *new* papers) correctly results in a cumulative 22-paper `graph/lift-output.json` — the original 8 papers' entries from earlier runs are preserved, not wiped. Verify this explicitly before moving on:
 

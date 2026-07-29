@@ -328,7 +328,7 @@ async function main() {
   const summary = { node_weight: stats(allWeights), edge_strength: stats(allStrengths) };
   fs.writeFileSync(SUMMARY_PATH, JSON.stringify(summary, null, 2));
   c.log(`Wrote ${SUMMARY_PATH} — weight/strength distribution for spot-checking outliers`);
-  c.warn('Nothing merged into graph.json — inspect lift-output.json, then run the review step.');
+  c.warn('Nothing merged into graph.json — run dedupe_lifted_semantic.py next, then the review step.');
 }
 
 main();

@@ -48,7 +48,7 @@ def merge_pair(keep, dupe):
     keep['source_candidates'] = list(keep_srcs | dupe_srcs)
 
 
-def dedupe_paper(paper_result, model, auto_threshold, review_threshold):
+def dedupe_paper(paper_result, model, auto_threshold, review_threshold, paper_id):
     nodes = paper_result.get('nodes') or []
     new_nodes = [n for n in nodes if not n.get('reuse_existing') or n.get('reuse_existing') == 'null']
     if len(new_nodes) < 2:
@@ -93,7 +93,7 @@ def dedupe_paper(paper_result, model, auto_threshold, review_threshold):
                 # Check if they're in the same union-find group
                 if find(new_nodes[i]['id']) != find(new_nodes[j]['id']):
                     flagged_pairs.append({
-                        'paper_id': paper_result.get('paper_id', 'unknown'),
+                        'paper_id': paper_id,
                         'node_a': new_nodes[i]['id'],
                         'node_b': new_nodes[j]['id'],
                         'label_a': new_nodes[i]['label'],
@@ -120,6 +120,11 @@ def dedupe_paper(paper_result, model, auto_threshold, review_threshold):
             id_remap[dupe['id']] = keep['id']
             merge_count += 1
         survivors.append(keep)
+
+    # Apply id_remap to flagged pairs so they reference survivors, not merged-away nodes
+    for pair in flagged_pairs:
+        pair['node_a'] = id_remap.get(pair['node_a'], pair['node_a'])
+        pair['node_b'] = id_remap.get(pair['node_b'], pair['node_b'])
 
     reuse_nodes = [n for n in nodes if n.get('reuse_existing') and n.get('reuse_existing') != 'null']
     paper_result['nodes'] = survivors + reuse_nodes
@@ -151,9 +156,7 @@ def main():
     for paper_id, paper_result in results.items():
         if 'error' in paper_result:
             continue
-        # Inject paper_id into paper_result for flagged pair tracking
-        paper_result['paper_id'] = paper_id
-        merges, flagged = dedupe_paper(paper_result, model, args.auto_threshold, args.review_threshold)
+        merges, flagged = dedupe_paper(paper_result, model, args.auto_threshold, args.review_threshold, paper_id)
         total_merges += merges
         all_flagged.extend(flagged)
         if merges:

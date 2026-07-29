@@ -36,6 +36,7 @@ const CANDIDATES_PATH = path.join(__dirname, '..', 'candidates.json');
 const PUBS_PATH = path.join(__dirname, '..', '..', 'data', 'publications.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'lift-output.json');
 const SUMMARY_PATH = path.join(__dirname, '..', 'lift-run-summary.json');
+const AUDIT_PATH = path.join(__dirname, '..', 'lift-audit.json');
 
 const TOP_CANDIDATES_PER_PAPER = 15;
 
@@ -133,7 +134,7 @@ async function liftPaper(client, pub, candidates, model) {
 // embeddings — nodes sharing a source phrase within the same paper are
 // describing the same underlying finding, not distinct concepts. Union-find
 // over overlap, keep the node with the most source candidates per group.
-function dedupeSiblingNodes(lifted) {
+function dedupeSiblingNodes(lifted, audit, paperId) {
   const nodes = lifted.nodes || [];
   const newNodes = nodes.filter(n => !n.reuse_existing || n.reuse_existing === 'null');
   if (newNodes.length < 2) return lifted;
@@ -165,7 +166,9 @@ function dedupeSiblingNodes(lifted) {
     const keep = group[0];
     const merged = new Set(keep.source_candidates || []);
     for (const dupe of group.slice(1)) {
-      c.warn(`    ✗ merged sibling node "${dupe.id}" into "${keep.id}" — shared source candidates`);
+      const detail = `merged sibling node "${dupe.id}" into "${keep.id}" — shared source candidates`;
+      c.warn(`    ✗ ${detail}`);
+      audit.push({ paper_id: paperId, action: 'sibling_merged', node_id: dupe.id, detail });
       (dupe.source_candidates || []).forEach(p => merged.add(p));
       idRemap.set(dupe.id, keep.id);
     }
@@ -191,7 +194,7 @@ const CLUSTER_TRUST_THRESHOLD = 0.5;
 // Castrellon2022social's "crime-type bias" got moved OFF a correct
 // higher-confidence (0.5-0.75) prediction onto an unrelated cluster. Only
 // let paper-context override low-confidence classical predictions.
-function validateCluster(lifted, candidatesByPhrase) {
+function validateCluster(lifted, candidatesByPhrase, audit, paperId) {
   for (const n of lifted.nodes || []) {
     const preds = (n.source_candidates || [])
       .map(p => candidatesByPhrase.get(p)?.predicted_cluster)
@@ -199,7 +202,9 @@ function validateCluster(lifted, candidatesByPhrase) {
     if (!preds.length) continue;
     const best = preds.reduce((a, b) => (b.confidence > a.confidence ? b : a));
     if (best.confidence >= CLUSTER_TRUST_THRESHOLD && best.id !== n.cluster) {
-      c.warn(`    ✗ overrode cluster ${n.cluster} → ${best.id} (${best.name}) for "${n.id}" — classical prediction was confident (${best.confidence})`);
+      const detail = `overrode cluster ${n.cluster} -> ${best.id} (${best.name}) — classical prediction was confident (${best.confidence})`;
+      c.warn(`    ✗ ${detail}`);
+      audit.push({ paper_id: paperId, action: 'cluster_overridden', node_id: n.id, detail, confidence: best.confidence, threshold: CLUSTER_TRUST_THRESHOLD });
       n.cluster = best.id;
     }
   }
@@ -211,16 +216,19 @@ function validateCluster(lifted, candidatesByPhrase) {
 // can still override on topical pattern-matching (seen in practice: merging
 // distinct constructs that just share a surface topic); this is a hard
 // check instead of another sentence of persuasion.
-function validateReuse(lifted, candidatesByPhrase) {
+function validateReuse(lifted, candidatesByPhrase, audit, paperId) {
   for (const n of lifted.nodes || []) {
     if (!n.reuse_existing || n.reuse_existing === 'null') continue;
-    const supported = (n.source_candidates || []).some(phrase => {
-      const cand = candidatesByPhrase.get(phrase);
-      return cand && cand.nearest_existing.id === n.reuse_existing
-        && cand.nearest_existing.similarity >= REUSE_MIN_SIMILARITY;
-    });
+    const matchingSims = (n.source_candidates || [])
+      .map(phrase => candidatesByPhrase.get(phrase))
+      .filter(cand => cand && cand.nearest_existing.id === n.reuse_existing)
+      .map(cand => cand.nearest_existing.similarity);
+    const bestSim = matchingSims.length ? Math.max(...matchingSims) : null;
+    const supported = bestSim !== null && bestSim >= REUSE_MIN_SIMILARITY;
     if (!supported) {
-      c.warn(`    ✗ rejected reuse "${n.reuse_existing}" for [${n.source_candidates?.join(', ')}] — no source candidate scored >= ${REUSE_MIN_SIMILARITY} against it`);
+      const detail = `rejected reuse "${n.reuse_existing}" for [${n.source_candidates?.join(', ')}] — best matching similarity was ${bestSim === null ? 'n/a (no source candidate matched this id at all)' : bestSim}, needed >= ${REUSE_MIN_SIMILARITY}`;
+      c.warn(`    ✗ ${detail}`);
+      audit.push({ paper_id: paperId, action: 'reuse_rejected', node_id: n.id, detail, best_similarity: bestSim, threshold: REUSE_MIN_SIMILARITY });
       n.reuse_existing = null;
     }
   }
@@ -262,6 +270,12 @@ async function main() {
     catch { c.warn('lift-output.json unreadable, starting fresh — prior results discarded'); }
   }
 
+  let audit = [];
+  if (fs.existsSync(AUDIT_PATH)) {
+    try { audit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf-8')); }
+    catch { /* start fresh if corrupt */ }
+  }
+
   const allWeights = [];
   const allStrengths = [];
 
@@ -269,13 +283,14 @@ async function main() {
     const id = paperIds[i];
     const pub = pubIndex[id];
     c.head(`\n[${i + 1}/${paperIds.length}] ${id}`);
+    audit = audit.filter(a => a.paper_id !== id);
     try {
       const lifted = await liftPaper(client, pub, candidatesByPaper[id], model);
 
       const candidatesByPhrase = new Map(candidatesByPaper[id].map(c => [c.phrase, c]));
-      validateReuse(lifted, candidatesByPhrase);
-      validateCluster(lifted, candidatesByPhrase);
-      dedupeSiblingNodes(lifted);
+      validateReuse(lifted, candidatesByPhrase, audit, id);
+      validateCluster(lifted, candidatesByPhrase, audit, id);
+      dedupeSiblingNodes(lifted, audit, id);
 
       // Normalize reuse_existing → the node's real id, so downstream merge
       // logic (mergeIntoGraph's existing-id dedup) treats it as a boost,
@@ -338,6 +353,8 @@ async function main() {
   const summary = { node_weight: stats(allWeights), edge_strength: stats(allStrengths) };
   fs.writeFileSync(SUMMARY_PATH, JSON.stringify(summary, null, 2));
   c.log(`Wrote ${SUMMARY_PATH} — weight/strength distribution for spot-checking outliers`);
+  fs.writeFileSync(AUDIT_PATH, JSON.stringify(audit, null, 2));
+  c.log(`Wrote ${AUDIT_PATH} — ${audit.length} correction(s) accumulated across all runs, for spot-checking over- and under-aggressiveness`);
   c.warn('Nothing merged into graph.json — run dedupe_lifted_semantic.py next, then the review step.');
 }
 

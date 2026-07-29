@@ -19,6 +19,11 @@ recall (catching true duplicates like "reward magnitude" vs "payoff size" that m
 moderately high, not at the ceiling). The review tier provides visibility into borderline
 cases for downstream human judgment.
 
+Note: auto-merges made by this script are NOT recorded in graph/lift-audit.json (that
+file only covers lift_concepts.js's own validation corrections) — the review-tier flagged
+pairs in graph/lift-semantic-flagged.json are the visibility mechanism for this script's
+decisions instead.
+
 Run AFTER lift_concepts.js, before promote_lift_output.js.
 
 Usage:
@@ -150,8 +155,8 @@ def dedupe_paper(paper_result, model, auto_threshold, review_threshold, paper_id
                         'paper_id': paper_id,
                         'node_a': new_nodes[i]['id'],
                         'node_b': new_nodes[j]['id'],
-                        'label_a': new_nodes[i]['label'],
-                        'label_b': new_nodes[j]['label'],
+                        'label_a': clean_label(new_nodes[i]['label']),
+                        'label_b': clean_label(new_nodes[j]['label']),
                         'similarity': float(score)
                     })
 

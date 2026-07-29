@@ -37,6 +37,38 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LIFT_OUTPUT_PATH = os.path.join(SCRIPT_DIR, '..', 'lift-output.json')
 FLAGGED_PATH = os.path.join(SCRIPT_DIR, '..', 'lift-semantic-flagged.json')
 
+# Embedding similarity cannot distinguish "same phrase, opposite polarity"
+# from "same phrase, true paraphrase" — antonym pairs sharing a stem often
+# score HIGHER than genuine synonyms phrased differently (verified: 'high
+# anxiety' vs 'low anxiety' = 0.851, higher than the real bug this guards
+# against, 'goal-aligned reward' vs 'goal-agnostic reward signal' = 0.721).
+# No threshold value can separate these cases; this is a dedicated check.
+ANTONYM_PAIRS = {
+    frozenset(p) for p in [
+        ('aligned', 'agnostic'), ('high', 'low'), ('increased', 'decreased'),
+        ('increase', 'decrease'), ('more', 'less'), ('positive', 'negative'),
+        ('with', 'without'), ('present', 'absent'), ('before', 'after'),
+        ('early', 'late'), ('same', 'different'), ('consistent', 'inconsistent'),
+        ('gain', 'loss'), ('active', 'passive'), ('excitatory', 'inhibitory'),
+        ('internal', 'external'), ('explicit', 'implicit'), ('short', 'long'),
+        ('congruent', 'incongruent'), ('expected', 'unexpected'),
+    ]
+}
+
+
+def is_antonym_pair(label_a, label_b):
+    """True if the two labels differ by exactly one word each, and that
+    pair of differing words is a known antonym/polarity pair — regardless
+    of how similar the labels otherwise are."""
+    words_a = set(re.findall(r'[a-z]+', label_a.lower()))
+    words_b = set(re.findall(r'[a-z]+', label_b.lower()))
+    diff_a = words_a - words_b
+    diff_b = words_b - words_a
+    if len(diff_a) == 1 and len(diff_b) == 1:
+        pair = frozenset([diff_a.pop(), diff_b.pop()])
+        return pair in ANTONYM_PAIRS
+    return False
+
 
 def clean_label(label):
     return re.sub(r'\s+', ' ', label.replace('\n', ' ')).strip()
@@ -78,18 +110,27 @@ def dedupe_paper(paper_result, model, auto_threshold, review_threshold, paper_id
     merge_count = 0
     flagged_pairs = []
 
-    # First pass: auto-merge at high threshold
+    # First pass: auto-merge at high threshold. Antonym/negation pairs are
+    # excluded even when their score clears auto_threshold — embedding
+    # similarity can't tell "same phrase, opposite polarity" apart from a
+    # true paraphrase (see ANTONYM_PAIRS / is_antonym_pair above).
     for i in range(n):
         for j in range(i + 1, n):
-            if sims[i, j] >= auto_threshold:
+            if sims[i, j] >= auto_threshold and not is_antonym_pair(labels[i], labels[j]):
                 union(new_nodes[i]['id'], new_nodes[j]['id'])
 
-    # Second pass: collect review-tier pairs
+    # Second pass: collect review-tier pairs. Normally this is the
+    # [review_threshold, auto_threshold) band, but antonym pairs that scored
+    # >= auto_threshold were deliberately blocked from auto-merge above and
+    # would otherwise fall through this check silently (score < auto_threshold
+    # would be False) — so they're pulled in here too, as long as they clear
+    # review_threshold, so a human sees them instead of them vanishing.
     for i in range(n):
         for j in range(i + 1, n):
             score = sims[i, j]
+            antonym = is_antonym_pair(labels[i], labels[j])
             # Only flag pairs that didn't already get auto-merged
-            if review_threshold <= score < auto_threshold:
+            if score >= review_threshold and (score < auto_threshold or antonym):
                 # Check if they're in the same union-find group
                 if find(new_nodes[i]['id']) != find(new_nodes[j]['id']):
                     flagged_pairs.append({

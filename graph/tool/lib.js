@@ -97,7 +97,7 @@ export function computePaperWeight(meta) {
     'conf-full':     0.85,
     'conf-workshop': 0.65,
     'preprint':      0.70,
-    'science-comm':  0.30,
+    'scicomm':       0.30,
     'other':         0.40,
   };
   const typeW = typeWeights[meta.pubType] ?? 0.50;

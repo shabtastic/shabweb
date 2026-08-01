@@ -21,12 +21,31 @@ import { c, loadGraph, saveGraph, mergeIntoGraph, rebuildLayout } from './lib.js
 const __dirname      = path.dirname(fileURLToPath(import.meta.url));
 const PROPOSALS_PATH = path.join(__dirname, '..', 'draft-proposals.json');
 const PUBS_PATH      = path.join(__dirname, '..', '..', 'data', 'publications.json');
+const FLAGGED_PATH   = path.join(__dirname, '..', 'lift-semantic-flagged.json');
+
+function warnAboutFlaggedSemanticPairs() {
+  // Informational-only: dedupe_lifted_semantic.py writes review-tier pairs
+  // here, but nothing in the a/r/d flow below ever surfaces them. This is
+  // the only signpost pointing a reviewer back at that file, so never let a
+  // malformed/missing file crash the review tool over it.
+  try {
+    if (!fs.existsSync(FLAGGED_PATH)) return;
+    const flagged = JSON.parse(fs.readFileSync(FLAGGED_PATH, 'utf-8'));
+    if (Array.isArray(flagged) && flagged.length > 0) {
+      c.warn(`${flagged.length} semantic pairs await review in lift-semantic-flagged.json (not part of this proposal flow — open the file directly)`);
+    }
+  } catch (e) {
+    c.dim(`  (could not check lift-semantic-flagged.json: ${e.message})`);
+  }
+}
 
 async function main() {
   if (!fs.existsSync(PROPOSALS_PATH)) {
     c.err('No draft-proposals.json found. Run rebuild-from-corpus.js --pass 3 first.');
     process.exit(1);
   }
+
+  warnAboutFlaggedSemanticPairs();
 
   const proposals    = JSON.parse(fs.readFileSync(PROPOSALS_PATH, 'utf-8'));
   const publications = JSON.parse(fs.readFileSync(PUBS_PATH, 'utf-8'));

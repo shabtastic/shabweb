@@ -15,6 +15,10 @@ pnpm-debug.log*
 .yarn/build-state.yml
 .pnpm-store/
 
+# ── Python ────────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+
 # ── Working files (tool inputs, not source of truth) ──────────────────────
 graph/tool/sources/*.pdf
 graph/tool/sources/*.docx
@@ -57,6 +61,11 @@ logs/
 
 # Draft proposal buffer — private; reviewed manually before merging into graph.json
 graph/draft-proposals.json
+graph/candidates.json
+graph/lift-output.json
+graph/lift-audit.json
+graph/lift-run-summary.json
+graph/lift-semantic-flagged.json
 
 # Local worktrees
 .worktrees/

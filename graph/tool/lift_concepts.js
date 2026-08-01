@@ -11,6 +11,15 @@
  * automatically; review the output, then a separate step wires it into
  * draft-proposals.json for review-draft-proposals.js).
  *
+ * Non-determinism: temperature is set to 0, which substantially reduces but
+ * does not eliminate run-to-run variance (the API doesn't guarantee bitwise
+ * determinism even at temperature 0). validateReuse/validateCluster/
+ * dedupeSiblingNodes make WRONG outputs self-correcting, but don't guarantee
+ * the same paper produces byte-identical output on a re-run. If exact
+ * reproducibility becomes a requirement, the next step would be running each
+ * paper N times and taking a majority vote on cluster/reuse decisions — not
+ * implemented here as of 2026-07-28.
+ *
  * Usage:
  *   node lift_concepts.js [--limit N] [--papers id1,id2,...]
  */
@@ -18,14 +27,16 @@
 import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
-import { c, loadGraph } from './lib.js';
+import { c, loadGraph, computePaperWeight } from './lib.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CANDIDATES_PATH = path.join(__dirname, '..', 'candidates.json');
 const PUBS_PATH = path.join(__dirname, '..', '..', 'data', 'publications.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'lift-output.json');
+const SUMMARY_PATH = path.join(__dirname, '..', 'lift-run-summary.json');
+const AUDIT_PATH = path.join(__dirname, '..', 'lift-audit.json');
 
 const TOP_CANDIDATES_PER_PAPER = 15;
 
@@ -44,7 +55,7 @@ scratch.
 For each candidate, or group of clearly-related candidates (e.g. "reward rate", "reward-rate",
 "reward rate ratio" are variants of one construct — merge them), decide:
 
-1. REUSE — only when similarity to nearest_existing is at least ~0.65 AND it's genuinely the
+1. REUSE — only when similarity to nearest_existing is at least ~0.6 AND it's genuinely the
    same underlying construct, not just topically adjacent. Two things "about the same population"
    or "about the same broad topic" (e.g. both mention autism, both mention reward) are NOT
    automatically the same concept — check what nearest_existing's own label actually claims
@@ -83,7 +94,7 @@ Return ONLY valid JSON, no markdown fences:
   "edges": [{"a": "node_id", "b": "node_id", "strength": 0.0-1.0}]
 }`;
 
-function buildUserPrompt(pub, candidates) {
+export function buildUserPrompt(pub, candidates) {
   const trimmed = candidates.slice(0, TOP_CANDIDATES_PER_PAPER).map(x => ({
     phrase: x.phrase,
     freq: x.freq,
@@ -107,6 +118,7 @@ async function liftPaper(client, pub, candidates, model) {
   const response = await client.messages.create({
     model,
     max_tokens: 1500,
+    temperature: 0,
     system: SYSTEM_PROMPT,
     messages: [{ role: 'user', content: buildUserPrompt(pub, candidates) }],
   });
@@ -122,7 +134,7 @@ async function liftPaper(client, pub, candidates, model) {
 // embeddings — nodes sharing a source phrase within the same paper are
 // describing the same underlying finding, not distinct concepts. Union-find
 // over overlap, keep the node with the most source candidates per group.
-function dedupeSiblingNodes(lifted) {
+export function dedupeSiblingNodes(lifted, audit, paperId) {
   const nodes = lifted.nodes || [];
   const newNodes = nodes.filter(n => !n.reuse_existing || n.reuse_existing === 'null');
   if (newNodes.length < 2) return lifted;
@@ -154,7 +166,9 @@ function dedupeSiblingNodes(lifted) {
     const keep = group[0];
     const merged = new Set(keep.source_candidates || []);
     for (const dupe of group.slice(1)) {
-      c.warn(`    ✗ merged sibling node "${dupe.id}" into "${keep.id}" — shared source candidates`);
+      const detail = `merged sibling node "${dupe.id}" into "${keep.id}" — shared source candidates`;
+      c.warn(`    ✗ ${detail}`);
+      audit.push({ paper_id: paperId, action: 'sibling_merged', node_id: dupe.id, detail });
       (dupe.source_candidates || []).forEach(p => merged.add(p));
       idRemap.set(dupe.id, keep.id);
     }
@@ -180,7 +194,7 @@ const CLUSTER_TRUST_THRESHOLD = 0.5;
 // Castrellon2022social's "crime-type bias" got moved OFF a correct
 // higher-confidence (0.5-0.75) prediction onto an unrelated cluster. Only
 // let paper-context override low-confidence classical predictions.
-function validateCluster(lifted, candidatesByPhrase) {
+export function validateCluster(lifted, candidatesByPhrase, audit, paperId) {
   for (const n of lifted.nodes || []) {
     const preds = (n.source_candidates || [])
       .map(p => candidatesByPhrase.get(p)?.predicted_cluster)
@@ -188,7 +202,9 @@ function validateCluster(lifted, candidatesByPhrase) {
     if (!preds.length) continue;
     const best = preds.reduce((a, b) => (b.confidence > a.confidence ? b : a));
     if (best.confidence >= CLUSTER_TRUST_THRESHOLD && best.id !== n.cluster) {
-      c.warn(`    ✗ overrode cluster ${n.cluster} → ${best.id} (${best.name}) for "${n.id}" — classical prediction was confident (${best.confidence})`);
+      const detail = `overrode cluster ${n.cluster} -> ${best.id} (${best.name}) — classical prediction was confident (${best.confidence})`;
+      c.warn(`    ✗ ${detail}`);
+      audit.push({ paper_id: paperId, action: 'cluster_overridden', node_id: n.id, detail, confidence: best.confidence, threshold: CLUSTER_TRUST_THRESHOLD });
       n.cluster = best.id;
     }
   }
@@ -200,16 +216,19 @@ function validateCluster(lifted, candidatesByPhrase) {
 // can still override on topical pattern-matching (seen in practice: merging
 // distinct constructs that just share a surface topic); this is a hard
 // check instead of another sentence of persuasion.
-function validateReuse(lifted, candidatesByPhrase) {
+export function validateReuse(lifted, candidatesByPhrase, audit, paperId) {
   for (const n of lifted.nodes || []) {
     if (!n.reuse_existing || n.reuse_existing === 'null') continue;
-    const supported = (n.source_candidates || []).some(phrase => {
-      const cand = candidatesByPhrase.get(phrase);
-      return cand && cand.nearest_existing.id === n.reuse_existing
-        && cand.nearest_existing.similarity >= REUSE_MIN_SIMILARITY;
-    });
+    const matchingSims = (n.source_candidates || [])
+      .map(phrase => candidatesByPhrase.get(phrase))
+      .filter(cand => cand && cand.nearest_existing.id === n.reuse_existing)
+      .map(cand => cand.nearest_existing.similarity);
+    const bestSim = matchingSims.length ? Math.max(...matchingSims) : null;
+    const supported = bestSim !== null && bestSim >= REUSE_MIN_SIMILARITY;
     if (!supported) {
-      c.warn(`    ✗ rejected reuse "${n.reuse_existing}" for [${n.source_candidates?.join(', ')}] — no source candidate scored >= ${REUSE_MIN_SIMILARITY} against it`);
+      const detail = `rejected reuse "${n.reuse_existing}" for [${n.source_candidates?.join(', ')}] — best matching similarity was ${bestSim === null ? 'n/a (no source candidate matched this id at all)' : bestSim}, needed >= ${REUSE_MIN_SIMILARITY}`;
+      c.warn(`    ✗ ${detail}`);
+      audit.push({ paper_id: paperId, action: 'reuse_rejected', node_id: n.id, detail, best_similarity: bestSim, threshold: REUSE_MIN_SIMILARITY });
       n.reuse_existing = null;
     }
   }
@@ -240,19 +259,38 @@ async function main() {
 
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const model = 'claude-sonnet-4-6';
-  const results = {};
+
+  // Load existing output so incremental --papers batches accumulate instead
+  // of clobbering prior runs' results — downstream steps (widening test
+  // coverage, promote_lift_output.js) depend on this file being cumulative
+  // across multiple invocations, not a snapshot of only the latest one.
+  let results = {};
+  if (fs.existsSync(OUTPUT_PATH)) {
+    try { results = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf-8')); }
+    catch { c.warn('lift-output.json unreadable, starting fresh — prior results discarded'); }
+  }
+
+  let audit = [];
+  if (fs.existsSync(AUDIT_PATH)) {
+    try { audit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf-8')); }
+    catch { /* start fresh if corrupt */ }
+  }
+
+  const allWeights = [];
+  const allStrengths = [];
 
   for (let i = 0; i < paperIds.length; i++) {
     const id = paperIds[i];
     const pub = pubIndex[id];
     c.head(`\n[${i + 1}/${paperIds.length}] ${id}`);
+    audit = audit.filter(a => a.paper_id !== id);
     try {
       const lifted = await liftPaper(client, pub, candidatesByPaper[id], model);
 
       const candidatesByPhrase = new Map(candidatesByPaper[id].map(c => [c.phrase, c]));
-      validateReuse(lifted, candidatesByPhrase);
-      validateCluster(lifted, candidatesByPhrase);
-      dedupeSiblingNodes(lifted);
+      validateReuse(lifted, candidatesByPhrase, audit, id);
+      validateCluster(lifted, candidatesByPhrase, audit, id);
+      dedupeSiblingNodes(lifted, audit, id);
 
       // Normalize reuse_existing → the node's real id, so downstream merge
       // logic (mergeIntoGraph's existing-id dedup) treats it as a boost,
@@ -270,6 +308,20 @@ async function main() {
         if (idRemap.has(e.b)) e.b = idRemap.get(e.b);
       }
 
+      const isSelected = (pub.keywords || []).includes('selected');
+      const paperWeight = isSelected ? 1.0 : computePaperWeight(pub);
+      for (const n of lifted.nodes || []) {
+        n.weight = Math.round(Math.max(0.1, Math.min(1.0, n.weight * paperWeight)) * 100) / 100;
+      }
+      lifted.paperWeight = paperWeight;
+
+      for (const e of lifted.edges || []) {
+        e.strength = Math.round(Math.max(0.1, Math.min(1.0, e.strength)) * 100) / 100;
+      }
+
+      (lifted.nodes || []).forEach(n => allWeights.push(n.weight));
+      (lifted.edges || []).forEach(e => allStrengths.push(e.strength));
+
       const newCount = (lifted.nodes || []).filter(n => !existingIds.has(n.id)).length;
       const reuseCount = (lifted.nodes || []).length - newCount;
       c.ok(`  ${lifted.nodes?.length || 0} nodes (${newCount} new, ${reuseCount} reuse), ${lifted.edges?.length || 0} edges`);
@@ -285,7 +337,25 @@ async function main() {
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(results, null, 2));
   c.log(`\nWrote ${OUTPUT_PATH}`);
-  c.warn('Nothing merged into graph.json — inspect lift-output.json, then run the review step.');
+
+  function stats(arr) {
+    if (!arr.length) return null;
+    const sorted = [...arr].sort((a, b) => a - b);
+    const mean = arr.reduce((a, b) => a + b, 0) / arr.length;
+    return {
+      count: arr.length,
+      min: sorted[0],
+      max: sorted[sorted.length - 1],
+      mean: Math.round(mean * 1000) / 1000,
+      median: sorted[Math.floor(sorted.length / 2)],
+    };
+  }
+  const summary = { node_weight: stats(allWeights), edge_strength: stats(allStrengths) };
+  fs.writeFileSync(SUMMARY_PATH, JSON.stringify(summary, null, 2));
+  c.log(`Wrote ${SUMMARY_PATH} — weight/strength distribution for spot-checking outliers`);
+  fs.writeFileSync(AUDIT_PATH, JSON.stringify(audit, null, 2));
+  c.log(`Wrote ${AUDIT_PATH} — ${audit.length} correction(s) accumulated across all runs, for spot-checking over- and under-aggressiveness`);
+  c.warn('Nothing merged into graph.json — run dedupe_lifted_semantic.py next, then the review step.');
 }
 
-main();
+if (import.meta.url === pathToFileURL(process.argv[1]).href) main();

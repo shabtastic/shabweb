@@ -547,7 +547,8 @@
           "human_ai_collab",
           "fidelity_progression",
           "common_ground"
-        ]
+        ],
+        "arxivId": "2306.01217"
       },
       {
         "id": "Filipowicz2023visual",
@@ -736,7 +737,8 @@
           "targeted_advertising",
           "causal_ml",
           "message_framing"
-        ]
+        ],
+        "arxivId": "2109.05104"
       },
       {
         "id": "Zhang2022conjointnet",

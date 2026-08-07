@@ -1,6 +1,6 @@
 # Homepage research visual — design
 
-**Status:** figure design converged (mockup v21). Site integration NOT yet decided — see Open questions.
+**Status:** figure design converged (mockup v22). Site integration NOT yet decided — see Open questions.
 **Date:** 2026-08-06
 **Mockups:** `docs/superpowers/mockups/homepage-research-viz/` (v1–v21 + `gen_v*.py` generators)
 **Supersedes:** the mockup README's "design as converged (v11)" section, which described the pre-warp figure.
@@ -60,10 +60,19 @@ projects a widening cone to an outcome marker, with two ghost futures: the
 drift (*without intervention*, in a lighter tint of the estimate blue so label
 and path read as one secondary element) and the improved path.
 
-**Intervention.** A purple marker on the state at the intervention moment, plus
-her sentence in the same purple, plus the forecast-zone block. Currently an
-apex-up triangle abutting the grey curve from below — *the one element not
-settled*; see Open questions.
+**Intervention.** A purple **highlighter swipe** across the moment — a soft
+vertical band (13px wide, rounded ends, 0.30 opacity) spanning the two curves
+and their band, with a hairline core at 0.85. Plus her sentence in the same
+purple, and the forecast-zone block.
+
+The swipe was chosen over four glyph alternatives (filled triangle, purple
+tick, diamond, open caret) and over a no-glyph treatment that recolored a
+stretch of the estimate. Its case: the site's entire design system is built on
+highlighter colors — the SH logo is a highlight band — so a swipe is native
+vocabulary that needs no explaining. It is an *area*, so it cannot be confused
+with the olive tick marks; it is vertical like the "now" divider, so it reads as
+a moment in time; and areas survive scaling down, which thin glyphs do not.
+Alternatives are preserved in `gen_marker_options.py` / `research-viz-marker-options.html`.
 
 ## Copy policy
 
@@ -143,12 +152,7 @@ behavior amber despite different lightness.
 
 These are unresolved and block a complete implementation plan.
 
-1. **The intervention marker.** Shabnam is "not in love with the triangle." A
-   comparison strip of alternatives (bar, diamond, open caret, or recoloring a
-   short stretch of the estimate itself so there is no glyph at all) is being
-   drawn. Everything else about the intervention device — purple, no arrow, no
-   leader, sentence in the same color — is settled.
-2. **Does this carry the eight research areas?** Raised by Shabnam
+1. **Does this carry the eight research areas?** Raised by Shabnam
    2026-08-06 and *not yet answered*: the figure argues the paradigm but does
    not say where the eight areas live, so it does not yet replace what the
    research grid does. The eight cluster-colored pins were stripped at v4 and
@@ -160,11 +164,11 @@ These are unresolved and block a complete implementation plan.
    Science), outcomes (Creativity & Design; Consumer Psychology). Two clusters
    resist single placement, and hanging eight labeled pins on the figure risks
    undoing the annotation diet.
-3. **Site integration.** Does the figure replace `.research-grid` or frame it?
+2. **Site integration.** Does the figure replace `.research-grid` or frame it?
    Static SVG or animated canvas? What happens at ≤768px, where the warped axis
    and 20 labels cannot survive as-is? Are the areas interactive (linking to
    projects/graph)?
-4. **Context** is not represented geometrically; it currently lives only in her
+3. **Context** is not represented geometrically; it currently lives only in her
    sentence ("in the right context"). Judged acceptable for now — everything the
    figure draws unfolds over time, and context is the dimension that doesn't.
 
@@ -172,7 +176,7 @@ These are unresolved and block a complete implementation plan.
 
 The mockups are generated, not hand-drawn: `gen_v12.py` … `gen_v21.py`, each
 extending its predecessor, tuning constants at the top of each file, generator
-headers carrying the rationale for every change. `gen_v21.py` is current and is
+headers carrying the rationale for every change. `gen_v22.py` is current and is
 the reference implementation of everything specified above. Output is a
 self-contained HTML fragment (inline `<style>` + one `<svg>`), 1040×482,
 which matches how the site works — inline CSS, no build step.

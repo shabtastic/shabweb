@@ -67,7 +67,7 @@ Tags: Motivation · Self-regulation · Decision science · Neuroimaging
 
 
 ### 02 — Intervention Science & Applied Behavior Change
-> Designing, testing, and personalizing behavior-change interventions ranging from improving understanding of health risks to just-in-time support for psycholgical flexibility and creativity.
+> Designing, testing, and personalizing behavior-change interventions ranging from improving understanding of health risks to just-in-time support for psychological flexibility and creativity.
 
 Tags: Behavior change · Intervention science · Causality
 
@@ -306,7 +306,7 @@ Link (optional):
 > How motivation, reward, and self-control shape learning and choice, with an emphasis on flexible, goal-directed decision making in real-world settings.
 
 ## 3 — Intervention Science & Applied Behavior Change
-> Designing, testing, and personalizing behavior-change interventions ranging from improving understanding of health risks to just-in-time support for psycholgical flexibility and creativity.
+> Designing, testing, and personalizing behavior-change interventions ranging from improving understanding of health risks to just-in-time support for psychological flexibility and creativity.
 
 ## 1 — Creativity & Design
 > Developing a mechanistic understanding of the *process* of creative work to promote not only innovation but also sustained creative wellbeing.

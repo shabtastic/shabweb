@@ -74,6 +74,44 @@ with the olive tick marks; it is vertical like the "now" divider, so it reads as
 a moment in time; and areas survive scaling down, which thin glyphs do not.
 Alternatives are preserved in `gen_marker_options.py` / `research-viz-marker-options.html`.
 
+## What the figure is, and how the eight areas relate to it
+
+Settled 2026-08-07 after three wrong hypotheses. Her framing, verbatim:
+
+> "this is more how i approach the world and the areas are what emerge from it.
+> there is some recursion (e.g., neuroscience projects that seem like they're
+> only about physio)"
+
+> "every project at least epistemologically runs the entire thing even if it's
+> not using every capability or addressing every issue at mechnistic depth"
+
+**The figure is an approach — an epistemology — not a map of the program.** The
+eight research areas are what *emerged* from working that way. They are products
+of it, not components, regions, positions, or capability-subsets of it.
+
+**Every project runs the whole thing epistemologically.** Projects differ in
+which capabilities they actually use and how deep they go mechanistically, but
+none of them is a slice of the approach. A project that looks narrow — her
+example: neuroscience work that appears to be only about physiology — still runs
+the entire loop. The narrowness is an appearance, not a fact.
+
+**Three rejected hypotheses, so they stay rejected:**
+
+1. *Areas map to positions in the pipeline* (signals / state / inference /
+   intervention / outcomes). Rejected outright. Some areas resisted placement
+   because outputs cannot be located inside the process that produced them.
+2. *Each area uses a subset of the paradigm's capabilities, and the page shows
+   which.* Too weak and slightly wrong — it still treats areas as slices.
+3. *Recursion is fractal: each area contains a smaller copy of the figure, and
+   drilling into one reveals it scoped.* Rejected. If the figure is how she
+   approaches the world it does not vary by area — that invariance is exactly
+   what makes it connective — so eight scoped instances would claim eight
+   approaches and reintroduce partitioning.
+
+**Design consequence:** the figure appears **once**, precisely because it does
+not subdivide. Nothing on the page may highlight, scope, crop, or instantiate it
+on behalf of an area. The areas sit below it as the eight names that emerged.
+
 ## Copy policy
 
 All figure text is Shabnam's, verbatim, and is not to be reworded, "improved",
@@ -152,19 +190,7 @@ behavior amber despite different lightness.
 
 These are unresolved and block a complete implementation plan.
 
-1. **Does this carry the eight research areas?** Raised by Shabnam
-   2026-08-06 and *not yet answered*: the figure argues the paradigm but does
-   not say where the eight areas live, so it does not yet replace what the
-   research grid does. The eight cluster-colored pins were stripped at v4 and
-   never re-layered. A promising hypothesis — hers to confirm or reject — is
-   that the areas map onto positions in the pipeline rather than sitting beside
-   it: signals (Social/Cognitive/Affective Neuroscience; Preference Elicitation),
-   the state (Motivated Learning, Decision Making & Self-Regulation), inference
-   (Agent State Inference; Psychology-Guided GenAI), intervention (Intervention
-   Science), outcomes (Creativity & Design; Consumer Psychology). Two clusters
-   resist single placement, and hanging eight labeled pins on the figure risks
-   undoing the annotation diet.
-2. **Site integration.** Does the figure replace `.research-grid` or frame it?
+1. **Site integration.** Does the figure replace `.research-grid` or frame it?
    Static SVG or animated canvas? What happens at ≤768px, where the warped axis
    and 20 labels cannot survive as-is? Are the areas interactive (linking to
    projects/graph)?

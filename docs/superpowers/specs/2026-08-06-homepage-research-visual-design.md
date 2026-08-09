@@ -190,10 +190,31 @@ behavior amber despite different lightness.
 
 These are unresolved and block a complete implementation plan.
 
-1. **Site integration.** Does the figure replace `.research-grid` or frame it?
-   Static SVG or animated canvas? What happens at ≤768px, where the warped axis
-   and 20 labels cannot survive as-is? Are the areas interactive (linking to
-   projects/graph)?
+1. **Site integration — partly settled 2026-08-08.** The flat `.research-grid`
+   is replaced by a sparse eight-node **area graph** sitting below the approach
+   figure. Chosen shape ("D-plain"): area titles only at rest, a click-to-open
+   marker outside each node beside its title, and descriptions that open
+   **radiating outward** from the graph's centre so nothing ever expands inward.
+   Layout reserves all eight open cards, so opening any node reflows nothing.
+   Node text is hers, scraped live from `index.html`'s research grid. Edges are
+   real: cross-cluster concept counts from `graph/graph.json`, thresholded so all
+   eight areas stay connected. Mockup: `area-graph-mytext.html` /
+   `gen_area_graph_mytext.py`.
+
+   Rejected along the way: bridge-concept labels between areas (B — the concepts
+   are pipeline-extracted, not her words, and the plate drifted toward being a
+   graph.html miniature); a concept-cloud where areas emerge as neighborhoods
+   (C — "i don't want to recapitulate the graph in full detail"); tag chips at
+   rest (they pre-empt the click and collapse into unreadable smears below
+   ~900px); and an in-node chevron affordance.
+
+   Still open: **the connective tissue between the two figures.** They answer
+   different questions — how she approaches problems, and what the areas are and
+   how they relate — and nothing yet makes the second visibly follow from the
+   first, so the burden currently falls entirely on the section copy she is
+   writing. Also open: static vs animated, mobile behavior below ~900px (the
+   area graph needs a different treatment, not a scale-down), and whether nodes
+   link out to projects.html / graph.html.
 3. **Context** is not represented geometrically; it currently lives only in her
    sentence ("in the right context"). Judged acceptable for now — everything the
    figure draws unfolds over time, and context is the dimension that doesn't.

@@ -23,6 +23,13 @@ def test_no_generator_writes_html_on_import():
              if f.endswith(".html")]
     assert stray == [], stray
 
+def test_paths_resolve_inside_this_repo():
+    import area_graph, area_graph_data
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for p in (area_graph.INDEX_PATH, area_graph_data.GRAPH_PATH):
+        assert os.path.abspath(p).startswith(root + os.sep), p
+        assert os.path.exists(p), p
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):

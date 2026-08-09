@@ -52,8 +52,15 @@ import os, re, math, html, collections
 
 import area_graph_data as base  # graph data, color policy, circle solver
 
+# figures/ sits at the repo root, so the repo containing THIS file is the one
+# whose index.html gets scraped by default -- otherwise figures/build.py
+# would inject an SVG generated from one repo's index.html into another
+# repo's index.html (e.g. main checkout vs. a worktree on a feature branch),
+# and the figure could silently disagree with the page it lands in. See
+# WEBSITE_INDEX to override.
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INDEX_PATH = os.environ.get(
-    "WEBSITE_INDEX", "/Users/shabnam/projects/website/index.html"
+    "WEBSITE_INDEX", os.path.join(ROOT, "index.html")
 )
 
 PAPER, INK, INK_BLUE = base.PAPER, base.INK, base.INK_BLUE

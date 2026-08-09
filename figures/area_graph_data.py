@@ -42,9 +42,12 @@ or CLAUDE.md's cluster table. The title block is empty on purpose.
 import json, math, os, random, collections, html
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# Canonical graph lives in the main checkout; override with WEBSITE_GRAPH.
+# figures/ sits at the repo root, so the repo containing THIS file is the one
+# whose graph.json gets read by default -- important when this file is run
+# from a worktree/checkout other than the primary one (see WEBSITE_GRAPH).
+ROOT = os.path.dirname(HERE)
 GRAPH_PATH = os.environ.get(
-    "WEBSITE_GRAPH", "/Users/shabnam/projects/website/graph/graph.json"
+    "WEBSITE_GRAPH", os.path.join(ROOT, "graph", "graph.json")
 )
 V22_PATH = os.path.join(HERE, "research-viz-lofi-v22.html")
 OUT_PATH = os.path.join(HERE, "area-graph-options.html")

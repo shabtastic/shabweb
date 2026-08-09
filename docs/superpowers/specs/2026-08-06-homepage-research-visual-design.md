@@ -1,6 +1,6 @@
 # Homepage research visual — design
 
-**Status:** figure design converged (mockup v22). Site integration NOT yet decided — see Open questions.
+**Status:** figure design converged (mockup v22). Integration shape decided — see Integration decisions. Static-vs-animated, mobile, and the title remain open.
 **Date:** 2026-08-06
 **Mockups:** `docs/superpowers/mockups/homepage-research-viz/` (v1–v21 + `gen_v*.py` generators)
 **Supersedes:** the mockup README's "design as converged (v11)" section, which described the pre-warp figure.
@@ -186,11 +186,11 @@ behavior amber despite different lightness.
   arrow device**, **the bracket caption**, **all assistant-written titles and
   prose chrome** — all removed; see the generator headers for per-item rationale.
 
-## Open questions
+## Integration decisions
 
-These are unresolved and block a complete implementation plan.
+Settled 2026-08-08. What remains unresolved is in "Still open" below.
 
-1. **Site integration — partly settled 2026-08-08.** The flat `.research-grid`
+1. **Site integration.** The flat `.research-grid`
    is replaced by a sparse eight-node **area graph** sitting below the approach
    figure. Chosen shape ("D-plain"): area titles only at rest, a click-to-open
    marker outside each node beside its title, and descriptions that open
@@ -208,16 +208,51 @@ These are unresolved and block a complete implementation plan.
    rest (they pre-empt the click and collapse into unreadable smears below
    ~900px); and an in-node chevron affordance.
 
-   Still open: **the connective tissue between the two figures.** They answer
-   different questions — how she approaches problems, and what the areas are and
-   how they relate — and nothing yet makes the second visibly follow from the
-   first, so the burden currently falls entirely on the section copy she is
-   writing. Also open: static vs animated, mobile behavior below ~900px (the
-   area graph needs a different treatment, not a scale-down), and whether nodes
-   link out to projects.html / graph.html.
-3. **Context** is not represented geometrically; it currently lives only in her
-   sentence ("in the right context"). Judged acceptable for now — everything the
-   figure draws unfolds over time, and context is the dimension that doesn't.
+2. **Division of labor across pages.** The depth already
+   exists elsewhere, so the homepage situates rather than explains.
+
+   - **index.html** — the approach figure, then the area graph. Titles at rest,
+     one sentence on click, each node linking onward to its projects.html
+     section. Answers "how does she think, and what came out of it," then hands
+     off.
+   - **projects.html** — unchanged, and becomes the payoff: full description per
+     area plus representative papers.
+   - **graph.html** — unchanged, for anyone who wants to explore the concepts.
+     This is why the homepage element must not become a graph.html miniature.
+
+   *Duplication risk:* the eight area descriptions currently live in three places
+   (index.html's grid, projects.html's sections, graph.html's cluster sidebar).
+   The homepage cards scrape index.html. If the homepage becomes a one-sentence
+   teaser while projects.html holds the fuller text, one of them must be
+   designated the source or they will drift.
+
+3. **Connecting the two figures.** They answer different questions and nothing
+   yet makes the area graph visibly follow from the approach figure. Agreed
+   approach, in ascending risk — take the first two, plus one line of her copy:
+   (a) keep both in a single section with no heading between them so they read
+   as one composition; (b) have the area graph inherit the figure's drawing
+   idiom so they are visibly the same hand; (c) only if that reads thin, draw an
+   explicit derivation gesture from the figure into the ring — noting this is
+   the "spine" device already rejected twice as a connector line.
+
+   The load on the copy is smaller than it looks: the page split means the
+   homepage text asserts the relationship once rather than carrying meaning for
+   eight areas.
+
+## Still open
+
+- **Static vs animated.** The figure is currently static SVG; index.html's hero
+  already runs a canvas animation, so a second animated element may be one too
+  many.
+- **Mobile below ~900px.** Measured: at a 760px viewport the area graph's titles
+  fall to ~8px and descriptions to ~6.8px. It needs a different treatment, not a
+  scale-down. The approach figure's warped axis and 20 labels have the same
+  problem and have not been tested narrow at all.
+- **The title.** Shabnam is writing it via `site-content.md`, the normal site
+  copy route. The figure reserves 34px of headroom for it.
+- **Context** is not represented geometrically; it lives only in her sentence
+  ("in the right context"). Judged acceptable — everything the figure draws
+  unfolds over time, and context is the dimension that doesn't.
 
 ## Implementation notes
 

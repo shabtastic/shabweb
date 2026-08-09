@@ -120,7 +120,7 @@ def wrap(text, width):
 
 
 # ------------------------------------------------------------------ graph geometry
-# Identical to treatment A in gen_area_graph.py.
+# Identical to treatment A in area_graph_data.py's mockup-era circle solver.
 W = 1040
 CX = 520
 R = 176
@@ -697,7 +697,3 @@ def svg_fragment():
 
 if __name__ == "__main__":
     print(svg_fragment())
-
-
-if __name__ == "__main__":
-    main()

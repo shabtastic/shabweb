@@ -11,11 +11,16 @@ def test_approach_viewbox():
 
 def test_mobile_viewbox():
     s = approach_mobile.svg_fragment()
+    assert s.startswith("<svg"), s[:40]
     assert 'viewBox="0 0 336 329"' in s
 
 def test_area_graph_viewbox():
+    # Width (1040) is fixed; height is solved dynamically by the label-placement
+    # solver (it depends on how much room the longest area title/description
+    # needs), so only the width half of the viewBox is asserted here.
     s = area_graph.svg_fragment()
     assert s.startswith("<svg"), s[:40]
+    assert 'viewBox="0 0 1040 ' in s, s[:80]
 
 def test_no_generator_writes_html_on_import():
     # importing must not have written any mockup file into figures/

@@ -51,11 +51,23 @@ def test_nodes_are_expandable_buttons():
 def test_each_button_is_followed_by_its_card():
     # Tasks 5 and 6 depend on this adjacency: the CSS selector that reveals a
     # description is [aria-expanded="true"] + .ag-card, so the card must be the
-    # button group's IMMEDIATE next sibling.
+    # button group's IMMEDIATE next sibling. Checked per-area and by matching
+    # id (not just "some </g> precedes some ag-card somewhere") so a stray
+    # <g></g> inserted between a specific button and its own card is caught,
+    # not just masked by a different area's correctly-adjacent pair.
     s = area_graph.svg_fragment()
     assert s.count('class="ag-card"') == 8, s.count('class="ag-card"')
-    pairs = re.findall(r'</g>\s*<g class="ag-card"', s)
-    assert len(pairs) == 8, "cards are not immediate siblings of their buttons: %d" % len(pairs)
+    for cid in area_graph.CIDS:
+        marker = 'aria-controls="ag-card-%d"' % cid
+        i = s.index(marker)
+        close = s.index("</g>", i)  # close of this button group
+        # Next opening <g tag after that close, attributes or not (a bare
+        # "<g></g>" has no space before ">", so search on "<g" not "<g ").
+        nxt = s.index("<g", close)
+        expected = '<g class="ag-card" id="ag-card-%d"' % cid
+        assert s[nxt : nxt + len(expected)] == expected, (
+            "card for area %d is not the button's immediate next sibling" % cid
+        )
 
 if __name__ == "__main__":
     fails = 0

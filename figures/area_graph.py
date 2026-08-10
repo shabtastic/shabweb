@@ -578,9 +578,14 @@ def render_rows(rows, bx, by, bw, bh, side, ink, mark=None):
 def render_head(rows, bx, by, bw, bh, side, ink, href, mark):
     """Render a head block (title lines + disclosure marker), like the "t"
     branch of render_rows, but with the title lines wrapped together in one
-    <a href> tagged class="ag-title" -- the click target into projects.html.
-    The marker stays outside the link, beside the last title line, so it
-    reads as a separate affordance rather than part of the destination text.
+    <a href> -- the click target into projects.html -- and each title
+    <text> element (there may be more than one, for a wrapped title) tagged
+    class="ag-title" directly, not just the wrapping <a>: Task 5's stylesheet
+    targets the text itself, and a rule that doesn't inherit through SVG
+    (e.g. text-anchor, a transform) would silently miss it if the class
+    only sat on the <a>. The marker stays outside the link, beside the last
+    title line, so it reads as a separate affordance rather than part of the
+    destination text.
 
     Head rows are title-only in production (with_tags=False), so this does
     not need render_rows' "d"/"c" branches.
@@ -604,7 +609,7 @@ def render_head(rows, bx, by, bw, bh, side, ink, href, mark):
                 tx = bx - (MARK_GAP + MARK_BOX) / 2
                 mx = tx + tw / 2 + MARK_GAP
         title_parts.append(
-            f'<text x="{tx:.1f}" y="{y - 3.6:.1f}" text-anchor="{side}" '
+            f'<text class="ag-title" x="{tx:.1f}" y="{y - 3.6:.1f}" text-anchor="{side}" '
             f"font-family=\"'Space Mono', monospace\" font-size=\"{TITLE_SIZE}\" "
             f'font-weight="700" fill="{ink}">{esc(v)}</text>'
         )
@@ -616,7 +621,7 @@ def render_head(rows, bx, by, bw, bh, side, ink, href, mark):
                 f"{mark}</text>"
             )
     return (
-        f'<a href="{href}" class="ag-title">' + "".join(title_parts) + "</a>"
+        f'<a href="{href}">' + "".join(title_parts) + "</a>"
         + mark_part
     )
 

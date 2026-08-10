@@ -35,6 +35,28 @@ def test_paths_resolve_inside_this_repo():
         assert os.path.abspath(p).startswith(root + os.sep), p
         assert os.path.exists(p), p
 
+def test_every_node_links_to_projects():
+    # projects.html's real anchor ids include a hyphenated one
+    # (section-agent-state), so the class matches [a-z-]+, not just [a-z]+.
+    s = area_graph.svg_fragment()
+    hrefs = re.findall(r'href="(projects\.html#section-[a-z-]+)"', s)
+    assert len(hrefs) == 8, hrefs
+    assert len(set(hrefs)) == 8, "duplicate hrefs: %r" % hrefs
+
+def test_nodes_are_expandable_buttons():
+    s = area_graph.svg_fragment()
+    assert s.count('aria-expanded="false"') == 8, s.count('aria-expanded="false"')
+    assert s.count('role="button"') == 8
+
+def test_each_button_is_followed_by_its_card():
+    # Tasks 5 and 6 depend on this adjacency: the CSS selector that reveals a
+    # description is [aria-expanded="true"] + .ag-card, so the card must be the
+    # button group's IMMEDIATE next sibling.
+    s = area_graph.svg_fragment()
+    assert s.count('class="ag-card"') == 8, s.count('class="ag-card"')
+    pairs = re.findall(r'</g>\s*<g class="ag-card"', s)
+    assert len(pairs) == 8, "cards are not immediate siblings of their buttons: %d" % len(pairs)
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):

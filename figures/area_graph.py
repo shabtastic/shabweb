@@ -104,6 +104,16 @@ def parse_research_grid():
 
 AREAS = parse_research_grid()
 
+# cluster id -> projects.html section anchor. Read from projects.html itself
+# (grep -o 'id="section-[a-zA-Z0-9-]*"' projects.html), not guessed -- note
+# cid 7 is "section-agent-state" (hyphenated), unlike the other seven.
+SECTION_ANCHOR = {
+    0: "section-motivation", 3: "section-intervention", 1: "section-creativity",
+    2: "section-genai",      4: "section-preference",   7: "section-agent-state",
+    6: "section-consumer",   5: "section-social",
+}
+assert set(SECTION_ANCHOR) == set(CIDS), "SECTION_ANCHOR missing/extra areas"
+
 # ------------------------------------------------------------------ type metrics
 # Space Mono is monospaced at 600/1000 em; letter-spacing adds a flat per-glyph
 # amount. Everything below is measured with these two numbers, so the boxes the
@@ -565,6 +575,52 @@ def render_rows(rows, bx, by, bw, bh, side, ink, mark=None):
     return "".join(out)
 
 
+def render_head(rows, bx, by, bw, bh, side, ink, href, mark):
+    """Render a head block (title lines + disclosure marker), like the "t"
+    branch of render_rows, but with the title lines wrapped together in one
+    <a href> tagged class="ag-title" -- the click target into projects.html.
+    The marker stays outside the link, beside the last title line, so it
+    reads as a separate affordance rather than part of the destination text.
+
+    Head rows are title-only in production (with_tags=False), so this does
+    not need render_rows' "d"/"c" branches.
+    """
+    x0, x1 = bx - bw / 2 + PAD_X, bx + bw / 2 - PAD_X
+    ax = {"start": x0, "end": x1, "middle": bx}[side]
+    y = by - bh / 2 + PAD_Y
+    mrow = mark_row(rows)
+    title_parts, mark_part = [], ""
+    for i, (k, v) in enumerate(rows):
+        assert k == "t", "render_head only handles title rows"
+        y += TITLE_LH
+        tx, mx = ax, None
+        if i == mrow:
+            tw = text_w(v, TITLE_SIZE)
+            if side == "start":
+                mx = ax + tw + MARK_GAP
+            elif side == "end":
+                mx = ax - tw - MARK_GAP - MARK_BOX
+            else:
+                tx = bx - (MARK_GAP + MARK_BOX) / 2
+                mx = tx + tw / 2 + MARK_GAP
+        title_parts.append(
+            f'<text x="{tx:.1f}" y="{y - 3.6:.1f}" text-anchor="{side}" '
+            f"font-family=\"'Space Mono', monospace\" font-size=\"{TITLE_SIZE}\" "
+            f'font-weight="700" fill="{ink}">{esc(v)}</text>'
+        )
+        if mx is not None:
+            mark_part = (
+                f'<text x="{mx + MARK_BOX / 2:.1f}" y="{y - 4.0:.1f}" '
+                f'text-anchor="middle" font-family="\'Space Mono\', monospace" '
+                f'font-size="{MARK_SIZE}" fill="{ink}" fill-opacity="0.9">'
+                f"{mark}</text>"
+            )
+    return (
+        f'<a href="{href}" class="ag-title">' + "".join(title_parts) + "</a>"
+        + mark_part
+    )
+
+
 def box_exit(cx, cy_, w, h, ux, uy):
     """Where the ray from a box centre along (ux,uy) leaves that box."""
     ts = []
@@ -656,26 +712,31 @@ def d_frame(v, prefix, opened=frozenset()):
         r = a_radius(cid)
         is_open = cid in opened
         hx, hy = v["heads"][cid]
-        s.append(
-            f'<g role="button" tabindex="0" aria-expanded="{"true" if is_open else "false"}">'
+        ccx, ccy = v["cards"][cid]
+        href = "projects.html#%s" % SECTION_ANCHOR[cid]
+
+        # Button group: disc, title (wrapped in the projects.html link), marker.
+        head_svg = (
             f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}" '
             f'fill="{rgba(CLUSTER_FILL[cid], 0.62)}" stroke="{ink}" stroke-width="1.8"/>'
-        )
-        if is_open:
-            ccx, ccy = v["cards"][cid]
-            s.append(card_svg(g, hx, hy, ccx, ccy, ink))
-            s.append(
-                render_rows(
-                    g["drows"], ccx, ccy, g["dw"], g["dh"], g["side"], ink
-                )
-            )
-        s.append(
-            render_rows(
-                g["hrows"], hx, hy, g["hw"], g["hh"], g["side"], ink,
+            + render_head(
+                g["hrows"], hx, hy, g["hw"], g["hh"], g["side"], ink, href,
                 mark=MARK_OPEN if is_open else MARK_SHUT,
             )
         )
-        s.append("</g>")
+        s.append(
+            f'<g role="button" tabindex="0" '
+            f'aria-expanded="{"true" if is_open else "false"}" '
+            f'aria-controls="ag-card-{cid}">{head_svg}</g>'
+        )
+
+        # Card group: always emitted (Task 5's CSS hides it at rest via the
+        # [aria-expanded="true"] + .ag-card sibling selector), so it must be
+        # the button group's immediate next sibling.
+        card_content = card_svg(g, hx, hy, ccx, ccy, ink) + render_rows(
+            g["drows"], ccx, ccy, g["dw"], g["dh"], g["side"], ink
+        )
+        s.append(f'<g class="ag-card" id="ag-card-{cid}">{card_content}</g>')
     return f'<svg viewBox="0 0 {W} {H:.0f}" width="100%">' + "".join(s) + "</svg>"
 
 

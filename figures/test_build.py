@@ -13,27 +13,35 @@ def test_inject_is_idempotent():
     once = build.inject(src, "x", "NEW")
     assert build.inject(once, "x", "NEW") == once
 
-def test_inject_is_idempotent_when_payload_contains_marker_like_text():
-    """Known limitation, documented not fixed: inject() finds the closer with
-    html.find(close_tag, start). If the injected payload itself contains the
-    literal closing-marker text, the SECOND run's search stops at the copy
-    embedded in the payload instead of the real closer further along, so the
-    tail between them gets duplicated instead of the file staying idempotent.
-    This asserts what the code actually does today, not what we'd prefer.
-    Task 3's fix-round investigation found the real generators do not
-    currently emit this literal string (see figures/test_build.py's sibling
-    report), so this is a latent risk, not an active bug -- but inject()
-    itself has no guard against it.
+def test_inject_raises_when_payload_contains_its_own_closer():
+    """Guarded, not silently corrupted: a payload containing a literal copy
+    of the closing marker would, without the guard, make a SECOND run's
+    html.find(close_tag, start) stop at the copy embedded in the payload
+    instead of the real closer further along -- truncating/duplicating
+    content instead of staying idempotent. inject() now raises immediately
+    on the first run instead of shipping that landmine.
     """
     src = "a<!-- FIGURE:x -->OLD<!-- /FIGURE:x -->b"
     payload = "NEW<!-- /FIGURE:x -->TAIL"
-    once = build.inject(src, "x", payload)
-    assert once == "a<!-- FIGURE:x -->NEW<!-- /FIGURE:x -->TAIL<!-- /FIGURE:x -->b", once
-    twice = build.inject(once, "x", payload)
-    assert twice != once, "expected the documented corruption, not true idempotency"
-    assert twice == (
-        "a<!-- FIGURE:x -->NEW<!-- /FIGURE:x -->TAIL<!-- /FIGURE:x -->TAIL<!-- /FIGURE:x -->b"
-    ), twice
+    try:
+        build.inject(src, "x", payload)
+    except ValueError:
+        return
+    raise AssertionError("expected ValueError for a payload containing its own closer")
+
+def test_inject_raises_when_payload_contains_its_own_opener():
+    """Symmetric guard: a payload containing a literal copy of the opening
+    marker would corrupt a subsequent run just as badly (a later inject()
+    call for the same marker would find the embedded opener instead of, or
+    in addition to, the real one). Guarded the same way as the closer.
+    """
+    src = "a<!-- FIGURE:x -->OLD<!-- /FIGURE:x -->b"
+    payload = "NEW<!-- FIGURE:x -->TAIL"
+    try:
+        build.inject(src, "x", payload)
+    except ValueError:
+        return
+    raise AssertionError("expected ValueError for a payload containing its own opener")
 
 def test_inject_raises_on_missing_opener():
     try:

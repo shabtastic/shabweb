@@ -115,7 +115,7 @@ over `a` and `button` elements. `cursor: none` on `body`, `a`, `button`.
 |---|---|
 | Hero tagline | `<p class="hero-tagline">` |
 | About copy | `<div class="about-text">` |
-| Research areas | `<div class="research-grid">` — 4 `.research-item` divs |
+| Research areas | `<div class="research-grid">` — 8 `.research-item` divs; below-1000px fallback + source text for the area graph, see "Research visual" below |
 | Featured projects | `<div class="work-list">` — `.work-item` divs |
 | CV entries | `<div class="cv-layout">` |
 | Contact links | `<div class="contact-links">` |

@@ -14,7 +14,17 @@ research-area text in index.html changes:
 
     python3 figures/build.py
 
-Tests: `python3 figures/test_generators.py`
+Tests: `python3 figures/test_generators.py`, `figures/test_build.py`,
+`figures/test_sync.py`
+
+**If `test_sync.py` reports the injected SVG as stale and you don't think it
+should be:** check for a stale `figures/__pycache__/*.pyc` before you believe
+it. A stale compiled module can make the generators' *in-process* output
+disagree with the correct, already-current source — which reads exactly like
+real staleness. Delete `figures/__pycache__/` and re-run `test_sync.py`
+*before* running `build.py` to confirm the failure is real. Doing that in the
+wrong order — running `build.py` first — will inject the stale cache's wrong
+output into `index.html`.
 
 Design doc: docs/superpowers/specs/2026-08-06-homepage-research-visual-design.md
 Mockup history: docs/superpowers/mockups/homepage-research-viz/

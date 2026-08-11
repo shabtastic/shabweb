@@ -262,14 +262,18 @@ section { padding: 7rem 2.5rem; }
   display: block; width: 100%; height: auto;
 }
 /* the mobile figure is drawn for 336px; never let it stretch past that much */
-.research-figure-mobile { max-width: 420px; display: none; }
+.research-figure-mobile { max-width: 420px; }
 
-/* Desktop: figures only. Below 1000px: mobile figure + the original grid. */
-@media (max-width: 999px) {
-  .research-figure, .research-areas { display: none; }
-  .research-figure-mobile { display: block; }
-}
+/* Narrow-first defaults: mobile figure + the original grid. Every width is
+   covered by exactly one of these two states — driven off a single query,
+   so there is no seam a fractional viewport width could fall through. */
+.research-figure { display: none; }
+.research-areas { display: none; }
+.research-figure-mobile { display: block; }
 @media (min-width: 1000px) {
+  .research-figure { display: block; }
+  .research-areas { display: block; }
+  .research-figure-mobile { display: none; }
   .research-grid { display: none; }
 }
 

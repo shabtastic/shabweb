@@ -254,6 +254,32 @@ section { padding: 7rem 2.5rem; }
 .research-content p { font-size: 0.7rem; color: var(--ink-dim); line-height: 1.85; }
 .research-tag { display: inline-block; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-blue); border: 1px solid rgba(26,44,107,0.2); padding: 0.15rem 0.45rem; margin-top: 0.7rem; margin-right: 0.3rem; }
 
+/* --- research visual (see figures/README.md) ------------------------- */
+.research-figure, .research-figure-mobile, .research-areas { margin: 0 auto; }
+.research-figure   { max-width: 1040px; }
+.research-areas    { max-width: 1040px; margin-top: 1.5rem; }
+.research-figure svg, .research-areas svg, .research-figure-mobile svg {
+  display: block; width: 100%; height: auto;
+}
+/* the mobile figure is drawn for 336px; never let it stretch past that much */
+.research-figure-mobile { max-width: 420px; display: none; }
+
+/* Desktop: figures only. Below 1000px: mobile figure + the original grid. */
+@media (max-width: 999px) {
+  .research-figure, .research-areas { display: none; }
+  .research-figure-mobile { display: block; }
+}
+@media (min-width: 1000px) {
+  .research-grid { display: none; }
+}
+
+/* area-graph node styling; the SVG carries no presentation of its own */
+.research-areas a { text-decoration: none; }
+.research-areas .ag-title { font-family: var(--mono); fill: var(--ink); }
+.research-areas [role="button"] { cursor: none; }
+.research-areas .ag-card { display: none; }
+.research-areas [aria-expanded="true"] + .ag-card { display: block; }
+
 #work { background: var(--paper-2); border-top: 1px solid var(--blue-G); }
 .work-list { max-width: 780px; }
 .work-item {

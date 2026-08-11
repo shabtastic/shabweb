@@ -516,6 +516,21 @@ def auto_canvas(geoms, cy0):
     return cy, cy + down + EDGE + 1
 
 
+# The area graph is an interactive diagram, not decoration, so it gets an
+# accessible name the way the two approach figures get role="img" +
+# aria-label -- but role="img" itself would be wrong here since this SVG
+# takes clicks and keyboard input. role="group" + aria-label names the
+# whole interactive diagram; this string is authored (an accessibility
+# attribute, not visible page copy), and is kept factual and brief per the
+# same policy as everything else added outside her scraped text.
+AG_ARIA_LABEL = esc(
+    "Diagram of eight research area nodes arranged in a ring, linked by "
+    "lines whose thickness shows how related each pair of areas is. Each "
+    "node's title opens that area's section on the projects page; its "
+    "marker expands a short description in place."
+)
+
+
 # ------------------------------------------------------------------- rendering
 def render_rows(rows, bx, by, bw, bh, side, ink, mark=None):
     """Draw one block. `mark` renders the disclosure glyph on the title line."""
@@ -742,7 +757,10 @@ def d_frame(v, prefix, opened=frozenset()):
             g["drows"], ccx, ccy, g["dw"], g["dh"], g["side"], ink
         )
         s.append(f'<g class="ag-card" id="ag-card-{cid}">{card_content}</g>')
-    return f'<svg viewBox="0 0 {W} {H:.0f}" width="100%">' + "".join(s) + "</svg>"
+    return (
+        f'<svg viewBox="0 0 {W} {H:.0f}" width="100%" role="group" '
+        f'aria-label="{AG_ARIA_LABEL}">' + "".join(s) + "</svg>"
+    )
 
 
 # ---------------------------------------------------------------- production

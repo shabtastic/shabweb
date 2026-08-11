@@ -48,6 +48,17 @@ def test_nodes_are_expandable_buttons():
     assert s.count('aria-expanded="false"') == 8, s.count('aria-expanded="false"')
     assert s.count('role="button"') == 8
 
+def test_area_graph_has_accessible_name():
+    # Task 4 finding: the area graph is interactive (click/keyboard), so
+    # role="img" (used by the two decorative-ish approach figures) would be
+    # wrong -- it needs a name via role="group" + aria-label instead, and
+    # that label must land on the SVG root, not some inner group.
+    s = area_graph.svg_fragment()
+    root = s[: s.index(">") + 1]
+    assert 'role="group"' in root, root
+    assert 'aria-label="' in root, root
+    assert 'role="img"' not in root, root
+
 def test_each_button_is_followed_by_its_card():
     # Tasks 5 and 6 depend on this adjacency: the CSS selector that reveals a
     # description is [aria-expanded="true"] + .ag-card, so the card must be the

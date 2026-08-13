@@ -108,6 +108,85 @@ def test_area_titles_are_verbatim():
     )
 
 
+def area_descs_from_svg(drawn):
+    """The description actually drawn for each area's card, as one flat
+    string per area, ordered by cluster id (not ring position).
+
+    Mirrors area_titles_from_svg: each card is `<g class="ag-card"
+    id="ag-card-N">...</g>` (figures/area_graph.py's card_svg + render_rows),
+    containing exactly the description's <text> lines (no class attribute
+    distinguishes them, but the card group holds nothing else that renders
+    text) plus the connector path and two background rects. Description
+    wrapping only ever breaks at whitespace (area_graph.py's wrap(), unlike
+    the hyphen-aware wrap_tight() used for the two due-left/due-right
+    titles), so lines are always safe to rejoin with a plain space.
+    """
+    descs = []
+    for cid in area_graph.CIDS:
+        marker = 'id="ag-card-%d"' % cid
+        i = drawn.index(marker)
+        start = drawn.rindex("<g", 0, i)
+        end = drawn.index("</g>", i) + len("</g>")
+        card = drawn[start:end]
+        lines = re.findall(r"<text[^>]*>(.*?)</text>", card, re.S)
+        descs.append(flatten(" ".join(lines)))
+    return descs
+
+
+def test_area_descriptions_are_verbatim():
+    """Same guarantee as test_area_titles_are_verbatim, extended to the
+    eight card descriptions -- equally "her words, verbatim" (CLAUDE.md's
+    Research visual section), but until now only covered transitively by
+    test_injected_matches_generators (which only proves build.py was
+    re-run, not that the description text itself is correct)."""
+    grid = SRC[SRC.index('<div class="research-grid">'):]
+    grid = grid[:grid.index("</section>")]
+    grid_descs = [
+        flatten(re.sub(r"<[^>]+>", "", d))
+        for d in re.findall(r"<p>(.*?)</p>", grid, re.S)
+    ]
+    assert len(grid_descs) == 8, len(grid_descs)
+
+    drawn = block("area-graph")
+    svg_descs = area_descs_from_svg(drawn)
+    assert len(svg_descs) == 8, (
+        "expected 8 area descriptions drawn in the area-graph SVG, found %d: %r"
+        % (len(svg_descs), svg_descs)
+    )
+
+    # Multiset comparison, same reasoning as the title check: card order in
+    # the SVG follows the ring, not the grid's 01-08 order.
+    assert sorted(grid_descs) == sorted(svg_descs), (
+        "research-grid <p> descriptions don't match what's drawn in the "
+        "area-graph SVG — run python3 figures/build.py if the drawing is "
+        "just stale, or fix the mismatched description if it isn't:\n"
+        "  grid descs: %r\n  svg descs:  %r" % (sorted(grid_descs), sorted(svg_descs))
+    )
+
+
+def test_figure_markers_precede_research_grid():
+    """Pins the positional half of the scrape/inject safety argument (the
+    lexical half -- esc() escaping "<" -- is documented as a comment next to
+    area_graph.py's parse_research_grid(), which also asserts it directly at
+    import time).
+
+    area_graph.py scrapes index.html for the eight area titles/descriptions;
+    build.py writes generated SVG into that same file, between the three
+    FIGURE: marker blocks. Those blocks must stay entirely before
+    `<div class="research-grid">` so the scrape window can never contain
+    generated output -- otherwise a future edit that moved the research
+    section above the figures would let the scraper silently feed on its
+    own SVG. This test fails loudly if that ordering ever changes.
+    """
+    grid_i = SRC.index('<div class="research-grid">')
+    for marker in ("approach", "approach-mobile", "area-graph"):
+        o, c = "<!-- FIGURE:%s -->" % marker, "<!-- /FIGURE:%s -->" % marker
+        assert SRC.index(o) < grid_i, (
+            "FIGURE:%s opener is not before .research-grid" % marker)
+        assert SRC.index(c) < grid_i, (
+            "FIGURE:%s closer is not before .research-grid" % marker)
+
+
 def test_no_placeholder_title_in_figures():
     for marker in ("approach", "approach-mobile", "area-graph"):
         b = block(marker).lower()

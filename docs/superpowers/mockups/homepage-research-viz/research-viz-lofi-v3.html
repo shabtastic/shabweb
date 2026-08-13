@@ -1,0 +1,335 @@
+<style>
+  .rv3-wrap { --paper:#f5f2ec; --ink:#111118; --blue:#1a2c6b;
+    --c0:#7777FF; --c1:#C977FF; --c2:#FF77E4; --c3:#FF7792;
+    --c4:#9a7c00; --c4hl:#FFFF77; --c5:#FFAE77; --c6:#77FFE4; --c7:#AAFF77;
+    font-family:'Space Mono', monospace; }
+  .rv3-wrap h2 { font-family:'DM Sans', sans-serif; }
+  .rv3-mockup-title { font-family:'DM Sans', sans-serif; font-weight:700;
+    font-size:1.02rem; margin:0 0 .15rem; color:var(--blue); }
+  .rv3-mockup-desc { font-size:.82rem; line-height:1.45; margin:0;
+    opacity:.82; max-width:66ch; }
+  .rv3-wrap .mockup-body { background:#f5f2ec; padding:0; }
+  .rv3-wrap .option { margin-bottom:1.15rem; }
+  .rv3-wrap svg { display:block; width:100%; height:auto; }
+  .rv3-cap { font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;
+    opacity:.6; margin:.55rem 0 .05rem; }
+  .rv3-legend { display:flex; flex-wrap:wrap; gap:.35rem .8rem;
+    font-size:.7rem; margin:.5rem 0 0; opacity:.85; }
+  .rv3-legend span { display:inline-flex; align-items:center; gap:.3rem; }
+  .rv3-legend i { width:12px; height:12px; border-radius:2px; display:inline-block; }
+  .rv3-svgtext { font-family:'Space Mono', monospace; }
+</style>
+
+<div class="rv3-wrap">
+  <h2>v3 — plain-language phenomenon, A direction only</h2>
+  <p class="subtitle">Same illustration both times — the drawing is identical. Only the wording changes, so you can react to label tone. The 8 research-area names keep their exact names and cluster colors (that's the link to the rest of the site); everything else is now plain, everyday language. Click the tone you prefer and tell me in the terminal.</p>
+
+  <div class="rv3-legend">
+    <span><i style="background:#7777FF"></i>Motivated Learning, Decision Making, &amp; Self Regulation</span>
+    <span><i style="background:#C977FF"></i>Creativity &amp; Design</span>
+    <span><i style="background:#FF77E4"></i>Psychology-Guided Generative AI</span>
+    <span><i style="background:#FF7792"></i>Intervention Science &amp; Applied Behavior Change</span>
+    <span><i style="background:#9a7c00"></i>Preference Elicitation &amp; Prediction</span>
+    <span><i style="background:#FFAE77"></i>Social, Cognitive, &amp; Affective Neuroscience</span>
+    <span><i style="background:#77FFE4"></i>Consumer Psychology &amp; Market Forecasting</span>
+    <span><i style="background:#AAFF77"></i>Agent State Inference</span>
+  </div>
+
+  <!-- ==================== VARIANT 1 : DESCRIPTIVE PLAIN ==================== -->
+  <div class="option" data-choice="V1" onclick="toggleSelect(this)">
+    <span class="letter">1</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">Variant 1 · descriptive plain</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 460" role="img" aria-label="Everyday signals over time combining into a picture of unseen inner states, with the eight research areas pinned in cluster colors">
+            <defs>
+              <pattern id="gV1" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gV1maj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arV1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+              <marker id="arV1i" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#FF7792" stroke-width="1.6"/>
+              </marker>
+            </defs>
+            <rect width="900" height="460" fill="#f5f2ec"/>
+            <rect width="900" height="460" fill="url(#gV1)"/>
+            <rect width="900" height="460" fill="url(#gV1maj)"/>
+
+            <!-- faint plain-language stage brackets across top -->
+            <g stroke="rgba(26,44,107,0.4)" stroke-width="1" fill="none">
+              <path d="M60 40 v-8 h230 v8"/>
+              <path d="M300 40 v-8 h150 v8"/>
+              <path d="M460 40 v-8 h150 v8"/>
+              <path d="M620 40 v-8 h230 v8"/>
+            </g>
+            <g class="rv3-svgtext" font-size="9.5" fill="rgba(26,44,107,0.6)" text-anchor="middle">
+              <text x="175" y="26">new ways of asking</text>
+              <text x="375" y="26">combining signals</text>
+              <text x="535" y="26">modeling</text>
+              <text x="735" y="26">putting it to work</text>
+            </g>
+
+            <!-- physiology trace -->
+            <path d="M70 108 q10 -16 20 0 t20 2 t18 -12 t22 10 t20 -6 t18 8 t22 -10 t20 6 t18 -4 t22 10 t20 -8 t18 6 t22 -2 t20 8 t18 -12"
+                  fill="none" stroke="#FF7792" stroke-width="1.6" opacity="0.5"/>
+            <text x="70" y="98" class="rv3-svgtext" font-size="10" fill="#111118">what the body signals</text>
+
+            <!-- behavior trace -->
+            <path d="M70 162 h22 v-12 h26 v18 h24 v-10 h28 v12 h26 v-16 h30 v10 h26 v-8 h30 v14 h28 v-10 h30 v12 h30 v-16"
+                  fill="none" stroke="#FFAE77" stroke-width="1.6" opacity="0.55"/>
+            <text x="70" y="152" class="rv3-svgtext" font-size="10" fill="#111118">what people do</text>
+
+            <!-- self-report probes -->
+            <g stroke="#7777FF" stroke-width="1.8" opacity="0.55">
+              <line x1="95" y1="222" x2="95" y2="198"/>
+              <line x1="175" y1="222" x2="175" y2="208"/>
+              <line x1="255" y1="222" x2="255" y2="194"/>
+            </g>
+            <g fill="#7777FF" opacity="0.7"><circle cx="95" cy="196" r="3"/><circle cx="175" cy="206" r="3"/><circle cx="255" cy="192" r="3"/></g>
+            <text x="70" y="238" class="rv3-svgtext" font-size="10" fill="#111118">what people say</text>
+
+            <!-- convergence -->
+            <ellipse cx="378" cy="180" rx="60" ry="110" fill="#FFAE77" opacity="0.08"/>
+            <g stroke="rgba(17,17,24,0.30)" stroke-width="1" stroke-dasharray="3 4" fill="none">
+              <path d="M300 112 C 360 170, 350 250, 310 300"/>
+              <path d="M300 158 C 355 200, 350 260, 310 300"/>
+              <path d="M300 210 C 355 240, 350 270, 310 300"/>
+            </g>
+            <text x="330" y="256" class="rv3-svgtext" font-size="9" fill="rgba(17,17,24,0.6)" transform="rotate(7 330 256)">many signals, combined</text>
+
+            <!-- model stage -->
+            <rect x="470" y="70" width="150" height="240" fill="#FF77E4" opacity="0.06"/>
+            <g stroke="#1a2c6b" stroke-width="1.4" fill="none"><circle cx="545" cy="298" r="14"/></g>
+            <g fill="#1a2c6b"><circle cx="539" cy="298" r="2"/><circle cx="545" cy="293" r="2"/><circle cx="551" cy="298" r="2"/><circle cx="545" cy="303" r="2"/></g>
+
+            <!-- latent state trajectory dashed -> solid -->
+            <path d="M120 312 q70 -16 150 -6"
+                  fill="none" stroke="#1a2c6b" stroke-width="3" stroke-dasharray="5 5" opacity="0.85"/>
+            <path d="M270 306 q90 -2 160 -6 t200 -40"
+                  fill="none" stroke="#1a2c6b" stroke-width="3.4"/>
+            <text x="120" y="334" class="rv3-svgtext" font-size="10.5" fill="#1a2c6b">the inner states we can&#39;t directly see →</text>
+
+            <!-- intervention arrow -->
+            <line x1="470" y1="258" x2="470" y2="296" stroke="#FF7792" stroke-width="3" marker-end="url(#arV1i)"/>
+            <text x="476" y="272" class="rv3-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">a nudge</text>
+
+            <!-- time axis + nested timescales seconds->years -->
+            <line x1="60" y1="360" x2="850" y2="360" stroke="#111118" stroke-width="1.4" marker-end="url(#arV1)"/>
+            <g stroke="#1a2c6b" stroke-width="1.1" fill="none">
+              <path d="M70 370 v6 h84 v-6"/>
+              <path d="M164 370 v10 h130 v-10"/>
+              <path d="M304 370 v14 h160 v-14"/>
+              <path d="M474 370 v18 h160 v-18"/>
+              <path d="M644 370 v22 h186 v-22"/>
+            </g>
+            <g class="rv3-svgtext" font-size="9.5" fill="#1a2c6b" text-anchor="middle">
+              <text x="112" y="384">seconds</text>
+              <text x="229" y="388">minutes</text>
+              <text x="384" y="392">hours</text>
+              <text x="554" y="396">days</text>
+              <text x="737" y="400">years</text>
+            </g>
+
+            <!-- ============ 8 cluster-colored area pins (verbatim names) ============ -->
+            <!-- 4 Preference Elicitation & Prediction -> probes -->
+            <g>
+              <rect x="66" y="248" width="188" height="14" rx="2" fill="#FFFF77" opacity="0.75"/>
+              <text x="72" y="259" class="rv3-svgtext" font-size="9.5" fill="#9a7c00" font-weight="700">Preference Elicitation &amp; Prediction</text>
+            </g>
+            <!-- 5 Social, Cognitive, & Affective Neuroscience -> body -->
+            <g>
+              <line x1="300" y1="90" x2="452" y2="90" stroke="#FFAE77" stroke-width="6" opacity="0.85"/>
+              <text x="300" y="86" class="rv3-svgtext" font-size="9.5" fill="#111118">Social, Cognitive, &amp; Affective Neuroscience</text>
+            </g>
+            <!-- 2 Psychology-Guided Generative AI -> model -->
+            <g>
+              <line x1="478" y1="126" x2="612" y2="126" stroke="#FF77E4" stroke-width="6" opacity="0.85"/>
+              <text x="478" y="122" class="rv3-svgtext" font-size="9.5" fill="#111118">Psychology-Guided Generative AI</text>
+            </g>
+            <!-- 7 Agent State Inference -> inference step -->
+            <g>
+              <line x1="300" y1="330" x2="424" y2="330" stroke="#AAFF77" stroke-width="6" opacity="0.9"/>
+              <text x="300" y="326" class="rv3-svgtext" font-size="9.5" fill="#111118">Agent State Inference</text>
+            </g>
+            <!-- 0 Motivated Learning, Decision Making, & Self Regulation -> latent states -->
+            <g>
+              <line x1="120" y1="298" x2="292" y2="298" stroke="#7777FF" stroke-width="6" opacity="0.85"/>
+              <text x="120" y="294" class="rv3-svgtext" font-size="9.5" fill="#111118">Motivated Learning, Decision Making, &amp; Self Regulation</text>
+            </g>
+            <!-- 3 Intervention Science & Applied Behavior Change -> intervention arrow -->
+            <g>
+              <rect x="392" y="238" width="204" height="14" rx="2" fill="#FF7792" opacity="0.5"/>
+              <text x="398" y="249" class="rv3-svgtext" font-size="9.5" fill="#111118">Intervention Science &amp; Applied Behavior Change</text>
+            </g>
+            <!-- 6 Consumer Psychology & Market Forecasting -> downstream -->
+            <g>
+              <line x1="628" y1="180" x2="836" y2="180" stroke="#77FFE4" stroke-width="6" opacity="0.9"/>
+              <text x="628" y="176" class="rv3-svgtext" font-size="9.5" fill="#111118">Consumer Psychology &amp; Market Forecasting</text>
+            </g>
+            <!-- 1 Creativity & Design -> application end -->
+            <g>
+              <line x1="628" y1="212" x2="762" y2="212" stroke="#C977FF" stroke-width="6" opacity="0.85"/>
+              <text x="628" y="208" class="rv3-svgtext" font-size="9.5" fill="#111118">Creativity &amp; Design</text>
+            </g>
+
+            <text x="735" y="248" text-anchor="middle" class="rv3-svgtext" font-size="9" fill="rgba(17,17,24,0.6)">supporting creativity · self-control · lasting change</text>
+          </svg>
+        </div>
+      </div>
+      <div class="rv3-cap">label tone</div>
+      <p class="rv3-mockup-title">Descriptive plain</p>
+      <p class="rv3-mockup-desc">Neutral, explanatory everyday wording — says plainly what each part is. Traces read "what the body signals / what people do / what people say"; the bold line is "the inner states we can't directly see"; downstream, "supporting creativity, self-control, lasting change." Clear and unadorned.</p>
+    </div>
+  </div>
+
+  <!-- ==================== VARIANT 2 : EVOCATIVE PLAIN ==================== -->
+  <div class="option" data-choice="V2" onclick="toggleSelect(this)">
+    <span class="letter">2</span>
+    <div class="content">
+      <div class="mockup">
+        <div class="mockup-header">Variant 2 · evocative plain</div>
+        <div class="mockup-body">
+          <svg viewBox="0 0 900 460" role="img" aria-label="Everyday signals over time combining into a picture of how someone is really doing, with the eight research areas pinned in cluster colors">
+            <defs>
+              <pattern id="gV2" width="16" height="16" patternUnits="userSpaceOnUse">
+                <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+              </pattern>
+              <pattern id="gV2maj" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+              </pattern>
+              <marker id="arV2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#1a2c6b" stroke-width="1.4"/>
+              </marker>
+              <marker id="arV2i" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#FF7792" stroke-width="1.6"/>
+              </marker>
+            </defs>
+            <rect width="900" height="460" fill="#f5f2ec"/>
+            <rect width="900" height="460" fill="url(#gV2)"/>
+            <rect width="900" height="460" fill="url(#gV2maj)"/>
+
+            <!-- faint plain-language stage brackets across top -->
+            <g stroke="rgba(26,44,107,0.4)" stroke-width="1" fill="none">
+              <path d="M60 40 v-8 h230 v8"/>
+              <path d="M300 40 v-8 h150 v8"/>
+              <path d="M460 40 v-8 h150 v8"/>
+              <path d="M620 40 v-8 h230 v8"/>
+            </g>
+            <g class="rv3-svgtext" font-size="9.5" fill="rgba(26,44,107,0.6)" text-anchor="middle">
+              <text x="175" y="26">asking in new ways</text>
+              <text x="375" y="26">putting the pieces together</text>
+              <text x="535" y="26">making sense</text>
+              <text x="735" y="26">helping</text>
+            </g>
+
+            <!-- physiology trace -->
+            <path d="M70 108 q10 -16 20 0 t20 2 t18 -12 t22 10 t20 -6 t18 8 t22 -10 t20 6 t18 -4 t22 10 t20 -8 t18 6 t22 -2 t20 8 t18 -12"
+                  fill="none" stroke="#FF7792" stroke-width="1.6" opacity="0.5"/>
+            <text x="70" y="98" class="rv3-svgtext" font-size="10" fill="#111118">listening to the body</text>
+
+            <!-- behavior trace -->
+            <path d="M70 162 h22 v-12 h26 v18 h24 v-10 h28 v12 h26 v-16 h30 v10 h26 v-8 h30 v14 h28 v-10 h30 v12 h30 v-16"
+                  fill="none" stroke="#FFAE77" stroke-width="1.6" opacity="0.55"/>
+            <text x="70" y="152" class="rv3-svgtext" font-size="10" fill="#111118">watching what we do</text>
+
+            <!-- self-report probes -->
+            <g stroke="#7777FF" stroke-width="1.8" opacity="0.55">
+              <line x1="95" y1="222" x2="95" y2="198"/>
+              <line x1="175" y1="222" x2="175" y2="208"/>
+              <line x1="255" y1="222" x2="255" y2="194"/>
+            </g>
+            <g fill="#7777FF" opacity="0.7"><circle cx="95" cy="196" r="3"/><circle cx="175" cy="206" r="3"/><circle cx="255" cy="192" r="3"/></g>
+            <text x="70" y="238" class="rv3-svgtext" font-size="10" fill="#111118">asking in new ways</text>
+
+            <!-- convergence -->
+            <ellipse cx="378" cy="180" rx="60" ry="110" fill="#FFAE77" opacity="0.08"/>
+            <g stroke="rgba(17,17,24,0.30)" stroke-width="1" stroke-dasharray="3 4" fill="none">
+              <path d="M300 112 C 360 170, 350 250, 310 300"/>
+              <path d="M300 158 C 355 200, 350 260, 310 300"/>
+              <path d="M300 210 C 355 240, 350 270, 310 300"/>
+            </g>
+            <text x="330" y="256" class="rv3-svgtext" font-size="9" fill="rgba(17,17,24,0.6)" transform="rotate(7 330 256)">bringing it together</text>
+
+            <!-- model stage -->
+            <rect x="470" y="70" width="150" height="240" fill="#FF77E4" opacity="0.06"/>
+            <g stroke="#1a2c6b" stroke-width="1.4" fill="none"><circle cx="545" cy="298" r="14"/></g>
+            <g fill="#1a2c6b"><circle cx="539" cy="298" r="2"/><circle cx="545" cy="293" r="2"/><circle cx="551" cy="298" r="2"/><circle cx="545" cy="303" r="2"/></g>
+
+            <!-- latent state trajectory dashed -> solid -->
+            <path d="M120 312 q70 -16 150 -6"
+                  fill="none" stroke="#1a2c6b" stroke-width="3" stroke-dasharray="5 5" opacity="0.85"/>
+            <path d="M270 306 q90 -2 160 -6 t200 -40"
+                  fill="none" stroke="#1a2c6b" stroke-width="3.4"/>
+            <text x="120" y="334" class="rv3-svgtext" font-size="10.5" fill="#1a2c6b">how someone is really doing, moment to moment →</text>
+
+            <!-- intervention arrow -->
+            <line x1="470" y1="258" x2="470" y2="296" stroke="#FF7792" stroke-width="3" marker-end="url(#arV2i)"/>
+            <text x="476" y="272" class="rv3-svgtext" font-size="8.5" fill="rgba(17,17,24,0.6)">a gentle nudge</text>
+
+            <!-- time axis + nested timescales seconds->years -->
+            <line x1="60" y1="360" x2="850" y2="360" stroke="#111118" stroke-width="1.4" marker-end="url(#arV2)"/>
+            <g stroke="#1a2c6b" stroke-width="1.1" fill="none">
+              <path d="M70 370 v6 h84 v-6"/>
+              <path d="M164 370 v10 h130 v-10"/>
+              <path d="M304 370 v14 h160 v-14"/>
+              <path d="M474 370 v18 h160 v-18"/>
+              <path d="M644 370 v22 h186 v-22"/>
+            </g>
+            <g class="rv3-svgtext" font-size="9.5" fill="#1a2c6b" text-anchor="middle">
+              <text x="112" y="384">seconds</text>
+              <text x="229" y="388">minutes</text>
+              <text x="384" y="392">hours</text>
+              <text x="554" y="396">days</text>
+              <text x="737" y="400">years</text>
+            </g>
+
+            <!-- ============ 8 cluster-colored area pins (verbatim names) ============ -->
+            <g>
+              <rect x="66" y="248" width="188" height="14" rx="2" fill="#FFFF77" opacity="0.75"/>
+              <text x="72" y="259" class="rv3-svgtext" font-size="9.5" fill="#9a7c00" font-weight="700">Preference Elicitation &amp; Prediction</text>
+            </g>
+            <g>
+              <line x1="300" y1="90" x2="452" y2="90" stroke="#FFAE77" stroke-width="6" opacity="0.85"/>
+              <text x="300" y="86" class="rv3-svgtext" font-size="9.5" fill="#111118">Social, Cognitive, &amp; Affective Neuroscience</text>
+            </g>
+            <g>
+              <line x1="478" y1="126" x2="612" y2="126" stroke="#FF77E4" stroke-width="6" opacity="0.85"/>
+              <text x="478" y="122" class="rv3-svgtext" font-size="9.5" fill="#111118">Psychology-Guided Generative AI</text>
+            </g>
+            <g>
+              <line x1="300" y1="330" x2="424" y2="330" stroke="#AAFF77" stroke-width="6" opacity="0.9"/>
+              <text x="300" y="326" class="rv3-svgtext" font-size="9.5" fill="#111118">Agent State Inference</text>
+            </g>
+            <g>
+              <line x1="120" y1="298" x2="292" y2="298" stroke="#7777FF" stroke-width="6" opacity="0.85"/>
+              <text x="120" y="294" class="rv3-svgtext" font-size="9.5" fill="#111118">Motivated Learning, Decision Making, &amp; Self Regulation</text>
+            </g>
+            <g>
+              <rect x="392" y="238" width="204" height="14" rx="2" fill="#FF7792" opacity="0.5"/>
+              <text x="398" y="249" class="rv3-svgtext" font-size="9.5" fill="#111118">Intervention Science &amp; Applied Behavior Change</text>
+            </g>
+            <g>
+              <line x1="628" y1="180" x2="836" y2="180" stroke="#77FFE4" stroke-width="6" opacity="0.9"/>
+              <text x="628" y="176" class="rv3-svgtext" font-size="9.5" fill="#111118">Consumer Psychology &amp; Market Forecasting</text>
+            </g>
+            <g>
+              <line x1="628" y1="212" x2="762" y2="212" stroke="#C977FF" stroke-width="6" opacity="0.85"/>
+              <text x="628" y="208" class="rv3-svgtext" font-size="9.5" fill="#111118">Creativity &amp; Design</text>
+            </g>
+
+            <text x="735" y="248" text-anchor="middle" class="rv3-svgtext" font-size="9" fill="rgba(17,17,24,0.6)">helping people create, stay on track, and change</text>
+          </svg>
+        </div>
+      </div>
+      <div class="rv3-cap">label tone</div>
+      <p class="rv3-mockup-title">Evocative plain</p>
+      <p class="rv3-mockup-desc">Warmer, more human phrasing with a bit of voice — "listening to the body / watching what we do / asking in new ways," converging into "how someone is really doing, moment to moment," in service of "helping people create, stay on track, and change." Same clarity, more personality.</p>
+    </div>
+  </div>
+</div>

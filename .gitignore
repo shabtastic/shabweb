@@ -72,3 +72,4 @@ graph/lift-semantic-flagged.json
 
 # Browser automation debug artifacts
 .playwright-mcp/
+.superpowers/

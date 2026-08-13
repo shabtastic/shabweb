@@ -1,0 +1,129 @@
+<style>
+  .rv5-wrap { --paper:#f5f2ec; --ink:#111118; --blue:#1a2c6b;
+    font-family:'Space Mono', monospace; }
+  .rv5-wrap h2 { font-family:'DM Sans', sans-serif; }
+  .rv5-wrap .mockup-body { background:#f5f2ec; padding:0; }
+  .rv5-wrap svg { display:block; width:100%; height:auto; }
+  .rv5-svgtext { font-family:'Space Mono', monospace; }
+  .rv5-note { font-size:.8rem; line-height:1.5; margin:.7rem 0 0; opacity:.8; max-width:66ch; }
+</style>
+
+<div class="rv5-wrap">
+  <h2>v5 — self-evident: no glyphs, labels attached</h2>
+  <p class="subtitle">Every label now points at the thing it names with a little hand-drawn leader, so nothing floats. The abstract model glyph is gone — inference is shown by the blue line going from dashed (a guess) to solid (settled). The grey feeds bend in and merge into that line. Free-form notes welcome in the terminal.</p>
+
+  <div class="mockup">
+    <div class="mockup-header">the phenomenon — signals over one nested timeline</div>
+    <div class="mockup-body">
+      <svg viewBox="0 0 900 500" role="img" aria-label="Body, behavior, and asking signals across one shared timeline, bending together and merging into a line that goes from dashed guess to solid inference of unseen inner states, over nested timescales from seconds contained within years">
+        <defs>
+          <pattern id="gv5" width="16" height="16" patternUnits="userSpaceOnUse">
+            <path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/>
+          </pattern>
+          <pattern id="gv5maj" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/>
+          </pattern>
+          <marker id="arv5i" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6" fill="none" stroke="#FF7792" stroke-width="1.6"/>
+          </marker>
+        </defs>
+        <rect width="900" height="500" fill="#f5f2ec"/>
+        <rect width="900" height="500" fill="url(#gv5)"/>
+        <rect width="900" height="500" fill="url(#gv5maj)"/>
+
+        <!-- ===================== SIGNALS (span full timeline) ===================== -->
+        <!-- BODY: dense continuous fast wiggle -->
+        <path d="M70 118 q10 -12 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"
+              fill="none" stroke="#FF7792" stroke-width="1.4" opacity="0.55"/>
+        <!-- BEHAVIOR: medium-rate trace -->
+        <path d="M70 176 q20 -15 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"
+              fill="none" stroke="#FFAE77" stroke-width="1.8" opacity="0.7"/>
+        <!-- ASKING: sparse discrete marks scattered across the whole axis -->
+        <g stroke="#7777FF" stroke-width="1.8" opacity="0.8">
+          <line x1="150" y1="222" x2="150" y2="238"/>
+          <line x1="252" y1="222" x2="252" y2="238"/>
+          <line x1="372" y1="222" x2="372" y2="238"/>
+          <line x1="486" y1="222" x2="486" y2="238"/>
+          <line x1="628" y1="222" x2="628" y2="238"/>
+          <line x1="784" y1="222" x2="784" y2="238"/>
+        </g>
+        <g class="rv5-svgtext" font-size="12" fill="#7777FF" text-anchor="middle">
+          <text x="150" y="216">?</text><text x="252" y="216">?</text><text x="372" y="216">?</text>
+          <text x="486" y="216">?</text><text x="628" y="216">?</text><text x="784" y="216">?</text>
+        </g>
+
+        <!-- ===================== FEEDS: bend in and MERGE into the blue line ===================== -->
+        <g stroke="rgba(17,17,24,0.30)" stroke-width="1.1" stroke-dasharray="3 4" fill="none">
+          <path d="M232 112 C 258 220, 250 320, 312 342"/>
+          <path d="M312 176 C 330 250, 306 328, 322 344"/>
+          <path d="M392 232 C 404 288, 356 332, 336 345"/>
+        </g>
+
+        <!-- ===================== LATENT LINE: dashed guess -> solid inference ===================== -->
+        <path d="M110 352 q112 -12 222 -10" fill="none" stroke="#1a2c6b" stroke-width="3.2" stroke-dasharray="5 5" opacity="0.85"/>
+        <path d="M332 342 C 470 332, 560 324, 800 300" fill="none" stroke="#1a2c6b" stroke-width="3.6"/>
+
+        <!-- transition tick marking dash -> solid -->
+        <line x1="332" y1="336" x2="332" y2="348" stroke="#1a2c6b" stroke-width="1" opacity="0.5"/>
+
+        <!-- ===================== NUDGE arrow poking the settled line ===================== -->
+        <line x1="600" y1="286" x2="600" y2="314" stroke="#FF7792" stroke-width="3" marker-end="url(#arv5i)"/>
+
+        <!-- ===================== ATTACHED LABELS (each with a sketchy leader) ===================== -->
+        <!-- leaders: thin ink strokes + small target dot -->
+        <g stroke="#111118" stroke-width="1" fill="none" opacity="0.55">
+          <path d="M192 92 q16 6 22 20"/>            <!-- body -->
+          <path d="M150 152 q14 10 22 20"/>          <!-- behavior -->
+          <path d="M140 246 q4 -12 10 -20"/>         <!-- asking say -->
+          <path d="M612 250 q12 -14 16 -24"/>        <!-- asking caption -->
+          <path d="M262 292 q6 -22 8 -40"/>          <!-- many signals -->
+          <path d="M372 306 q-22 20 -36 34"/>        <!-- models / transition -->
+          <path d="M206 372 q0 -16 6 -24"/>          <!-- inner states -> dashed -->
+          <path d="M618 300 q-6 2 -14 3"/>           <!-- a nudge -->
+          <path d="M772 386 C 786 358, 790 330, 790 308"/> <!-- downstream -->
+        </g>
+        <g fill="#111118" opacity="0.7">
+          <circle cx="214" cy="112" r="1.7"/>   <!-- body target -->
+          <circle cx="172" cy="172" r="1.7"/>   <!-- behavior target -->
+          <circle cx="150" cy="224" r="1.7"/>   <!-- asking target -->
+          <circle cx="628" cy="224" r="1.7"/>   <!-- asking caption target -->
+          <circle cx="270" cy="252" r="1.7"/>   <!-- feed target -->
+          <circle cx="335" cy="342" r="1.7"/>   <!-- transition target -->
+          <circle cx="212" cy="347" r="1.7"/>   <!-- dashed line target -->
+          <circle cx="602" cy="301" r="1.7"/>   <!-- nudge target -->
+          <circle cx="790" cy="305" r="1.7"/>   <!-- downstream target -->
+        </g>
+
+        <text x="70" y="90" class="rv5-svgtext" font-size="11" fill="#111118">what the body signals</text>
+        <text x="70" y="150" class="rv5-svgtext" font-size="11" fill="#111118">what people do</text>
+        <text x="70" y="258" class="rv5-svgtext" font-size="11" fill="#111118">what people say</text>
+        <text x="440" y="258" class="rv5-svgtext" font-size="9" fill="rgba(17,17,24,0.6)">we ask in the moment — and across years</text>
+        <text x="150" y="290" class="rv5-svgtext" font-size="9.5" fill="rgba(17,17,24,0.65)">many signals, combined</text>
+        <text x="374" y="304" class="rv5-svgtext" font-size="9.5" fill="rgba(17,17,24,0.65)">models that infer them</text>
+        <text x="120" y="378" class="rv5-svgtext" font-size="11" fill="#1a2c6b">the inner states we can&#39;t directly see →</text>
+        <text x="622" y="298" class="rv5-svgtext" font-size="9.5" fill="rgba(17,17,24,0.7)">a nudge</text>
+        <text x="512" y="392" class="rv5-svgtext" font-size="9.5" fill="rgba(17,17,24,0.7)">supporting creativity · self-control · lasting change</text>
+
+        <!-- ===================== NESTED (containment) TIMESCALES ===================== -->
+        <!-- all anchored at the same left origin; seconds innermost, years outermost -->
+        <g fill="none" stroke="#1a2c6b" stroke-width="1.3">
+          <path d="M60 402 v76 h780 v-76"/>   <!-- years  : outermost -->
+          <path d="M60 402 v62 h640 v-62"/>   <!-- days -->
+          <path d="M60 402 v48 h480 v-48"/>   <!-- hours -->
+          <path d="M60 402 v34 h330 v-34"/>   <!-- minutes -->
+          <path d="M60 402 v20 h190 v-20"/>   <!-- seconds: innermost -->
+        </g>
+        <g class="rv5-svgtext" font-size="10" fill="#1a2c6b" text-anchor="end">
+          <text x="244" y="418">seconds</text>
+          <text x="384" y="432">minutes</text>
+          <text x="534" y="446">hours</text>
+          <text x="694" y="460">days</text>
+          <text x="834" y="474">years</text>
+        </g>
+        <text x="60" y="494" class="rv5-svgtext" font-size="8.5" fill="rgba(17,17,24,0.55)">nested timescales — seconds within minutes within hours within days within years; every signal spans the whole timeline at its own rhythm</text>
+      </svg>
+    </div>
+  </div>
+
+  <p class="rv5-note">Same base drawing, made legible. Three everyday signals — body, behavior, asking — each run across one shared timeline at their own rhythm; the grey feeds bend down and merge into a single blue line that starts dashed (a guess) and firms into solid where the inference settles. A nudge can poke that settled state. Timescales nest by containment. Taxonomy layers back on once this reads clearly on its own.</p>
+</div>

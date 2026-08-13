@@ -142,7 +142,14 @@ either state could fall through.
 
 The `.research-grid` markup stays in the DOM permanently — it is both the
 small-screen fallback AND the source of truth the area graph is generated
-from, not just a legacy leftover.
+from, not just a legacy leftover. That makes `index.html`'s eight
+`.research-item` titles and descriptions the de-facto canonical copy for the
+eight research areas — `figures/area_graph.py` scrapes them from here, not
+from `graph/graph.json`'s cluster names or from `projects.html`'s section
+copy. The eight `<h3>` titles must also byte-match `graph.json`'s
+`meta.clusters[].name` (the scraper asserts this at import time); if you
+rename an area, edit index.html, `projects.html`, and `graph.json` together
+so none of the three silently drifts from the others.
 
 **Never hand-edit the SVG inside index.html.** Edit the generator, then:
 
@@ -153,18 +160,22 @@ from, not just a legacy leftover.
 inject a payload that contains a literal copy of its own markers, and raises
 on a missing marker rather than silently no-opping.
 
-Tests (18 total, plain-assert, run directly — no test runner):
+Tests (20 total, plain-assert, run directly — no test runner):
 `python3 figures/test_generators.py` (9), `figures/test_build.py` (6),
-`figures/test_sync.py` (3, fails if the injected SVG in index.html is stale
-relative to the generators — rerun `python3 figures/build.py` if so). Design
-doc: `docs/superpowers/specs/2026-08-06-homepage-research-visual-design.md`.
+`figures/test_sync.py` (5, fails if the injected SVG in index.html is stale
+relative to the generators — rerun `python3 figures/build.py` if so).
+`test_sync.py` also locks the eight area titles and descriptions verbatim
+against index.html's `.research-grid`, and asserts the three `FIGURE:`
+marker blocks stay before `.research-grid` (see the comment next to
+`parse_research_grid()` in `area_graph.py` for why that ordering matters).
+Design doc: `docs/superpowers/specs/2026-08-06-homepage-research-visual-design.md`.
 Every word in both figures is Shabnam's, verbatim — never reword a label to
 make it fit; drop it instead.
 
 ## Node schema (graph/graph.json)
 Each node: `{id, label, weight, cluster, level, nodes_contributed?}`.
 - `level` (added 2026-05-09): one of `theory | construct | method | mechanism | domain`. graph.html only renders `construct + theory` by default (see `VISIBLE_LEVELS` in graph.html). Reclassify all with `node graph/tool/classify-levels.js --all` (uses claude-opus-4-7).
-- After any change to `graph.json`, run `node data/inline-graph.js` to sync the inlined data blocks in `index.html` and `graph.html`.
+- After any change to `graph.json`, run `node data/inline-graph.js` to sync the inlined data blocks in `index.html` and `graph.html`, **and** `python3 figures/build.py` to regenerate the area graph on index.html (see "Research visual" above) — it also derives from `graph.json` (cluster pair weights, node sizing, ring order), so a `graph/tool/index.js add` or lift/merge run that skips this step ships a stale area graph. `figures/test_sync.py` catches the staleness but only if someone remembers to run it.
 - Labels render lowercase site-wide (applied at render time and requested in the extraction prompt).
 
 ## Cluster color tokens (used on cv.html, projects.html)

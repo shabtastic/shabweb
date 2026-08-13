@@ -112,7 +112,8 @@ def esc(s):
 
 
 # ------------------------------------------------------------------ load data
-G = json.load(open(GRAPH_PATH))
+with open(GRAPH_PATH, encoding="utf-8") as f:
+    G = json.load(f)
 NODES = {n["id"]: n for n in G["nodes"]}
 EDGES = G["edges"]
 CLUSTERS = {c["id"]: c["name"] for c in G["meta"]["clusters"]}

@@ -82,9 +82,31 @@ def clean(s):
 
 
 def parse_research_grid():
-    src = open(INDEX_PATH).read()
+    with open(INDEX_PATH, encoding="utf-8") as f:
+        src = f.read()
     i = src.index('<div class="research-grid">')
+    # `sec` is everything up to </section>, which comes AFTER the .research-grid
+    # div in index.html. build.py injects this module's own output (plus
+    # approach.py's and approach_mobile.py's) into the three FIGURE: marker
+    # blocks, which all sit EARLIER in index.html than .research-grid (see
+    # figures/README.md) -- so `sec` can never contain generated SVG in the
+    # first place. This assert pins that positional fact so a future reorder
+    # of index.html fails loudly instead of silently letting the scraper feed
+    # on its own output; test_sync.py's test_figure_markers_precede_research_grid
+    # pins the same invariant from the other direction (byte offsets in the
+    # file, checked without importing this module).
     sec = src[i : src.index("</section>", i)]
+    assert "<!-- FIGURE:" not in sec, (
+        "a FIGURE: marker block has moved inside the research-grid scrape "
+        "window -- the scraper could now read its own generated output"
+    )
+    # Belt and braces even if that positional guarantee ever broke: every
+    # string captured below is re-emitted only through esc() (see esc() in
+    # area_graph_data.py, imported here as base.esc), which escapes "<". So
+    # even a title/desc/tag containing a literal "<!-- FIGURE:...-->" could
+    # never reconstitute a matching opener/closer once round-tripped through
+    # this module's own rendering -- the self-marker guard in build.py's
+    # inject() is the second, independent line of defense.
     out = {}
     for chunk in sec.split('<span class="research-num">')[1:]:
         title = clean(re.search(r"<h3>(.*?)</h3>", chunk, re.S).group(1))
@@ -173,53 +195,13 @@ def edges_svg(pos, cy):
 
 
 # ------------------------------------------------------------------ label blocks
-# A block is a list of rows; a row is ("t", string) title line or ("c", [chips]).
+# A block is a list of rows; a row is ("t", string) title line or ("d", string)
+# description line. (An earlier "c" chip-row kind existed for the D-tags
+# variant she didn't choose -- see area_graph.py's module docstring -- and is
+# gone along with the rest of that variant.)
 TITLE_SIZE, TITLE_LH, TITLE_WRAP = 12.5, 15.0, 22
 DESC_SIZE, DESC_LH, DESC_WRAP = 10.5, 13.4, 31
-CHIP_SIZE, CHIP_LS, CHIP_LH = 8.0, 1.05, 15.0
-CHIP_PADX, CHIP_GAP = 5.0, 4.0
 PAD_X, PAD_Y = 6.0, 5.0
-CHIP_MAXW = 208.0
-
-
-def chip_w(t):
-    return text_w(t, CHIP_SIZE, CHIP_LS) + 2 * CHIP_PADX
-
-
-def build_block(cid, kind, opened=False):
-    rows = [("t", ln) for ln in wrap(AREAS[cid]["title"], TITLE_WRAP)]
-    if kind == "click":
-        kind = "desc" if opened else "name"
-    if kind == "tags":
-        line, wsum = [], 0.0
-        for t in AREAS[cid]["tags"]:
-            cw = chip_w(t)
-            if line and wsum + CHIP_GAP + cw > CHIP_MAXW:
-                rows.append(("c", line))
-                line, wsum = [t], cw
-            else:
-                wsum += (CHIP_GAP if line else 0) + cw
-                line.append(t)
-        if line:
-            rows.append(("c", line))
-    elif kind == "desc":
-        rows += [("d", ln) for ln in wrap(AREAS[cid]["desc"], DESC_WRAP)]
-    return rows
-
-
-def block_size(rows):
-    w = h = 0.0
-    for i, (k, v) in enumerate(rows):
-        if k == "t":
-            w = max(w, text_w(v, TITLE_SIZE))
-            h += TITLE_LH
-        elif k == "d":
-            w = max(w, text_w(v, DESC_SIZE))
-            h += DESC_LH + (3.0 if i and rows[i - 1][0] == "t" else 0.0)
-        else:
-            w = max(w, sum(chip_w(t) for t in v) + CHIP_GAP * (len(v) - 1))
-            h += CHIP_LH + (3.0 if i and rows[i - 1][0] != "c" else 0.0)
-    return w + 2 * PAD_X, h + 2 * PAD_Y
 
 
 # ------------------------------------------------------------- placement solver
@@ -367,7 +349,6 @@ CARD_GAP = 11.0
 MARK_BOX, MARK_GAP, MARK_SIZE = 12.0, 5.0, 11.0
 MARK_SHUT, MARK_OPEN = "▾", "▴"  # projects.html's .section-arrow
 TITLE_WRAP_TIGHT = 12
-CHIP_MAXW_TIGHT = 118.0
 FLAT = 0.10  # |uy| below this counts as a due-left / due-right node
 
 
@@ -396,7 +377,9 @@ def mark_row(rows):
 
 
 def rows_size(rows, mark=False):
-    """block_size(), plus room for the marker beside the marker row."""
+    """Measure a block of rows -- either a head's "t" rows (mark=True
+    reserves room for the disclosure marker beside the last title line) or
+    a card's "d" rows. A block is never a mix of the two."""
     mrow = mark_row(rows) if mark else -1
     w = h = 0.0
     for i, (k, v) in enumerate(rows):
@@ -406,33 +389,20 @@ def rows_size(rows, mark=False):
                 rw += MARK_GAP + MARK_BOX
             w = max(w, rw)
             h += TITLE_LH
-        elif k == "d":
+        else:
+            assert k == "d", "rows_size only handles title/description rows"
             w = max(w, text_w(v, DESC_SIZE))
             h += DESC_LH + (3.0 if i and rows[i - 1][0] == "t" else 0.0)
-        else:
-            w = max(w, sum(chip_w(t) for t in v) + CHIP_GAP * (len(v) - 1))
-            h += CHIP_LH + (3.0 if i and rows[i - 1][0] != "c" else 0.0)
     return w + 2 * PAD_X, h + 2 * PAD_Y
 
 
-def head_rows(cid, with_tags, tight=False):
+def head_rows(cid, tight=False):
+    """Title-only rows for a node's head block. Production never shows the
+    .research-tag chips at rest (she chose D-plain over D-tags, 2026-08-08),
+    so this returns "t" rows only."""
     title = AREAS[cid]["title"]
     lines = wrap_tight(title, TITLE_WRAP_TIGHT) if tight else wrap(title, TITLE_WRAP)
-    rows = [("t", ln) for ln in lines]
-    if with_tags:
-        cap = CHIP_MAXW_TIGHT if tight else CHIP_MAXW
-        line, wsum = [], 0.0
-        for t in AREAS[cid]["tags"]:
-            cw = chip_w(t)
-            if line and wsum + CHIP_GAP + cw > cap:
-                rows.append(("c", line))
-                line, wsum = [t], cw
-            else:
-                wsum += (CHIP_GAP if line else 0) + cw
-                line.append(t)
-        if line:
-            rows.append(("c", line))
-    return rows
+    return [("t", ln) for ln in lines]
 
 
 def unit(cid):
@@ -445,9 +415,9 @@ def side_of(ux):
     return "start" if ux > 0.15 else ("end" if ux < -0.15 else "middle")
 
 
-def card_geom(cid, with_tags, dwrap, tight):
+def card_geom(cid, dwrap, tight):
     """Head box, card box offset radially outward, and their union AABB."""
-    hrows = head_rows(cid, with_tags, tight)
+    hrows = head_rows(cid, tight)
     hw, hh = rows_size(hrows, mark=True)
     drows = [("d", ln) for ln in wrap(AREAS[cid]["desc"], dwrap)]
     dw, dh = rows_size(drows)
@@ -487,18 +457,18 @@ def head_seed(g, pos):
     return hx - g["head_off"][0], hy - g["head_off"][1]
 
 
-def fit_card(cid, with_tags, cy):
+def fit_card(cid, cy):
     """Widest description measure whose union box still fits the canvas width."""
     ux, uy = unit(cid)
     tight = abs(uy) < FLAT
     pos = positions(cy)
     tries = [DESC_WRAP] if not tight else list(range(DESC_WRAP, 15, -1))
     for dw in tries:
-        g = card_geom(cid, with_tags, dw, tight)
+        g = card_geom(cid, dw, tight)
         sx, _ = head_seed(g, pos)
         if sx - g["aw"] / 2 >= EDGE and sx + g["aw"] / 2 <= W - EDGE:
             return g
-    return card_geom(cid, with_tags, tries[-1], tight)
+    return card_geom(cid, tries[-1], tight)
 
 
 def auto_canvas(geoms, cy0):
@@ -532,67 +502,31 @@ AG_ARIA_LABEL = esc(
 
 
 # ------------------------------------------------------------------- rendering
-def render_rows(rows, bx, by, bw, bh, side, ink, mark=None):
-    """Draw one block. `mark` renders the disclosure glyph on the title line."""
+def render_rows(rows, bx, by, bw, bh, side):
+    """Draw one block of description ("d") rows -- the only kind a card ever
+    holds in production. (Title rows have their own renderer, render_head,
+    because a title is also a click target and carries the disclosure
+    marker; chip ("c") rows belonged to the D-tags variant she didn't
+    choose and never reach this function.)"""
     x0, x1 = bx - bw / 2 + PAD_X, bx + bw / 2 - PAD_X
     ax = {"start": x0, "end": x1, "middle": bx}[side]
     y = by - bh / 2 + PAD_Y
-    mrow = mark_row(rows) if mark else -1
     out = []
     for i, (k, v) in enumerate(rows):
-        if k == "t":
-            y += TITLE_LH
-            tx, mx = ax, None
-            if i == mrow:
-                tw = text_w(v, TITLE_SIZE)
-                if side == "start":
-                    mx = ax + tw + MARK_GAP
-                elif side == "end":
-                    mx = ax - tw - MARK_GAP - MARK_BOX
-                else:
-                    tx = bx - (MARK_GAP + MARK_BOX) / 2
-                    mx = tx + tw / 2 + MARK_GAP
-            out.append(
-                f'<text x="{tx:.1f}" y="{y - 3.6:.1f}" text-anchor="{side}" '
-                f"font-family=\"'Space Mono', monospace\" font-size=\"{TITLE_SIZE}\" "
-                f'font-weight="700" fill="{ink}">{esc(v)}</text>'
-            )
-            if mx is not None:
-                out.append(
-                    f'<text x="{mx + MARK_BOX / 2:.1f}" y="{y - 4.0:.1f}" '
-                    f'text-anchor="middle" font-family="\'Space Mono\', monospace" '
-                    f'font-size="{MARK_SIZE}" fill="{ink}" fill-opacity="0.9">'
-                    f"{mark}</text>"
-                )
-        elif k == "d":
-            y += DESC_LH + (3.0 if i and rows[i - 1][0] == "t" else 0.0)
-            out.append(
-                f'<text x="{ax:.1f}" y="{y - 3.4:.1f}" text-anchor="{side}" '
-                f"font-family=\"'Space Mono', monospace\" font-size=\"{DESC_SIZE}\" "
-                f'fill="{INK}" fill-opacity="0.80">{esc(v)}</text>'
-            )
-        else:
-            y += CHIP_LH + (3.0 if i and rows[i - 1][0] != "c" else 0.0)
-            tot = sum(chip_w(t) for t in v) + CHIP_GAP * (len(v) - 1)
-            cx0 = {"start": x0, "end": x1 - tot, "middle": bx - tot / 2}[side]
-            for t in v:
-                cw = chip_w(t)
-                out.append(
-                    f'<rect x="{cx0:.1f}" y="{y - CHIP_LH + 1.5:.1f}" width="{cw:.1f}" '
-                    f'height="{CHIP_LH - 3:.1f}" rx="1.5" fill="none" '
-                    f'stroke="{rgba(INK_BLUE, 0.28)}" stroke-width="0.9"/>'
-                    f'<text x="{cx0 + CHIP_PADX:.1f}" y="{y - 4.4:.1f}" '
-                    f"font-family=\"'Space Mono', monospace\" font-size=\"{CHIP_SIZE}\" "
-                    f'letter-spacing="{CHIP_LS}" style="text-transform:uppercase" '
-                    f'fill="{INK_BLUE}">{esc(t)}</text>'
-                )
-                cx0 += cw + CHIP_GAP
+        assert k == "d", "render_rows only handles description rows"
+        y += DESC_LH + (3.0 if i and rows[i - 1][0] == "t" else 0.0)
+        out.append(
+            f'<text x="{ax:.1f}" y="{y - 3.4:.1f}" text-anchor="{side}" '
+            f"font-family=\"'Space Mono', monospace\" font-size=\"{DESC_SIZE}\" "
+            f'fill="{INK}" fill-opacity="0.80">{esc(v)}</text>'
+        )
     return "".join(out)
 
 
-def render_head(rows, bx, by, bw, bh, side, ink, href, mark):
-    """Render a head block (title lines + disclosure marker), like the "t"
-    branch of render_rows, but with the title lines wrapped together in one
+def render_head(rows, bx, by, bw, bh, side, ink, href):
+    """Render a head block (title lines + disclosure marker), title-line
+    layout modeled on render_rows' old "t" branch before that branch moved
+    here, but with the title lines wrapped together in one
     <a href> -- the click target into projects.html -- and each title
     <text> element (there may be more than one, for a wrapped title) tagged
     class="ag-title" directly, not just the wrapping <a>: Task 5's stylesheet
@@ -602,8 +536,18 @@ def render_head(rows, bx, by, bw, bh, side, ink, href, mark):
     title line, so it reads as a separate affordance rather than part of the
     destination text.
 
-    Head rows are title-only in production (with_tags=False), so this does
-    not need render_rows' "d"/"c" branches.
+    Both marker glyphs (MARK_SHUT, MARK_OPEN) are emitted at the same
+    position, one per <text>, classed .ag-mark-shut / .ag-mark-open. Which
+    one is visible is decided entirely by CSS off the button group's live
+    aria-expanded state (index.html's [aria-expanded="true"] rules), not by
+    which frame this module happened to render -- so the glyph swap works
+    for a click on any node without a second SVG frame and without moving a
+    single coordinate (both texts occupy the one box already reserved for
+    the marker).
+
+    Head rows are always title-only (head_rows() no longer has a chip path
+    to opt into), so this doesn't need render_rows -- which in turn only
+    ever handles description ("d") rows.
     """
     x0, x1 = bx - bw / 2 + PAD_X, bx + bw / 2 - PAD_X
     ax = {"start": x0, "end": x1, "middle": bx}[side]
@@ -629,11 +573,15 @@ def render_head(rows, bx, by, bw, bh, side, ink, href, mark):
             f'font-weight="700" fill="{ink}">{esc(v)}</text>'
         )
         if mx is not None:
-            mark_part = (
-                f'<text x="{mx + MARK_BOX / 2:.1f}" y="{y - 4.0:.1f}" '
+            mark_part = "".join(
+                f'<text class="{cls}" x="{mx + MARK_BOX / 2:.1f}" y="{y - 4.0:.1f}" '
                 f'text-anchor="middle" font-family="\'Space Mono\', monospace" '
                 f'font-size="{MARK_SIZE}" fill="{ink}" fill-opacity="0.9">'
-                f"{mark}</text>"
+                f"{glyph}</text>"
+                for cls, glyph in (
+                    ("ag-mark-shut", MARK_SHUT),
+                    ("ag-mark-open", MARK_OPEN),
+                )
             )
     return (
         f'<a href="{href}">' + "".join(title_parts) + "</a>"
@@ -681,10 +629,10 @@ def card_svg(g, hx, hy, cx, cy_, ink):
 
 
 # ------------------------------------------------------------------- plate D
-def solve_variant(with_tags, tag):
+def solve_variant(tag):
     """Solve ONE layout per variant; both frames of that variant reuse it."""
     cy0 = 500.0
-    geoms = {cid: fit_card(cid, with_tags, cy0) for cid in ORDER}
+    geoms = {cid: fit_card(cid, cy0) for cid in ORDER}
     cy, H = auto_canvas(geoms, cy0)
     pos = positions(cy)
     sizes = {cid: (geoms[cid]["aw"], geoms[cid]["ah"]) for cid in ORDER}
@@ -741,7 +689,6 @@ def d_frame(v, prefix, opened=frozenset()):
             f'fill="{rgba(CLUSTER_FILL[cid], 0.62)}" stroke="{ink}" stroke-width="1.8"/>'
             + render_head(
                 g["hrows"], hx, hy, g["hw"], g["hh"], g["side"], ink, href,
-                mark=MARK_OPEN if is_open else MARK_SHUT,
             )
         )
         s.append(
@@ -754,7 +701,7 @@ def d_frame(v, prefix, opened=frozenset()):
         # [aria-expanded="true"] + .ag-card sibling selector), so it must be
         # the button group's immediate next sibling.
         card_content = card_svg(g, hx, hy, ccx, ccy, ink) + render_rows(
-            g["drows"], ccx, ccy, g["dw"], g["dh"], g["side"], ink
+            g["drows"], ccx, ccy, g["dw"], g["dh"], g["side"]
         )
         s.append(f'<g class="ag-card" id="ag-card-{cid}">{card_content}</g>')
     return (
@@ -770,7 +717,7 @@ def d_frame(v, prefix, opened=frozenset()):
 # side with each plate on one page) existed only for that comparison — in
 # production the approach figure and the area graph are two separate blocks
 # in index.html (see figures/README.md), so none of that ships here.
-_variant_d_plain = solve_variant(False, "D-plain")
+_variant_d_plain = solve_variant("D-plain")
 SVG = d_frame(_variant_d_plain, "dp1", opened=frozenset())
 
 

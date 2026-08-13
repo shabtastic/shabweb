@@ -231,38 +231,6 @@ def rnd(i):
 def gau(p, c, w):
     return math.exp(-((p - c) / w) ** 2)
 
-def shape(name, x, xs):
-    d = x - xs
-    if name == "heart":
-        per = 22.0; p = (d % per) / per
-        return (-1.0*gau(p,0.20,0.05) + 0.35*gau(p,0.28,0.045) - 0.15*gau(p,0.12,0.04) - 0.22*gau(p,0.60,0.09))
-    if name == "breath":
-        return math.sin(2*math.pi*d/42.0)
-    if name == "skin":
-        v = 0.30*math.sin(2*math.pi*d/120.0)
-        for c in (170, 300, 420):
-            dt = x - c
-            if dt >= 0:
-                v += 0.9*math.exp(-dt/45.0)*(1 - math.exp(-dt/6.0))
-        return v
-    if name == "eyes":
-        seg = int(math.floor(d/11.0))
-        return rnd(seg)*1.8 - 0.9 + 0.12*math.sin(2*math.pi*d/4.0)
-    if name == "behavior":
-        env = (0.5 + 0.5*math.sin(2*math.pi*d/70.0)); env *= env
-        return env*math.sin(2*math.pi*d/13.0 + 1.4*math.sin(2*math.pi*d/47.0))
-    if name == "movement":
-        v = 0.0
-        for c in (170, 260, 330):
-            v += math.exp(-((x-c)/20.0)**2)*math.sin(2*math.pi*(x-c)/11.0)
-        return v
-    if name == "choices":
-        lvl = -0.4
-        for (jx, jl) in [(70,-0.4),(230,0.5),(360,1.0),(520,-0.2),(640,0.6)]:
-            if x >= jx: lvl = jl
-        return lvl
-    return 0.0
-
 NUDGE_X = 600
 NOW_X   = 850          # boundary between observed past and forecast future
 
@@ -530,8 +498,10 @@ for (nm, col, y0, damp, xs, xm, hero) in STRANDS:
 
 # ---------- parity junction trios ----------
 # v15a: no dot trios. PJ_X is still what err_env tightens on, so parity reads
-# through the band and through the strands folding in identically.
-junc_svg = ""
+# through the band and through the strands folding in identically. (The blank
+# line between {est_svg} and {link_svg} in the SVG template below is what's
+# left of this slot -- kept as literal whitespace rather than a named
+# `junc_svg=""` kwarg so the rendered bytes don't move.)
 
 # ---------- asking droplets ----------
 drops = [(150,1.6),(214,1.5),(300,1.6),(346,1.7),(470,1.5),(640,1.7),(732,1.6),(792,1.7)]
@@ -767,7 +737,7 @@ SVG = '''<svg viewBox="0 0 1040 {ch}" role="img" aria-label="A faint true-state 
     {strand_svg}
     {ask_svg}
     {est_svg}
-    {junc_svg}
+    
     {link_svg}
     {nudge_svg}
 
@@ -793,7 +763,7 @@ SVG = '''<svg viewBox="0 0 1040 {ch}" role="img" aria-label="A faint true-state 
   </svg>
 '''.format(tp=TOP_PAD, band_outer=band_outer, band_inner=band_inner, ts_d=ts_d,
            strand_svg=strand_svg, ask_svg=ask_svg, est_svg=est_svg,
-           junc_svg=junc_svg, link_svg=link_svg, nudge_svg=nudge_svg,
+           link_svg=link_svg, nudge_svg=nudge_svg,
            forecast_svg=forecast_svg, now_svg=now_svg, mylbl_svg=mylbl_svg,
            bracket_svg=bracket_svg, tslabel_svg=tslabel_svg, ch=CANVAS_H,
            sfs=SENT_FS, sw=SENT_W, int_col=INT_COL,

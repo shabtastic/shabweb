@@ -19,7 +19,17 @@ import os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-INDEX = os.path.join(ROOT, "index.html")
+# area_graph.py documents and honors WEBSITE_INDEX as an override for which
+# index.html gets scraped (see its own comment: figures/ sits at the repo
+# root, so the repo containing that file is scraped by default, otherwise
+# this script could inject an SVG generated from one repo's index.html into
+# another repo's, e.g. main checkout vs. a worktree). build.py must honor
+# the same override for the same reason -- it reads AND writes index.html,
+# so if it silently used the module-relative default while area_graph.py's
+# scrape used the overridden path, the two could point at different repos
+# and this script would inject a figure generated from one repo's copy into
+# a different repo's index.html.
+INDEX = os.environ.get("WEBSITE_INDEX", os.path.join(ROOT, "index.html"))
 sys.path.insert(0, HERE)
 
 

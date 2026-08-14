@@ -351,6 +351,28 @@ MARK_SHUT, MARK_OPEN = "▾", "▴"  # projects.html's .section-arrow
 TITLE_WRAP_TIGHT = 12
 FLAT = 0.10  # |uy| below this counts as a due-left / due-right node
 
+# Selection is shown with the site's highlighter motif rather than the
+# browser's default focus ring. A <g> has no geometry of its own, so the UA
+# ring boxes the group's whole bounding box -- disc and label together --
+# which reads as a rectangle dropped on the node. A band behind the words is
+# both the site's own vocabulary and tied to the thing that was selected.
+#
+# Geometry mirrors index.html's `.section-label > .hl` gradient (colour from
+# 30% to 85% of the line box, bleeding a few px past each end). Alpha is
+# per-hue: the palette's blues and purples carry far more visual weight than
+# its yellows at equal alpha, and these bands sit behind 12.5px bold mono
+# rather than the 0.72rem letterspaced caps those CSS values were tuned for,
+# so the four dark hues come down from index.html's --hl-a.
+HL_ALPHA = {0: 0.50, 1: 0.45, 2: 0.45, 3: 0.45, 4: 0.75, 5: 0.65, 6: 0.65, 7: 0.65}
+HL_TOP, HL_HEIGHT, HL_BLEED = 0.30, 0.55, 3.0
+
+# The card -- not the title -- is the click target into projects.html, so it
+# carries a visible affordance. The string is graph.html's own (its cluster
+# overlay button, the same operation from the other graph surface), not new
+# copy written for this figure.
+LINK_LABEL = "projects →"
+LINK_GAP = 4.0
+
 
 def wrap_tight(text, width):
     """Greedy wrap that may also break after a hyphen her text already has."""
@@ -389,8 +411,11 @@ def rows_size(rows, mark=False):
                 rw += MARK_GAP + MARK_BOX
             w = max(w, rw)
             h += TITLE_LH
+        elif k == "l":
+            w = max(w, text_w(v, DESC_SIZE))
+            h += DESC_LH + LINK_GAP
         else:
-            assert k == "d", "rows_size only handles title/description rows"
+            assert k == "d", "rows_size only handles title/description/link rows"
             w = max(w, text_w(v, DESC_SIZE))
             h += DESC_LH + (3.0 if i and rows[i - 1][0] == "t" else 0.0)
     return w + 2 * PAD_X, h + 2 * PAD_Y
@@ -419,7 +444,9 @@ def card_geom(cid, dwrap, tight):
     """Head box, card box offset radially outward, and their union AABB."""
     hrows = head_rows(cid, tight)
     hw, hh = rows_size(hrows, mark=True)
-    drows = [("d", ln) for ln in wrap(AREAS[cid]["desc"], dwrap)]
+    drows = [("d", ln) for ln in wrap(AREAS[cid]["desc"], dwrap)] + [
+        ("l", LINK_LABEL)
+    ]
     dw, dh = rows_size(drows)
     ux, uy = unit(cid)
     inf = float("inf")
@@ -495,25 +522,40 @@ def auto_canvas(geoms, cy0):
 # same policy as everything else added outside her scraped text.
 AG_ARIA_LABEL = esc(
     "Diagram of eight research area nodes arranged in a ring, linked by "
-    "lines whose thickness shows how related each pair of areas is. Each "
-    "node's title opens that area's section on the projects page; its "
-    "marker expands a short description in place."
+    "lines whose thickness shows how related each pair of areas is. "
+    "Selecting a node expands a short description of that area in place; "
+    "the description links on to that area's section of the projects page."
 )
 
 
 # ------------------------------------------------------------------- rendering
 def render_rows(rows, bx, by, bw, bh, side):
-    """Draw one block of description ("d") rows -- the only kind a card ever
-    holds in production. (Title rows have their own renderer, render_head,
-    because a title is also a click target and carries the disclosure
-    marker; chip ("c") rows belonged to the D-tags variant she didn't
-    choose and never reach this function.)"""
+    """Draw a card's rows: its description ("d") lines, then the one link
+    ("l") row that names where the card goes. (Title rows have their own
+    renderer, render_head, because a title carries the disclosure marker;
+    chip ("c") rows belonged to the D-tags variant she didn't choose and
+    never reach this function.)
+
+    The link row is drawn in ink-blue at full opacity against description
+    text at 0.80, so it separates from the paragraph without needing a rule
+    or a box. It is not itself a link element -- the whole card is wrapped
+    in the <a> by render_area_graph, so the paragraph is clickable too and
+    this row is the affordance saying so."""
     x0, x1 = bx - bw / 2 + PAD_X, bx + bw / 2 - PAD_X
     ax = {"start": x0, "end": x1, "middle": bx}[side]
     y = by - bh / 2 + PAD_Y
     out = []
     for i, (k, v) in enumerate(rows):
-        assert k == "d", "render_rows only handles description rows"
+        assert k in ("d", "l"), "render_rows only handles description/link rows"
+        if k == "l":
+            y += DESC_LH + LINK_GAP
+            out.append(
+                f'<text class="ag-link" x="{ax:.1f}" y="{y - 3.4:.1f}" '
+                f'text-anchor="{side}" '
+                f"font-family=\"'Space Mono', monospace\" font-size=\"{DESC_SIZE}\" "
+                f'fill="{INK_BLUE}">{esc(v)}</text>'
+            )
+            continue
         y += DESC_LH + (3.0 if i and rows[i - 1][0] == "t" else 0.0)
         out.append(
             f'<text x="{ax:.1f}" y="{y - 3.4:.1f}" text-anchor="{side}" '
@@ -523,18 +565,25 @@ def render_rows(rows, bx, by, bw, bh, side):
     return "".join(out)
 
 
-def render_head(rows, bx, by, bw, bh, side, ink, href):
+def render_head(rows, bx, by, bw, bh, side, ink, hl):
     """Render a head block (title lines + disclosure marker), title-line
     layout modeled on render_rows' old "t" branch before that branch moved
-    here, but with the title lines wrapped together in one
-    <a href> -- the click target into projects.html -- and each title
-    <text> element (there may be more than one, for a wrapped title) tagged
-    class="ag-title" directly, not just the wrapping <a>: Task 5's stylesheet
-    targets the text itself, and a rule that doesn't inherit through SVG
-    (e.g. text-anchor, a transform) would silently miss it if the class
-    only sat on the <a>. The marker stays outside the link, beside the last
-    title line, so it reads as a separate affordance rather than part of the
-    destination text.
+    here. Each title <text> element (there may be more than one, for a
+    wrapped title) is tagged class="ag-title" directly: index.html's
+    stylesheet targets the text itself, and a rule that doesn't inherit
+    through SVG (e.g. text-anchor, a transform) would silently miss it if
+    the class sat on a wrapper instead.
+
+    Nothing here is a link. The head used to wrap its title lines in the
+    <a href> into projects.html; the card carries that now (see
+    render_area_graph), which makes the whole group a plain button -- one
+    tab stop, no interactive element nested inside another -- and puts the
+    destination next to the description that describes it.
+
+    Each title line also gets an .ag-hl band behind it, emitted before its
+    <text> so paint order puts it underneath. The band is invisible at rest
+    and revealed by CSS when the group is expanded or focused; see HL_ALPHA
+    for why the colour is per-cluster.
 
     Both marker glyphs (MARK_SHUT, MARK_OPEN) are emitted at the same
     position, one per <text>, classed .ag-mark-shut / .ag-mark-open. Which
@@ -547,7 +596,7 @@ def render_head(rows, bx, by, bw, bh, side, ink, href):
 
     Head rows are always title-only (head_rows() no longer has a chip path
     to opt into), so this doesn't need render_rows -- which in turn only
-    ever handles description ("d") rows.
+    ever handles a card's description and link rows.
     """
     x0, x1 = bx - bw / 2 + PAD_X, bx + bw / 2 - PAD_X
     ax = {"start": x0, "end": x1, "middle": bx}[side]
@@ -558,8 +607,8 @@ def render_head(rows, bx, by, bw, bh, side, ink, href):
         assert k == "t", "render_head only handles title rows"
         y += TITLE_LH
         tx, mx = ax, None
+        tw = text_w(v, TITLE_SIZE)
         if i == mrow:
-            tw = text_w(v, TITLE_SIZE)
             if side == "start":
                 mx = ax + tw + MARK_GAP
             elif side == "end":
@@ -567,6 +616,15 @@ def render_head(rows, bx, by, bw, bh, side, ink, href):
             else:
                 tx = bx - (MARK_GAP + MARK_BOX) / 2
                 mx = tx + tw / 2 + MARK_GAP
+        # Band spans the text's own extent, not the head box: the box is sized
+        # to the widest line, and a band drawn to that width would sit past the
+        # end of every shorter line, reading as a panel instead of a stroke.
+        hx = {"start": tx, "end": tx - tw, "middle": tx - tw / 2}[side] - HL_BLEED
+        title_parts.append(
+            f'<rect class="ag-hl" x="{hx:.1f}" y="{y - TITLE_LH * (1 - HL_TOP):.1f}" '
+            f'width="{tw + 2 * HL_BLEED:.1f}" height="{TITLE_LH * HL_HEIGHT:.1f}" '
+            f'fill="{hl}"/>'
+        )
         title_parts.append(
             f'<text class="ag-title" x="{tx:.1f}" y="{y - 3.6:.1f}" text-anchor="{side}" '
             f"font-family=\"'Space Mono', monospace\" font-size=\"{TITLE_SIZE}\" "
@@ -583,10 +641,7 @@ def render_head(rows, bx, by, bw, bh, side, ink, href):
                     ("ag-mark-open", MARK_OPEN),
                 )
             )
-    return (
-        f'<a href="{href}">' + "".join(title_parts) + "</a>"
-        + mark_part
-    )
+    return "".join(title_parts) + mark_part
 
 
 def box_exit(cx, cy_, w, h, ux, uy):
@@ -683,12 +738,15 @@ def d_frame(v, prefix, opened=frozenset()):
         ccx, ccy = v["cards"][cid]
         href = "projects.html#%s" % SECTION_ANCHOR[cid]
 
-        # Button group: disc, title (wrapped in the projects.html link), marker.
+        # Button group: disc, title (with its highlighter band), marker. No
+        # link inside it -- the group is a button and nothing else, so it is
+        # one tab stop and carries no nested interactive element.
         head_svg = (
             f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}" '
             f'fill="{rgba(CLUSTER_FILL[cid], 0.62)}" stroke="{ink}" stroke-width="1.8"/>'
             + render_head(
-                g["hrows"], hx, hy, g["hw"], g["hh"], g["side"], ink, href,
+                g["hrows"], hx, hy, g["hw"], g["hh"], g["side"], ink,
+                rgba(CLUSTER_FILL[cid], HL_ALPHA[cid]),
             )
         )
         s.append(
@@ -700,10 +758,19 @@ def d_frame(v, prefix, opened=frozenset()):
         # Card group: always emitted (Task 5's CSS hides it at rest via the
         # [aria-expanded="true"] + .ag-card sibling selector), so it must be
         # the button group's immediate next sibling.
+        #
+        # The <a> lives here, inside the card, wrapping panel and text alike:
+        # the whole card is the click target into projects.html and its last
+        # row says where that goes. Because the card is display:none at rest,
+        # this link is only focusable while its description is open, so the
+        # ring's tab order stays eight stops until a reader opens something.
         card_content = card_svg(g, hx, hy, ccx, ccy, ink) + render_rows(
             g["drows"], ccx, ccy, g["dw"], g["dh"], g["side"]
         )
-        s.append(f'<g class="ag-card" id="ag-card-{cid}">{card_content}</g>')
+        s.append(
+            f'<g class="ag-card" id="ag-card-{cid}">'
+            f'<a href="{href}">{card_content}</a></g>'
+        )
     return (
         f'<svg viewBox="0 0 {W} {H:.0f}" width="100%" role="group" '
         f'aria-label="{AG_ARIA_LABEL}">' + "".join(s) + "</svg>"

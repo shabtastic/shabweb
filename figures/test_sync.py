@@ -58,24 +58,27 @@ def area_titles_from_svg(drawn):
 
     Each area's title is split across one or more sibling
     <text class="ag-title">...</text> elements — the wrap points area_graph.py
-    chose for that title's line length — all wrapped in a single
-    <a href="projects.html#...">...</a> click target. A substring check
-    against the raw SVG markup would either miss a real mismatch (if the
-    corrupted text happens to still appear as a substring somewhere) or
-    reject a correct page (if a legitimately wrapped title never appears as
-    one contiguous substring). So this reconstructs each area's title by
-    concatenating its <text class="ag-title"> line contents in document
-    order (see join_title_lines for the hyphen-wrap subtlety), unescaping
-    entities the same way as the grid side, and returns one string per area
-    node — order-independent, ready for a set/multiset comparison against
-    the grid's <h3> titles.
+    chose for that title's line length — inside that node's
+    <g role="button" ...> group. (The group used to hold an
+    <a href="projects.html#..."> around those lines, and this function used
+    to key off it; the link moved into the card, so the button group itself
+    is now the boundary.) A substring check against the raw SVG markup would
+    either miss a real mismatch (if the corrupted text happens to still
+    appear as a substring somewhere) or reject a correct page (if a
+    legitimately wrapped title never appears as one contiguous substring).
+    So this reconstructs each area's title by concatenating its
+    <text class="ag-title"> line contents in document order (see
+    join_title_lines for the hyphen-wrap subtlety), unescaping entities the
+    same way as the grid side, and returns one string per area node —
+    order-independent, ready for a set/multiset comparison against the
+    grid's <h3> titles.
     """
     titles = []
-    for a_body in re.findall(
-        r'<a href="projects\.html#[^"]*">(.*?)</a>', drawn, re.S
+    for g_body in re.findall(
+        r'<g role="button"[^>]*>(.*?)</g>', drawn, re.S
     ):
         lines = re.findall(
-            r'<text class="ag-title"[^>]*>(.*?)</text>', a_body, re.S
+            r'<text class="ag-title"[^>]*>(.*?)</text>', g_body, re.S
         )
         titles.append(flatten(join_title_lines(lines)))
     return titles
@@ -114,12 +117,21 @@ def area_descs_from_svg(drawn):
 
     Mirrors area_titles_from_svg: each card is `<g class="ag-card"
     id="ag-card-N">...</g>` (figures/area_graph.py's card_svg + render_rows),
-    containing exactly the description's <text> lines (no class attribute
-    distinguishes them, but the card group holds nothing else that renders
-    text) plus the connector path and two background rects. Description
-    wrapping only ever breaks at whitespace (area_graph.py's wrap(), unlike
-    the hyphen-aware wrap_tight() used for the two due-left/due-right
-    titles), so lines are always safe to rejoin with a plain space.
+    containing the description's <text> lines plus the connector path and
+    two background rects.
+
+    One <text> in the card is NOT her description: the final
+    <text class="ag-link"> row (area_graph.py's LINK_LABEL, "projects →"),
+    which is our affordance copy naming where the card goes. It is excluded
+    here so this test keeps comparing her words to her words — if it were
+    folded in, every area would mismatch the grid by a trailing label and
+    the verbatim guarantee this test exists to enforce would have to be
+    loosened to a substring check.
+
+    Description wrapping only ever breaks at whitespace (area_graph.py's
+    wrap(), unlike the hyphen-aware wrap_tight() used for the two
+    due-left/due-right titles), so lines are always safe to rejoin with a
+    plain space.
     """
     descs = []
     for cid in area_graph.CIDS:
@@ -128,7 +140,11 @@ def area_descs_from_svg(drawn):
         start = drawn.rindex("<g", 0, i)
         end = drawn.index("</g>", i) + len("</g>")
         card = drawn[start:end]
-        lines = re.findall(r"<text[^>]*>(.*?)</text>", card, re.S)
+        lines = [
+            body
+            for tag, body in re.findall(r"<text([^>]*)>(.*?)</text>", card, re.S)
+            if 'class="ag-link"' not in tag
+        ]
         descs.append(flatten(" ".join(lines)))
     return descs
 

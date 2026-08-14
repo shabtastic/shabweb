@@ -7,7 +7,26 @@ down so they are not rediscovered from scratch.
 Design doc: `2026-08-06-homepage-research-visual-design.md`
 Plan: `../plans/2026-08-09-homepage-research-visual.md`
 
-## Needs Shabnam's decision
+## Resolved 2026-08-14
+
+**Two tab stops per area node — fixed, and not by the route sketched below.**
+Rather than moving `role="button"` onto the marker, the *link* moved: out of
+the button group entirely and into the card, where it wraps the whole panel
+and carries a `projects →` row as its affordance. That was Shabnam's call for
+interaction reasons (the card should be what takes you to the projects page,
+with something visible to click), and it dissolves the ARIA problem as a side
+effect — the group is now a button containing nothing interactive, so there is
+no nesting to work around and no `:has()` selector needed. Eight tab stops at
+rest; a card's link is focusable only while that card is open, since a closed
+card is `display: none`. Guarded by
+`test_the_link_lives_in_the_card_not_the_button` and
+`test_card_names_where_it_goes` in `figures/test_generators.py`.
+
+Selection also stopped relying on the UA focus ring, which boxed each group's
+whole bounding box: it now shows as a highlighter band behind the title, in
+that cluster's palette colour, doubling as the `:focus-visible` indicator.
+
+The original write-up follows, for the reasoning it records.
 
 **Two tab stops per area node.** Each node is a `role="button"` group with
 `tabindex="0"` that *contains* a real `<a href="projects.html#…">` around the

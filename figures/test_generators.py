@@ -48,6 +48,41 @@ def test_nodes_are_expandable_buttons():
     assert s.count('aria-expanded="false"') == 8, s.count('aria-expanded="false"')
     assert s.count('role="button"') == 8
 
+def test_the_link_lives_in_the_card_not_the_button():
+    # The link into projects.html used to wrap each node's title INSIDE the
+    # role="button" group -- an <a> nested in a button, which is an ARIA
+    # anti-pattern (two tab stops per node, and the children-presentational
+    # rule lets assistive tech drop the eight links from its link list). It
+    # now lives inside the card instead. Two things must hold, and neither is
+    # implied by test_every_node_links_to_projects, which only counts hrefs:
+    #   1. no <a> anywhere inside a button group, or the anti-pattern is back;
+    #   2. exactly one <a> per card, carrying that area's own anchor.
+    s = area_graph.svg_fragment()
+    for g_body in re.findall(r'<g role="button"[^>]*>(.*?)</g>', s, re.S):
+        assert "<a " not in g_body and "<a>" not in g_body, (
+            "a link is nested inside a role=button group: %r" % g_body[:120]
+        )
+    for cid in area_graph.CIDS:
+        marker = 'id="ag-card-%d"' % cid
+        i = s.index(marker)
+        card = s[s.rindex("<g", 0, i) : s.index("</g>", i)]
+        hrefs = re.findall(r'<a href="(projects\.html#[^"]+)"', card)
+        assert hrefs == ["projects.html#%s" % area_graph.SECTION_ANCHOR[cid]], (
+            "card %d should hold exactly its own projects link, got %r"
+            % (cid, hrefs)
+        )
+
+def test_card_names_where_it_goes():
+    # The card is the click target, so it must carry a visible affordance
+    # saying so -- an unlabeled clickable panel is the failure mode this
+    # replaced the title-link with. One .ag-link row per card, and its text
+    # is LINK_LABEL, which is graph.html's existing string rather than new
+    # copy invented for the figure.
+    s = area_graph.svg_fragment()
+    rows = re.findall(r'<text class="ag-link"[^>]*>(.*?)</text>', s, re.S)
+    assert len(rows) == 8, rows
+    assert set(rows) == {area_graph.esc(area_graph.LINK_LABEL)}, rows
+
 def test_area_graph_has_accessible_name():
     # Task 4 finding: the area graph is interactive (click/keyboard), so
     # role="img" (used by the two decorative-ish approach figures) would be

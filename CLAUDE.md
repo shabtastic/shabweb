@@ -137,8 +137,18 @@ either state could fall through.
   `figures/area_graph.py` (rendering) + `figures/area_graph_data.py` (graph
   loading, cluster-pair weights, the circular layout solver), which scrape
   the area titles verbatim out of index.html's `.research-grid` `<h3>`s.
-  Each node links to its `projects.html#section-…` anchor (e.g. Agent State
-  Inference → `#section-agent-state`).
+  **Interaction (changed 2026-08-14):** the node group is a plain button —
+  clicking anywhere in it (disc, title, ▾ marker) opens that area's card, and
+  selection shows as a highlighter band behind the title in the cluster's
+  palette colour (`HL_ALPHA` in `area_graph.py`, per-hue because the palette's
+  blues outweigh its yellows at equal alpha). The band doubles as the
+  `:focus-visible` indicator, replacing Chrome's default ring, which boxed the
+  whole group because a `<g>` has no geometry of its own. The link to
+  `projects.html#section-…` lives **inside the card**, wrapping panel and text,
+  with a `projects →` row as its affordance (the string is graph.html's, not
+  new copy). Never put the link back in the button group — that's the ARIA
+  nesting anti-pattern, and `test_the_link_lives_in_the_card_not_the_button`
+  fails if you do.
 
 The `.research-grid` markup stays in the DOM permanently — it is both the
 small-screen fallback AND the source of truth the area graph is generated
@@ -160,8 +170,8 @@ so none of the three silently drifts from the others.
 inject a payload that contains a literal copy of its own markers, and raises
 on a missing marker rather than silently no-opping.
 
-Tests (20 total, plain-assert, run directly — no test runner):
-`python3 figures/test_generators.py` (9), `figures/test_build.py` (6),
+Tests (22 total, plain-assert, run directly — no test runner):
+`python3 figures/test_generators.py` (11), `figures/test_build.py` (6),
 `figures/test_sync.py` (5, fails if the injected SVG in index.html is stale
 relative to the generators — rerun `python3 figures/build.py` if so).
 `test_sync.py` also locks the eight area titles and descriptions verbatim
@@ -227,7 +237,7 @@ graph.html has its own full-screen canvas UI.
 2. **Homepage research visual (index.html)** — implemented (generators, tests, CSS, injection into index.html) but NOT yet merged to main and NOT live; lives on branch/worktree `worktree-homepage-research-viz`. Open decisions before merge:
    - **Static vs animated** — shipping static. index.html's hero already runs a canvas animation; a second animated element is a separate call, deferred.
    - **The section title** — Shabnam is writing it via site-content.md; the approach figure already reserves 34px of headroom for it, and index.html carries a comment, not a placeholder heading, in the meantime. One line of connective copy between the two figures is expected alongside it, also hers.
-   - **Accessibility** — each area-graph node currently produces two tab stops because a real `<a>` is nested inside a `role="button"` group (an ARIA anti-pattern). Known, deferred for Shabnam's call at merge time, not yet fixed.
+   - ~~**Accessibility** — two tab stops per node, `<a>` nested in `role="button"`~~ — fixed 2026-08-14 by moving the link out of the button group and into the card (below), which removed the nesting rather than working around it. 8 tab stops at rest; a card's link becomes focusable only while that card is open.
 3. ~~**Review/edit about copy on index.html**~~ — done. Shabnam rewrote the About section copy (2026-07-26) in her own voice.
 4. ~~**CV PDF link**~~ — done. Contact section links to cv-viewer.html.
 5. ~~**Mobile CSS pass**~~ — done. Nav overflow fixed on all pages; cursor reset on mobile; graph.html stacks canvas/sidebar.

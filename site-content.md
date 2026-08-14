@@ -56,6 +56,20 @@ When done, let Claude know and it will update the HTML.
 
 ---
 
+## Research — section title
+*Heading above the two research figures (the approach figure and the area graph). The approach figure reserves 34px of headroom for it, so one line fits cleanly.*
+
+> [BLANK]
+
+---
+
+## Research — connective thread
+*One line between the approach figure (how the work is approached) and the area graph (what the areas are, and how they relate).*
+
+> [BLANK]
+
+---
+
 ## Research areas (8 items on the home page — one per research cluster, same taxonomy as graph.html/projects.html)
 *Title + 1–2 sentence description + tags for each. Descriptions reused verbatim from the GRAPH.HTML cluster blurbs below so the homepage, graph, and projects page all describe each cluster the same way.*
 

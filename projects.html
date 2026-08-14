@@ -619,6 +619,18 @@ function expandSectionFromHash() {
 }
 window.addEventListener('hashchange', expandSectionFromHash);
 
+// Arriving from another page (e.g. the homepage area graph, which links to
+// projects.html#section-…) is a load, not a hashchange, so the listener above
+// never fires and the visitor lands on a collapsed section. Expand on load
+// too — but not on reload, which is the case that made this call get removed
+// the first time: a stale hash would reopen a section the reader had just
+// closed. Navigation Timing tells the two apart.
+(function () {
+  var nav = performance.getEntriesByType('navigation')[0];
+  if (nav && nav.type === 'reload') return;
+  expandSectionFromHash();
+})();
+
 // Cursor
 (function() {
   const cursor = document.getElementById('cursor');

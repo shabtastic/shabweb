@@ -47,7 +47,7 @@ When done, let Claude know and it will update the HTML.
 
 > I'm a Senior Research Scientist in Human-Centered AI at the Toyota Research Institute. My research sits at the intersection of behavioral science, neuroscience, and AI, combining theory- and data-driven approaches to investigate how context modulates learning and decision-making. I translate this work to building new technologies that help individuals and organizations meet their goals.
 
-> I'm particularly interested in motivation, flexible self-regulation, and precision interventions for behavior change. I use diverse methods including neuroimaging, physiological monitoring, and experience sampling to sample and understand individual experience in context. I develop both novel elicitation methods and computational models, prioritizing diverse sensors and signals that can robustly capture human experience as it evolves over time. By leveraging varied signals and their dynamics across temporal and spatial contexts, my work improves understanding of complex psychological phenomena and identifies new, more precise targets for intervention.
+> I'm particularly interested in motivation, flexible self regulation, and precision interventions for behavior change. I use diverse methods including neuroimaging, physiological monitoring, and experience sampling to sample and understand individual experience in context. I develop both novel elicitation methods and computational models, prioritizing diverse sensors and signals that can robustly capture human experience as it evolves over time. By leveraging varied signals and their dynamics across temporal and spatial contexts, my work improves understanding of complex psychological phenomena and identifies new, more precise targets for intervention.
 
 > My current work focuses on two questions: 
 1. Can novel preference elicitation methods be used to improve consumer preference prediction and forecasting, especially for innovative products?
@@ -57,16 +57,23 @@ When done, let Claude know and it will update the HTML.
 ---
 
 ## Research — section title
-*Heading above the two research figures (the approach figure and the area graph). The approach figure reserves 34px of headroom for it, so one line fits cleanly.*
+*Heading for the whole research section, above both figures. One line fits cleanly at the size it'll be set (~2.4rem); much longer and it wraps.*
 
-> [BLANK]
+> My approach
 
 ---
 
-## Research — connective thread
-*One line between the approach figure (how the work is approached) and the area graph (what the areas are, and how they relate).*
+## Research — figure subtitle
+*Sits under the section title and above the first figure (the state-estimation one), describing what that figure shows. Reads as belonging to that figure, so keep it about the approach itself, not about the eight areas below.*
 
-> [BLANK]
+> I use a variety of signals with different properties to estimate each individual's inner experience. By better understanding each individual in context, we can develop more precise, effective interventions to support their goals, values, and wellbeing.
+
+---
+
+## Research — area graph line
+*Optional. One line above the eight-node area graph, for the relationship between the two figures — the areas emerged from working the way the first figure shows, rather than being pieces of it. Leave blank to say nothing and let the layout imply it.*
+
+> This approach spans my multidisciplinary research program.
 
 ---
 
@@ -77,7 +84,7 @@ When done, let Claude know and it will update the HTML.
 ### 01 — Motivated Learning, Decision Making, & Self Regulation
 > How motivation, reward, and self-control shape learning and choice, with an emphasis on flexible, goal-directed decision making in real-world settings.
 
-Tags: Motivation · Self-regulation · Decision science · Neuroimaging
+Tags: Motivation · Self regulation · Decision science · Neuroimaging
 
 
 ### 02 — Intervention Science & Applied Behavior Change

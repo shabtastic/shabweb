@@ -66,14 +66,14 @@ When done, let Claude know and it will update the HTML.
 ## Research — figure subtitle
 *Sits under the section title and above the first figure (the state-estimation one), describing what that figure shows. Reads as belonging to that figure, so keep it about the approach itself, not about the eight areas below.*
 
-> I use a variety of signals with different properties to estimate each individual's inner experience. By better understanding each individual in context, we can develop more precise, effective interventions to support their goals, values, and wellbeing.
+> I use a variety of signals to estimate each individual's internal experience as it evolves over time. By better understanding each individual in context, we can develop more precise, effective interventions to support their goals, values, and wellbeing.
 
 ---
 
 ## Research — area graph line
 *Optional. One line above the eight-node area graph, for the relationship between the two figures — the areas emerged from working the way the first figure shows, rather than being pieces of it. Leave blank to say nothing and let the layout imply it.*
 
-> This approach spans my multidisciplinary research program.
+> This approach spans my multidisciplinary research program:
 
 ---
 

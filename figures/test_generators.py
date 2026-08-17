@@ -7,7 +7,9 @@ import approach, approach_mobile, area_graph
 def test_approach_viewbox():
     s = approach.svg_fragment()
     assert s.startswith("<svg"), s[:40]
-    assert 'viewBox="0 0 1040 482"' in s
+    # 448 = 482 - the 34px TOP_PAD that reserved room for a title inside the
+    # figure; the title is HTML now, so the band is gone.
+    assert 'viewBox="0 0 1040 448"' in s
 
 def test_mobile_viewbox():
     s = approach_mobile.svg_fragment()

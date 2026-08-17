@@ -448,13 +448,9 @@ def build(V):
             "nested timescale brackets straddle 'now'.")
 
     svg = '''<svg viewBox="0 0 {w} {h}" role="img" aria-label="{aria}">
-  <defs>
-    <pattern id="gm{k}" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/></pattern>
-    <pattern id="gM{k}" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/></pattern>
-  </defs>
-  <rect width="{w}" height="{h}" fill="#f5f2ec"/>
-  <rect width="{w}" height="{h}" fill="url(#gm{k})"/>
-  <rect width="{w}" height="{h}" fill="url(#gM{k})"/>
+  <!-- no paper fill, no grid: see approach.py. The mismatch is worse here —
+       this figure is 336 units drawn into a box up to 420px wide, so its own
+       ruling would render ~1.25x the page's. -->
 
   <!-- the top {tp}px are empty on purpose: the room her title drops into -->
 

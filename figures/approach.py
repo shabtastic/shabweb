@@ -106,7 +106,10 @@ CLR_STRAND  = 8.0          # required air between a droplet and the lowest stran
 # Nothing is written into it. The whole drawing is translated down inside the
 # canvas, so dropping a title line in next iteration needs no relayout at all:
 # every y in this file keeps its current value.
-TOP_PAD     = 34
+TOP_PAD     = 0    # v23: was 34, reserving room for a title INSIDE the figure.
+                   # The title is HTML now (.research-title), above the SVG, so
+                   # this band was empty canvas showing as a gap under her
+                   # subtitle.
 
 # ---------- v18 tuning: her seven-item punch list on v17 ----------
 # Still no new copy. Every string drawn is hers, verbatim. Nothing of ours is
@@ -168,7 +171,15 @@ INT_COL     = "#8E24AA"    # the whole intervention device: arrow + marker
 NOW_SOLID   = True         # 'now' divider: solid, not dashed
 AXIS_RULE   = False        # the faint ticked rule above the brackets
 GAZE_HERO   = False        # gaze folds into the estimate like every other strand
-SENT_FS     = 11.5         # her intervention sentence, matching 'intervention'
+# v23: every text size in this figure is multiplied by TEXT_SCALE. The labels
+# rendered at 7-11.5px against a page whose body text is 11.2px and were hard
+# to read. 1.15 is deliberately modest: the ratios between sizes are held
+# exactly, and each label grows from its own anchor, so the hand-tuned
+# positions (see the x=137 and x=346 notes below) still hold.
+TEXT_SCALE  = 1.20
+LINE_H      = 12 * TEXT_SCALE   # was a bare 12 wherever labels stack
+
+SENT_FS     = 11.5 * TEXT_SCALE   # her intervention sentence, matching 'intervention'
 SENT_W      = "700"
 
 # ---------- v16 tuning: Shabnam's markup of v15a ----------
@@ -185,10 +196,10 @@ SENT_W      = "700"
 # v18: MARK_R / MARK_GAP / ARR_LEN / ARR_W are gone — the round marker and the
 # arrow they sized no longer exist. See TRI_R at the top of the file.
 # v22: and TRI_R is gone too — the marker is the swipe. See F_* at the top.
-LBL_FS      = 7.5          # her curve labels — 7.5 not 8 so the true-state
+LBL_FS      = 7.5 * TEXT_SCALE   # her curve labels — 7.5 not 8 so the true-state
                            # label clears the x=214 sampling tick horizontally
                            # (its x is pinned at the curve's start, x=70)
-FAM_FS      = 9.0          # family labels in the left margin
+FAM_FS      = 9.0 * TEXT_SCALE   # family labels in the left margin
 FAM_X       = 6            # left margin — strands start at x=70
 # Darkened family colours for text. Same values the series used in v11/v12/v14a,
 # and the same move the site makes for laser lemon (#FFFF77 displays as #9a7c00).
@@ -357,7 +368,11 @@ TS_BASE    = 14    # depth of the innermost (seconds) bracket
 TS_STEP    = 13    # extra depth per nesting level
 TS_LABEL_DX = 4    # label offset to the right of its own bracket's left arm
 TS_LABEL_DY = 4    # label baseline above its own bracket floor
-ARM_L_MIN   = 26   # floor so the innermost bracket stays readable under the warp
+ARM_L_MIN   = 52   # floor so the innermost bracket stays readable under the warp.
+                   # v23: 26 left the 'seconds' bracket 48px wide, so at
+                   # TEXT_SCALE its label both overflowed the bracket and
+                   # crossed the 'now' divider that bracket straddles. 52
+                   # gives the label a home entirely left of the divider.
 ARM_R_MIN   = 16
 # v14a: the arms are no longer hand-placed — each one lands where its unit
 # actually falls on the warped axis, back and forward. Under log time the five
@@ -625,14 +640,18 @@ forecast_svg += '<circle cx="%d" cy="%.1f" r="3.4" fill="none" stroke="rgba(17,1
 # "intervention" bold and noticeably larger than what follows it. Lines 2-3 stay
 # at 7.0 so the longest of them still ends inside the 1040-wide canvas.
 FLBL_X   = 854     # just right of the 'now' divider
-FLBL_FS  = 7.0     # sized so the longer line ends at ~1026, inside the canvas
-FLBL_FS1 = 11.5    # line 1 — bold, and 1.6x lines 2-3
+FLBL_FS  = 7.0 * TEXT_SCALE   # sized so the longer line ends inside the canvas
+FLBL_FS1 = 11.5 * TEXT_SCALE   # line 1 — bold, and 1.6x lines 2-3
 # v18: line 1 drops its arrow — just the word, same bold, same size. Lines 2-3
 # are untouched.
 forecast_svg += '<text x="%d" y="%.0f" class="rv22-svgtext" font-size="%.1f" font-weight="700" fill="#111118">intervention</text>' % (FLBL_X, good_y-58, FLBL_FS1)
-forecast_svg += '<text x="%d" y="%.0f" class="rv22-svgtext" font-size="%.1f" fill="rgba(17,17,24,0.7)">a higher likelihood of the desired outcome</text>' % (FLBL_X, good_y-43, FLBL_FS)
-forecast_svg += '<text x="%d" y="%.0f" class="rv22-svgtext" font-size="%.1f" fill="rgba(17,17,24,0.7)">(internal state and/or behavior)</text>\n' % (FLBL_X, good_y-33, FLBL_FS)
-forecast_svg += '<text x="%d" y="%.0f" class="rv22-svgtext" font-size="7.5" fill="%s">without intervention</text>\n' % (905, less_y+14, GHOST_COL)
+# v23: at TEXT_SCALE the first of these ran to x=1070, past the 1040 canvas, so
+# it wraps. Her words in her order; only the break point is new.
+for _i, _ln in enumerate(["a higher likelihood of the", "desired outcome",
+                          "(internal state and/or behavior)"]):
+    forecast_svg += '<text x="%d" y="%.0f" class="rv22-svgtext" font-size="%.1f" fill="rgba(17,17,24,0.7)">%s</text>\n' % (
+        FLBL_X, good_y - 43 + _i * FLBL_FS * 1.35, FLBL_FS, _ln)
+forecast_svg += '<text x="%d" y="%.0f" class="rv22-svgtext" font-size="%.1f" fill="%s">without intervention</text>\n' % (905, less_y+14, LBL_FS, GHOST_COL)
 
 # 'now' divider between observed past and forecast future
 # v17: thin and solid. Same colour, same height as v16's dashed rule.
@@ -645,7 +664,7 @@ CANVAS_H = TOP_PAD + BR_FLOOR + 24    # v18: 448, v17: 500
 NOW_Y2   = BR_FLOOR + 16
 now_svg  = '<line x1="%d" y1="44" x2="%d" y2="%d" stroke="rgba(17,17,24,0.35)" stroke-width="1"%s/>' % (
     NOW_X, NOW_X, NOW_Y2, "" if NOW_SOLID else ' stroke-dasharray="3 4"')
-now_svg += '<text x="%d" y="40" class="rv22-svgtext" font-size="9" fill="rgba(17,17,24,0.6)" text-anchor="middle">now</text>' % NOW_X
+now_svg += '<text x="%d" y="40" class="rv22-svgtext" font-size="%.1f" fill="rgba(17,17,24,0.6)" text-anchor="middle">now</text>' % (NOW_X, FAM_FS)
 
 # ---------- nested timescale brackets, anchored on 'now' ----------
 bracket_svg = ""
@@ -658,8 +677,8 @@ for i, (lab, xl, xr) in enumerate(TIMESCALES):
     bracket_svg += '<path d="M %d %d V %d H %d V %d"/>\n' % (xl, TS_TOP, fy, xr, TS_TOP)
     # v14a: the label rides its own bracket's back edge — under the warp that
     # edge is where the unit actually falls, so the brackets double as the axis.
-    tslabel_svg += '<text x="%d" y="%d" font-size="9">%s</text>\n' % (
-        xl + TS_LABEL_DX, fy - TS_LABEL_DY, lab)
+    tslabel_svg += '<text x="%d" y="%d" font-size="%.1f">%s</text>\n' % (
+        xl + TS_LABEL_DX, fy - TS_LABEL_DY, FAM_FS, lab)
 
 # v17: the faint rule above the brackets and its per-unit hashmarks are gone.
 # She asked for the hashmarks out; with them gone the rule was a bare line with
@@ -685,18 +704,19 @@ mylbl_svg = ""
 for (fam, lines, y) in FAM_LBL:
     for i, ln in enumerate(lines):
         mylbl_svg += '<text x="%d" y="%d" class="rv22-svgtext" font-size="%.1f" fill="%s">%s</text>\n' % (
-            FAM_X, y + i*12, FAM_FS, FAM_INK[fam], ln)
+            FAM_X, y + i*LINE_H, FAM_FS, FAM_INK[fam], ln)
 
 # The true state, named at its curve's start. v17: pulled left into the margin
 # (x=6) and up 2px. At x=70 the label's tail ran out over the sampling band,
 # whose upper edge climbs to ~238 by x=214; starting in the margin keeps the
 # whole block left of x=137, where the band has not started yet. Clearance:
 # 10px to the grey curve, 8px to the choices strand, clear of every tick.
-TS_LBL_X, TS_LBL_Y = 6, 232
+TS_LBL_X, TS_LBL_Y = 6, 226   # v23: up 6. At TEXT_SCALE the second line
+                              # grew into the row of an olive tick droplet.
 for i, ln in enumerate(["a person&#39;s true internal state",
                         "(that we can&#39;t directly see)"]):
     mylbl_svg += '<text x="%d" y="%d" class="rv22-svgtext" font-size="%.1f" fill="rgba(17,17,24,0.6)">%s</text>\n' % (
-        TS_LBL_X, TS_LBL_Y + i*12, LBL_FS, ln)
+        TS_LBL_X, TS_LBL_Y + i*LINE_H, LBL_FS, ln)
 
 # The estimate, named below and left of where its line starts (x=110). v17: down
 # 8px, because her intervention sentence is now 11.5px bold and its second line
@@ -715,13 +735,10 @@ mylbl_svg += '<text x="%d" y="%d" class="rv22-svgtext" font-size="%.1f" fill="#1
 # to preview it in isolation are not part of the figure and are dropped here;
 # index.html supplies its own container and styling for the injected fragment.
 SVG = '''<svg viewBox="0 0 1040 {ch}" role="img" aria-label="A faint true-state curve and a bold triangulated estimate fed by many signal strands; at 'now' the estimate projects a dotted forecast cone into the future toward an outcome marker, with a ghost path to a lesser outcome without intervention and the actual path to the better outcome after intervening; five nested timescale brackets — seconds, hours, days, weeks, years — each straddle the 'now' divider, reaching back into the observed signals and forward into the forecast">
-    <defs>
-      <pattern id="gA11" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="rgba(80,140,200,0.20)" stroke-width="1"/></pattern>
-      <pattern id="gA11maj" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="rgba(80,140,200,0.42)" stroke-width="1"/></pattern>
-    </defs>
-    <rect width="1040" height="{ch}" fill="#f5f2ec"/>
-    <rect width="1040" height="{ch}" fill="url(#gA11)"/>
-    <rect width="1040" height="{ch}" fill="url(#gA11maj)"/>
+    <!-- No paper fill and no grid: index.html paints graph paper on #research
+         itself, so the figure sits on the page's ruling rather than carrying a
+         second copy that cannot stay aligned with it (this SVG scales with its
+         container; the page's grid is fixed at 16/80px). -->
 
   <!-- v19: the drawing is translated down by {tp}px. That band at the top is
        empty on purpose — it is the room for the title she is writing. Every

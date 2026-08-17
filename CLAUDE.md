@@ -129,7 +129,7 @@ graph hidden) — one query, not two, so there's no fractional-viewport gap
 either state could fall through.
 - **Approach figure** — the state-estimation figure (how the research program
   approaches problems). Desktop version: `figures/approach.py`, viewBox
-  1040×482. Narrow variant for <1000px: `figures/approach_mobile.py`
+  1040×448. Narrow variant for <1000px: `figures/approach_mobile.py`
   (imports `approach.py`), viewBox 336×329, capped at `max-width: 420px`.
 - **Area graph** — eight research-area nodes in a ring, edges weighted by
   shared concepts pulled from `graph/graph.json`. Titles only at rest;

@@ -726,7 +726,11 @@ def solve_variant(tag):
 def d_frame(v, prefix, opened=frozenset()):
     """One frame of a variant. Only `opened` changes; every coordinate is fixed."""
     H, cy, pos = v["H"], v["cy"], v["pos"]
-    s = [f"<defs>{base.grid_defs(prefix)}</defs>", base.grid_rects(prefix, W, H)]
+    # No paper fill and no grid of its own -- index.html paints graph paper on
+    # #research, and a second ruling could not line up with it (this SVG scales
+    # with its container; the page's is fixed at 16/80px). base.grid_defs and
+    # base.grid_rects still exist for anyone rendering a variant standalone.
+    s = []
     s.append(edges_svg(pos, cy))
     for cid in ORDER:
         g = v["geoms"][cid]

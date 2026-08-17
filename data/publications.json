@@ -53,7 +53,7 @@
     "title": "Designing rewards for rewarding designs: Demonstrating the impact of rewards on the creative design process",
     "authors": [
       "Nath, Surabhi S.",
-      "Jayawaranda, Vindula",
+      "Jayawardana, Vindula",
       "Van, Monica",
       "Klenk, Matthew",
       "Hakimi, Shabnam"
@@ -366,6 +366,31 @@
     ]
   },
   {
+    "id": "Hakimi2025sne",
+    "title": "Neuroforecasting versus backcasting changes in aggregate demand for vehicles",
+    "authors": [
+      "Hakimi, Shabnam",
+      "Christiano, D.",
+      "Wu, C.",
+      "Srirangarajan, T.",
+      "Deng, W. N.",
+      "Wu, C.C.",
+      "Knutson, B.",
+      "Klenk, M."
+    ],
+    "year": 2025,
+    "venue": "Annual Meeting of the Society for Neuroeconomics, Boston, MA",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "first",
+    "paperWeight": 0.5,
+    "keywords": [
+      "manual",
+      "presentation"
+    ],
+    "part_of": "neurofore-neuro"
+  },
+  {
     "id": "Hakimi2025affective",
     "title": "Interrogating the opportunities and risks of using generative AI for understanding and supporting affective processes",
     "authors": [
@@ -583,6 +608,16 @@
       "Gopinath, D. E.",
       "Kimani, E.",
       "Hakimi, Shabnam",
+      "Morgan, A.",
+      "Best, A.",
+      "Nguyen, H.",
+      "Brooks, D. J.",
+      "ul Haq, B.",
+      "Patrikalakis, A.",
+      "Yasuda, H.",
+      "Sieck, K.",
+      "Balachandran, A.",
+      "Chen, T. L.",
       "Rosman, G."
     ],
     "year": 2024,
@@ -679,6 +714,30 @@
     "part_of": "creativity-support"
   },
   {
+    "id": "Christiano2024sne",
+    "title": "Neuroforecasting changes in aggregate demand for vehicles",
+    "authors": [
+      "Christiano, D.",
+      "Wu, C.",
+      "Srirangarajan, T.",
+      "Hakimi, Shabnam",
+      "Klenk, M.",
+      "Wu, C.C.",
+      "Knutson, B."
+    ],
+    "year": 2024,
+    "venue": "Annual Meeting of the Society for Neuroeconomics, Cascais, Portugal",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": [
+      "manual",
+      "presentation"
+    ],
+    "part_of": "neurofore-neuro"
+  },
+  {
     "id": "Hakimi2023ml",
     "title": "Machine learning-based measure of cognitive complexity explains variance in rank-ordered preference",
     "authors": [
@@ -769,6 +828,31 @@
       "commentary"
     ],
     "part_of": "design-dm"
+  },
+  {
+    "id": "Christiano2023sne",
+    "title": "Brain responses to vehicles predict individual interest and forecast changes in aggregate demand",
+    "authors": [
+      "Christiano, D.",
+      "Srirangarajan, T.",
+      "Hakimi, Shabnam",
+      "Klenk, M.",
+      "Van, M.",
+      "Wu, C.C.",
+      "Murakami, K.",
+      "Knutson, B."
+    ],
+    "year": 2023,
+    "venue": "Annual Meeting of the Society for Neuroeconomics, Vancouver, BC",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": [
+      "manual",
+      "presentation"
+    ],
+    "part_of": "neurofore-neuro"
   },
   {
     "id": "Castrellon2022social",
@@ -962,6 +1046,29 @@
     "part_of": "driving-dm"
   },
   {
+    "id": "Hsiung2022sne",
+    "title": "Flexible integration of cost and evidence during information sampling",
+    "authors": [
+      "Hsiung, A.",
+      "Pearson, J. M.",
+      "Poh, J.-H.",
+      "Hakimi, Shabnam",
+      "Adcock, R. A.",
+      "Huettel, S. A."
+    ],
+    "year": 2022,
+    "venue": "Annual Meeting of the Society for Neuroeconomics, Arlington, VA",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": [
+      "manual",
+      "presentation"
+    ],
+    "part_of": "information-sampling"
+  },
+  {
     "id": "Hakimi2021pairing",
     "title": "Pairing facts with imagined consequences improves pandemic-related risk perception",
     "authors": [
@@ -994,6 +1101,7 @@
       "Sinclair, A. H.",
       "Stanley, M. L.",
       "Hakimi, Shabnam",
+      "Cabeza, R.",
       "Adcock, R. A.",
       "Samanez-Larkin, G. R."
     ],
@@ -1023,12 +1131,13 @@
       "Adcock, R. A."
     ],
     "year": 2021,
-    "venue": "Presented at the Annual Meeting of the American College of Neuropsychopharmacology, Virtual",
+    "venue": "Presented at the 60th Annual Meeting of the American College of Neuropsychopharmacology, Virtual. Program No. P122",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "middle",
     "paperWeight": 0.2,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "rt-neurofeedback-adhd"
@@ -1305,7 +1414,10 @@
       "Shah, J. S.",
       "Bizzell, J.",
       "Greene, R. K.",
+      "Cernasov, P. M.",
+      "Walsh, E.",
       "Addicott, M. A.",
+      "Eisenlohr-Moul, T.",
       "Carter, R. M.",
       "Dichter, G. S."
     ],
@@ -1466,12 +1578,13 @@
       "Adcock, R. A."
     ],
     "year": 2018,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA. Program No. 334.19/III55",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "second",
     "paperWeight": 0.24,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "rt-neurofeedback"
@@ -1684,6 +1797,32 @@
     "part_of": "incentive-design"
   },
   {
+    "id": "Jung2017sans",
+    "title": "MVPA testing for co-opted higher-order social cognition in autism",
+    "authors": [
+      "Jung, H.",
+      "Mosner, M. G.",
+      "McLaurin, R. E.",
+      "Hakimi, Shabnam",
+      "Parelman, J. M.",
+      "Kinard, J.",
+      "Chakraborty, P.",
+      "Dichter, G. S.",
+      "Carter, R. M."
+    ],
+    "year": 2017,
+    "venue": "Annual Meeting of the Social and Affective Neuroscience Society, Los Angeles, CA",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "middle",
+    "paperWeight": 0.16,
+    "keywords": [
+      "manual",
+      "presentation"
+    ],
+    "part_of": "asd-social-dm"
+  },
+  {
     "id": "Mozer2017rldm",
     "title": "Overcoming temptation: Incentive design for intertemporal choice",
     "authors": [
@@ -1776,25 +1915,26 @@
   },
   {
     "id": "Carter2016sfn",
-    "title": "Theory of mind regions of the brain track evidence of guilt in mock criminal scenarios",
+    "title": "The temporal parietal junction tracks evidence of guilt in mock criminal scenarios",
     "authors": [
       "Carter, R. M.",
       "Hakimi, Shabnam",
       "Parelman, J. M.",
       "Law, J. R.",
-      "Skene, J. A. G.",
       "Vidmar, N.",
+      "Skene, J. A. G.",
       "Beskind, D. H.",
       "Pearson, J. M.",
       "Skene, J. H. P."
     ],
     "year": 2016,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA. Program No. 749.10/LLL35",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "second",
     "paperWeight": 0.24,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "juror-dm"
@@ -1814,12 +1954,38 @@
       "Carter, R. M."
     ],
     "year": 2016,
-    "venue": "Annual Convention of the Rocky Mountain Psychological Association, Denver, CO",
+    "venue": "86th Annual Convention of the Rocky Mountain Psychological Association, Denver, CO",
     "url": null,
     "pubType": "talk",
     "authorPosition": "middle",
     "paperWeight": 0.16,
     "keywords": [
+      "presentation"
+    ],
+    "part_of": "asd-social-dm"
+  },
+  {
+    "id": "Jung2016sobp",
+    "title": "Co-opted social cognitive neural substrates in autism during strategic gameplay",
+    "authors": [
+      "Jung, H.",
+      "Mosner, M. G.",
+      "McLaurin, R. E.",
+      "Hakimi, Shabnam",
+      "Parelman, J. M.",
+      "Kinard, J.",
+      "Chakraborty, P.",
+      "Dichter, G. S.",
+      "Carter, R. M."
+    ],
+    "year": 2016,
+    "venue": "71st Annual Scientific Convention and Meeting of the Society of Biological Psychiatry, Atlanta, GA. Abstract No. 202",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "middle",
+    "paperWeight": 0.16,
+    "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "asd-social-dm"
@@ -1849,22 +2015,23 @@
   },
   {
     "id": "Parelman2015sn",
-    "title": "Social balloon analog risk task: Competitive and cooperative rule effects on decision making",
+    "title": "Risk preferences in a competitive social context",
     "authors": [
       "Parelman, J. M.",
-      "Foster, J. M.",
-      "Fairley, K.",
       "Hakimi, Shabnam",
+      "Fairley, K.",
+      "Foster, J. M.",
       "Jones, M.",
       "Carter, R. M."
     ],
     "year": 2015,
     "venue": "Presented at the Annual Meeting of the Society for Neuroeconomics, Miami, FL",
     "url": null,
-    "pubType": "talk",
-    "authorPosition": "middle",
-    "paperWeight": 0.16,
+    "pubType": "poster",
+    "authorPosition": "second",
+    "paperWeight": 0.24,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "social-dm"
@@ -2043,8 +2210,9 @@
       "Tost, H.",
       "Braus, D. F.",
       "Hakimi, Shabnam",
-      "Hohn, F.",
       "Ruf, M.",
+      "Vollmert, C.",
+      "Hohn, F.",
       "Meyer-Lindenberg, A."
     ],
     "year": 2010,
@@ -2082,18 +2250,19 @@
     "title": "Vasopressin effects on the neural correlates of social recognition",
     "authors": [
       "Zink, C. F.",
-      "Kempf, L. K.",
+      "Kempf, L.",
       "Hakimi, Shabnam",
-      "Stein, J. S.",
+      "Stein, J. L.",
       "Meyer-Lindenberg, A."
     ],
     "year": 2010,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA. Program No. 403.3/LLL59",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "neuropeptide-social"
@@ -2110,12 +2279,13 @@
       "Meyer-Lindenberg, A."
     ],
     "year": 2010,
-    "venue": "Presented at the Annual Meeting of the Organization for Human Brain Mapping, Barcelona, Spain",
+    "venue": "Presented at the Annual Meeting of the Organization for Human Brain Mapping, Barcelona, Spain. Abstract No. 1401 WTh-AM",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "scz"
@@ -2206,18 +2376,19 @@
     "title": "Effects of vasopressin on mPFC-amygdala circuitry during fearful face processing in humans",
     "authors": [
       "Zink, C. F.",
-      "Kempf, L. K.",
-      "Stein, J. S.",
+      "Kempf, L.",
+      "Stein, J. L.",
       "Hakimi, Shabnam",
       "Meyer-Lindenberg, A."
     ],
     "year": 2009,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, Chicago, IL",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, Chicago, IL. Program No. 91.19/DD68",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "neuropeptide-social"
@@ -2227,19 +2398,21 @@
     "title": "Effects of vasopressin on mPFC-amygdala circuitry during fearful face processing in humans",
     "authors": [
       "Zink, C. F.",
-      "Kempf, L. K.",
+      "Kempf, L.",
       "Hakimi, Shabnam",
       "Rainey, C. A.",
-      "Stein, J. S.",
+      "Stein, J. L.",
       "Meyer-Lindenberg, A."
     ],
     "year": 2009,
-    "venue": "Presented at the Annual Meeting of the Organization for Human Brain Mapping, San Francisco, CA",
-    "url": null,
-    "pubType": "talk",
+    "venue": "Presented at the Annual Meeting of the Organization for Human Brain Mapping, San Francisco, CA. NeuroImage 47:S184",
+    "doi": "10.1016/S1053-8119(09)72042-7",
+    "url": "https://doi.org/10.1016/S1053-8119(09)72042-7",
+    "pubType": "poster",
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "neuropeptide-social"
@@ -2255,12 +2428,13 @@
       "Meyer-Lindenberg, A."
     ],
     "year": 2008,
-    "venue": "Presented at the Annual Meeting of the Society of Biological Psychiatry, Washington, DC",
+    "venue": "Presented at the Annual Meeting of the Society of Biological Psychiatry, Washington, DC. Abstract No. 155",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "second",
     "paperWeight": 0.18,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "methods-imaging"
@@ -2279,12 +2453,13 @@
       "Meyer-Lindenberg, A."
     ],
     "year": 2007,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA. Program No. 739.14/XX26",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "first",
     "paperWeight": 0.3,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "imaging-genetics"
@@ -2341,19 +2516,20 @@
     "id": "Jansma2007sfn",
     "title": "An fMRI study of trial-by-trial interaction effects in fusiform gyrus and amygdala",
     "authors": [
-      "Jansma, M.",
+      "Jansma, J. M.",
       "Hakimi, Shabnam",
       "Fukunaga, M.",
-      "Duyn, J.",
+      "Duyn, J. H.",
       "Meyer-Lindenberg, A."
     ],
     "year": 2007,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA. Program No. 669.4",
     "url": null,
     "pubType": "talk",
     "authorPosition": "second",
     "paperWeight": 0.18,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "methods-imaging"
@@ -2373,31 +2549,33 @@
       "Meyer-Lindenberg, A."
     ],
     "year": 2007,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, San Diego, CA. Program No. 23.5",
     "url": null,
     "pubType": "talk",
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "social-dm"
   },
   {
     "id": "Hakimi2006sfnphobia",
-    "title": "fMRI investigation of extraversion and self-referential processing in social phobia",
+    "title": "fMRI investigation of extraversion and positive self-referential processing in social phobia",
     "authors": [
       "Hakimi, Shabnam",
       "Goldin, P. R.",
       "Gross, J. J."
     ],
     "year": 2006,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, Atlanta, GA",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, Atlanta, GA. Program No. 311.10",
     "url": null,
     "pubType": "talk",
     "authorPosition": "first",
     "paperWeight": 0.3,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "sad-emoreg"
@@ -2477,12 +2655,13 @@
       "Meyer-Lindenberg, A."
     ],
     "year": 2006,
-    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, Atlanta, GA",
+    "venue": "Presented at the Annual Meeting of the Society for Neuroscience, Atlanta, GA. Program No. 578.25/NN4",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "neuropeptide-social"
@@ -2500,10 +2679,11 @@
     "year": 2005,
     "venue": "Presented at the Annual Meeting of the Cognitive Neuroscience Society, New York, NY",
     "url": null,
-    "pubType": "talk",
+    "pubType": "poster",
     "authorPosition": "middle",
     "paperWeight": 0.12,
     "keywords": [
+      "manual",
       "presentation"
     ],
     "part_of": "sad-emoreg"

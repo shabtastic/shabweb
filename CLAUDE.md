@@ -253,8 +253,12 @@ Shabnam has a private local LaTeX CV repo with `.bib` files.
 Some bib entries are tagged `selected` — use these for featured publications.
 
 ## Real contact info
-- Email (site contact link): hello@shabnamhakimi.com
-- Email (work): shabnam@tri.global
+- Email (site contact link, index.html): hello@shabnamhakimi.com
+- Email (on the CV): mail@shabnamhakimi.com
+- Email (TRI work address): shabnam@tri.global
+  The site and the CV deliberately use DIFFERENT addresses — hello@ vs mail@,
+  both on her own domain. This is not drift; don't "fix" either to match the
+  other. (mail@ is also what index.html used before 2026-08-16.)
 - Google Scholar: https://scholar.google.com/citations?user=KVRrn40AAAAJ
 - GitHub: shabtastic
 - LinkedIn: https://www.linkedin.com/in/shabnam-hakimi-8a85166

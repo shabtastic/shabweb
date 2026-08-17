@@ -11221,6 +11221,13 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     }
 
     // Nodes
+    // Labels are collected here and drawn in a second pass below, NOT inline:
+    // drawing a label inside this loop puts it underneath every node painted
+    // after it — and each node paints a radial glow of radius r*4, so a label
+    // could sit under a neighbour's glow, its disc, or an attention ring and
+    // become unreadable. Canvas has no z-index; paint order is the only
+    // ordering there is, so anything that must sit on top has to come last.
+    const labelQueue = [];
     for (let ni = 0; ni < nn; ni++) {
       const act  = actSmoothed[ni];
       const node = NODES[ni];
@@ -11270,23 +11277,34 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
         : 0;
       const showLabel = isHov || isAtt || exposeFade > 0.02;
       if (!showLabel) continue;
-      const lines  = node.label.toLowerCase().split('\n');
-      const fsize  = isHov || isAtt ? 11 : 9;
-      const lalpha = isHov || isAtt ? 0.95 : 0.85 * exposeFade;
+      labelQueue.push({
+        sp, r, rv, gv, bv, isAtt, isHov,
+        lines:  node.label.toLowerCase().split('\n'),
+        fsize:  isHov || isAtt ? 11 : 9,
+        lalpha: isHov || isAtt ? 0.95 : 0.85 * exposeFade,
+      });
+    }
+
+    // Labels, second pass — above every node and glow.
+    for (const L of labelQueue) {
       ctx.save();
-      ctx.globalAlpha = lalpha;
-      ctx.font = `${fsize}px 'Space Mono', monospace`;
+      ctx.globalAlpha = L.lalpha;
+      ctx.font = `${L.fsize}px 'Space Mono', monospace`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      // Highlight background for attended node
-      if (isAtt || isHov) {
-        const tw = Math.max(...lines.map(l => ctx.measureText(l).width));
-        const th = lines.length * (fsize + 2);
-        ctx.fillStyle = `rgba(${rv},${gv},${bv},0.18)`;
-        ctx.fillRect(sp.x - tw/2 - 3, sp.y + r + 3, tw + 6, th + 4);
+      const tw = Math.max(...L.lines.map(l => ctx.measureText(l).width));
+      const th = L.lines.length * (L.fsize + 2);
+      // A paper-coloured plate under every label, not just the attended one:
+      // the edges and contours it now sits above are still busy behind it, and
+      // dark text on a translucent tint alone was the unreadable case.
+      ctx.fillStyle = 'rgba(245,242,236,0.82)';
+      ctx.fillRect(L.sp.x - tw/2 - 3, L.sp.y + L.r + 3, tw + 6, th + 4);
+      if (L.isAtt || L.isHov) {
+        ctx.fillStyle = `rgba(${L.rv},${L.gv},${L.bv},0.18)`;
+        ctx.fillRect(L.sp.x - tw/2 - 3, L.sp.y + L.r + 3, tw + 6, th + 4);
       }
-      ctx.fillStyle = `rgba(17,17,24,${lalpha.toFixed(2)})`;
-      lines.forEach((line, li) => ctx.fillText(line, sp.x, sp.y + r + 4 + li*(fsize+2)));
+      ctx.fillStyle = `rgba(17,17,24,${L.lalpha.toFixed(2)})`;
+      L.lines.forEach((line, li) => ctx.fillText(line, L.sp.x, L.sp.y + L.r + 4 + li*(L.fsize+2)));
       ctx.restore();
     }
 

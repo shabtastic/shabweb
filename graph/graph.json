@@ -1947,7 +1947,7 @@
     },
     {
       "id": "self_regulation",
-      "label": "creative\nself-regulation",
+      "label": "creative\nself regulation",
       "weight": 0.9,
       "cluster": 3,
       "level": "construct"
@@ -3543,7 +3543,7 @@
     },
     {
       "id": "self_regulated_learning",
-      "label": "self-regulated\nlearning",
+      "label": "self regulated\nlearning",
       "weight": 0.7,
       "cluster": 0,
       "level": "domain"

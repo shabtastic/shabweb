@@ -329,7 +329,24 @@ section { padding: 7rem 2.5rem; }
   display: block; width: 100%; height: auto;
 }
 /* the mobile figure is drawn for 336px; never let it stretch past that much */
-.research-figure-mobile { max-width: 420px; }
+.research-figure-mobile {
+  max-width: 420px;
+  /* Mounted on its own sheet of graph paper. The section around it is flat at
+     this width (the .research-grid's outlined tag chips were unreadable over
+     ruling), but the figure still wants the paper it was drawn against — so
+     the sheet is scoped to the figure instead of the section. The ruling is
+     CSS, not baked into the SVG: at true 16/80px it matches the rest of the
+     site, whereas an SVG-internal grid would scale with the drawing. */
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--blue-G) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-G) 1px, transparent 1px),
+    linear-gradient(var(--blue-g) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-g) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  border: 1px solid var(--blue-G);
+  padding: 10px;
+}
 
 /* Narrow-first defaults: mobile figure + the original grid. Every width is
    covered by exactly one of these two states — driven off a single query,

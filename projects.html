@@ -223,7 +223,17 @@ nav {
 .rep-meta em { font-style: normal; color: var(--ink-blue); }
 .rep-meta em.venue-journal { font-style: italic; }
 .section-body[hidden] { display: none; }
-.section-body { padding-bottom: 1rem; }
+/* The open section is marked by a rule down the left of its body, in its own
+   cluster colour: it shows how far the section runs, which is the thing you
+   lose once you scroll past the heading. Deliberately NOT the same mark as
+   focus — the ink-blue bar on a heading means "focus is here" and disappears
+   the moment you click to read, while this persists for as long as the section
+   is open. Different length, different colour, different meaning. */
+.section-body {
+  padding-bottom: 1rem;
+  padding-left: 1.1rem;
+  border-left: 3px solid rgb(var(--hl-rgb) / 0.5);
+}
 .section-arrow { display: inline-block; transition: transform 0.2s; flex-shrink: 0; font-size: 0.9rem; }
 .section-divider[aria-expanded="true"] .section-arrow { transform: rotate(180deg); }
 
@@ -272,14 +282,14 @@ nav {
     transparent 85%
   );
 }
-.section-divider.s-slate  { --hl-rgb: 119 119 255; --hl-a: 0.65; }
-.section-divider.s-cheese { --hl-rgb: 255 174 119; --hl-a: 0.65; }
-.section-divider.s-mint   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
-.section-divider.s-red    { --hl-rgb: 255 119 146; --hl-a: 0.65; }
-.section-divider.s-helio  { --hl-rgb: 201 119 255; --hl-a: 0.65; }
-.section-divider.s-violet { --hl-rgb: 255 119 228; --hl-a: 0.65; }
-.section-divider.s-amber  { --hl-rgb: 255 255 119; --hl-a: 0.65; }
-.section-divider.s-lime   { --hl-rgb: 170 255 119; --hl-a: 0.65; }
+.section-divider.s-slate, .section-divider.s-slate + .section-body  { --hl-rgb: 119 119 255; --hl-a: 0.65; }
+.section-divider.s-cheese, .section-divider.s-cheese + .section-body { --hl-rgb: 255 174 119; --hl-a: 0.65; }
+.section-divider.s-mint, .section-divider.s-mint + .section-body   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
+.section-divider.s-red, .section-divider.s-red + .section-body    { --hl-rgb: 255 119 146; --hl-a: 0.65; }
+.section-divider.s-helio, .section-divider.s-helio + .section-body  { --hl-rgb: 201 119 255; --hl-a: 0.65; }
+.section-divider.s-violet, .section-divider.s-violet + .section-body { --hl-rgb: 255 119 228; --hl-a: 0.65; }
+.section-divider.s-amber, .section-divider.s-amber + .section-body  { --hl-rgb: 255 255 119; --hl-a: 0.65; }
+.section-divider.s-lime, .section-divider.s-lime + .section-body   { --hl-rgb: 170 255 119; --hl-a: 0.65; }
 
 /* ── UNDER CONSTRUCTION (temporary) ───────────────────────────── */
 .under-construction {

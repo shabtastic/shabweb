@@ -232,7 +232,13 @@ nav {
 .section-body {
   padding-bottom: 1rem;
   padding-left: 1.1rem;
-  border-left: 3px solid rgb(var(--hl-rgb) / 0.5);
+  /* A highlighter STRIPE in the cluster's real colour, not a hairline. Three
+     of the eight hues (amber, mint, lime) are lighter than the paper, so at
+     3px they vanished and darkening them to compensate turned mint into a
+     dark teal -- it stopped reading as the palette. Width is what makes a
+     highlighter legible on this site: the bands behind the labels work for
+     the same reason. Same alpha as those bands, via --hl-a. */
+  border-left: 7px solid rgb(var(--hl-rgb) / var(--hl-a, 0.65));
 }
 .section-arrow { display: inline-block; transition: transform 0.2s; flex-shrink: 0; font-size: 0.9rem; }
 .section-divider[aria-expanded="true"] .section-arrow { transform: rotate(180deg); }

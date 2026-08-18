@@ -122,10 +122,10 @@ nav {
   padding: 0 6px;
   margin-left: -6px;
   background-image: linear-gradient(
-    transparent 30%,
-    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 30%,
-    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 85%,
-    transparent 85%
+    transparent 22%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 22%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 92%,
+    transparent 92%
   );
 }
 .page-eyebrow.s-red { --hl-rgb: 255 119 146; --hl-a: 0.55; }
@@ -156,10 +156,10 @@ nav {
   padding: 0 6px;
   margin-left: -6px;
   background-image: linear-gradient(
-    transparent 30%,
-    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 30%,
-    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 85%,
-    transparent 85%
+    transparent 22%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 22%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 92%,
+    transparent 92%
   );
   transition: --hl-a 0.2s;
 }
@@ -240,7 +240,7 @@ nav {
      the same reason. Same alpha as those bands, via --hl-a. */
   border-left: 7px solid rgb(var(--hl-rgb) / var(--hl-a, 0.65));
 }
-.section-arrow { display: inline-block; transition: transform 0.2s; flex-shrink: 0; font-size: 0.9rem; }
+.section-arrow { position: absolute; right: 0; top: 16px; display: inline-block; transition: transform 0.2s; font-size: 0.9rem; }
 .section-divider[aria-expanded="true"] .section-arrow { transform: rotate(180deg); }
 
 /* ── SECTION DIVIDER ── */
@@ -254,7 +254,13 @@ nav {
   border-top: 1.5px solid var(--ink-blue);
   scroll-margin-top: 96px;
   text-align: left;
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  /* Block, not flex. A flex container BLOCKIFIES its children, which turned
+     .hl into a block box spanning both lines of a wrapped label -- so the
+     highlighter drew one band across the pair instead of a stroke per line,
+     and display:inline on .hl was silently overridden. The arrow is placed
+     absolutely instead of by space-between; it can't be centred with a
+     transform because [aria-expanded="true"] rotates it with one. */
+  display: block; position: relative; padding-right: 2.2rem;
 }
 /* Focus ring, ours rather than Chrome's. Arriving at a URL fragment makes the
    browser focus the target if it is focusable, and every section heading here
@@ -282,10 +288,10 @@ nav {
   padding: 0 6px;
   margin-left: -6px;
   background-image: linear-gradient(
-    transparent 30%,
-    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 30%,
-    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 85%,
-    transparent 85%
+    transparent 22%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 22%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 92%,
+    transparent 92%
   );
 }
 .section-divider.s-slate, .section-divider.s-slate + .section-body  { --hl-rgb: 119 119 255; --hl-a: 0.65; }

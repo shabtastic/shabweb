@@ -261,11 +261,19 @@ section { padding: 7rem 2.5rem; }
   border-top: 1px solid var(--blue-G);
 }
 .research-grid { display: grid; grid-template-columns: repeat(2,1fr); max-width: 1100px; }
+/* Each tile is an <a> into its projects.html section — the same destination
+   the area-graph nodes carry at desktop widths. Before this the grid was inert
+   divs, so on a phone (where the grid replaces the graph) tapping an area did
+   nothing at all. Text styling is inherited rather than link-coloured: the tile
+   already reads as a target, and eight blue underlined headings would fight the
+   highlighter palette. */
 .research-item {
   padding: 2rem; border: 1px solid var(--blue-G);
   display: flex; gap: 1.2rem;
   transition: background 0.2s;
+  color: inherit; text-decoration: none;
 }
+.research-item:focus-visible { outline: 2px solid var(--ink-blue); outline-offset: -2px; }
 .research-item:hover { background: rgba(100,160,210,0.04); }
 .research-num { font-size: 0.68rem; letter-spacing: 0.2em; color: var(--ink-dim); padding-top: 0.25em; white-space: nowrap; }
 .research-content h3 { font-family: var(--sans); font-size: 1.05rem; font-weight: 400; color: var(--ink); margin-bottom: 0.5rem; }
@@ -822,70 +830,70 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
 
   <h3 class="research-lead research-lead-narrow">This approach spans my multidisciplinary research program:</h3>
   <div class="research-grid">
-    <div class="research-item reveal">
+    <a class="research-item reveal" href="projects.html#section-motivation">
       <span class="research-num">01</span>
       <div class="research-content">
         <h3>Motivated Learning, Decision Making, &amp; Self Regulation</h3>
         <p>How motivation, reward, and self-control shape learning and choice, with an emphasis on flexible, goal-directed decision making in real-world settings.</p>
         <span class="research-tag">Motivation</span><span class="research-tag">Self regulation</span><span class="research-tag">Decision science</span><span class="research-tag">Neuroimaging</span>
       </div>
-    </div>
-    <div class="research-item reveal">
+    </a>
+    <a class="research-item reveal" href="projects.html#section-intervention">
       <span class="research-num">02</span>
       <div class="research-content">
         <h3>Intervention Science &amp; Applied Behavior Change</h3>
         <p>Designing, testing, and personalizing behavior-change interventions ranging from improving understanding of health risks to just-in-time support for psychological flexibility and creativity.</p>
         <span class="research-tag">Behavior change</span><span class="research-tag">Intervention science</span><span class="research-tag">Causality</span>
       </div>
-    </div>
-    <div class="research-item reveal">
+    </a>
+    <a class="research-item reveal" href="projects.html#section-creativity">
       <span class="research-num">03</span>
       <div class="research-content">
         <h3>Creativity &amp; Design</h3>
         <p>Developing a mechanistic understanding of the <em>process</em> of creative work to promote not only innovation but also sustained creative wellbeing.</p>
         <span class="research-tag">Creative cognition</span><span class="research-tag">Design decision making</span><span class="research-tag">Creativity support tools</span>
       </div>
-    </div>
-    <div class="research-item reveal">
+    </a>
+    <a class="research-item reveal" href="projects.html#section-genai">
       <span class="research-num">04</span>
       <div class="research-content">
         <h3>Psychology-Guided Generative AI</h3>
         <p>Using psychological and neuroscientific theory to direct the underlying machinery of generative AI systems and better align their outputs with human thoughts and actions.</p>
         <span class="research-tag">Human-AI alignment</span><span class="research-tag">Active inference</span><span class="research-tag">Bayesian surprise</span>
       </div>
-    </div>
-    <div class="research-item reveal">
+    </a>
+    <a class="research-item reveal" href="projects.html#section-preference">
       <span class="research-num">05</span>
       <div class="research-content">
         <h3>Preference Elicitation &amp; Prediction</h3>
         <p>Novel elicitation methods and models for understanding individual preferences from psychology, physiology, and behavior that account for context and time.</p>
         <span class="research-tag">Decision science</span><span class="research-tag">Complexity</span><span class="research-tag">Machine learning</span>
       </div>
-    </div>
-    <div class="research-item reveal">
+    </a>
+    <a class="research-item reveal" href="projects.html#section-agent-state">
       <span class="research-num">06</span>
       <div class="research-content">
         <h3>Agent State Inference</h3>
         <p>Improved inference of humans' internal states and simulation of agent preferences to support human-AI teaming during complex tasks like driving.</p>
         <span class="research-tag">Preference learning</span><span class="research-tag">Agentic simulation</span><span class="research-tag">Human-AI teaming</span>
       </div>
-    </div>
-    <div class="research-item reveal">
+    </a>
+    <a class="research-item reveal" href="projects.html#section-consumer">
       <span class="research-num">07</span>
       <div class="research-content">
         <h3>Consumer Psychology &amp; Market Forecasting</h3>
         <p>Leveraging psychographic and behavioral data, along with neural signals, to improve demand forecasting and product adoption, especially for innovative, new products.</p>
         <span class="research-tag">Econometrics</span><span class="research-tag">Demand forecasting</span><span class="research-tag">Neuroforecasting</span>
       </div>
-    </div>
-    <div class="research-item reveal">
+    </a>
+    <a class="research-item reveal" href="projects.html#section-social">
       <span class="research-num">08</span>
       <div class="research-content">
         <h3>Social, Cognitive, &amp; Affective Neuroscience</h3>
         <p>Modeling complex interactions between cognition and affect to understand and predict individual behavior in social contexts.</p>
         <span class="research-tag">Social cognition</span><span class="research-tag">Affective processing</span><span class="research-tag">Individual differences</span>
       </div>
-    </div>
+    </a>
   </div>
 </section>
 

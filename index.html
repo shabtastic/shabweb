@@ -204,7 +204,14 @@ section { padding: 7rem 2.5rem; }
   content: ''; display: block; width: 28px; height: 1px; background: currentColor;
 }
 .section-label > .hl {
-  display: inline-block;
+  display: inline;
+  /* inline + clone, not inline-block: the band is one linear-gradient over
+     the element box, so on a label that wraps, inline-block stretched a
+     single gradient across BOTH lines and the colour landed in the gap
+     between them. Cloning the box decoration gives each line fragment its
+     own gradient, i.e. a highlighter stroke per line. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
   padding: 0 6px;
   margin-left: -6px;
   background-image: linear-gradient(

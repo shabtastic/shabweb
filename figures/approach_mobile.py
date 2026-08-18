@@ -197,7 +197,13 @@ A = dict(
 # the sampling band and open a pocket for her label above them.
 TICK_STEM_M, TICK_DROP_M, TICK_R = 16.0, 20.0, 1.2
 F_W_M, F_PAD_TOP_M, F_CORE_IN_M = 7.0, 5.0, 3.0
-TS_BASE_M, ARM_L_MIN_M, ARM_R_MIN_M = 8, 20, 10
+TS_BASE_M, ARM_R_MIN_M = 8, 10
+# v23: the innermost bracket's left arm is derived from its own label, not
+# fixed at 20. "seconds" needs ~34 units at FS_UNIT plus the 3-unit label
+# offset, so a 20-unit arm both overflowed the bracket and pushed the word
+# across the 'now' divider that bracket straddles -- the same defect the
+# desktop figure had. Kept as a formula so it survives a type-size change.
+ARM_L_MIN_M = max(20, int(len("seconds") * 8.0 * 0.6) + 3 + 4)
 FS_FAM, FS_TICK, FS_LBL, FS_UNIT, FS_NOW = 8.5, 8.0, 8.0, 8.0, 8.0
 FS_SENT, FS_INT, FS_FC = 8.5, 10.0, 8.0
 # nothing anywhere in either figure is rendered below 8.0px.

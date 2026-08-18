@@ -674,6 +674,21 @@ window.addEventListener('hashchange', expandSectionFromHash);
   var nav = performance.getEntriesByType('navigation')[0];
   if (nav && nav.type === 'reload') return;
   expandSectionFromHash();
+  // Arriving at a fragment makes the browser focus the target, and these
+  // headings are <button>s, so landing here from the homepage area graph left
+  // a focus mark on a heading the visitor never tabbed to — which then
+  // vanished at their first click. Blur it: the mark is for keyboard
+  // navigation, and this arrival isn't that. The sequential-focus starting
+  // point stays on this heading, so a subsequent Tab still continues from
+  // here rather than jumping back to the top of the page.
+  // Deferred: the browser applies fragment focus AFTER this inline script
+  // runs, so blurring synchronously here is undone a moment later.
+  var target = document.getElementById(location.hash.slice(1));
+  if (target) requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      if (document.activeElement === target) target.blur();
+    });
+  });
 })();
 
 // Cursor

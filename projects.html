@@ -226,6 +226,20 @@ nav {
   text-align: left;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
+/* Focus ring, ours rather than Chrome's. Arriving at a URL fragment makes the
+   browser focus the target if it is focusable, and every section heading here
+   is a <button>, so landing on projects.html#section-… from the homepage area
+   graph draws a ring on that heading. That focus is worth keeping — a keyboard
+   visitor arrives on the control that opens the section — so this restyles it
+   instead of removing it: a 5px ink-blue bar in the left margin, the way a
+   line gets ticked on paper, rather than a box drawn round the row — a box is
+   browser-chrome grammar, and this site is paper and marker. :focus-visible
+   only, so a plain mouse click on a heading doesn't leave a mark behind. */
+.section-divider:focus { outline: none; }
+.section-divider:focus-visible {
+  box-shadow: inset 5px 0 0 0 var(--ink-blue);
+  padding-left: 14px;
+}
 .section-divider > .hl {
   display: inline-block;
   padding: 0 6px;

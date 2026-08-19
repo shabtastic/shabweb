@@ -59,7 +59,7 @@ When done, let Claude know and it will update the HTML.
 ## Research — section title
 *Heading for the whole research section, above both figures. One line fits cleanly at the size it'll be set (~2.4rem); much longer and it wraps.*
 
-> My approach
+> Better estimates of internal states for better interventions
 
 ---
 

@@ -234,10 +234,7 @@ graph.html has its own full-screen canvas UI.
 
 ## Known TODOs (priority order)
 1. **Fill in extracurriculars.html** — still a placeholder template. projects.html was rebuilt with real content 2026-07-24. Blocked on Shabnam filling 4 content blanks in site-content.md.
-2. **Homepage research visual (index.html)** — implemented (generators, tests, CSS, injection into index.html) but NOT yet merged to main and NOT live; lives on branch/worktree `worktree-homepage-research-viz`. Open decisions before merge:
-   - **Static vs animated** — shipping static. index.html's hero already runs a canvas animation; a second animated element is a separate call, deferred.
-   - **The section title** — Shabnam is writing it via site-content.md; the approach figure already reserves 34px of headroom for it, and index.html carries a comment, not a placeholder heading, in the meantime. One line of connective copy between the two figures is expected alongside it, also hers.
-   - ~~**Accessibility** — two tab stops per node, `<a>` nested in `role="button"`~~ — fixed 2026-08-14 by moving the link out of the button group and into the card (below), which removed the nesting rather than working around it. 8 tab stops at rest; a card's link becomes focusable only while that card is open.
+2. ~~**Homepage research visual (index.html)**~~ — done and live 2026-08-18 (pushed to origin/main; Vercel deploys on push). The band heading is Shabnam's: "Better estimates of internal states for better interventions". Two deliberate calls that should not silently regress: it ships **static** (index.html's hero already runs a canvas animation; a second animated element is a separate call, deferred), and the 2026-08-14 a11y fix — the projects link lives inside the card, never back in the button group — must stay. Full detail in "Research visual" above.
 3. ~~**Review/edit about copy on index.html**~~ — done. Shabnam rewrote the About section copy (2026-07-26) in her own voice.
 4. ~~**CV PDF link**~~ — done. Contact section links to cv-viewer.html.
 5. ~~**Mobile CSS pass**~~ — done. Nav overflow fixed on all pages; cursor reset on mobile; graph.html stacks canvas/sidebar.

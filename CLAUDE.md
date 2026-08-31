@@ -275,3 +275,23 @@ Some bib entries are tagged `selected` — use these for featured publications.
 - Spreading activation: DECAY=0.22, SPREAD=0.22, interaction cooldown=5s
 - Edge weights encoded as line thickness (w^1.5 × 2.0px) + opacity (w^1.8 × 0.22)
 - Edge pulses: small dots traveling along active edges (spawn rate 0.18)
+- **Node labels are placed, not just drawn** (fixed 2026-08-31). Label text is a
+  fixed pixel size while node spacing scales with the viewport, so on a phone
+  clicking a node stacked its exposed neighbours' labels on top of each other.
+  `placeLabelBoxes()` now tries four slots per label (below → above → right →
+  left), takes the first that clears everything already placed and stays inside
+  the node band, and **drops** an optional label that fits nowhere — a dropped
+  label leaves a lit node, a stacked one leaves two unreadable ones. The clicked
+  or hovered label is placed first and never dropped. Tests:
+  `node graph/test-label-placement.mjs` (8, plain-assert, no runner) — it
+  extracts the function from graph.html between the `LABEL-PLACEMENT` marker
+  comments, so keep those markers intact.
+- `#title-block` and `#stats-bar` live inside `#canvas-footer`, one flex
+  container — a row at ≥768px (visually identical to the old absolute
+  positioning), a `column-reverse` stack below. They used to be pinned
+  independently to opposite bottom corners and overlapped by 379×20px on a
+  phone. Don't re-pin either one on its own.
+- `TOP_PAD` / `BOTTOM_PAD` (the canvas margins that keep nodes off the nav and
+  footer) are **measured from the live element rects** in `measurePads()` at each
+  resize, not hardcoded — the mobile nav wraps to two rows and the footer stacks,
+  which the old fixed 48/64 didn't cover.

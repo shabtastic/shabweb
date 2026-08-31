@@ -82,9 +82,22 @@ body {
 #nav-mini .sib-links a.active { color: var(--ink-blue); }
 #nav-mini .sib-sep { color: var(--ink-dim); font-size: 0.68rem; }
 
+/* ── CANVAS FOOTER (title block + live stat line) ── */
+/* These two were absolutely positioned into opposite bottom corners with no
+   layout relationship, so nothing could stop them colliding once either one
+   wrapped — which is exactly what happened on a phone, where the stats line
+   wraps to two lines and the stat text is long. One flex container gives them
+   a shared layout: a row on desktop (identical to how it looked before), a
+   stack on narrow screens. */
+#canvas-footer {
+  position: absolute; bottom: 2rem; left: 1.8rem; right: 1.8rem; z-index: 10;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 1.5rem;
+}
+
 /* ── TITLE BLOCK ── */
 #title-block {
-  position: absolute; bottom: 2rem; left: 1.8rem; z-index: 10;
+  min-width: 0;
 }
 #title-block h1 {
   font-family: var(--sans); font-size: 1.1rem; font-weight: 300;
@@ -194,7 +207,7 @@ body {
 
 /* ── STATS BAR ── */
 #stats-bar {
-  position: absolute; bottom: 2rem; right: 1.8rem; z-index: 10;
+  min-width: 0;
   font-size: 0.68rem; letter-spacing: 0.18em; color: var(--ink-dim);
   text-align: right; line-height: 1.8;
 }
@@ -315,10 +328,21 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   #nav-mini .sib-label { display: none; }
   #nav-mini .sib-links { gap: 0.9rem; }
 
-  /* Title-block at bottom-left can overlap nodes; tighten it */
-  #title-block { bottom: 1rem; left: 1rem; }
+  /* Not enough width for title and stat side by side — stack them instead.
+     column-reverse keeps the title anchored to the bottom-left corner, with
+     the live stat line above it. */
+  #canvas-footer {
+    bottom: 1rem; left: 1rem; right: 1rem;
+    flex-direction: column-reverse; align-items: flex-start; gap: 0.3rem;
+  }
   #title-block h1 { font-size: 0.85rem; }
-  #stats-bar { bottom: 1rem; right: 1rem; font-size: 0.68rem; }
+  #stats-bar {
+    text-align: left; max-width: 100%;
+    /* Clamp to one line: the canvas reserves the footer's measured height at
+       resize, and a stat line that grew a second line on hover would leave
+       nodes drawn underneath it until the next resize. */
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
 
   /* HUD progress bar — keep top-right but smaller */
   #hud { top: 1rem; right: 1rem; }
@@ -352,13 +376,15 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
       <div class="hud-ring-wrap"><div class="hud-ring" id="hud-ring"></div></div>
     </div>
 
-    <div id="title-block">
-      <h1>Research Knowledge Graph</h1>
-      <p id="title-stats"></p>
-    </div>
+    <div id="canvas-footer">
+      <div id="title-block">
+        <h1>Research Knowledge Graph</h1>
+        <p id="title-stats"></p>
+      </div>
 
-    <div id="stats-bar">
-      <div id="stat-active">hover a node · click to activate</div>
+      <div id="stats-bar">
+        <div id="stat-active">hover a node · click to activate</div>
+      </div>
     </div>
   </div>
 
@@ -10770,20 +10796,43 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   const ctx    = canvas.getContext('2d');
   let W = 0, H = 0, DPR = 1;
 
+  // World → screen — leave buffers so graph doesn't overlap nav-mini / HUD (top)
+  // or the canvas footer (bottom). Centered in the usable region.
+  //
+  // Measured, not hardcoded: nav-mini wraps to two rows below 768px and the
+  // footer stacks there, so the fixed 48/64 these started as under-reserved on
+  // a phone by enough to draw nodes on top of both.
+  let TOP_PAD = 48;
+  let BOTTOM_PAD = 64;
+  const PAD_GAP = 12; // breathing room between the chrome and the nearest node
+
+  function measurePads() {
+    const wrap = canvas.parentElement;
+    if (!wrap) return;
+    const box = wrap.getBoundingClientRect();
+    let top = 48, bottom = 64;
+    for (const id of ['nav-mini', 'hud']) {
+      const el = document.getElementById(id);
+      if (el) top = Math.max(top, el.getBoundingClientRect().bottom - box.top + PAD_GAP);
+    }
+    const footer = document.getElementById('canvas-footer');
+    if (footer) bottom = Math.max(bottom, box.bottom - footer.getBoundingClientRect().top + PAD_GAP);
+    // Never reserve so much that there is no canvas left to draw in.
+    const cap = Math.max(0, box.height - 80);
+    if (top + bottom > cap) { const k = cap / (top + bottom); top *= k; bottom *= k; }
+    TOP_PAD = top; BOTTOM_PAD = bottom;
+  }
+
   function resize() {
     DPR = window.devicePixelRatio || 1;
     const wrap = canvas.parentElement;
     W = wrap.clientWidth; H = wrap.clientHeight;
     canvas.width  = W * DPR; canvas.height = H * DPR;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    measurePads();
   }
   window.addEventListener('resize', resize);
   resize();
-
-  // World → screen — leave buffers so graph doesn't overlap nav-mini / HUD (top)
-  // or the title-block / stats-bar (bottom). Centered in the usable region.
-  const TOP_PAD = 48;
-  const BOTTOM_PAD = 64;
   const usableHPx = () => Math.max(40, H - TOP_PAD - BOTTOM_PAD);
   // Divide by SIZE_SCALE so a bigger world still fits the canvas. The 1.25
   // tracks the BOUNDS slack factor so nodes near the boundary still render on-screen.
@@ -10793,6 +10842,62 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
   function ws(x, y) {
     return { x: W * 0.5 + x * SCALE() * STRETCH_X, y: TOP_PAD + usableHPx() * 0.5 + y * SCALE() };
   }
+
+  // ── LABEL-PLACEMENT (start) ──
+  // Labels are drawn at a fixed pixel size, but node spacing scales with the
+  // viewport (see SCALE above) — so the narrower the screen, the closer two
+  // labels sit while the text stays exactly as big — on a phone the divisor is
+  // roughly half what it is on a desktop. A click is the worst case: the
+  // neighbours it exposes are the strongest-linked ones, which the force layout
+  // has already pulled nearest.
+  //
+  // So placement is resolved rather than assumed. Each label tries four slots
+  // around its node (below first, keeping the historical look) and takes the
+  // first that hits nothing already placed. `required` labels — the clicked or
+  // hovered node — are drawn even if nothing fits; optional ones are dropped,
+  // because a dropped label still leaves a lit node, while a stacked one leaves
+  // two unreadable ones.
+  //
+  // Items must arrive in priority order. Extracted and tested by
+  // graph/test-label-placement.mjs — keep the marker comments intact.
+  function placeLabelBoxes(items, opts) {
+    const pad    = (opts && opts.pad)   || 2;
+    const width  = (opts && opts.width) || Infinity;
+    // Vertical band the labels must stay inside — the same region the nodes are
+    // laid out in. A node sitting at the bottom of that band would otherwise
+    // hang its label down over the HTML footer, which the canvas cannot see.
+    const top    = (opts && opts.top)    != null ? opts.top    : -Infinity;
+    const bottom = (opts && opts.bottom) != null ? opts.bottom :  Infinity;
+    const placed = [];
+    for (const it of items) {
+      const slots = [
+        { x0: it.x - it.w / 2,        y0: it.y + it.r + 3 },          // below
+        { x0: it.x - it.w / 2,        y0: it.y - it.r - 3 - it.h },   // above
+        { x0: it.x + it.r + 4,        y0: it.y - it.h / 2 },          // right
+        { x0: it.x - it.r - 4 - it.w, y0: it.y - it.h / 2 },          // left
+      ];
+      let chosen = null, anySlot = null, inBandSlot = null;
+      for (const slot of slots) {
+        // Clamp x before the overlap test, not after, or the clamp could shove
+        // a cleared box back on top of a neighbour. y is never clamped — that
+        // would detach the label from the node it names.
+        let x0 = slot.x0;
+        if (width !== Infinity) x0 = Math.max(0, Math.min(width - it.w, x0));
+        const box = { x0, y0: slot.y0, x1: x0 + it.w, y1: slot.y0 + it.h };
+        if (!anySlot) anySlot = box;
+        if (box.y0 < top || box.y1 > bottom) continue;
+        if (!inBandSlot) inBandSlot = box;
+        const clash = placed.some(q =>
+          Math.min(box.x1, q.x1) - Math.max(box.x0, q.x0) > -pad &&
+          Math.min(box.y1, q.y1) - Math.max(box.y0, q.y0) > -pad);
+        if (!clash) { chosen = box; break; }
+      }
+      if (!chosen) { if (!it.required) continue; chosen = inBandSlot || anySlot; }
+      placed.push(Object.assign({}, it, chosen));
+    }
+    return placed;
+  }
+  // ── LABEL-PLACEMENT (end) ──
 
   // ── Activation state ────────────────────────────────────────
   const actTarget   = new Float32Array(NODES.length).fill(0.05);
@@ -11286,27 +11391,43 @@ a.overlay-paper-title:hover { color: var(--ink-blue); border-color: var(--ink-bl
     }
 
     // Labels, second pass — above every node and glow.
-    for (const L of labelQueue) {
-      ctx.save();
+    // Measure every label, then resolve the placements together: a label drawn
+    // where another already sits is worse than no label at all. The clicked /
+    // hovered one is placed first and is never dropped.
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    const labelItems = labelQueue
+      .sort((a, b) => (b.isAtt || b.isHov) - (a.isAtt || a.isHov) || b.lalpha - a.lalpha)
+      .map(L => {
+        ctx.font = `${L.fsize}px 'Space Mono', monospace`;
+        const tw = Math.max(...L.lines.map(l => ctx.measureText(l).width));
+        const th = L.lines.length * (L.fsize + 2);
+        return { L, x: L.sp.x, y: L.sp.y, r: L.r, w: tw + 6, h: th + 4,
+                 required: L.isAtt || L.isHov };
+      });
+
+    // Keep labels inside the same band the nodes are laid out in, so one at
+    // the edge cannot hang over the nav or the footer.
+    const opts = { pad: 2, width: W, top: TOP_PAD, bottom: H - BOTTOM_PAD };
+    for (const P of placeLabelBoxes(labelItems, opts)) {
+      const L = P.L;
+      const cx = P.x0 + P.w / 2;
       ctx.globalAlpha = L.lalpha;
       ctx.font = `${L.fsize}px 'Space Mono', monospace`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      const tw = Math.max(...L.lines.map(l => ctx.measureText(l).width));
-      const th = L.lines.length * (L.fsize + 2);
       // A paper-coloured plate under every label, not just the attended one:
       // the edges and contours it now sits above are still busy behind it, and
       // dark text on a translucent tint alone was the unreadable case.
       ctx.fillStyle = 'rgba(245,242,236,0.82)';
-      ctx.fillRect(L.sp.x - tw/2 - 3, L.sp.y + L.r + 3, tw + 6, th + 4);
+      ctx.fillRect(P.x0, P.y0, P.w, P.h);
       if (L.isAtt || L.isHov) {
         ctx.fillStyle = `rgba(${L.rv},${L.gv},${L.bv},0.18)`;
-        ctx.fillRect(L.sp.x - tw/2 - 3, L.sp.y + L.r + 3, tw + 6, th + 4);
+        ctx.fillRect(P.x0, P.y0, P.w, P.h);
       }
       ctx.fillStyle = `rgba(17,17,24,${L.lalpha.toFixed(2)})`;
-      L.lines.forEach((line, li) => ctx.fillText(line, L.sp.x, L.sp.y + L.r + 4 + li*(L.fsize+2)));
-      ctx.restore();
+      L.lines.forEach((line, li) => ctx.fillText(line, cx, P.y0 + 1 + li*(L.fsize+2)));
     }
+    ctx.restore();
 
     // ── HUD ──
     const phase = getPhase(semanticDist);

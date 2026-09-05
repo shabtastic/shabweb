@@ -60,7 +60,18 @@ SH    ABOUT    RESEARCH    EXTRACURRICULARS    CONTACT
 - Nav stays single-height at rest, equal spacing between all items
 - graph.html uses a simple `#back` link, no full nav
 
-Nav HTML pattern (index, cv, projects, extracurriculars):
+Nav HTML pattern (index, cv, projects, extracurriculars, about-this-site):
+
+**Any page using this full nav MUST also carry the mobile hamburger** — the
+`.nav-toggle` button before `</nav>`, the `/* ── Mobile hamburger nav ── */`
+CSS block ending the `<style>`, and the `nav-open` toggle IIFE before
+`</body>`. Without it the nav overflows the viewport below 768px (`Contact`
+ran 62px off-screen at 360px). `about-this-site.html` was written after the
+2026-07-26 mobile-nav pass and missed all three until 2026-09-04 — copy the
+blocks from `projects.html` verbatim rather than reimplementing. Pages using
+the `.back-bar` mini-nav instead (graph, graph-methodology) are unaffected,
+as are 404 and cv-viewer, which have no nav.
+
 ```html
 <nav>
   <a href="index.html" class="nav-logo">

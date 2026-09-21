@@ -119,6 +119,32 @@
         ]
       },
       {
+        "id": "Eum2026physiological",
+        "title": "When do physiological measures forecast market outcomes? A random utility framework",
+        "year": 2026,
+        "venue": "Preprint",
+        "doi": "10.2139/ssrn.7473478",
+        "url": "https://doi.org/10.2139/ssrn.7473478",
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "nodes_contributed": [],
+        "added": "2026-09-21T12:52:48.696Z"
+      },
+      {
+        "id": "Mohan2026learning",
+        "title": "Learning heterogeneous preferences",
+        "year": 2026,
+        "venue": "Preprint",
+        "arxivId": "2609.17847",
+        "url": "https://arxiv.org/abs/2609.17847",
+        "pubType": "preprint",
+        "authorPosition": "middle",
+        "paperWeight": 0.28,
+        "nodes_contributed": [],
+        "added": "2026-09-21T12:52:48.697Z"
+      },
+      {
         "id": "kim2026personagrambridgingpersonasproduct",
         "title": "Personagram: Bridging personas and product design for creative ideation with multimodal LLMs",
         "year": 2026,

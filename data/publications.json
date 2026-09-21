@@ -136,6 +136,52 @@
     "part_of": "creativity-support"
   },
   {
+    "id": "Eum2026physiological",
+    "title": "When do physiological measures forecast market outcomes? A random utility framework",
+    "authors": [
+      "Eum, B.",
+      "Daviet, R.",
+      "Hakimi, Shabnam",
+      "Webb, R."
+    ],
+    "year": 2026,
+    "venue": "Preprint",
+    "doi": "10.2139/ssrn.7473478",
+    "url": "https://doi.org/10.2139/ssrn.7473478",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": [
+      "manual",
+      "selected"
+    ],
+    "part_of": "neurofore-econ"
+  },
+  {
+    "id": "Mohan2026learning",
+    "title": "Learning heterogeneous preferences",
+    "authors": [
+      "Mohan, S.",
+      "Hong, M.",
+      "Shu, D.",
+      "Fransen, A.",
+      "Hakimi, Shabnam",
+      "Klenk, M."
+    ],
+    "year": 2026,
+    "venue": "Preprint",
+    "arxivId": "2609.17847",
+    "url": "https://arxiv.org/abs/2609.17847",
+    "pubType": "preprint",
+    "authorPosition": "middle",
+    "paperWeight": 0.28,
+    "keywords": [
+      "manual",
+      "selected"
+    ],
+    "part_of": "pref-predict"
+  },
+  {
     "id": "kim2026personagrambridgingpersonasproduct",
     "title": "Personagram: Bridging personas and product design for creative ideation with multimodal LLMs",
     "authors": [
@@ -155,7 +201,9 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
+    "keywords": [
+      "selected"
+    ],
     "part_of": "generative-design"
   },
   {
@@ -179,7 +227,9 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
+    "keywords": [
+      "selected"
+    ],
     "part_of": "generative-design"
   },
   {
@@ -456,7 +506,9 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
+    "keywords": [
+      "selected"
+    ],
     "part_of": "pref-predict"
   },
   {
@@ -671,6 +723,7 @@
     "authorPosition": "middle",
     "paperWeight": 0.28,
     "keywords": [
+      "selected",
       "draft"
     ],
     "part_of": "covid-dm"
@@ -805,7 +858,9 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
+    "keywords": [
+      "selected"
+    ],
     "part_of": "env-dm"
   },
   {
@@ -928,7 +983,9 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
+    "keywords": [
+      "selected"
+    ],
     "part_of": "driving-dm"
   },
   {
@@ -949,7 +1006,9 @@
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
-    "keywords": [],
+    "keywords": [
+      "selected"
+    ],
     "part_of": "information-sampling"
   },
   {

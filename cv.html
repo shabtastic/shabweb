@@ -160,6 +160,21 @@ nav {
 .cv-section-heading.s-yellow { --hl-rgb: 255 255 119; --hl-a: 0.75; }
 .cv-section-heading.s-mint   { --hl-rgb: 119 255 228; --hl-a: 0.65; }
 
+/* ── SUBSECTION HEADING (inside Publications) ── */
+/* Deliberately quieter than .cv-section-heading: smaller, dimmer, a hairline
+   rule instead of the 1.5px ink-blue one, and no highlighter band — the bands
+   mark top-level sections, so giving one to a subsection would flatten the
+   hierarchy the subsections exist to create. */
+.cv-subsection-heading {
+  font-size: 0.7rem; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--ink-dim); padding: 10px 0 6px;
+  margin-top: 26px;
+  border-top: 1px solid var(--blue-G);
+}
+/* Subsection lists sit closer together than standalone sections did — the
+   next subsection heading supplies the separation. */
+.pub-list-sub { padding-bottom: 0.5rem; }
+
 /* ── CV ENTRIES (education, positions) ── */
 .cv-content { padding: 0 2.5rem 2rem; max-width: 900px; }
 .cv-entry {
@@ -185,35 +200,6 @@ nav {
 /* ── PUBLICATION ENTRIES ── */
 .pub-list { padding: 0 2.5rem 4rem; max-width: 900px; }
 .pub-footnote { font-size: 0.68rem; color: var(--ink-dim); margin-top: 1.5rem; }
-.pub-year-heading {
-  font-family: var(--mono);
-  font-size: 0.7rem; letter-spacing: 0.22em;
-  color: var(--ink);
-  padding: 0.8rem 0 0.4rem;
-  margin-top: 1.2rem;
-  border-bottom: 1px solid var(--ink-dim);
-  --hl-rgb: 255 255 119;
-  --hl-a: 0.65;
-}
-.pub-year-heading:first-child { margin-top: 0.6rem; }
-.pub-year-heading > .hl {
-  display: inline;
-  /* inline + clone, not inline-block: the band is one linear-gradient over
-     the element box, so on a label that wraps, inline-block stretched a
-     single gradient across BOTH lines and the colour landed in the gap
-     between them. Cloning the box decoration gives each line fragment its
-     own gradient, i.e. a highlighter stroke per line. */
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  padding: 0 6px;
-  margin-left: -6px;
-  background-image: linear-gradient(
-    transparent 22%,
-    rgb(var(--hl-rgb) / var(--hl-a)) 22%,
-    rgb(var(--hl-rgb) / var(--hl-a)) 92%,
-    transparent 92%
-  );
-}
 .pub-entry {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -229,7 +215,17 @@ nav {
   grid-template-rows: auto auto auto;
   row-gap: 0.35rem;
 }
-.pub-main { grid-column: 1; }
+.pub-main {
+  grid-column: 1;
+  /* Row 3 is the venue line. Preprints suppress it — their venue field is the
+     literal word "Preprint", which the subsection heading already says —
+     so without a floor here those entries render two lines tall and the whole
+     section reads tighter than the two around it. Reserve one venue line's
+     worth of height (its font-size x its line-height) whether or not the row
+     has content; rows that do have content are already at least this tall, so
+     nothing else moves. */
+  grid-template-rows: auto auto minmax(calc(0.7rem * 1.7), auto);
+}
 .pub-aside { grid-column: 2; text-align: right; white-space: nowrap; }
 .pub-title {
   font-family: var(--sans); font-size: 0.88rem; font-weight: 400;
@@ -422,17 +418,36 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
   </div>
 </div>
 
-<!-- ── Selected Publications (populated from publications.json) ── -->
-<div class="cv-content">
-  <div class="cv-section-heading s-violet"><span class="hl">Selected Publications</span></div>
-</div>
-<div class="pub-list" id="pub-list"></div>
+<!-- ── Selected Recent Publications (populated from publications.json) ── -->
+<!-- One section with subsections, mirroring the LaTeX CV's \cvsection{Publications}
+     and its \cvsubsection headings. The website had collapsed journals, proceedings
+     and preprints into a single flat list, which is where it diverged. Subsection
+     order follows cv.tex. Any subsection with nothing in it hides itself, which is
+     why Reviews/Chapters/Commentaries is here but not currently visible.
 
-<!-- ── Selected Conference Presentations (populated from publications.json) ── -->
+     Headings drop cv.tex's "Peer-Reviewed" qualifier on purpose. Conference
+     presentations here are refereed too — abstracts are reviewed — so marking
+     only journals and proceedings implied the posters and talks were not.
+     Preprints are the sole unrefereed category, and that heading already says
+     so. Don't reinstate the qualifier from cv.tex without re-reading this. -->
 <div class="cv-content">
-  <div class="cv-section-heading s-mint"><span class="hl">Selected Conference Presentations</span></div>
+  <div class="cv-section-heading s-violet"><span class="hl">Selected Recent Publications</span></div>
 </div>
-<div class="pub-list" id="pub-list-presentations"></div>
+
+<div class="cv-content"><div class="cv-subsection-heading">Journals</div></div>
+<div class="pub-list pub-list-sub" id="pub-list-journals"></div>
+
+<div class="cv-content"><div class="cv-subsection-heading">Preprints &amp; Working Papers</div></div>
+<div class="pub-list pub-list-sub" id="pub-list-preprints"></div>
+
+<div class="cv-content"><div class="cv-subsection-heading">Conference Proceedings</div></div>
+<div class="pub-list pub-list-sub" id="pub-list-proceedings"></div>
+
+<div class="cv-content"><div class="cv-subsection-heading">Conference Presentations</div></div>
+<div class="pub-list pub-list-sub" id="pub-list-presentations"></div>
+
+<div class="cv-content"><div class="cv-subsection-heading">Reviews, Book Chapters &amp; Commentaries</div></div>
+<div class="pub-list pub-list-sub" id="pub-list-chapters"></div>
 
 <div class="cv-content" style="padding-top:0;">
   <a href="cv-viewer.html" class="full-cv-link">View full CV →</a>
@@ -465,18 +480,18 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
       };
 
       function renderPubList(list, pubs) {
-        let currentYear = null;
+        // The subsection heading already names the type, so a pill repeating it
+        // on every row is noise. Show the pill only where the subsection holds
+        // more than one type and it therefore still distinguishes something —
+        // Conference vs Workshop, Poster vs Talk vs Symposium.
+        const showType = new Set(pubs.map(p => p.pubType)).size > 1;
 
+        // No year dividers inside a subsection. Every entry already prints its
+        // year in the aside, so a divider repeated it; worse, the divider's
+        // highlighter band read louder than the subsection heading above it and
+        // inverted the hierarchy the subsections exist to establish. Entries
+        // stay sorted newest-first, so the years still read down the margin.
         pubs.forEach(pub => {
-          // Year heading
-          if (pub.year !== currentYear) {
-            currentYear = pub.year;
-            const heading = document.createElement('div');
-            heading.className = 'pub-year-heading';
-            heading.innerHTML = '<span class="hl">' + currentYear + '</span>';
-            list.appendChild(heading);
-          }
-
           const entry = document.createElement('div');
           entry.className = 'pub-entry reveal';
 
@@ -536,7 +551,7 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
             '</div>' +
             '<div class="pub-aside">' +
               '<span class="pub-year">' + pub.year + '</span>' +
-              '<span class="pub-type">' + typeLabel + '</span>' +
+              (showType ? '<span class="pub-type">' + typeLabel + '</span>' : '') +
               (pub.addendum ? '<span class="pub-addendum">' + pub.addendum + '</span>' : '') +
             '</div>';
 
@@ -554,17 +569,71 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
       const selected = pubs.filter(p => p.keywords && p.keywords.includes('selected'));
       selected.sort((a, b) => b.year - a.year || b.paperWeight - a.paperWeight);
 
-      const papers = selected.filter(p => !PRESENTATION_TYPES.includes(p.pubType));
-      const presentations = selected.filter(p => PRESENTATION_TYPES.includes(p.pubType));
+      // Buckets mirror the LaTeX CV's \cvsubsection headings under
+      // \cvsection{Publications}. Keep these in step with cv.tex: the website
+      // previously lumped journals, proceedings and preprints into one flat
+      // list, which is the divergence this restores.
+      const BUCKETS = [
+        { id: 'pub-list-journals',     types: ['journal'] },
+        { id: 'pub-list-preprints',    types: ['preprint'] },
+        { id: 'pub-list-proceedings',  types: ['conf-full', 'conf-workshop'] },
+        { id: 'pub-list-presentations',types: PRESENTATION_TYPES },
+        { id: 'pub-list-chapters',     types: ['book-chapter', 'commentary'] },
+      ];
 
-      renderPubList(document.getElementById('pub-list'), papers);
+      // This page highlights selected *recent* work; the "View full CV" links
+      // carry the complete record. Two bounds, whichever binds first: nothing
+      // older than WINDOW_YEARS, and at most MAX_ENTRIES per section.
+      //
+      // Both are needed, and they do different jobs. The window alone let a
+      // decade-old poster tail survive in a section that had a gap in it; the
+      // cap alone let old work sit at the top of a short section forever, and
+      // let the page grow without limit as new work accumulated. Today the
+      // window binds Presentations and the cap binds the other two.
+      const WINDOW_YEARS = 5;
+      const MAX_ENTRIES  = 8;
 
-      const presoSection = document.getElementById('pub-list-presentations');
-      if (presentations.length) {
-        renderPubList(presoSection, presentations);
-      } else {
-        presoSection.previousElementSibling.style.display = 'none';
-        presoSection.style.display = 'none';
+      function trimForDisplay(entries) {
+        if (!entries.length) return entries;
+        // Anchor on the newest year present rather than strictly on the
+        // calendar year: forthcoming work is routinely dated ahead, and a
+        // January rollover shouldn't quietly drop a year's worth of entries
+        // before anything new has replaced them.
+        // Clamped: forthcoming work is dated ahead, but only ever by a year or
+        // two. Without the clamp a single mistyped year (2062) would drag the
+        // cutoff with it and empty the subsection of everything else, while
+        // fillSection still showed the heading because the list wasn't empty.
+        const thisYear = new Date().getFullYear();
+        const newest = Math.max(...entries.map(p => p.year));
+        const anchor = Math.max(thisYear, Math.min(newest, thisYear + 2));
+        const cutoff = anchor - WINDOW_YEARS + 1;
+        // `entries` is already sorted newest-first, so the slice keeps the
+        // most recent MAX_ENTRIES.
+        return entries.filter(p => p.year >= cutoff).slice(0, MAX_ENTRIES);
+      }
+
+      // A section with nothing in it hides its own heading too.
+      function fillSection(listId, entries) {
+        const el = document.getElementById(listId);
+        if (entries.length) {
+          renderPubList(el, entries);
+        } else {
+          el.previousElementSibling.style.display = 'none';
+          el.style.display = 'none';
+        }
+      }
+
+      for (const b of BUCKETS) {
+        fillSection(b.id, trimForDisplay(selected.filter(p => b.types.includes(p.pubType))));
+      }
+
+      // Nothing should fall outside the buckets. If a new pubType appears in
+      // the bib it would otherwise vanish from the page silently, so say so.
+      const bucketed = new Set(BUCKETS.flatMap(b => b.types));
+      const orphans = selected.filter(p => !bucketed.has(p.pubType));
+      if (orphans.length) {
+        console.warn('cv.html: selected entries with no subsection:',
+          [...new Set(orphans.map(p => p.pubType))].join(', '));
       }
 
       // Reveal animation
@@ -577,7 +646,8 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
     })
     .catch(err => {
       console.error('Failed to load publications:', err);
-      document.getElementById('pub-list').innerHTML =
+      const errEl = document.getElementById('pub-list-journals');
+      if (errEl) errEl.innerHTML =
         '<p style="padding:2rem 2.5rem;color:var(--ink-dim);font-size:0.6rem;">Publications loading failed. Ensure data/publications.json is available.</p>';
     });
 })();

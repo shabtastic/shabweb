@@ -573,6 +573,7 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
       // \cvsection{Publications}. Keep these in step with cv.tex: the website
       // previously lumped journals, proceedings and preprints into one flat
       // list, which is the divergence this restores.
+      // ── BUCKETS (start) ──
       const BUCKETS = [
         { id: 'pub-list-journals',     types: ['journal'] },
         { id: 'pub-list-preprints',    types: ['preprint'] },
@@ -580,29 +581,38 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
         { id: 'pub-list-presentations',types: PRESENTATION_TYPES },
         { id: 'pub-list-chapters',     types: ['book-chapter', 'commentary'] },
       ];
+      // ── BUCKETS (end) ──
 
+      // ── PUB-TRIM (start) ──
       // This page highlights selected *recent* work; the "View full CV" links
       // carry the complete record. Two bounds, whichever binds first: nothing
-      // older than WINDOW_YEARS, and at most MAX_ENTRIES per section.
+      // older than WINDOW_YEARS, and at most MAX_ENTRIES per subsection.
       //
-      // Both are needed, and they do different jobs. The window alone let a
-      // decade-old poster tail survive in a section that had a gap in it; the
-      // cap alone let old work sit at the top of a short section forever, and
-      // let the page grow without limit as new work accumulated. Today the
-      // window binds Presentations and the cap binds the other two.
-      const WINDOW_YEARS = 5;
-      const MAX_ENTRIES  = 8;
+      // Both are needed, and they do different jobs. The window alone left a
+      // decade-old poster tail in a subsection that had a gap in it; the cap
+      // alone let the page grow without limit as new work accumulated. Today
+      // the window binds Presentations and the cap binds Preprints and
+      // Proceedings; the window is also what keeps Journals from collapsing to
+      // the single 2026 paper.
+      //
+      // The numbers are deliberate and load-bearing, not defaults. At 5/8 the
+      // 2024 Best Paper Award in Proceedings fell one slot outside the cap, so
+      // the page showed an Honorable Mention while hiding an outright win.
+      // Widening to 6 years also restores the two 2021 journal papers. Changing
+      // either number can silently evict a paper — data/test-pub-trim.mjs
+      // asserts the cases that matter, so run it if you touch these.
+      const WINDOW_YEARS = 6;
+      const MAX_ENTRIES  = 9;
 
       function trimForDisplay(entries) {
         if (!entries.length) return entries;
         // Anchor on the newest year present rather than strictly on the
         // calendar year: forthcoming work is routinely dated ahead, and a
         // January rollover shouldn't quietly drop a year's worth of entries
-        // before anything new has replaced them.
-        // Clamped: forthcoming work is dated ahead, but only ever by a year or
-        // two. Without the clamp a single mistyped year (2062) would drag the
-        // cutoff with it and empty the subsection of everything else, while
-        // fillSection still showed the heading because the list wasn't empty.
+        // before anything new has replaced them. Clamped to +2 so that a single
+        // mistyped year (2062) can't drag the cutoff with it and empty the
+        // subsection of everything else, while fillSection still shows the
+        // heading because the list isn't technically empty.
         const thisYear = new Date().getFullYear();
         const newest = Math.max(...entries.map(p => p.year));
         const anchor = Math.max(thisYear, Math.min(newest, thisYear + 2));
@@ -611,6 +621,7 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
         // most recent MAX_ENTRIES.
         return entries.filter(p => p.year >= cutoff).slice(0, MAX_ENTRIES);
       }
+      // ── PUB-TRIM (end) ──
 
       // A section with nothing in it hides its own heading too.
       function fillSection(listId, entries) {

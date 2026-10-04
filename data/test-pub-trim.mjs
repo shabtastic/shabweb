@@ -54,8 +54,10 @@ function check(name, cond, detail) {
   console.log(`  FAIL ${name}${detail ? ` — ${detail}` : ''}`);
 }
 
-// Mirror cv.html's own ordering before trimming.
-const selected = pubs.filter(p => p.keywords && p.keywords.includes('selected'));
+// Mirror cv.html's own filter and ordering before trimming. Talks and posters
+// are excluded from the page entirely (they live in the full CV only).
+const selected = pubs.filter(p => p.keywords && p.keywords.includes('selected')
+  && !PRESENTATION_TYPES.includes(p.pubType));
 selected.sort((a, b) => b.year - a.year || b.paperWeight - a.paperWeight);
 
 const shown = {};
@@ -110,6 +112,13 @@ check('empty input returns empty, does not throw',
   check('every selected pubType has a subsection', orphans.length === 0,
     `unbucketed: ${orphans.join(', ')}`);
 }
+
+// Presentations are left to the full CV. If a bucket for them comes back, or
+// cv.html stops filtering them out, they'd reappear without anyone deciding to.
+check('no presentation subsection or bucket on the page',
+  !html.includes('pub-list-presentations')
+    && !BUCKETS.some(b => b.types.some(t => PRESENTATION_TYPES.includes(t)))
+    && /!PRESENTATION_TYPES\.includes\(p\.pubType\)/.test(html));
 
 // A single mistyped year must not drag the cutoff forward and empty the list.
 {

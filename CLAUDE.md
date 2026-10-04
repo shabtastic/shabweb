@@ -241,16 +241,22 @@ Positions use golden ratio horizontal spacing across the page height.
 ## cv.html publications — structure and display rule
 The publications area mirrors the LaTeX CV's `\cvsection{Publications}` and its
 `\cvsubsection` headings: one **Selected Recent Publications** section over
-Journals / Preprints & Working Papers / Conference Proceedings / Conference
-Presentations / Reviews, Book Chapters & Commentaries / Science Communication.
-The last two have nothing tagged `selected` today and hide themselves; they
-stay so the mirror is complete. Buckets live in the `BUCKETS` array — keep it in
-step with `cv.tex` — and a `console.warn` fires for any selected `pubType` with
-no bucket.
+Journals / Preprints & Working Papers / Conference Proceedings / Reviews, Book
+Chapters & Commentaries / Science Communication. The last two have nothing
+tagged `selected` today and hide themselves; they stay so the mirror is
+complete. Buckets live in the `BUCKETS` array — keep it in step with `cv.tex` —
+and a `console.warn` fires for any selected `pubType` with no bucket.
 
-Headings deliberately **drop cv.tex's "Peer-Reviewed" qualifier**. Conference
-presentations are refereed too (abstracts are reviewed), so marking only
-journals and proceedings implied the posters and talks were not. Don't reinstate
+**Conference Presentations is deliberately left off** (Shabnam's call,
+2026-10-03) — the one cv.tex subsection not mirrored. Talks/posters are
+filtered out of `selected` via `PRESENTATION_TYPES` (same exclusion as
+index.html's recent-pubs list), not merely un-bucketed, so the orphan warning
+stays quiet. They remain in `publications.json` and the full CV. The test
+fails if a presentations bucket or list comes back.
+
+Headings deliberately **drop cv.tex's "Peer-Reviewed" qualifier**. It was
+dropped when presentations (abstract-reviewed) were still shown; preprints are
+still the only unrefereed category and their heading says so. Don't reinstate
 it from cv.tex.
 
 **The page shows a slice, not everything** — `WINDOW_YEARS = 6` and
@@ -260,7 +266,7 @@ tagged `selected`, and still not appear. **If a paper "disappears" from the
 page, check this rule before suspecting the bib sync.** Both numbers are
 load-bearing: at 5/8 a Best Paper Award fell one slot outside the cap while an
 Honorable Mention stayed, and the window is what keeps Journals from collapsing
-to a single 2026 entry. Run `node data/test-pub-trim.mjs` (9 plain-assert
+to a single 2026 entry. Run `node data/test-pub-trim.mjs` (10 plain-assert
 checks, no runner) if you touch either — it extracts the rule from cv.html
 between `PUB-TRIM` / `BUCKETS` marker comments, so keep those intact.
 

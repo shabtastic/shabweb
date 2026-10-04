@@ -435,11 +435,15 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
      `selected` today. They stay so the mirror is complete and they light up on
      their own if that changes.
 
-     Headings drop cv.tex's "Peer-Reviewed" qualifier on purpose. Conference
-     presentations here are refereed too — abstracts are reviewed — so marking
-     only journals and proceedings implied the posters and talks were not.
-     Preprints are the sole unrefereed category, and that heading already says
-     so. Don't reinstate the qualifier from cv.tex without re-reading this. -->
+     Conference Presentations is the one cv.tex subsection NOT mirrored here:
+     talks and posters are left to the full CV (Shabnam's call, 2026-10-03).
+
+     Headings drop cv.tex's "Peer-Reviewed" qualifier on purpose. It was added
+     back when presentations were shown — abstracts are reviewed too, so
+     marking only journals and proceedings implied the talks were not. With
+     presentations gone, Preprints are still the sole unrefereed category and
+     that heading already says so; the qualifier would add nothing. Don't
+     reinstate it from cv.tex without re-reading this. -->
 <div class="cv-content">
   <div class="cv-section-heading s-violet"><span class="hl">Selected Recent Publications</span></div>
 </div>
@@ -452,9 +456,6 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
 
 <div class="cv-content"><div class="cv-subsection-heading">Conference Proceedings</div></div>
 <div class="pub-list pub-list-sub" id="pub-list-proceedings"></div>
-
-<div class="cv-content"><div class="cv-subsection-heading">Conference Presentations</div></div>
-<div class="pub-list pub-list-sub" id="pub-list-presentations"></div>
 
 <div class="cv-content"><div class="cv-subsection-heading">Reviews, Book Chapters &amp; Commentaries</div></div>
 <div class="pub-list pub-list-sub" id="pub-list-chapters"></div>
@@ -579,7 +580,14 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
         }
       }
 
-      const selected = pubs.filter(p => p.keywords && p.keywords.includes('selected'));
+      // Talks and posters are left off this page on purpose (Shabnam's call,
+      // 2026-10-03) — the same exclusion index.html's recent-pubs list makes.
+      // They stay in publications.json and in the full CV; this is the one
+      // place cv.html departs from cv.tex's subsection mirror. Filtering here,
+      // rather than just dropping their bucket, keeps the orphan warning below
+      // quiet: they're excluded, not unaccounted for.
+      const selected = pubs.filter(p => p.keywords && p.keywords.includes('selected')
+        && !PRESENTATION_TYPES.includes(p.pubType));
       selected.sort((a, b) => b.year - a.year || b.paperWeight - a.paperWeight);
 
       // Buckets mirror the LaTeX CV's \cvsubsection headings under
@@ -591,7 +599,6 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
         { id: 'pub-list-journals',     types: ['journal'] },
         { id: 'pub-list-preprints',    types: ['preprint'] },
         { id: 'pub-list-proceedings',  types: ['conf-full', 'conf-workshop'] },
-        { id: 'pub-list-presentations',types: PRESENTATION_TYPES },
         { id: 'pub-list-chapters',     types: ['book-chapter', 'commentary'] },
         { id: 'pub-list-scicomm',      types: ['scicomm'] },
       ];
@@ -603,11 +610,10 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
       // older than WINDOW_YEARS, and at most MAX_ENTRIES per subsection.
       //
       // Both are needed, and they do different jobs. The window alone left a
-      // decade-old poster tail in a subsection that had a gap in it; the cap
-      // alone let the page grow without limit as new work accumulated. Today
-      // the window binds Presentations and the cap binds Preprints and
-      // Proceedings; the window is also what keeps Journals from collapsing to
-      // the single 2026 paper.
+      // decade-old poster tail when presentations were still shown here; the
+      // cap alone let the page grow without limit as new work accumulated.
+      // Today the cap binds Preprints and Proceedings; the window is what
+      // keeps Journals from collapsing to the single 2026 paper.
       //
       // The numbers are deliberate and load-bearing, not defaults. At 5/8 the
       // 2024 Best Paper Award in Proceedings fell one slot outside the cap, so

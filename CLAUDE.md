@@ -238,6 +238,58 @@ const OP    = 0.15;            // opacity
 ```
 Positions use golden ratio horizontal spacing across the page height.
 
+## cv.html publications — structure and display rule
+The publications area mirrors the LaTeX CV's `\cvsection{Publications}` and its
+`\cvsubsection` headings: one **Selected Recent Publications** section over
+Journals / Preprints & Working Papers / Conference Proceedings / Conference
+Presentations / Reviews, Book Chapters & Commentaries / Science Communication.
+The last two have nothing tagged `selected` today and hide themselves; they
+stay so the mirror is complete. Buckets live in the `BUCKETS` array — keep it in
+step with `cv.tex` — and a `console.warn` fires for any selected `pubType` with
+no bucket.
+
+Headings deliberately **drop cv.tex's "Peer-Reviewed" qualifier**. Conference
+presentations are refereed too (abstracts are reviewed), so marking only
+journals and proceedings implied the posters and talks were not. Don't reinstate
+it from cv.tex.
+
+**The page shows a slice, not everything** — `WINDOW_YEARS = 6` and
+`MAX_ENTRIES = 9` per subsection, whichever binds first; the two "View full CV"
+links carry the complete record. So a paper can be in `publications.json`,
+tagged `selected`, and still not appear. **If a paper "disappears" from the
+page, check this rule before suspecting the bib sync.** Both numbers are
+load-bearing: at 5/8 a Best Paper Award fell one slot outside the cap while an
+Honorable Mention stayed, and the window is what keeps Journals from collapsing
+to a single 2026 entry. Run `node data/test-pub-trim.mjs` (9 plain-assert
+checks, no runner) if you touch either — it extracts the rule from cv.html
+between `PUB-TRIM` / `BUCKETS` marker comments, so keep those intact.
+
+## CTA / link contrast
+Outlined controls used to use `rgba(26,44,107,0.25)`, which computes to
+**1.62:1** against the paper — well under the 3:1 a UI boundary needs, so the
+text read fine but the button shape was close to invisible. Link and CTA
+borders are now `rgba(26,44,107,0.55)` (3.26:1), the first alpha that passes.
+`cv.html`'s `.full-cv-link` is the one **filled** CTA outside the homepage hero,
+since it's that page's primary action.
+
+Hover states that swap to `--h-slate` must also switch the text to `var(--ink)`:
+paper on slate is only **3.20:1** and fails the 4.5:1 text minimum. `ink` on
+slate is 5.25:1.
+
+The one `rgba(26,44,107,0.25)` left in the repo is graph.html's scrollbar thumb,
+which is decoration, not an affordance — leave it.
+
+**These values are duplicated across every page** because there's no shared
+stylesheet (see below), so change them together or they drift.
+
+## No shared stylesheet (known debt)
+All CSS is inline per page: 2,556 lines across 9 files, with 73 rules appearing
+verbatim in 2+ files (258 duplicated instances) — the reset, the cursor, and the
+entire nav block are copied 5-9 times. "No framework, no build step" never
+required this; a `<link rel="stylesheet">` needs no build. The cost is real:
+`about-this-site.html` shipped without the mobile hamburger for weeks because
+the nav CSS is copy-pasted per page. Extracting a shared `style.css` is pending.
+
 ## Content card
 cv.html, projects.html, and extracurriculars.html have a semi-transparent content card
 (`rgba(245,242,236,0.80)`) wrapping all content. index.html is full-bleed (intentional).

@@ -168,7 +168,9 @@ nav {
   padding: 0.75rem 1.6rem; text-decoration: none;
   transition: background 0.25s;
 }
-.btn-primary:hover { background: var(--h-slate); }
+/* ink, not paper, on the slate hover: paper on slate is 3.20:1 and fails
+   the 4.5:1 text minimum. */
+.btn-primary:hover { background: var(--h-slate); color: var(--ink); }
 .hero-cta-or {
   font-family: var(--mono); font-size: 0.68rem;
   color: var(--ink-dim);
@@ -448,7 +450,7 @@ section { padding: 7rem 2.5rem; }
 .work-more {
   display: inline-block; margin-top: 1.4rem; font-size: 0.7rem;
   letter-spacing: 0.1em; color: var(--ink-blue); text-decoration: none;
-  border-bottom: 1px solid rgba(26,44,107,0.25); padding-bottom: 0.05rem;
+  border-bottom: 1px solid rgba(26,44,107,0.55); padding-bottom: 0.05rem;
   transition: border-color 0.2s;
 }
 .work-more:hover { border-color: var(--ink-blue); }
@@ -462,7 +464,8 @@ section { padding: 7rem 2.5rem; }
 .contact-link {
   font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--ink-dim); text-decoration: none;
-  padding-bottom: 0.2rem; border-bottom: 1px solid var(--ink-faint);
+  /* --ink-faint is 1.38:1 against the paper — invisible as an affordance. */
+  padding-bottom: 0.2rem; border-bottom: 1px solid rgba(26,44,107,0.55);
   transition: color 0.2s, border-color 0.2s;
 }
 .contact-link:hover { color: var(--h-slate); border-color: var(--h-slate); }

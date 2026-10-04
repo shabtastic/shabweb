@@ -253,14 +253,21 @@ nav {
 }
 
 /* ── FULL CV LINK ── */
+/* The page's primary action, so it gets the filled treatment rather than an
+   outline. The outlined version used a 25%-alpha border, which computes to
+   1.62:1 against the paper — well under the 3:1 a UI boundary needs — so the
+   text read fine but the button shape was close to invisible.
+   Hover switches to ink on slate, not paper on slate: paper on slate is
+   3.20:1 and fails the 4.5:1 text minimum. */
 .full-cv-link {
   display: inline-flex; align-items: center; gap: 0.6rem;
   font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--ink-blue); text-decoration: none;
-  border: 1px solid rgba(26,44,107,0.25); padding: 0.6rem 1.2rem;
-  margin-top: 2rem; transition: background 0.2s, border-color 0.2s;
+  color: var(--paper); background: var(--ink-blue);
+  border: 1px solid var(--ink-blue); text-decoration: none;
+  padding: 0.7rem 1.4rem;
+  margin-top: 2rem; transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
-.full-cv-link:hover { background: rgba(26,44,107,0.04); border-color: var(--ink-blue); }
+.full-cv-link:hover { background: var(--h-slate); border-color: var(--h-slate); color: var(--ink); }
 
 /* ── CURSOR ── */
 .cursor {
@@ -422,8 +429,11 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
 <!-- One section with subsections, mirroring the LaTeX CV's \cvsection{Publications}
      and its \cvsubsection headings. The website had collapsed journals, proceedings
      and preprints into a single flat list, which is where it diverged. Subsection
-     order follows cv.tex. Any subsection with nothing in it hides itself, which is
-     why Reviews/Chapters/Commentaries is here but not currently visible.
+     order follows cv.tex. Any subsection with nothing in it hides itself, which
+     is why Reviews/Chapters/Commentaries and Science Communication are both
+     here but neither is currently visible — nothing in either is tagged
+     `selected` today. They stay so the mirror is complete and they light up on
+     their own if that changes.
 
      Headings drop cv.tex's "Peer-Reviewed" qualifier on purpose. Conference
      presentations here are refereed too — abstracts are reviewed — so marking
@@ -448,6 +458,9 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
 
 <div class="cv-content"><div class="cv-subsection-heading">Reviews, Book Chapters &amp; Commentaries</div></div>
 <div class="pub-list pub-list-sub" id="pub-list-chapters"></div>
+
+<div class="cv-content"><div class="cv-subsection-heading">Science Communication</div></div>
+<div class="pub-list pub-list-sub" id="pub-list-scicomm"></div>
 
 <div class="cv-content" style="padding-top:0;">
   <a href="cv-viewer.html" class="full-cv-link">View full CV →</a>
@@ -580,6 +593,7 @@ nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(
         { id: 'pub-list-proceedings',  types: ['conf-full', 'conf-workshop'] },
         { id: 'pub-list-presentations',types: PRESENTATION_TYPES },
         { id: 'pub-list-chapters',     types: ['book-chapter', 'commentary'] },
+        { id: 'pub-list-scicomm',      types: ['scicomm'] },
       ];
       // ── BUCKETS (end) ──
 

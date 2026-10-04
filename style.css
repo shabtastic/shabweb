@@ -1,0 +1,176 @@
+/* ─────────────────────────────────────────────────────────────────
+   Shared styles for the five full-nav pages:
+   index, cv, projects, extracurriculars, about-this-site.
+
+   Linked BEFORE each page's own <style>, so anything a page declares
+   inline still wins a tie. That ordering is load-bearing: a rule here
+   loses to any same-specificity inline rule, even one that used to sit
+   above it in the page. Before adding a rule, check no page has an
+   inline rule it would now lose to.
+
+   Only rules that were byte-identical on (at least four of) those pages
+   live here. Page-specific layout stays inline. The standalone pages
+   (graph, graph-methodology, 404, cv-viewer) don't link this file: they
+   have their own layouts, and graph.html's tokens are deliberately fainter.
+   ───────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a, button { cursor: none; }
+:root {
+  --paper:    #f5f2ec;
+  --paper-2:  #edeae1;
+  --ink:      #111118;
+  --ink-blue: #1a2c6b;
+  --ink-dim:  rgba(17,17,24,0.55);
+  --ink-faint:rgba(17,17,24,0.15);
+  --blue-g:   rgba(80,140,200,0.20);
+  --blue-G:   rgba(80,140,200,0.42);
+  --h-yellow: #FFFF77;
+  --h-slate:  #7777FF;
+  --h-helio:  #C977FF;
+  --h-violet: #FF77E4;
+  --h-red:    #FF7792;
+  --h-cheese: #FFAE77;
+  --h-mint:   #77FFE4;
+  --h-lime:   #AAFF77;
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+  background-image:
+    linear-gradient(var(--blue-G) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-G) 1px, transparent 1px),
+    linear-gradient(var(--blue-g) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blue-g) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.6rem 2.5rem 2.1rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--blue-G);
+}
+.nav-logo {
+  display: inline-block; position: relative;
+  font-family: var(--mono); font-weight: 700;
+  font-size: 0.9rem; letter-spacing: 0.25em;
+  color: var(--ink); text-decoration: none; line-height: 1;
+}
+.nav-logo-hl { position: absolute; left: -3px; right: -3px; top: 28%; height: 40%; opacity: 0.78; transition: background-color 1.2s ease; pointer-events: none; }
+.nav-logo-text { position: relative; z-index: 1; }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: flex-start; }
+.nav-links li { position: relative; padding-bottom: 0.6rem; margin-bottom: -0.6rem; }
+.nav-links > li > a {
+  font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
+}
+.nav-links > li > a:hover, .nav-links > li > a.active { color: var(--ink); }
+.nav-sub-links {
+  display: flex; gap: 1rem;
+  position: absolute; top: 100%; left: 0;
+  padding-top: 0;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
+  background: rgba(244,241,235,0.95);
+  white-space: nowrap;
+}
+.nav-links li:hover .nav-sub-links {
+  max-height: 3rem; opacity: 1;
+  padding-top: 0.4rem; padding-bottom: 0.4rem;
+}
+.nav-sub-links a {
+  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
+}
+.nav-sub-links a:hover { color: var(--ink); }
+.nav-sub-links a.active { color: var(--ink-blue); }
+
+/* ── PAGE EYEBROW (inner pages; index has none) ── */
+.page-eyebrow { font-size: 0.72rem; letter-spacing: 0.38em; text-transform: uppercase; color: var(--ink-blue); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 1rem; }
+.page-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: currentColor; }
+.page-eyebrow > .hl {
+  display: inline;
+  /* inline + clone, not inline-block: the band is one linear-gradient over
+     the element box, so on a label that wraps, inline-block stretched a
+     single gradient across BOTH lines and the colour landed in the gap
+     between them. Cloning the box decoration gives each line fragment its
+     own gradient, i.e. a highlighter stroke per line. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 6px;
+  margin-left: -6px;
+  background-image: linear-gradient(
+    transparent 22%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 22%,
+    rgb(var(--hl-rgb, 26 44 107) / var(--hl-a, 0)) 92%,
+    transparent 92%
+  );
+}
+
+/* ── CURSOR ── (index.html overrides with its own, larger + scaled) */
+.cursor { position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: transform 0.12s ease, color 0.12s ease; will-change: transform; }
+
+/* ── FOOTER ── (every page also sets position: relative; z-index: 10
+   inline — index via its grouped `section, footer` rule — so it stays
+   with the pages rather than being split across two places) */
+footer { background: var(--paper-2); padding: 1.5rem 2.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--blue-G); }
+footer p { font-size: 0.68rem; letter-spacing: 0.18em; color: var(--ink-dim); }
+footer a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
+
+/* ── Mobile hamburger nav ──
+   Every page linking this file has the matching .nav-toggle button before
+   </nav> and the nav-open toggle script before </body>; those two still
+   live in each page's HTML. */
+.nav-toggle {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  width: 30px; height: 26px; padding: 0; margin: 0;
+  background: none; border: none; cursor: pointer; z-index: 101;
+}
+.nav-toggle span {
+  display: block; width: 100%; height: 2px; border-radius: 1px;
+  background: var(--ink); transition: transform 0.25s ease, opacity 0.2s ease;
+}
+nav.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+nav.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+  .nav-links {
+    position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; align-items: flex-start; gap: 0;
+    padding: 0 1.5rem; margin: 0;
+    background: rgba(244,241,235,0.97); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--blue-G);
+    max-height: 0; overflow: hidden; opacity: 0; pointer-events: none;
+    transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+  }
+  nav.nav-open .nav-links {
+    max-height: 85vh; opacity: 1; pointer-events: auto;
+    padding-top: 0.4rem; padding-bottom: 1.2rem;
+  }
+  .nav-links li { position: static; width: 100%; padding: 0; margin: 0; }
+  .nav-links > li > a {
+    display: block; padding: 0.85rem 0; font-size: 0.8rem;
+    border-bottom: 1px solid var(--blue-g);
+  }
+  .nav-sub-links {
+    position: static; flex-direction: column; gap: 0;
+    max-height: none; opacity: 1; overflow: visible; white-space: normal;
+    background: none; padding: 0.2rem 0 0.7rem 1rem;
+  }
+  nav .nav-links li:hover .nav-sub-links { max-height: none; padding: 0.2rem 0 0.7rem 1rem; }
+  .nav-sub-links a { display: block; padding: 0.55rem 0; font-size: 0.72rem; }
+}

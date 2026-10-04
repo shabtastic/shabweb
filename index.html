@@ -7,57 +7,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 a, button, [role="button"] { cursor: none; }
+/* Shared tokens are in style.css; these two are index-only. */
 :root {
-  --paper:    #f5f2ec;
-  --paper-2:  #edeae1;
-  --ink:      #111118;
-  --ink-blue: #1a2c6b;
-  --ink-dim:  rgba(17,17,24,0.55);
-  --ink-faint:rgba(17,17,24,0.15);
-  --blue-g:   rgba(80,140,200,0.20);   /* minor grid */
-  --blue-G:   rgba(80,140,200,0.42);   /* major grid */
-  /* Highlighter palette */
-  --h-yellow:  #FFFF77;
-  --h-slate:   #7777FF;
-  --h-helio:   #C977FF;
-  --h-violet:  #FF77E4;
-  --h-red:     #FF7792;
-  --h-cheese:  #FFAE77;
   /* Ink accent (deep blue pen) */
   --accent:    #1a2c6b;
-  --mono:  'Space Mono', monospace;
-  --sans:  'DM Sans', sans-serif;
   --serif: 'Cormorant Garamond', Georgia, serif;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--mono);
-  font-size: 12px;
-  line-height: 1.7;
-  overflow-x: hidden;
-  cursor: none;
-  /* Graph paper — light blue lines */
-  background-image:
-    linear-gradient(var(--blue-G) 1px, transparent 1px),
-    linear-gradient(90deg, var(--blue-G) 1px, transparent 1px),
-    linear-gradient(var(--blue-g) 1px, transparent 1px),
-    linear-gradient(90deg, var(--blue-g) 1px, transparent 1px);
-  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
 }
 
 /* ── CANVAS — deforming grid overlay ── */
 #field-canvas {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
 }
-
-
 
 /* ── CURSOR ── */
 .cursor {
@@ -71,50 +34,11 @@ body {
   will-change: transform;
 }
 
-nav, section, footer { position: relative; z-index: 10; }
+/* nav used to be in this list, but the fixed nav rule right after it always
+   won. With the nav rules now in style.css (loaded first), this would beat
+   them and un-fix the nav, so it lists only what it actually styles. */
+section, footer { position: relative; z-index: 10; }
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.6rem 2.5rem 2.1rem;
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(244,241,235,0.88); backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--blue-G);
-}
-.nav-logo {
-  display: inline-block; position: relative;
-  font-family: var(--mono); font-weight: 700;
-  font-size: 0.9rem; letter-spacing: 0.25em;
-  color: var(--ink); text-decoration: none; line-height: 1;
-}
-.nav-logo-hl { position: absolute; left: -3px; right: -3px; top: 28%; height: 40%; opacity: 0.78; transition: background-color 1.2s ease; pointer-events: none; }
-.nav-logo-text { position: relative; z-index: 1; }
-.nav-links { display: flex; gap: 2rem; list-style: none; align-items: flex-start; }
-.nav-links li { position: relative; padding-bottom: 0.6rem; margin-bottom: -0.6rem; }
-.nav-links > li > a {
-  font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
-}
-.nav-links > li > a:hover, .nav-links > li > a.active { color: var(--ink); }
-.nav-sub-links {
-  display: flex; gap: 1rem;
-  position: absolute; top: 100%; left: 0;
-  padding-top: 0;
-  max-height: 0; overflow: hidden; opacity: 0;
-  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
-  background: rgba(244,241,235,0.95);
-  white-space: nowrap;
-}
-.nav-links li:hover .nav-sub-links {
-  max-height: 3rem; opacity: 1;
-  padding-top: 0.4rem; padding-bottom: 0.4rem;
-}
-.nav-sub-links a {
-  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--ink-dim); text-decoration: none; transition: color 0.2s; line-height: 1;
-}
-.nav-sub-links a:hover { color: var(--ink); }
-.nav-sub-links a.active { color: var(--ink-blue); }
 /* ── HERO ── */
 #hero {
   min-height: 100vh;
@@ -123,7 +47,6 @@ nav {
 }
 
 /* Kelly cobalt block behind name */
-
 
 .hero-coords {
   position: absolute; top: 50%; right: 2.5rem;
@@ -470,21 +393,19 @@ section { padding: 7rem 2.5rem; }
 }
 .contact-link:hover { color: var(--h-slate); border-color: var(--h-slate); }
 
-footer {
-  background: var(--paper-2); padding: 1.5rem 2.5rem;
-  display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px solid var(--blue-G);
-}
-footer p { font-size: 0.68rem; letter-spacing: 0.18em; color: var(--ink-dim); }
-footer a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
-footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
-
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* Tighter desktop nav, only while the desktop nav is showing. Below 768px
+   style.css's hamburger sets gap: 0, and it used to win by coming later;
+   now it's loaded first, so this has to stop at 768 itself. Range syntax is
+   the exact complement of (max-width: 768px) — no fractional-width gap. */
+@media (768px < width <= 900px) {
+  .nav-links { gap: 1.2rem; }
+}
+
 @media (max-width: 900px) {
   nav { padding: 1rem 1.5rem; }
-  .nav-links { gap: 1.2rem; }
   section { padding: 5rem 1.5rem; }
   #hero { padding: 0 1.5rem 4rem; }
   .research-grid { grid-template-columns: 1fr; }
@@ -492,48 +413,6 @@ footer a:hover { color: var(--ink-blue); border-color: var(--ink-blue); }
   .work-type { display: none; }
   body, a, button { cursor: auto; }
   .cursor { display: none; }
-}
-
-/* ── Mobile hamburger nav ── */
-.nav-toggle {
-  display: none; flex-direction: column; justify-content: center; gap: 5px;
-  width: 30px; height: 26px; padding: 0; margin: 0;
-  background: none; border: none; cursor: pointer; z-index: 101;
-}
-.nav-toggle span {
-  display: block; width: 100%; height: 2px; border-radius: 1px;
-  background: var(--ink); transition: transform 0.25s ease, opacity 0.2s ease;
-}
-nav.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-nav.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
-nav.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-@media (max-width: 768px) {
-  .nav-toggle { display: flex; }
-  .nav-links {
-    position: absolute; top: 100%; left: 0; right: 0;
-    flex-direction: column; align-items: flex-start; gap: 0;
-    padding: 0 1.5rem; margin: 0;
-    background: rgba(244,241,235,0.97); backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--blue-G);
-    max-height: 0; overflow: hidden; opacity: 0; pointer-events: none;
-    transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
-  }
-  nav.nav-open .nav-links {
-    max-height: 85vh; opacity: 1; pointer-events: auto;
-    padding-top: 0.4rem; padding-bottom: 1.2rem;
-  }
-  .nav-links li { position: static; width: 100%; padding: 0; margin: 0; }
-  .nav-links > li > a {
-    display: block; padding: 0.85rem 0; font-size: 0.8rem;
-    border-bottom: 1px solid var(--blue-g);
-  }
-  .nav-sub-links {
-    position: static; flex-direction: column; gap: 0;
-    max-height: none; opacity: 1; overflow: visible; white-space: normal;
-    background: none; padding: 0.2rem 0 0.7rem 1rem;
-  }
-  nav .nav-links li:hover .nav-sub-links { max-height: none; padding: 0.2rem 0 0.7rem 1rem; }
-  .nav-sub-links a { display: block; padding: 0.55rem 0; font-size: 0.72rem; }
 }
 
 /* ── ADMIN ── */

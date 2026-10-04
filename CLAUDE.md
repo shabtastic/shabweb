@@ -2,12 +2,15 @@
 
 ## Project overview
 Static HTML site, no framework, no build step. Four pages.
-All CSS is inline in each file's `<style>` block.
+Shared CSS (tokens, reset, nav + hamburger, footer, cursor) is in `style.css`,
+linked by the five full-nav pages; everything page-specific is inline in each
+file's `<style>` block. See "Shared stylesheet" below.
 All content is hardcoded HTML — edit in place.
 
 ## File structure
 ```
 index.html              — Main page (hero, about, research, featured projects, CV, contact)
+style.css               — Shared CSS for the 5 full-nav pages (see "Shared stylesheet")
 graph.html              — Scientific knowledge graph visualization
 cv.html                 — Data-driven CV (selected publications from JSON, education, positions)
 cv-viewer.html          — PDF viewer (fetches CV PDF from CV repo)
@@ -63,12 +66,13 @@ SH    ABOUT    RESEARCH    EXTRACURRICULARS    CONTACT
 Nav HTML pattern (index, cv, projects, extracurriculars, about-this-site):
 
 **Any page using this full nav MUST also carry the mobile hamburger** — the
-`.nav-toggle` button before `</nav>`, the `/* ── Mobile hamburger nav ── */`
-CSS block ending the `<style>`, and the `nav-open` toggle IIFE before
-`</body>`. Without it the nav overflows the viewport below 768px (`Contact`
-ran 62px off-screen at 360px). `about-this-site.html` was written after the
-2026-07-26 mobile-nav pass and missed all three until 2026-09-04 — copy the
-blocks from `projects.html` verbatim rather than reimplementing. Pages using
+`.nav-toggle` button before `</nav>`, `<link rel="stylesheet" href="style.css">`
+before its `<style>` (the hamburger CSS lives there now, since 2026-10-03), and
+the `nav-open` toggle IIFE before `</body>`. Without it the nav overflows the
+viewport below 768px (`Contact` ran 62px off-screen at 360px).
+`about-this-site.html` was written after the 2026-07-26 mobile-nav pass and
+missed all three until 2026-09-04 — copy the button and IIFE from
+`projects.html` verbatim rather than reimplementing. Pages using
 the `.back-bar` mini-nav instead (graph, graph-methodology) are unaffected,
 as are 404 and cv-viewer, which have no nav.
 
@@ -285,16 +289,38 @@ slate is 5.25:1.
 The one `rgba(26,44,107,0.25)` left in the repo is graph.html's scrollbar thumb,
 which is decoration, not an affordance — leave it.
 
-**These values are duplicated across every page** because there's no shared
-stylesheet (see below), so change them together or they drift.
+**These values are still duplicated across pages** — the CTA/link rules are
+page-specific and stayed inline when `style.css` was extracted — so change
+them together or they drift.
 
-## No shared stylesheet (known debt)
-All CSS is inline per page: 2,556 lines across 9 files, with 73 rules appearing
-verbatim in 2+ files (258 duplicated instances) — the reset, the cursor, and the
-entire nav block are copied 5-9 times. "No framework, no build step" never
-required this; a `<link rel="stylesheet">` needs no build. The cost is real:
-`about-this-site.html` shipped without the mobile hamburger for weeks because
-the nav CSS is copy-pasted per page. Extracting a shared `style.css` is pending.
+## Shared stylesheet
+`style.css` (extracted 2026-10-03) holds what was byte-identical across the five
+full-nav pages — index, cv, projects, extracurriculars, about-this-site: tokens
+(`:root`), reset, `body` + graph-paper background, the whole nav block and mobile
+hamburger, footer, `.cursor`, `.page-eyebrow`. ~750 duplicated lines went. It
+was verified by diffing every element's computed style against `main` at seven
+widths (1280/850/769/768/740/700/375) plus hover and nav-open states: zero
+rendered differences.
+
+**It is linked BEFORE each page's inline `<style>`, which flips the cascade for
+everything that moved.** A shared rule now loses any same-specificity tie to an
+inline rule — including inline rules that used to sit *above* it and lose. The
+extraction hit this twice on index.html: `nav, section, footer { position:
+relative; z-index: 10 }` (dead for `nav` before, would have un-fixed the nav)
+and a `max-width: 900px` `.nav-links { gap }` that would have beaten the
+hamburger's `gap: 0` (now scoped `(768px < width <= 900px)`). So before adding
+an inline rule that touches nav/footer/cursor properties, check it doesn't now
+outrank style.css by accident; and before moving a rule *into* style.css,
+check no page has an inline rule it would now lose to.
+
+Not linked by graph, graph-methodology, 404, or cv-viewer — standalone layouts,
+and graph.html's tokens are deliberately fainter (`--blue-G` 0.40, not 0.42).
+index.html keeps its own `.cursor` (bigger, scaled) and two index-only tokens.
+Rules shared only by projects and extracurriculars (`.project-item` etc.) stayed
+inline: extracurriculars is a placeholder due to be rebuilt, so share them then
+if they still match. Known dead CSS left on index.html (no matching elements or
+an invalid declaration), not touched by the extraction: `.project-item {
+padding-top: 32px !important }` and `.section-divider { margin- }`.
 
 ## Content card
 cv.html, projects.html, and extracurriculars.html have a semi-transparent content card

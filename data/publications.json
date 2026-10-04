@@ -68,29 +68,7 @@
     "keywords": [
       "selected"
     ],
-    "addendum": "Best Paper Award (Honorable Mention)",
-    "part_of": "design-dm"
-  },
-  {
-    "id": "Nath2026dcc",
-    "title": "Designing rewards for rewarding designs: Demonstrating the impact of rewards on the creative design process",
-    "authors": [
-      "Nath, Surabhi S.",
-      "Jayawaranda, Vindula",
-      "Van, Monica",
-      "Klenk, Matthew",
-      "Hakimi, Shabnam"
-    ],
-    "year": 2026,
-    "venue": "Design Computing and Cognition (DCC'26), Paris, France",
-    "url": null,
-    "pubType": "talk",
-    "authorPosition": "last",
-    "paperWeight": 0.4,
-    "keywords": [
-      "presentation",
-      "selected"
-    ],
+    "addendum": "Best Paper Award (Honorable Mention); Talk",
     "part_of": "design-dm"
   },
   {
@@ -98,7 +76,7 @@
     "title": "Meaningful reward feedback interacts with strategy to steer creative decisions and maintain design diversity",
     "authors": [
       "Nath, Surabhi S.",
-      "Jayawaranda, Vindula",
+      "Jayawardana, Vindula",
       "Van, Monica",
       "Klenk, Matthew",
       "Hakimi, Shabnam"
@@ -1853,6 +1831,7 @@
     "authorPosition": "middle",
     "paperWeight": 0.16,
     "keywords": [],
+    "addendum": "Talk",
     "part_of": "incentive-design"
   },
   {
@@ -1880,27 +1859,6 @@
       "presentation"
     ],
     "part_of": "asd-social-dm"
-  },
-  {
-    "id": "Mozer2017rldm",
-    "title": "Overcoming temptation: Incentive design for intertemporal choice",
-    "authors": [
-      "Mozer, M. C.",
-      "Sukumar, S.",
-      "Elliott-Williams, C.",
-      "Hakimi, Shabnam",
-      "Ward, A. F."
-    ],
-    "year": 2017,
-    "venue": "Presented at the 3rd Multidisciplinary Meeting on Reinforcement Learning and Decision Making, Ann Arbor, MI",
-    "url": null,
-    "pubType": "talk",
-    "authorPosition": "middle",
-    "paperWeight": 0.16,
-    "keywords": [
-      "presentation"
-    ],
-    "part_of": "incentive-design"
   },
   {
     "id": "Hakimi2016risk",

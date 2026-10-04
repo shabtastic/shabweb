@@ -447,18 +447,7 @@ section { padding: 7rem 2.5rem; }
 .admin-divider { border:none; border-top:1px solid var(--blue-G); }
 .admin-hint { font-size:0.5rem; letter-spacing:0.12em; color:var(--ink-dim); }
 
-/* Index bar: 16px padding */
-.page-index { padding-bottom: 16px !important; }
-
-/* Year headings and section dividers */
-.year-heading  { margin- }
-.section-divider { margin- }
-
-/* Publication entries: padding multiples of 16 */
-.pub-entry { padding-bottom: 16px !important; }
-.project-item { padding-top: 32px !important; }
-
-/* Work items, research items */
+/* Work items, research items: padding multiples of 16 (graph-paper grid) */
 .work-item { padding-bottom: 16px !important; }
 .research-item { padding-bottom: 16px !important; }
 
@@ -10558,35 +10547,6 @@ Rules:
     el.className = 'admin-status' + (type ? ' ' + type : '');
   }
 
-})();
-
-// ── GRID SNAP — align structural borders to 16px graph paper grid ──
-(function() {
-  const CELL = 16; // must match CSS background-size minor grid
-  function snap() {
-    // Elements whose top border should land on a grid line
-    // We nudge padding-top so the border offset from page top = multiple of CELL
-    const targets = [
-      ...document.querySelectorAll('.year-heading, .section-divider, .page-index, .page-header'),
-    ];
-    targets.forEach(el => {
-      // Reset any previous nudge
-      el.style.paddingTop = '';
-      const rect = el.getBoundingClientRect();
-      const absTop = rect.top + window.scrollY;
-      const rem = absTop % CELL;
-      if (rem > 0.5) {
-        const nudge = CELL - rem;
-        const current = parseFloat(getComputedStyle(el).paddingTop) || 0;
-        el.style.paddingTop = (current + nudge) + 'px';
-      }
-    });
-  }
-  // Run after layout settles
-  window.addEventListener('load', snap);
-  window.addEventListener('resize', snap);
-  // Also run after fonts load (affects layout)
-  if (document.fonts) document.fonts.ready.then(snap);
 })();
 
 // ── NAV SCROLL-SPY ───────────────────────────────────────────────

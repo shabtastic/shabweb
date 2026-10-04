@@ -318,9 +318,7 @@ and graph.html's tokens are deliberately fainter (`--blue-G` 0.40, not 0.42).
 index.html keeps its own `.cursor` (bigger, scaled) and two index-only tokens.
 Rules shared only by projects and extracurriculars (`.project-item` etc.) stayed
 inline: extracurriculars is a placeholder due to be rebuilt, so share them then
-if they still match. Known dead CSS left on index.html (no matching elements or
-an invalid declaration), not touched by the extraction: `.project-item {
-padding-top: 32px !important }` and `.section-divider { margin- }`.
+if they still match.
 
 ## Content card
 cv.html, projects.html, and extracurriculars.html have a semi-transparent content card

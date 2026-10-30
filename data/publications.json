@@ -257,28 +257,6 @@
     "part_of": "generative-design"
   },
   {
-    "id": "Eum2026isms",
-    "title": "AI-driven interpretable visual features for demand neuroforecasting",
-    "authors": [
-      "Eum, Brenden",
-      "Daviet, Remi",
-      "Hakimi, Shabnam",
-      "Knutson, Brian",
-      "Webb, Ryan"
-    ],
-    "year": 2026,
-    "venue": "ISMS Marketing Science, Carcavelos, Portugal",
-    "url": null,
-    "pubType": "poster",
-    "authorPosition": "middle",
-    "paperWeight": 0.2,
-    "keywords": [
-      "presentation",
-      "selected"
-    ],
-    "part_of": "neurofore-econ"
-  },
-  {
     "id": "Eum2026sne",
     "title": "Extending a neural random utility framework to explain why neuroforecasting works",
     "authors": [
@@ -290,13 +268,14 @@
     "year": 2026,
     "venue": "Annual Meeting of the Society for Neuroeconomics, Pasadena, CA",
     "url": null,
-    "pubType": "poster",
+    "pubType": "talk",
     "authorPosition": "middle",
     "paperWeight": 0.2,
     "keywords": [
       "presentation",
       "selected"
     ],
+    "addendum": "Best Talk Award",
     "part_of": "neurofore-econ"
   },
   {
@@ -321,6 +300,28 @@
       "presentation"
     ],
     "part_of": "neurofore-neuro"
+  },
+  {
+    "id": "Eum2026isms",
+    "title": "AI-driven interpretable visual features for demand neuroforecasting",
+    "authors": [
+      "Eum, Brenden",
+      "Daviet, Remi",
+      "Hakimi, Shabnam",
+      "Knutson, Brian",
+      "Webb, Ryan"
+    ],
+    "year": 2026,
+    "venue": "ISMS Marketing Science, Carcavelos, Portugal",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": [
+      "presentation",
+      "selected"
+    ],
+    "part_of": "neurofore-econ"
   },
   {
     "id": "Blevins2026neurofore",
@@ -696,7 +697,8 @@
     ],
     "year": 2024,
     "venue": "Preprint",
-    "url": "https://osf.io/83ny2/",
+    "doi": "10.31234/osf.io/jsyeb_v2",
+    "url": "https://doi.org/10.31234/osf.io/jsyeb_v2",
     "pubType": "preprint",
     "authorPosition": "middle",
     "paperWeight": 0.28,
@@ -1262,34 +1264,6 @@
     "part_of": "methods-imaging"
   },
   {
-    "id": "Muzekari2020bandit",
-    "title": "Dynamic feedback valuation impacts learning in a probabilistic two-armed bandit task",
-    "authors": [
-      "Muzekari, B. S.",
-      "Hakimi, Shabnam",
-      "Eom, K. H.",
-      "Shrestha, S.",
-      "Ng, S.",
-      "Rivera-Cancel, A. M.",
-      "Thorp, J. N.",
-      "Erwin, S. R.",
-      "Wright, R. N.",
-      "Zucker, N. L.",
-      "Adcock, R. A."
-    ],
-    "year": 2020,
-    "venue": "Annual Meeting of the Cognitive Neuroscience Society, Virtual",
-    "url": null,
-    "pubType": "poster",
-    "authorPosition": "second",
-    "paperWeight": 0.3,
-    "keywords": [
-      "presentation",
-      "selected"
-    ],
-    "part_of": "perfectionism"
-  },
-  {
     "id": "Sinclair2020snvirus",
     "title": "Perceived versus actual virus transmission risk during the COVID-19 pandemic",
     "authors": [
@@ -1330,22 +1304,27 @@
     "part_of": "episodic-memory"
   },
   {
-    "id": "Eom2020perfectionism",
-    "title": "Mapping the individual experience of perfectionism to clinical measures",
+    "id": "Muzekari2020bandit",
+    "title": "Dynamic feedback valuation impacts learning in a probabilistic two-armed bandit task",
     "authors": [
-      "Eom, K. H.",
-      "Rivera-Cancel, A. M.",
-      "Hakimi, Shabnam",
       "Muzekari, B. S.",
+      "Hakimi, Shabnam",
+      "Eom, K. H.",
+      "Shrestha, S.",
+      "Ng, S.",
+      "Rivera-Cancel, A. M.",
+      "Thorp, J. N.",
+      "Erwin, S. R.",
+      "Wright, R. N.",
       "Zucker, N. L.",
       "Adcock, R. A."
     ],
     "year": 2020,
-    "venue": "Annual Meeting of the Society of Biological Psychiatry, Virtual",
+    "venue": "Annual Meeting of the Cognitive Neuroscience Society, Virtual",
     "url": null,
     "pubType": "poster",
-    "authorPosition": "middle",
-    "paperWeight": 0.2,
+    "authorPosition": "second",
+    "paperWeight": 0.3,
     "keywords": [
       "presentation",
       "selected"
@@ -1373,6 +1352,29 @@
       "presentation"
     ],
     "part_of": "covid-dm"
+  },
+  {
+    "id": "Eom2020perfectionism",
+    "title": "Mapping the individual experience of perfectionism to clinical measures",
+    "authors": [
+      "Eom, K. H.",
+      "Rivera-Cancel, A. M.",
+      "Hakimi, Shabnam",
+      "Muzekari, B. S.",
+      "Zucker, N. L.",
+      "Adcock, R. A."
+    ],
+    "year": 2020,
+    "venue": "Annual Meeting of the Society of Biological Psychiatry, Virtual",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "middle",
+    "paperWeight": 0.2,
+    "keywords": [
+      "presentation",
+      "selected"
+    ],
+    "part_of": "perfectionism"
   },
   {
     "id": "Bachman2020journal",
@@ -1713,24 +1715,6 @@
     "part_of": "rt-neurofeedback"
   },
   {
-    "id": "Hakimi2017rldm",
-    "title": "Neural correlates of cognitive control as a function of emergent automaticity",
-    "authors": [
-      "Hakimi, Shabnam"
-    ],
-    "year": 2017,
-    "venue": "Multidisciplinary Conference on Reinforcement Learning and Decision Making, Ann Arbor, MI",
-    "url": null,
-    "pubType": "poster",
-    "authorPosition": "first",
-    "paperWeight": 0.4,
-    "keywords": [
-      "presentation",
-      "selected"
-    ],
-    "part_of": "automaticity"
-  },
-  {
     "id": "Hakimi2017rtfmri",
     "title": "Modeling learning from real-time fMRI neurofeedback",
     "authors": [
@@ -1764,6 +1748,24 @@
     "paperWeight": 0.4,
     "keywords": [
       "presentation"
+    ],
+    "part_of": "automaticity"
+  },
+  {
+    "id": "Hakimi2017rldm",
+    "title": "Neural correlates of cognitive control as a function of emergent automaticity",
+    "authors": [
+      "Hakimi, Shabnam"
+    ],
+    "year": 2017,
+    "venue": "Multidisciplinary Conference on Reinforcement Learning and Decision Making, Ann Arbor, MI",
+    "url": null,
+    "pubType": "poster",
+    "authorPosition": "first",
+    "paperWeight": 0.4,
+    "keywords": [
+      "presentation",
+      "selected"
     ],
     "part_of": "automaticity"
   },
@@ -1957,31 +1959,6 @@
     "part_of": "juror-dm"
   },
   {
-    "id": "Jung2016autism",
-    "title": "Testing for co-opted higher-order social cognition in autism",
-    "authors": [
-      "Jung, H.",
-      "Mosner, M. G.",
-      "McLaurin, R. E.",
-      "Hakimi, Shabnam",
-      "Parelman, J. M.",
-      "Kinard, J.",
-      "Chakraborty, P.",
-      "Dichter, G. S.",
-      "Carter, R. M."
-    ],
-    "year": 2016,
-    "venue": "86th Annual Convention of the Rocky Mountain Psychological Association, Denver, CO",
-    "url": null,
-    "pubType": "talk",
-    "authorPosition": "middle",
-    "paperWeight": 0.16,
-    "keywords": [
-      "presentation"
-    ],
-    "part_of": "asd-social-dm"
-  },
-  {
     "id": "Jung2016sobp",
     "title": "Co-opted social cognitive neural substrates in autism during strategic gameplay",
     "authors": [
@@ -2003,6 +1980,31 @@
     "paperWeight": 0.16,
     "keywords": [
       "manual",
+      "presentation"
+    ],
+    "part_of": "asd-social-dm"
+  },
+  {
+    "id": "Jung2016autism",
+    "title": "Testing for co-opted higher-order social cognition in autism",
+    "authors": [
+      "Jung, H.",
+      "Mosner, M. G.",
+      "McLaurin, R. E.",
+      "Hakimi, Shabnam",
+      "Parelman, J. M.",
+      "Kinard, J.",
+      "Chakraborty, P.",
+      "Dichter, G. S.",
+      "Carter, R. M."
+    ],
+    "year": 2016,
+    "venue": "86th Annual Convention of the Rocky Mountain Psychological Association, Denver, CO",
+    "url": null,
+    "pubType": "talk",
+    "authorPosition": "middle",
+    "paperWeight": 0.16,
+    "keywords": [
       "presentation"
     ],
     "part_of": "asd-social-dm"
@@ -2120,25 +2122,6 @@
     "part_of": "imagine-discount"
   },
   {
-    "id": "Hakimi2011nyas",
-    "title": "Variations in discount rates are associated with differences in the ability to imagine future rewards",
-    "authors": [
-      "Hakimi, Shabnam",
-      "Hare, T. A.",
-      "Rangel, A."
-    ],
-    "year": 2011,
-    "venue": "Presented at the NYAS Meeting on Critical Contributions of the Orbitofrontal Cortex to Behavior, New York, NY",
-    "url": null,
-    "pubType": "talk",
-    "authorPosition": "first",
-    "paperWeight": 0.3,
-    "keywords": [
-      "presentation"
-    ],
-    "part_of": "imagine-discount"
-  },
-  {
     "id": "Hakimi2011igert",
     "title": "Variations in discount rates are associated with differences in the ability to imagine future rewards",
     "authors": [
@@ -2167,6 +2150,25 @@
     ],
     "year": 2011,
     "venue": "Presented at the Annual Meeting of the Cognitive Neuroscience Society, San Francisco, CA",
+    "url": null,
+    "pubType": "talk",
+    "authorPosition": "first",
+    "paperWeight": 0.3,
+    "keywords": [
+      "presentation"
+    ],
+    "part_of": "imagine-discount"
+  },
+  {
+    "id": "Hakimi2011nyas",
+    "title": "Variations in discount rates are associated with differences in the ability to imagine future rewards",
+    "authors": [
+      "Hakimi, Shabnam",
+      "Hare, T. A.",
+      "Rangel, A."
+    ],
+    "year": 2011,
+    "venue": "Presented at the NYAS Meeting on Critical Contributions of the Orbitofrontal Cortex to Behavior, New York, NY",
     "url": null,
     "pubType": "talk",
     "authorPosition": "first",

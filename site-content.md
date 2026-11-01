@@ -321,7 +321,7 @@ Link (optional):
 ---
 
 # GRAPH.HTML
-*Cluster names + descriptions shown in the sidebar and the "projects →" overlay. Lives in graph.html's own clusterData block today (not generated from graph.json) — edit here and let Claude know to sync it back.*
+*Cluster names + descriptions shown in the sidebar and the "projects →" overlay, plus the sidebar panel prose. Lives in graph.html directly today (cluster blurbs in its clusterData block, panel prose in the sidebar markup — neither is generated from graph.json) — edit here and let Claude know to sync it back.*
 
 ## 0 — Motivated Learning, Decision Making, & Self Regulation
 > How motivation, reward, and self-control shape learning and choice, with an emphasis on flexible, goal-directed decision making in real-world settings.
@@ -346,3 +346,26 @@ Link (optional):
 
 ## 5 — Social, Cognitive, & Affective Neuroscience
 > Modeling complex interactions between cognition and affect to understand and predict individual behavior in social contexts.
+
+---
+
+### Sidebar panel prose
+*The three text blocks in the left sidebar, under the "Semantic topology" heading. All three are Claude-authored placeholders, not your writing — rewrite freely. Not yet synced to graph.html; tell Claude when you want them pushed live.*
+
+## Sidebar — panel intro
+> The concepts in my research, connected the way ideas are connected in memory. Each node comes from my papers, and each edge is a theoretical relationship between two of them.
+
+## Sidebar — why it moves
+*This block is new — nothing on the page currently explains why the graph animates on its own, or what the phase word in the top-right corner (predicting / wandering / surprised / revising / integrating) means. Three other drafts are noted below; swap one in or write your own.*
+> Activate one concept and its neighbors begin to light up, a process known as **spreading activation** (Collins & Loftus, 1975). The contour lines draw that activity as terrain. Think of it as a loss landscape turned upside down: left alone, attention settles on a peak, gets knocked loose, and leaps somewhere new. The word at the top right names each moment. Click a node to redirect it.
+
+*Alternatives:*
+*(a) plainest — "With no one clicking, it runs unattended: attention drifts between anchor points on its own, sometimes following an edge, sometimes jumping. The phase at the top right names how far it's straying. Click any node to take over."*
+*(b) strongest claim, ties the motion to your research — "It moves because a body of work isn't a static structure — it's something that got built by attention wandering exactly like this, and still does. What you're watching isn't an illustration of the research; it's the same process, run over its own subject matter."*
+*(c) keeps the loss-landscape analogy — "The topography is the same mathematics as a gradient descent loss landscape. The motion is what makes that more than an analogy: activation searches this surface the way learning searches a loss surface, settling into peaks and getting knocked out of them."*
+
+*One accuracy note for whatever you write: the animation isn't computing surprise or inference. A single value drifts toward a target that's re-picked every 3–8 seconds (15% of the time it jumps high instead of drifting), and that value decides whether attention follows an edge or leaps, and how long it lingers. "Surprised" is a name for a big jump, not a measurement.*
+
+## Sidebar — activation legend
+*Caption under the blue intensity bar. The current live version repeats "tighter spacing = steeper gradient", which the paragraph above it already says — dropped here.*
+> Activation rises into peaks where related concepts light up together, then fades as attention moves on.

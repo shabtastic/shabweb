@@ -17,3 +17,6 @@ README.md
 .github/
 .env.example
 .gitignore
+
+# LinkedIn banner source; not part of the site
+figures/linkedin-banner/

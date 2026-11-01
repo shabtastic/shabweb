@@ -12,6 +12,7 @@ graph/editor.html
 # Dev docs
 CLAUDE.md
 README.md
+site-content.md
 
 # CI / dev-only files
 .github/

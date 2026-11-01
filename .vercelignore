@@ -13,6 +13,8 @@ graph/editor.html
 CLAUDE.md
 README.md
 site-content.md
+LAUNCH.md
+docs/
 
 # CI / dev-only files
 .github/
@@ -21,3 +23,6 @@ site-content.md
 
 # LinkedIn banner source; not part of the site
 figures/linkedin-banner/
+
+# Figure generators; output is injected into index.html
+figures/*.py

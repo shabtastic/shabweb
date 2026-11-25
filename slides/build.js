@@ -517,11 +517,11 @@ async function applyColors(file, colors) {
     .map(([k, v]) => `<a:${k}><a:srgbClr val="${v}"/></a:${k}>`).join("");
   const xml = (await zip.file(part).async("string")).replace(
     /<a:clrScheme name="[^"]*">[\s\S]*?<\/a:clrScheme>/,
-    `<a:clrScheme name="Hakimi">${slots}</a:clrScheme>`);
-  if (!xml.includes('clrScheme name="Hakimi"')) throw new Error("theme colour scheme not found");
+    `<a:clrScheme name="Shabnam">${slots}</a:clrScheme>`);
+  if (!xml.includes('clrScheme name="Shabnam"')) throw new Error("theme colour scheme not found");
   // Google Slides labels every layout "<theme name> - <layout>"; pptxgenjs
   // calls the theme "Office Theme".
-  zip.file(part, xml.replace(/(<a:theme [^>]*name=")[^"]*"/, '$1Hakimi"'));
+  zip.file(part, xml.replace(/(<a:theme [^>]*name=")[^"]*"/, '$1Shabnam"'));
   // pptxgenjs always adds an empty layout named "DEFAULT" with a white
   // background; name it "Blank" (its background is dropped below, so it
   // inherits the master's grid).
@@ -592,7 +592,11 @@ async function main() {
   pres.author = "Shabnam Hakimi";
   pres.company = ""; // otherwise pptxgenjs writes its own name here
   pres.title = "Slide template";
-  pres.theme = { headFontFace: SANS, bodyFontFace: MONO };
+  // Theme fonts must be family names: Google Slides swaps "DM Sans Light"
+  // (family + weight) for Arial here, and Google's own layouts (a new deck's
+  // starting "Title slide") take their font from the theme. The layouts and
+  // master name DM Sans Light outright, so they keep the light weight.
+  pres.theme = { headFontFace: "DM Sans", bodyFontFace: MONO };
   defineLayouts(pres);
   sampleSlides(pres);
   await pres.writeFile({ fileName: OUT });

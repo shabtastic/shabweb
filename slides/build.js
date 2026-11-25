@@ -461,6 +461,26 @@ function sampleSlides(pres) {
     "Author, A., Author, B., & Author, C. (Year). Title of the proceedings paper. In Proceedings of Conference.",
   ].map((t, i, a) => ({ text: t, options: { breakLine: i < a.length - 1 } })), { placeholder: "references" });
 
+  // Reference: ready-made bands to copy. Layouts can't carry them (a band's
+  // length depends on the words, and layout shapes can't be moved on a slide),
+  // and Import theme brings layouts, not slides, so they live here.
+  s = add("Title only", "Reference (delete)");
+  s.addText("REFERENCE · COPY & PASTE", { placeholder: "eyebrow" });
+  s.addText("Highlighter bands", { placeholder: "title" });
+  const kit = ["yellow", "slate", "helio", "violet", "red", "cheese", "mint", "lime"];
+  [["Titles · 36pt", 36, BODY_Y + 0.15], ["Display · 54–60pt", 60, BODY_Y + 2.15]].forEach(([label, pt, y]) => {
+    s.addText(label, { x: MX, y, w: 4, h: 0.3, margin: 0, fontFace: MONO, fontSize: 11,
+      color: INK_DIM, isTextBox: true });
+    kit.forEach((c, i) => {
+      const col = i % 4, row = Math.floor(i / 4), em = pt / 72;
+      s.addShape("rect", { x: MX + col * 2.9, y: y + 0.5 + row * 0.75, w: 2.5, h: 0.32 * em,
+        objectName: `Highlighter band ${c}`,
+        fill: { color: HL[c], transparency: Math.round((1 - HL_ALPHA[c]) * 100) },
+        line: { type: "none" } });
+    });
+  });
+  s.addNotes("Copy a band, paste it on your slide, stretch it to the words, then Arrange → Order → Send to back so it sits behind the text. It should cover the lower half of the letters, like the homepage name. Use the 36pt bands for slide titles and the 54–60pt bands for title, section and closing slides. Quick alternative: select text and use the highlighter (marker) button in the toolbar; it fills the full line height rather than a stripe.");
+
   // Reference: all eight cluster colours. The theme only holds six accents,
   // so violet and lime live here for the eyedropper. Delete before presenting.
   s = add("Title and text", "Reference (delete)");

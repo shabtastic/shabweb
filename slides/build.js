@@ -211,7 +211,8 @@ function defineLayouts(pres) {
   pres.defineSlideMaster({ title: "Big number", objects: [
     ...eyebrow(1.5, "RESULT"),
     { placeholder: { options: { name: "number", type: "title", x: MX, y: 1.95, w: 7, h: 2.3,
-        margin: 0, fontFace: SANS, fontSize: 140, color: INK, align: "left", valign: "top" }, text: "00%" } },
+        margin: 0, fontFace: SANS, fontSize: 140, color: INK, align: "left", valign: "top" },
+        text: "00%" } }, // shrink-on-overflow is added in finishing (see applyColors)
     { placeholder: { options: { name: "label", type: "body", x: MX, y: 4.45, w: 6.6, h: 1,
         margin: 0, fontFace: MONO, fontSize: 18, color: INK_BLUE, valign: "top", lineSpacingMultiple: 1.25 },
         text: "What the number measures" } },
@@ -522,15 +523,15 @@ async function applyColors(file, colors) {
   // calls the theme "Office Theme".
   zip.file(part, xml.replace(/(<a:theme [^>]*name=")[^"]*"/, '$1Hakimi"'));
   // pptxgenjs always adds an empty layout named "DEFAULT" with a white
-  // background; make it a usable blank paper slide.
+  // background; name it "Blank" (its background is dropped below, so it
+  // inherits the master's grid).
   const blank = "ppt/slideLayouts/slideLayout1.xml";
   zip.file(blank, (await zip.file(blank).async("string"))
-    .replace('<p:cSld name="DEFAULT">', '<p:cSld name="Blank">')
-    .replace(/<p:bg>[\s\S]*?<\/p:bg>/, `<p:bg><p:bgPr><a:solidFill><a:srgbClr val="${PAPER}"/></a:solidFill><a:effectLst/></p:bgPr></p:bg>`));
+    .replace('<p:cSld name="DEFAULT">', '<p:cSld name="Blank">'));
   // The grid lives on the master, once, and every layout inherits it. Giving
   // each layout its own copy (pptxgenjs's way) made Google Slides drop the
-  // grid from some layouts on Import theme. Blank and Full-bleed override it
-  // with plain paper.
+  // grid from some layouts on Import theme. Full-bleed overrides it with
+  // plain paper.
   zip.file("ppt/media/grid.png", fs.readFileSync(GRID));
   const masterRels = "ppt/slideMasters/_rels/slideMaster1.xml.rels";
   zip.file(masterRels, (await zip.file(masterRels).async("string")).replace("</Relationships>",
@@ -548,8 +549,15 @@ async function applyColors(file, colors) {
   for (const name of Object.keys(zip.files)) {
     if (/^ppt\/slideLayouts\/slideLayout\d+\.xml$/.test(name)) {
       let x = await zip.file(name).async("string");
-      const keepOwnBg = /<p:cSld name="(Blank|Full-bleed image)">/.test(x);
+      const keepOwnBg = /<p:cSld name="Full-bleed image">/.test(x);
       if (!keepOwnBg) x = x.replace(/<p:bg>[\s\S]*?<\/p:bg>/, "");
+      // Big number: shrink text on overflow. Google ignores custom prompts, so
+      // its "Click to add title" would wrap off the slide at 140pt.
+      // (pptxgenjs drops `fit` on layout placeholders.)
+      if (x.includes('<p:cSld name="Big number">')) {
+        x = x.replace(/(<p:ph[^>]*type="title"[\s\S]*?<a:bodyPr[^>]*?)(\/>|>[\s\S]*?<\/a:bodyPr>)/,
+          (m, head) => `${head}><a:normAutofit/></a:bodyPr>`);
+      }
       x = x.replace(/<p:cNvPr id="(\d+)" name="Slide Number Placeholder 0"\/><p:cNvSpPr><a:spLocks noGrp="1"\/><\/p:cNvSpPr>(\s*)<p:nvPr><p:ph type="sldNum"[^>]*\/><\/p:nvPr>/,
         '<p:cNvPr id="$1" name="Slide number"/><p:cNvSpPr txBox="1"/>$2<p:nvPr/>');
       zip.file(name, x);

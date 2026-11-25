@@ -555,6 +555,24 @@ async function applyColors(file, colors) {
     .replace(/<a:latin typeface="\+mn-lt"\/><a:ea typeface="\+mn-ea"\/><a:cs typeface="\+mn-cs"\/>/g, face(MONO))
     .replace(/(<p:titleStyle>\s*<a:lvl1pPr[^>]*?)algn="ctr"/, '$1algn="l"'));
 
+  // pptxgenjs leaves the master without title and body placeholders, and
+  // Google Slides reads a theme's fonts off those: with none, its heading font
+  // fell back to Arial (font menu: "SHABNAM: Space Mono, Arial"). Add the
+  // standard pair, placed like the content layouts' title and body.
+  const emu = (inches) => Math.round(inches * 914400);
+  const phBox = (id, name, ph, x, y, w, h, font, prompt) =>
+    `<p:sp><p:nvSpPr><p:cNvPr id="${id}" name="${name}"/><p:cNvSpPr><a:spLocks noGrp="1"/></p:cNvSpPr>` +
+    `<p:nvPr>${ph}</p:nvPr></p:nvSpPr><p:spPr><a:xfrm><a:off x="${emu(x)}" y="${emu(y)}"/>` +
+    `<a:ext cx="${emu(w)}" cy="${emu(h)}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></p:spPr>` +
+    `<p:txBody><a:bodyPr vert="horz" lIns="0" tIns="0" rIns="0" bIns="0" anchor="t"/><a:lstStyle/>` +
+    `<a:p><a:r><a:rPr lang="en-US"><a:latin typeface="${font}"/></a:rPr><a:t>${prompt}</a:t></a:r></a:p></p:txBody></p:sp>`;
+  const mx3 = await zip.file(master).async("string");
+  if (!/<p:ph type="title"/.test(mx3)) {
+    zip.file(master, mx3.replace(/(<p:spTree>[\s\S]*?<\/p:grpSpPr>)/, "$1" +
+      phBox(2, "Title Placeholder 1", '<p:ph type="title"/>', MX, TITLE_Y, CW, 0.9, "DM Sans", "Click to edit title style") +
+      phBox(3, "Text Placeholder 2", '<p:ph type="body" idx="1"/>', MX, BODY_Y, 10.4, 4.5, MONO, "Click to edit text styles")));
+  }
+
   // Slide numbers: pptxgenjs writes a slide-number *placeholder*, which Google
   // Slides only shows when Insert → Slide numbers is on. A plain text box with
   // a slide-number field on the layout shows on every slide by itself.

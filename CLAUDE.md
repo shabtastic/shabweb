@@ -22,7 +22,7 @@ graph/editor.html       — Graph editor (existing, untouched)
 data/sync-bib.js        — Syncs CV bib files → publications.json + graph.json
 data/publications.json  — Derived from CV bib files
 figures/linkedin-banner/ — LinkedIn banner (banner.html draws it, banner.png is the 1584×396 export); excluded from the deploy
-slides/                 — Slide template in the site's style: build.js → hakimi-template.pptx (`cd slides && npm install && npm run build`); 17 layouts, works in Google Slides + Keynote; excluded from the deploy. Repo is public: keep sample text generic (no employer, no "job talk")
+slides/                 — Slide template in the site's style: build.js → hakimi-template.pptx (`cd slides && npm install && npm run build`); 17 layouts, works in Google Slides + Keynote; excluded from the deploy. Repo is public: keep sample text generic (no employer, no "job talk"). Google Slides import rules, each learned the hard way (all handled in build.js's post-processing): the master must have title + body placeholders or the theme font falls back to Arial; theme-level fonts must be family names ("DM Sans", never "DM Sans Light"); background images go on the master once, not per layout; slide numbers are plain fields, not placeholders; Google ignores custom placeholder prompts
 ```
 
 ## Design system

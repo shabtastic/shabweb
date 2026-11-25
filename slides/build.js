@@ -119,10 +119,9 @@ const caption = (name, x, y, w) => ({ placeholder: { options: { name, type: "bod
   text: "Caption or source" } });
 
 function defineLayouts(pres) {
-  const bg = { path: GRID };
   const foot = { slideNumber };
 
-  pres.defineSlideMaster({ title: "Title", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Title", objects: [
     ...eyebrow(2.15, "TALK · VENUE · DATE"),
     { placeholder: { options: { name: "title", type: "title", x: MX, y: 2.6, w: 10.8, h: 2.1,
         margin: 0, fontFace: SANS, fontSize: 54, color: INK, align: "left", valign: "top", lineSpacingMultiple: 0.95 },
@@ -132,37 +131,37 @@ function defineLayouts(pres) {
         text: "Shabnam Hakimi, Ph.D." } },
   ] });
 
-  pres.defineSlideMaster({ title: "Section divider", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Section divider", objects: [
     ...eyebrow(2.75, "01"),
     { placeholder: { options: { name: "title", type: "title", x: MX, y: 3.2, w: 10.8, h: 1.6,
         margin: 0, fontFace: SANS, fontSize: 60, color: INK, align: "left", valign: "top" }, text: "Section" } },
     ...shMark(),
   ], ...foot });
 
-  pres.defineSlideMaster({ title: "Title and text", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Title and text", objects: [
     ...eyebrow(), title(), body(MX, BODY_Y, 10.4, 4.5), ...shMark(),
   ], ...foot });
 
   const fy = BODY_Y, fh = 4.25;
-  pres.defineSlideMaster({ title: "Figure", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Figure", objects: [
     ...eyebrow(), title(), panel(MX, fy, CW, fh), pic("figure", MX, fy, CW, fh),
     caption("caption", MX, fy + fh + 0.12, CW), ...shMark(),
   ], ...foot });
 
-  pres.defineSlideMaster({ title: "Figure (dark panel)", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Figure (dark panel)", objects: [
     ...eyebrow(), title(), panel(MX, fy, CW, fh, true), pic("figure", MX, fy, CW, fh, true),
     caption("caption", MX, fy + fh + 0.12, CW), ...shMark(),
   ], ...foot });
 
   const lw = 7.35, rx = MX + lw + 0.45;
-  pres.defineSlideMaster({ title: "Figure and takeaways", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Figure and takeaways", objects: [
     ...eyebrow(), title(), panel(MX, fy, lw, fh), pic("figure", MX, fy, lw, fh),
     caption("caption", MX, fy + fh + 0.12, lw),
     body(rx, fy, SW - MX - rx, fh, "Takeaway"), ...shMark(),
   ], ...foot });
 
   const hw = (CW - 0.45) / 2;
-  pres.defineSlideMaster({ title: "Two figures", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Two figures", objects: [
     ...eyebrow(), title(),
     panel(MX, fy, hw, fh), pic("figure-left", MX, fy, hw, fh),
     caption("caption-left", MX, fy + fh + 0.12, hw),
@@ -171,7 +170,7 @@ function defineLayouts(pres) {
     ...shMark(),
   ], ...foot });
 
-  pres.defineSlideMaster({ title: "Statement", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Statement", objects: [
     ...eyebrow(1.9),
     { placeholder: { options: { name: "statement", type: "title", x: MX, y: 2.4, w: 10.6, h: 3.4,
         margin: 0, fontFace: SANS, fontSize: 44, color: INK, align: "left", valign: "top", lineSpacingMultiple: 1.05 },
@@ -179,13 +178,13 @@ function defineLayouts(pres) {
     ...shMark(),
   ], ...foot });
 
-  pres.defineSlideMaster({ title: "Title only", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Title only", objects: [
     ...eyebrow(), title(), ...shMark(),
   ], ...foot });
 
   // Agenda rows are Space Mono on a fixed 46pt pitch (AGENDA), so a band can
   // be dropped behind the current section: see agendaBand().
-  pres.defineSlideMaster({ title: "Agenda", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Agenda", objects: [
     ...eyebrow(EYEBROW_Y, "OUTLINE"), title(),
     { placeholder: { options: { name: "agenda", type: "body", x: MX, y: BODY_Y, w: 10.4, h: 4.5,
         margin: 0, fontFace: MONO, fontSize: AGENDA.pt, color: INK, valign: "top",
@@ -194,7 +193,7 @@ function defineLayouts(pres) {
   ], ...foot });
 
   const cw3 = (CW - 2 * 0.45) / 3;
-  pres.defineSlideMaster({ title: "Three columns", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Three columns", objects: [
     ...eyebrow(), title(),
     ...[0, 1, 2].flatMap((i) => {
       const x = MX + i * (cw3 + 0.45);
@@ -209,7 +208,7 @@ function defineLayouts(pres) {
     ...shMark(),
   ], ...foot });
 
-  pres.defineSlideMaster({ title: "Big number", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Big number", objects: [
     ...eyebrow(1.5, "RESULT"),
     { placeholder: { options: { name: "number", type: "title", x: MX, y: 1.95, w: 7, h: 2.3,
         margin: 0, fontFace: SANS, fontSize: 140, color: INK, align: "left", valign: "top" }, text: "00%" } },
@@ -226,7 +225,7 @@ function defineLayouts(pres) {
   // paper disc, ink ring, ink dot.
   const stops = [0, 1, 2, 3].map((i) => MX + i * 2.95);
   const LINE_Y = 3.9;
-  pres.defineSlideMaster({ title: "Timeline", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Timeline", objects: [
     ...eyebrow(), title(),
     { line: { x: MX, y: LINE_Y, w: CW, h: 0, line: { color: INK, width: 1, endArrowType: "triangle" } } },
     ...stops.flatMap((x, i) => [
@@ -244,7 +243,7 @@ function defineLayouts(pres) {
   ], ...foot });
 
   const half = (CW - 0.6) / 2;
-  pres.defineSlideMaster({ title: "Acknowledgments", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Acknowledgments", objects: [
     ...eyebrow(EYEBROW_Y, "ACKNOWLEDGMENTS"), title(),
     ...[0, 1].flatMap((i) => {
       const x = MX + i * (half + 0.6);
@@ -260,7 +259,7 @@ function defineLayouts(pres) {
     ...shMark(),
   ], ...foot });
 
-  pres.defineSlideMaster({ title: "References", background: bg, objects: [
+  pres.defineSlideMaster({ title: "References", objects: [
     ...eyebrow(EYEBROW_Y, "REFERENCES"), title(),
     { placeholder: { options: { name: "references", type: "body", x: MX, y: BODY_Y, w: CW, h: 4.55,
         margin: 0, fontFace: MONO, fontSize: 12, color: INK, valign: "top",
@@ -274,7 +273,7 @@ function defineLayouts(pres) {
         color: INK_DIM, fontFace: MONO, fontSize: 14 }, text: "Drop image here" } },
   ] });
 
-  pres.defineSlideMaster({ title: "Closing", background: bg, objects: [
+  pres.defineSlideMaster({ title: "Closing", objects: [
     { placeholder: { options: { name: "title", type: "title", x: MX, y: 2.3, w: 10.8, h: 1.4,
         margin: 0, fontFace: SANS, fontSize: 60, color: INK, align: "left", valign: "top" }, text: "Thank you" } },
     { placeholder: { options: { name: "contact", type: "body", x: MX, y: 4.15, w: 9, h: 1.6,
@@ -528,13 +527,38 @@ async function applyColors(file, colors) {
   zip.file(blank, (await zip.file(blank).async("string"))
     .replace('<p:cSld name="DEFAULT">', '<p:cSld name="Blank">')
     .replace(/<p:bg>[\s\S]*?<\/p:bg>/, `<p:bg><p:bgPr><a:solidFill><a:srgbClr val="${PAPER}"/></a:solidFill><a:effectLst/></p:bgPr></p:bg>`));
-  // The master has no background of its own, so its thumbnail in Google's
-  // theme editor is white; give it paper.
+  // The grid lives on the master, once, and every layout inherits it. Giving
+  // each layout its own copy (pptxgenjs's way) made Google Slides drop the
+  // grid from some layouts on Import theme. Blank and Full-bleed override it
+  // with plain paper.
+  zip.file("ppt/media/grid.png", fs.readFileSync(GRID));
+  const masterRels = "ppt/slideMasters/_rels/slideMaster1.xml.rels";
+  zip.file(masterRels, (await zip.file(masterRels).async("string")).replace("</Relationships>",
+    '<Relationship Id="rIdGrid" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/grid.png"/></Relationships>'));
   const master = "ppt/slideMasters/slideMaster1.xml";
+  const gridBg = '<p:bg><p:bgPr><a:blipFill dpi="0" rotWithShape="1"><a:blip r:embed="rIdGrid"/><a:srcRect/><a:stretch><a:fillRect/></a:stretch></a:blipFill><a:effectLst/></p:bgPr></p:bg>';
   const mxml = await zip.file(master).async("string");
-  if (!mxml.includes("<p:bg>")) {
-    zip.file(master, mxml.replace(/<p:cSld>/, `<p:cSld><p:bg><p:bgPr><a:solidFill><a:srgbClr val="${PAPER}"/></a:solidFill><a:effectLst/></p:bgPr></p:bg>`));
+  zip.file(master, mxml.includes("<p:bg>")
+    ? mxml.replace(/<p:bg>[\s\S]*?<\/p:bg>/, gridBg)
+    : mxml.replace(/<p:cSld>/, `<p:cSld>${gridBg}`));
+
+  // Slide numbers: pptxgenjs writes a slide-number *placeholder*, which Google
+  // Slides only shows when Insert → Slide numbers is on. A plain text box with
+  // a slide-number field on the layout shows on every slide by itself.
+  for (const name of Object.keys(zip.files)) {
+    if (/^ppt\/slideLayouts\/slideLayout\d+\.xml$/.test(name)) {
+      let x = await zip.file(name).async("string");
+      const keepOwnBg = /<p:cSld name="(Blank|Full-bleed image)">/.test(x);
+      if (!keepOwnBg) x = x.replace(/<p:bg>[\s\S]*?<\/p:bg>/, "");
+      x = x.replace(/<p:cNvPr id="(\d+)" name="Slide Number Placeholder 0"\/><p:cNvSpPr><a:spLocks noGrp="1"\/><\/p:cNvSpPr>(\s*)<p:nvPr><p:ph type="sldNum"[^>]*\/><\/p:nvPr>/,
+        '<p:cNvPr id="$1" name="Slide number"/><p:cNvSpPr txBox="1"/>$2<p:nvPr/>');
+      zip.file(name, x);
+    } else if (/^ppt\/slides\/slide\d+\.xml$/.test(name)) {
+      const x = await zip.file(name).async("string");
+      zip.file(name, x.replace(/<p:sp>(?:(?!<\/p:sp>)[\s\S])*?type="sldNum"[\s\S]*?<\/p:sp>/g, ""));
+    }
   }
+
   // Repack without directory entries; cloud importers have choked on them.
   const out = new JSZip();
   for (const [name, f] of Object.entries(zip.files)) {

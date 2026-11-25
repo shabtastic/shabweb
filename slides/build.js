@@ -486,7 +486,7 @@ function sampleSlides(pres) {
   s.addNotes("Cluster colours match the website (graph, cv, projects). Six of the eight are theme accents; violet and lime are only here, so use the eyedropper. For yellow text on paper use #9A7C00 (dark amber), as the site does.");
 }
 
-// pptxgenjs sets the theme fonts but hard-codes Office's colour scheme; write
+// pptxgenjs sets the theme fonts but hard-codes Office's colour scheme and theme name; write
 // ours into theme1.xml so the colour pickers in Slides/Keynote offer the palette.
 // Only six accents fit, so violet and lime are on the palette slide instead.
 async function applyColors(file, colors) {
@@ -499,7 +499,22 @@ async function applyColors(file, colors) {
     /<a:clrScheme name="[^"]*">[\s\S]*?<\/a:clrScheme>/,
     `<a:clrScheme name="Hakimi">${slots}</a:clrScheme>`);
   if (!xml.includes('clrScheme name="Hakimi"')) throw new Error("theme colour scheme not found");
-  zip.file(part, xml);
+  // Google Slides labels every layout "<theme name> - <layout>"; pptxgenjs
+  // calls the theme "Office Theme".
+  zip.file(part, xml.replace(/(<a:theme [^>]*name=")[^"]*"/, '$1Hakimi"'));
+  // pptxgenjs always adds an empty layout named "DEFAULT" with a white
+  // background; make it a usable blank paper slide.
+  const blank = "ppt/slideLayouts/slideLayout1.xml";
+  zip.file(blank, (await zip.file(blank).async("string"))
+    .replace('<p:cSld name="DEFAULT">', '<p:cSld name="Blank">')
+    .replace(/<p:bg>[\s\S]*?<\/p:bg>/, `<p:bg><p:bgPr><a:solidFill><a:srgbClr val="${PAPER}"/></a:solidFill><a:effectLst/></p:bgPr></p:bg>`));
+  // The master has no background of its own, so its thumbnail in Google's
+  // theme editor is white; give it paper.
+  const master = "ppt/slideMasters/slideMaster1.xml";
+  const mxml = await zip.file(master).async("string");
+  if (!mxml.includes("<p:bg>")) {
+    zip.file(master, mxml.replace(/<p:cSld>/, `<p:cSld><p:bg><p:bgPr><a:solidFill><a:srgbClr val="${PAPER}"/></a:solidFill><a:effectLst/></p:bgPr></p:bg>`));
+  }
   // Repack without directory entries; cloud importers have choked on them.
   const out = new JSZip();
   for (const [name, f] of Object.entries(zip.files)) {

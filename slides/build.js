@@ -5,8 +5,10 @@ const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 const pptxgen = require("pptxgenjs");
+const { addApproachFigure, groupAndAnimate } = require("./approach");
 
 const OUT = path.join(__dirname, "hakimi-template.pptx");
+const FIGURE_OUT = path.join(__dirname, "approach-figure.pptx");
 const GRID = path.join(__dirname, "grid.png");
 
 // ── Tokens (style.css :root) ────────────────────────────────────────────────
@@ -313,6 +315,17 @@ function agendaBand(slide, color, i, chars) {
     line: { type: "none" } });
 }
 
+// The homepage approach figure in native shapes (see approach.js): six
+// groups that fade in one click at a time. Also built alone as
+// approach-figure.pptx, to copy into any deck.
+function approachSlide(s) {
+  s.addText("APPROACH", { placeholder: "eyebrow" });
+  s.addText("Better estimates of internal states for better interventions",
+    { placeholder: "title", fontSize: 28 }); // one line at 28pt, even in Google Slides
+  addApproachFigure(s, { x: MX, y: 1.75, w: CW });
+  s.addNotes("Six groups, one click each: true state, signals, our best guess, now and the forecast, intervention, timescales. Double-click into a group to move or retype one piece; the groups carry the animation. Generated from figures/approach.py, the homepage figure, so rebuild after changing that.");
+}
+
 function sampleSlides(pres) {
   const sections = new Set();
   const add = (masterName, sectionTitle) => {
@@ -411,6 +424,8 @@ function sampleSlides(pres) {
       line: { color: INK_BLUE, width: 1.25, endArrowType: "triangle" }, objectName: "Arrow" });
   });
   s.addNotes("Title only: eyebrow and title on the grid, the rest is yours. White boxes with a faint rule and ink-blue arrows match the figure panels.");
+
+  approachSlide(add("Title only", "Research"));
 
   s = add("Full-bleed image", "Research");
   s.addNotes("Full-bleed image: plain paper, no grid or footer. Click the placeholder to add a photo, screenshot or video; it fills the slide.");
@@ -593,7 +608,8 @@ async function applyColors(file, colors) {
       zip.file(name, x);
     } else if (/^ppt\/slides\/slide\d+\.xml$/.test(name)) {
       const x = await zip.file(name).async("string");
-      zip.file(name, x.replace(/<p:sp>(?:(?!<\/p:sp>)[\s\S])*?type="sldNum"[\s\S]*?<\/p:sp>/g, ""));
+      zip.file(name, groupAndAnimate(
+        x.replace(/<p:sp>(?:(?!<\/p:sp>)[\s\S])*?type="sldNum"[\s\S]*?<\/p:sp>/g, "")));
     }
   }
 
@@ -605,8 +621,7 @@ async function applyColors(file, colors) {
   fs.writeFileSync(file, await out.generateAsync({ type: "nodebuffer", compression: "DEFLATE" }));
 }
 
-async function main() {
-  writeGrid(GRID);
+function newPres() {
   const pres = new pptxgen();
   pres.layout = "LAYOUT_WIDE";
   pres.author = "Shabnam Hakimi";
@@ -618,15 +633,29 @@ async function main() {
   // master name DM Sans Light outright, so they keep the light weight.
   pres.theme = { headFontFace: "DM Sans", bodyFontFace: MONO };
   defineLayouts(pres);
-  sampleSlides(pres);
-  await pres.writeFile({ fileName: OUT });
-  await applyColors(OUT, {
+  return pres;
+}
+
+async function save(pres, file) {
+  await pres.writeFile({ fileName: file });
+  await applyColors(file, {
     dk1: INK, lt1: "FFFFFF", dk2: INK_BLUE, lt2: PAPER,
     accent1: HL.yellow, accent2: HL.slate, accent3: HL.helio,
     accent4: HL.red, accent5: HL.cheese, accent6: HL.mint,
     hlink: INK_BLUE, folHlink: INK_BLUE,
   });
-  console.log("wrote", OUT);
+  console.log("wrote", file);
+}
+
+async function main() {
+  writeGrid(GRID);
+  const pres = newPres();
+  sampleSlides(pres);
+  await save(pres, OUT);
+  const fig = newPres();
+  fig.title = "Approach figure";
+  approachSlide(fig.addSlide({ masterName: "Title only" }));
+  await save(fig, FIGURE_OUT);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

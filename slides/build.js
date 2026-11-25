@@ -543,6 +543,16 @@ async function applyColors(file, colors) {
     ? mxml.replace(/<p:bg>[\s\S]*?<\/p:bg>/, gridBg)
     : mxml.replace(/<p:cSld>/, `<p:cSld>${gridBg}`));
 
+  // Google Slides doesn't import theme fonts from a .pptx (both come in as
+  // Arial), so name the fonts outright in the master's text styles instead of
+  // pointing at the theme (+mj-lt / +mn-lt). Titles also default to left.
+  const mx2 = await zip.file(master).async("string");
+  const face = (f) => `<a:latin typeface="${f}"/><a:ea typeface="${f}"/><a:cs typeface="${f}"/>`;
+  zip.file(master, mx2
+    .replace(/<a:latin typeface="\+mj-lt"\/><a:ea typeface="\+mj-ea"\/><a:cs typeface="\+mj-cs"\/>/g, face(SANS))
+    .replace(/<a:latin typeface="\+mn-lt"\/><a:ea typeface="\+mn-ea"\/><a:cs typeface="\+mn-cs"\/>/g, face(MONO))
+    .replace(/(<p:titleStyle>\s*<a:lvl1pPr[^>]*?)algn="ctr"/, '$1algn="l"'));
+
   // Slide numbers: pptxgenjs writes a slide-number *placeholder*, which Google
   // Slides only shows when Insert → Slide numbers is on. A plain text box with
   // a slide-number field on the layout shows on every slide by itself.

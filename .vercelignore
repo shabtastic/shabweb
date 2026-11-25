@@ -26,3 +26,6 @@ figures/linkedin-banner/
 
 # Figure generators; output is injected into index.html
 figures/*.py
+
+# Slide template source (slides/build.js → hakimi-template.pptx); not part of the site
+slides/

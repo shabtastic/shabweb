@@ -1,0 +1,7 @@
+{
+  "name": "slide-template",
+  "private": true,
+  "description": "Builds hakimi-template.pptx; run `npm run build`",
+  "scripts": { "build": "node build.js" },
+  "dependencies": { "pptxgenjs": "^3.12.0" }
+}
